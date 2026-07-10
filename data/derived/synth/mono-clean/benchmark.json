@@ -1,0 +1,1 @@
+{"schema":"frothseg.benchmark/v1","case_id":"mono-clean","methods":[{"method":"watershed_dt","ap":0.329,"ap50":0.824,"ap75":0.096,"bsd_w":5.599,"n_pred":125,"n_gt":114},{"method":"watershed_hmax","ap":0.121,"ap50":0.333,"ap75":0.017,"bsd_w":16.082,"n_pred":294,"n_gt":114},{"method":"slic_merge","ap":0.025,"ap50":0.093,"ap75":0.002,"bsd_w":10.371,"n_pred":308,"n_gt":114}]}

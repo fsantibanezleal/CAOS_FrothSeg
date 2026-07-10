@@ -1,0 +1,1 @@
+{"schema":"frothseg.benchmark/v1","case_id":"low-light-noise","methods":[{"method":"watershed_dt","ap":0.263,"ap50":0.545,"ap75":0.252,"bsd_w":2.205,"n_pred":181,"n_gt":196},{"method":"watershed_hmax","ap":0.01,"ap50":0.036,"ap75":0.001,"bsd_w":13.636,"n_pred":2283,"n_gt":196},{"method":"slic_merge","ap":0.035,"ap50":0.13,"ap75":0.008,"bsd_w":2.663,"n_pred":301,"n_gt":196}]}

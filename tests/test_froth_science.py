@@ -6,7 +6,8 @@ from fslab.science.segment import mask_ap, morphometry, watershed_dt
 
 
 def test_generator_is_deterministic():
-    a = generate(CASES[1]); b = generate(CASES[1])
+    a = generate(CASES[1])
+    b = generate(CASES[1])
     assert np.array_equal(a["labels"], b["labels"])
     assert np.allclose(a["image"], b["image"])
 

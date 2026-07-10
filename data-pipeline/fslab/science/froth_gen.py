@@ -123,7 +123,8 @@ def render(spec: FrothSpec, sites: np.ndarray, lab: np.ndarray) -> np.ndarray:
         ys, xs = np.mgrid[0:h, 0:w].astype(np.float64)
         img += spec.glare * np.exp(-((xs - gx) ** 2 + (ys - gy) ** 2) / (2 * gr ** 2))
     if spec.motion_blur > 1:
-        k = np.zeros((spec.motion_blur, spec.motion_blur)); k[spec.motion_blur // 2, :] = 1.0 / spec.motion_blur
+        k = np.zeros((spec.motion_blur, spec.motion_blur))
+        k[spec.motion_blur // 2, :] = 1.0 / spec.motion_blur
         img = cv2.filter2D(img, -1, k)
     if spec.defocus > 0:
         img = ndi.gaussian_filter(img, spec.defocus)

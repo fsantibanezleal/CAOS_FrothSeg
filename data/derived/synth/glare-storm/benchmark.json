@@ -1,0 +1,1 @@
+{"schema":"frothseg.benchmark/v1","case_id":"glare-storm","methods":[{"method":"watershed_dt","ap":0.081,"ap50":0.175,"ap75":0.078,"bsd_w":7.088,"n_pred":51,"n_gt":197},{"method":"watershed_hmax","ap":0.03,"ap50":0.084,"ap75":0.018,"bsd_w":10.365,"n_pred":632,"n_gt":197},{"method":"slic_merge","ap":0.039,"ap50":0.153,"ap75":0.005,"bsd_w":3.182,"n_pred":360,"n_gt":197}]}

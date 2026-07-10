@@ -1,28 +1,28 @@
-"""Pipeline smoke + determinism: a case regenerates deterministically (same seed -> identical artifact), the
-degenerate control runs without crashing, and run_all writes the flat index."""
+"""Pipeline smoke + determinism: a case regenerates deterministically (same seed -> identical frame sha256), the
+empty control runs without crashing and yields zero bubbles, run_all writes the flat index, and the CONTRACT-2
+consistency check is clean after a fresh run_all."""
 import json
 
 from fslab import pipeline, registry
 
 
 def test_case_deterministic_same_seed():
-    a = pipeline.precompute("EX02_epidemic", seed=7)
-    b = pipeline.precompute("EX02_epidemic", seed=7)
-    assert a["artifact"]["bytes"] == b["artifact"]["bytes"]
-    trace = json.loads((pipeline.DERIVED / a["artifact"]["path"]).read_text(encoding="utf-8"))
-    assert trace["summary"]["peak_I"] > 0
+    a = pipeline.precompute("poly-normal", seed=7)
+    b = pipeline.precompute("poly-normal", seed=7)
+    assert a["artifacts"]["frame"]["sha256"] == b["artifacts"]["frame"]["sha256"]
+    assert a["bsd"]["count"] == b["bsd"]["count"] > 0
 
 
-def test_degenerate_control_runs():
-    m = pipeline.precompute("CTRL_degenerate", seed=1)  # I0=0 -> no dynamics, must not crash
-    trace = json.loads((pipeline.DERIVED / m["artifact"]["path"]).read_text(encoding="utf-8"))
-    assert trace["summary"]["peak_I"] == 0.0
-    assert trace["summary"]["attack_rate"] == 0.0
+def test_empty_control_runs_and_has_no_bubbles():
+    m = pipeline.precompute("empty-control", seed=1)  # no froth -> segmenter must return zero, no crash
+    assert m["bsd"]["count"] == 0
+    doc = json.loads((pipeline.DERIVED / m["artifacts"]["masks"]["path"]).read_text(encoding="utf-8"))
+    assert doc["n_instances"] == 0
 
 
-def test_run_all_writes_index():
+def test_run_all_writes_index_and_check_is_clean():
     entries = pipeline.run_all(seed=42)
-    assert len(entries) == len(registry.list_cases()) >= 4
+    assert len(entries) == len(registry.list_cases()) >= 12
     idx = json.loads((pipeline.MANIFESTS / "index.json").read_text(encoding="utf-8"))
-    assert idx["n_cases"] == len(entries)
-    assert idx["schema"].startswith("example.index/")
+    assert idx["n_cases"] == len(entries) and idx["schema"].startswith("frothseg.index/")
+    assert pipeline.check() == 0, "CONTRACT-2 consistency check found drift right after run_all"

@@ -1,0 +1,1 @@
+{"schema":"frothseg.benchmark/v1","case_id":"bursting","methods":[{"method":"watershed_dt","ap":0.361,"ap50":0.671,"ap75":0.343,"bsd_w":1.689,"n_pred":126,"n_gt":148},{"method":"watershed_hmax","ap":0.15,"ap50":0.287,"ap75":0.146,"bsd_w":8.891,"n_pred":292,"n_gt":148},{"method":"slic_merge","ap":0.034,"ap50":0.141,"ap75":0.009,"bsd_w":3.731,"n_pred":304,"n_gt":148}]}

@@ -1,0 +1,1 @@
+{"schema":"frothseg.benchmark/v1","case_id":"coarse-froth","methods":[{"method":"watershed_dt","ap":0.394,"ap50":0.58,"ap75":0.448,"bsd_w":3.018,"n_pred":71,"n_gt":68},{"method":"watershed_hmax","ap":0.068,"ap50":0.128,"ap75":0.07,"bsd_w":21.938,"n_pred":284,"n_gt":68},{"method":"slic_merge","ap":0.012,"ap50":0.045,"ap75":0.0,"bsd_w":15.843,"n_pred":331,"n_gt":68}]}

@@ -108,7 +108,8 @@ def mask_ap(pred: np.ndarray, gt: np.ndarray, thresholds=np.arange(0.5, 1.0, 0.0
     pr_masks = {i: pred == i for i in pr_ids}
     iou = np.zeros((len(pr_ids), len(gt_ids)))
     for a, pi in enumerate(pr_ids):
-        pm = pr_masks[pi]; pa = pm.sum()
+        pm = pr_masks[pi]
+        pa = pm.sum()
         for b, gj in enumerate(gt_ids):
             inter = np.logical_and(pm, gt_masks[gj]).sum()
             if inter:
@@ -123,8 +124,11 @@ def mask_ap(pred: np.ndarray, gt: np.ndarray, thresholds=np.arange(0.5, 1.0, 0.0
                 break
             if a in matched_p or b in matched_g:
                 continue
-            matched_p.add(a); matched_g.add(b); tp += 1
-        fp = len(pr_ids) - tp; fn = len(gt_ids) - tp
+            matched_p.add(a)
+            matched_g.add(b)
+            tp += 1
+        fp = len(pr_ids) - tp
+        fn = len(gt_ids) - tp
         aps[round(float(t), 2)] = tp / (tp + fp + fn) if (tp + fp + fn) else 0.0
     return dict(ap=round(float(np.mean(list(aps.values()))), 3),
                 ap50=round(aps[0.5], 3), ap75=round(aps[0.75], 3),

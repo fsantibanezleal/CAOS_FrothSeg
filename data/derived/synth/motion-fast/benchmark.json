@@ -1,0 +1,1 @@
+{"schema":"frothseg.benchmark/v1","case_id":"motion-fast","methods":[{"method":"watershed_dt","ap":0.104,"ap50":0.268,"ap75":0.06,"bsd_w":5.072,"n_pred":101,"n_gt":197},{"method":"watershed_hmax","ap":0.028,"ap50":0.08,"ap75":0.015,"bsd_w":10.389,"n_pred":288,"n_gt":197},{"method":"slic_merge","ap":0.008,"ap50":0.036,"ap75":0.002,"bsd_w":3.37,"n_pred":371,"n_gt":197}]}

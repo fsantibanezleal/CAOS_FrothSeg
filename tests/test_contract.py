@@ -1,26 +1,39 @@
-"""CONTRACT 1 (ingestion) tests: good data validates; bad data is rejected with a reason; outliers are flagged."""
-from fslab.io.contract import validate_rows
+"""CONTRACT 1 (froth-image ingestion) tests: a real froth frame validates; unusable frames are rejected with a
+reason; degraded-but-usable frames (glare / low contrast) are accepted AND flagged."""
+import numpy as np
+
+from fslab.io.contract import validate_image
+from fslab.science.froth_gen import CASES, generate
 
 
-def test_good_rows_accepted():
-    rep = validate_rows([{"case_id": "a", "beta": "0.5", "gamma": "0.2", "N": "1000", "I0": "10"}])
-    assert rep.ok and len(rep.accepted) == 1 and not rep.rejected
+def _scene(name):
+    return generate(next(c for c in CASES if c.name == name))["image"]
 
 
-def test_bad_rows_rejected_not_coerced():
-    rows = [
-        {"case_id": "nan", "beta": "nan", "gamma": "0.2", "N": "1000", "I0": "10"},      # NaN
-        {"case_id": "neg", "beta": "-1", "gamma": "0.2", "N": "1000", "I0": "10"},        # out of range
-        {"case_id": "i0gtN", "beta": "0.5", "gamma": "0.2", "N": "100", "I0": "500"},     # I0 > N
-        {"case_id": "missing", "beta": "0.5", "gamma": "0.2", "N": "1000"},               # missing I0
-        {"case_id": "text", "beta": "fast", "gamma": "0.2", "N": "1000", "I0": "10"},     # non-numeric
-    ]
-    rep = validate_rows(rows)
-    assert len(rep.accepted) == 0
-    assert len(rep.rejected) == len(rows)
-    assert all("reason" in r for r in rep.rejected)
+def test_real_froth_frame_accepted_clean():
+    rep = validate_image(_scene("poly-normal"))
+    assert rep.ok and rep.rejected_reason is None
+    assert rep.stats.channels == 1 and rep.stats.dyn_range > 0.15
+    assert not rep.flags  # a clean nominal frame carries no warning
 
 
-def test_outlier_flagged_but_accepted():
-    rep = validate_rows([{"case_id": "hot", "beta": "4.5", "gamma": "0.2", "N": "1000", "I0": "1"}])  # R0=22.5>20
-    assert rep.ok and rep.flagged and "R0" in rep.flagged[0]["flag"]
+def test_unusable_frames_rejected_with_reason():
+    tiny = np.zeros((32, 32), dtype=np.float32)                 # too small AND flat
+    blank = np.full((256, 256), 0.5, dtype=np.float32)          # no contrast
+    wrong = np.zeros((8, 256, 256), dtype=np.float32)           # unsupported shape
+    for img in (tiny, blank, wrong):
+        rep = validate_image(img)
+        assert not rep.ok and rep.rejected_reason
+
+
+def test_glare_frame_accepted_but_flagged():
+    rep = validate_image(_scene("glare-storm"))
+    assert rep.ok, "a glare frame is still usable (deglare front-end handles it), must not be rejected"
+    assert any("glare" in f for f in rep.flags)
+
+
+def test_rgb_is_reduced_to_luma_and_accepted():
+    g = _scene("poly-normal")
+    rgb = np.dstack([g, g, g])
+    rep = validate_image(rgb)
+    assert rep.ok and rep.stats.channels == 3

@@ -1,6 +1,15 @@
-# PRECOMPUTE lane — the heavy, research-chosen SOTA engines, in the .venv-pipeline (local-only, never deployed).
-# THIS is where the deep research becomes binding: every engine pinned here is documented in docs/frameworks/<tool>/
-# and actually used by data-pipeline/fslab/stages/. The EXAMPLE engine (SIR) is numpy-only on purpose so the
-# template installs instantly with no native build; a real product adds e.g. yade / pychrono / ortools / mintpy /
-# torch here, each PINNED to the version it installs+verifies.
+# PRECOMPUTE lane — the CV stack the synthetic-froth benchmark harness + classical segmentation floor use, in the
+# .venv-pipeline (local + CI, never deployed to the browser). Each library is the standard, cited tool for its job
+# (never hand-rolled numpy) and is documented in docs/frameworks/<tool>/. Pinned to the verified install
+# (Python 3.12/3.13, 2026-07-10).
+#   scipy         exact Euclidean distance transform, gaussian, Wasserstein-1 (froth_gen borders + BSD scoring)
+#   scikit-image  regionprops morphometry, marker-controlled watershed, SLIC (the classical FLOOR + descriptors)
+#   opencv        deglare/illumination-flatten, motion blur, optical-flow froth velocity (real-frame front-end)
+#   pillow        8-bit grayscale PNG frame encode/decode (the committed image artifact)
+#   pycocotools   COCO-RLE instance-mask encode/decode (the committed EXACT ground-truth masks)
 numpy==2.4.6
+scipy==1.18.0
+scikit-image==0.26.0
+opencv-python-headless==5.0.0.93
+pillow==11.0.0
+pycocotools==2.0.11
