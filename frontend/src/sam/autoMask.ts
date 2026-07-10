@@ -8,10 +8,18 @@
 // then each grid point is decoded to 3 candidate masks; we take the highest predicted-IoU candidate, score its
 // stability (IoU of the logits thresholded at +/- an offset), filter on predicted-IoU / stability / area, and
 // suppress duplicates with greedy IoU NMS.
-import { AutoProcessor, SamModel, Tensor } from '@huggingface/transformers';
+import { AutoProcessor, env, SamModel, Tensor } from '@huggingface/transformers';
 
 import { bsdFromAreas } from './morphometry';
 import type { AutoMaskOptions, Device, InstanceMask, SegResult } from './types';
+
+// Force SINGLE-THREADED onnxruntime-web WASM. The multi-threaded WASM backend needs SharedArrayBuffer, which
+// requires cross-origin-isolation (COOP/COEP) headers a static host like GitHub Pages cannot set; without them
+// the threaded backend stalls. Single-threaded is slower but works everywhere; WebGPU (when available) is the
+// fast path and does not need SharedArrayBuffer either.
+if (typeof env !== 'undefined' && env.backends?.onnx?.wasm) {
+  env.backends.onnx.wasm.numThreads = 1;
+}
 
 // SlimSAM-77 (uniform-pruned SAM) is tiny + browser-ready via transformers.js; MobileSAM is the alternate.
 export const DEFAULT_MODEL = 'Xenova/slimsam-77-uniform';
@@ -38,28 +46,25 @@ export class FrothSegmenter {
     this.modelId = modelId;
   }
 
-  /** Load the model + processor. `device` 'auto' tries webgpu then falls back to wasm (browser) / cpu (node). */
+  /** Load the model + processor. `device` 'auto' PROBES for a real WebGPU adapter first (loading with a device
+   *  that has no adapter loads fine but then fails at inference), so it only uses WebGPU when it will actually
+   *  work, else the single-threaded WASM backend in the browser or CPU (onnxruntime-node) in Node. */
   async load(device: Device = 'auto', dtype: string = 'fp32'): Promise<void> {
-    const tryDevices = device === 'auto' ? ['webgpu', 'wasm'] : [device];
-    let lastErr: unknown = null;
-    for (const dev of tryDevices) {
-      try {
-        this.model = await SamModel.from_pretrained(this.modelId, { device: dev as any, dtype: dtype as any });
-        this.processor = await AutoProcessor.from_pretrained(this.modelId);
-        this.device = dev;
-        return;
-      } catch (e) {
-        lastErr = e;
-      }
-    }
-    // last resort: let transformers.js pick (cpu in node)
+    const chosen = device === 'auto' ? await pickDevice() : device;
+    const opts = chosen === 'default' ? { dtype: dtype as any } : { device: chosen as any, dtype: dtype as any };
     try {
-      this.model = await SamModel.from_pretrained(this.modelId, { dtype: dtype as any });
+      this.model = await SamModel.from_pretrained(this.modelId, opts);
       this.processor = await AutoProcessor.from_pretrained(this.modelId);
-      this.device = 'default';
-      return;
-    } catch {
-      throw lastErr ?? new Error('failed to load SAM model');
+      this.device = chosen;
+    } catch (e) {
+      // one fallback: if a non-wasm device failed to load, retry on wasm (always available in the browser)
+      if (chosen !== 'wasm' && chosen !== 'default') {
+        this.model = await SamModel.from_pretrained(this.modelId, { device: 'wasm' as any, dtype: dtype as any });
+        this.processor = await AutoProcessor.from_pretrained(this.modelId);
+        this.device = 'wasm';
+      } else {
+        throw e;
+      }
     }
   }
 
@@ -161,6 +166,23 @@ export class FrothSegmenter {
 }
 
 // ---- helpers ------------------------------------------------------------------------------------------------
+
+/** Choose the inference device. In the browser, only pick 'webgpu' if a real GPU adapter is actually obtainable
+ *  (otherwise WASM); in Node (no navigator.gpu) let transformers.js pick (onnxruntime-node CPU). */
+async function pickDevice(): Promise<string> {
+  const gpu = (globalThis as any)?.navigator?.gpu;
+  if (gpu?.requestAdapter) {
+    try {
+      const adapter = await gpu.requestAdapter();
+      if (adapter) return 'webgpu';
+    } catch {
+      /* fall through to wasm */
+    }
+    return 'wasm';
+  }
+  // no WebGPU API at all: browser without WebGPU -> wasm; Node -> let the lib default (cpu)
+  return typeof (globalThis as any)?.navigator === 'undefined' ? 'default' : 'wasm';
+}
 
 function withDefaults(o: AutoMaskOptions) {
   return {
