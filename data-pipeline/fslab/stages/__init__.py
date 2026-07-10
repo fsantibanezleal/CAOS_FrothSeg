@@ -1,2 +1,2 @@
-"""The named pipeline stages — FROZEN names/signatures, REWORK bodies. Order: preprocess -> feature_extraction ->
-train -> infer -> evaluate -> export. Each stage is deterministic, typed, seeded, and independently testable."""
+"""The named pipeline stages. Order: generate -> benchmark -> export (plus `ingest` = the CONTRACT-1 froth-image
+gate for real uploads). Each stage is deterministic, typed, seeded, and independently testable."""

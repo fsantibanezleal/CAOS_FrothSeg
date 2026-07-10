@@ -1,0 +1,1 @@
+{"schema":"frothseg.benchmark/v1","case_id":"high-load","methods":[{"method":"watershed_dt","ap":0.415,"ap50":0.753,"ap75":0.397,"bsd_w":0.842,"n_pred":202,"n_gt":231},{"method":"watershed_hmax","ap":0.229,"ap50":0.436,"ap75":0.214,"bsd_w":5.669,"n_pred":319,"n_gt":231},{"method":"slic_merge","ap":0.039,"ap50":0.146,"ap75":0.006,"bsd_w":2.498,"n_pred":309,"n_gt":231}]}

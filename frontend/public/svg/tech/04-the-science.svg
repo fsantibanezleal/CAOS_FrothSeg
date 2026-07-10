@@ -1,6 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 460" width="900" class="arch-svg" role="img" aria-label="The science / algorithm flow — placeholder, specialise per product">
-  <!-- PLACEHOLDER (template). Each product REPLACES this with its real algorithm,
-       step by step, with the genuine equations. Keep the shell tokens (themed). -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 460" width="900" class="arch-svg" role="img" aria-label="The algorithm: SAM automatic mask generation for froth, and the classical floor it is scored against">
+  <!-- Hand-authored, themed via shell CSS variables. Mirrors the Methodology page maths. -->
   <style>
     .arch-svg text { font-family: var(--font-sans, Inter, "Segoe UI", system-ui, sans-serif); }
     .arch-svg .mono { font-family: var(--font-mono, ui-monospace, Consolas, monospace); }
@@ -8,13 +7,11 @@
     .arch-svg .bx-hi { stroke: var(--color-accent); }
     .arch-svg .bx-good { stroke: var(--color-good); }
     .arch-svg .ttl { fill: var(--color-fg); font-size: 13px; font-weight: 700; }
-    .arch-svg .sub { fill: var(--color-fg-subtle); font-size: 10px; }
-    .arch-svg .it { fill: var(--color-fg); font-size: 10.5px; }
-    .arch-svg .cd { fill: var(--color-accent); font-size: 9.5px; }
+    .arch-svg .it { fill: var(--color-fg); font-size: 10.5px; font-weight: 600; }
+    .arch-svg .mu { fill: var(--color-fg-subtle); font-size: 9.5px; }
+    .arch-svg .cd { fill: var(--color-accent); font-size: 9px; }
     .arch-svg .eq { fill: var(--color-fg); font-size: 12px; font-style: italic; }
-    .arch-svg .mu { fill: var(--color-fg-subtle); font-size: 10px; }
     .arch-svg .flow { fill: none; stroke: var(--color-fg-faint); stroke-width: 1.6; }
-    .arch-svg .ph { fill: var(--color-warn); font-size: 10px; font-weight: 600; }
   </style>
   <defs>
     <marker id="sc-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
@@ -22,52 +19,68 @@
     </marker>
   </defs>
 
-  <text class="ttl" x="22" y="30">The science / algorithm flow</text>
-  <text class="ph" x="22" y="47">PLACEHOLDER — replace with this product's real stages + equations (e.g. image → watershed → PSD → Rosin–Rammler)</text>
+  <text class="ttl" x="22" y="30">Automatic mask generation with a SAM-class model</text>
 
-  <!-- staged pipeline -->
-  <rect class="bx bx-hi" x="20" y="78" width="180" height="92" rx="10"/>
-  <text class="it" x="34" y="104">① Ingest + normalise</text>
-  <text class="mu" x="34" y="124">validated input (Contract 1)</text>
-  <text class="cd mono" x="34" y="150">stages/01_*.py</text>
+  <!-- 5-stage pipeline -->
+  <rect class="bx bx-hi" x="20" y="52" width="150" height="96" rx="10"/>
+  <text class="it" x="32" y="76">1. Encode once</text>
+  <text class="mu" x="32" y="94">SAM image encoder</text>
+  <text class="mu" x="32" y="110">-&gt; image embedding</text>
+  <text class="cd mono" x="32" y="134">get_image_embeddings</text>
 
-  <rect class="bx bx-hi" x="232" y="78" width="180" height="92" rx="10"/>
-  <text class="it" x="246" y="104">② Core transform</text>
-  <text class="mu" x="246" y="124">the real method / model</text>
-  <text class="cd mono" x="246" y="150">stages/02_*.py</text>
+  <rect class="bx bx-hi" x="190" y="52" width="150" height="96" rx="10"/>
+  <text class="it" x="202" y="76">2. Point grid</text>
+  <text class="mu" x="202" y="94">32x32 foreground</text>
+  <text class="mu" x="202" y="110">prompts, batched</text>
+  <text class="cd mono" x="202" y="134">gridPoints()</text>
 
-  <rect class="bx bx-hi" x="444" y="78" width="180" height="92" rx="10"/>
-  <text class="it" x="458" y="104">③ Estimate + fit</text>
-  <text class="mu" x="458" y="124">parameters, uncertainty</text>
-  <text class="cd mono" x="458" y="150">stages/03_*.py</text>
+  <rect class="bx bx-hi" x="360" y="52" width="160" height="96" rx="10"/>
+  <text class="it" x="372" y="76">3. Decode 3 masks</text>
+  <text class="mu" x="372" y="94">per point + predicted</text>
+  <text class="mu" x="372" y="110">IoU; take best of 3</text>
+  <text class="cd mono" x="372" y="134">mask decoder</text>
 
-  <rect class="bx bx-good" x="656" y="78" width="180" height="92" rx="10"/>
-  <text class="it" x="670" y="104">④ Metrics + artifact</text>
-  <text class="mu" x="670" y="124">scored vs baseline / truth</text>
-  <text class="cd mono" x="670" y="150">stages/04_*.py</text>
+  <rect class="bx bx-hi" x="540" y="52" width="150" height="96" rx="10"/>
+  <text class="it" x="552" y="76">4. Filter</text>
+  <text class="mu" x="552" y="94">predIoU &#8805; 0.86,</text>
+  <text class="mu" x="552" y="110">stability &#8805; 0.90, area</text>
+  <text class="cd mono" x="552" y="134">stability score</text>
 
-  <path class="flow" d="M200,124 H230" marker-end="url(#sc-arrow)"/>
-  <path class="flow" d="M412,124 H442" marker-end="url(#sc-arrow)"/>
-  <path class="flow" d="M624,124 H654" marker-end="url(#sc-arrow)"/>
+  <rect class="bx bx-good" x="710" y="52" width="150" height="96" rx="10"/>
+  <text class="it" x="722" y="76">5. NMS -&gt; instances</text>
+  <text class="mu" x="722" y="94">greedy IoU dedupe</text>
+  <text class="mu" x="722" y="110">-&gt; label map + BSD</text>
+  <text class="cd mono" x="722" y="134">nms(), morphometry</text>
+
+  <path class="flow" d="M170,100 H188" marker-end="url(#sc-arrow)"/>
+  <path class="flow" d="M340,100 H358" marker-end="url(#sc-arrow)"/>
+  <path class="flow" d="M520,100 H538" marker-end="url(#sc-arrow)"/>
+  <path class="flow" d="M690,100 H708" marker-end="url(#sc-arrow)"/>
 
   <!-- equation band -->
-  <rect class="bx" x="20" y="200" width="816" height="86" rx="10"/>
-  <text class="it" x="36" y="224">The governing relation (replace with the product's real equation):</text>
-  <text class="eq" x="36" y="256">y = f( x ; θ )            P(x) = 1 − exp[ −(x / x_c)^n ]            (placeholder)</text>
-  <text class="mu" x="36" y="276">render the real maths with KaTeX on the Methodology page; this SVG mirrors it visually.</text>
+  <rect class="bx" x="20" y="168" width="840" height="80" rx="10"/>
+  <text class="it" x="34" y="190">Stability + the bubble-size distribution</text>
+  <text class="eq" x="34" y="216">stability = |{ logit &gt; +&#948; }| / |{ logit &gt; &#8722;&#948; }|        d_eq = 2&#8730;(A/&#960;)        d32 = &#931; d&#179; / &#931; d&#178;</text>
+  <text class="mu" x="34" y="238">stability is the IoU of the mask thresholded at &#177;&#948;; d32 is the surface-weighted (Sauter) mean bubble diameter.</text>
 
-  <!-- baseline vs learned -->
-  <rect class="bx" x="20" y="312" width="404" height="128" rx="10"/>
-  <text class="it" x="36" y="336" style="font-weight:700">Classical baseline</text>
-  <text class="mu" x="36" y="358">a transparent, deterministic method —</text>
-  <text class="mu" x="36" y="378">the honest reference every result is</text>
-  <text class="mu" x="36" y="398">measured against.</text>
-  <text class="cd mono" x="36" y="424">src/&lt;domain&gt;/*.ts (runs live)</text>
+  <!-- classical floor + scoring -->
+  <rect class="bx" x="20" y="268" width="410" height="176" rx="10"/>
+  <text class="it" x="34" y="292" style="font-weight:700">Classical floor (the cited baseline)</text>
+  <text class="mu" x="34" y="314">Otsu foreground -&gt; exact distance transform</text>
+  <text class="mu" x="34" y="332">markers -&gt; marker-controlled watershed (Meyer);</text>
+  <text class="mu" x="34" y="350">a highlight-seeded variant; SLIC + region merge.</text>
+  <text class="mu" x="34" y="372">Transparent, deterministic, scikit-image. It is the</text>
+  <text class="mu" x="34" y="390">honest reference the foundation model must beat,</text>
+  <text class="mu" x="34" y="408">and it stays complementary under heavy blur.</text>
+  <text class="cd mono" x="34" y="432">data-pipeline/fslab/science/segment.py</text>
 
-  <rect class="bx bx-good" x="444" y="312" width="392" height="128" rx="10"/>
-  <text class="it" x="460" y="336" style="font-weight:700">Learned model</text>
-  <text class="mu" x="460" y="358">trained offline (torch), exported to</text>
-  <text class="mu" x="460" y="378">ONNX, run client-side; reported with</text>
-  <text class="mu" x="460" y="398">held-out skill vs the baseline.</text>
-  <text class="cd mono" x="460" y="424">model/learned.py → *.onnx → ort.ts</text>
+  <rect class="bx bx-good" x="450" y="268" width="410" height="176" rx="10"/>
+  <text class="it" x="464" y="292" style="font-weight:700">How both are scored (honestly)</text>
+  <text class="mu" x="464" y="314">On synthetic froth with EXACT masks: instance</text>
+  <text class="mu" x="464" y="332">mask AP@[.5:.95] (greedy IoU matching) + the</text>
+  <text class="mu" x="464" y="350">BSD Wasserstein-1 distance vs the true diameters.</text>
+  <text class="mu" x="464" y="372">The SAME metric scores SAM and the floor, so the</text>
+  <text class="mu" x="464" y="390">comparison is fair. Synthetic AP is a controlled</text>
+  <text class="mu" x="464" y="408">benchmark, never reported as real-plant accuracy.</text>
+  <text class="cd mono" x="464" y="432">mask_ap + bsd_wasserstein</text>
 </svg>

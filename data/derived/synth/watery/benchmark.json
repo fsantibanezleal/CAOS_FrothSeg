@@ -1,0 +1,1 @@
+{"schema":"frothseg.benchmark/v1","case_id":"watery","methods":[{"method":"watershed_dt","ap":0.155,"ap50":0.262,"ap75":0.146,"bsd_w":5.898,"n_pred":106,"n_gt":231},{"method":"watershed_hmax","ap":0.043,"ap50":0.072,"ap75":0.038,"bsd_w":10.068,"n_pred":336,"n_gt":231},{"method":"slic_merge","ap":0.023,"ap50":0.107,"ap75":0.002,"bsd_w":2.48,"n_pred":307,"n_gt":231}]}

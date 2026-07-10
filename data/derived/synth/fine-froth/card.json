@@ -1,0 +1,1 @@
+{"schema":"frothseg.card/v1","case_id":"fine-froth","category":"fine froth","labels":["fine"],"expected_band":"many small bubbles (high recovery regime); high count, small d32","frame":"synth/fine-froth/frame.png","bsd":{"count":593,"d10":6.28,"d50":9.9,"d90":15.43,"d32":12.92,"pctSmall":0.01},"best_floor":{"method":"watershed_dt","ap":0.266,"ap50":0.591,"bsd_w":0.802}}

@@ -1,0 +1,1 @@
+{"schema":"frothseg.card/v1","case_id":"empty-control","category":"control: empty","labels":["empty","negative-control"],"expected_band":"no froth (launder/empty cell); segmenter must return zero bubbles","frame":"synth/empty-control/frame.png","bsd":{"count":0,"d10":null,"d50":null,"d90":null,"d32":null,"pctSmall":null},"best_floor":null}

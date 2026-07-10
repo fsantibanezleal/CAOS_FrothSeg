@@ -1,7 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 460" width="900" class="arch-svg" role="img" aria-label="What the app is — placeholder, specialise per product">
-  <!-- PLACEHOLDER (template). Each product REPLACES this with a diagram of its own
-       domain: the real problem, the inputs, the science core, the value it returns.
-       Keep the shell CSS-variable tokens so it stays themed. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 460" width="900" class="arch-svg" role="img" aria-label="What FrothSeg is: a froth frame in, live SAM-class segmentation, bubble-size distribution and froth state out">
+  <!-- Hand-authored. Every colour is a shell CSS variable, so the diagram repaints with the active theme. -->
   <style>
     .arch-svg text { font-family: var(--font-sans, Inter, "Segoe UI", system-ui, sans-serif); }
     .arch-svg .mono { font-family: var(--font-mono, ui-monospace, Consolas, monospace); }
@@ -9,60 +7,75 @@
     .arch-svg .bx-hi { stroke: var(--color-accent); }
     .arch-svg .bx-good { stroke: var(--color-good); }
     .arch-svg .ttl { fill: var(--color-fg); font-size: 13px; font-weight: 700; }
-    .arch-svg .sub { fill: var(--color-fg-subtle); font-size: 10px; }
-    .arch-svg .it { fill: var(--color-fg); font-size: 11px; }
-    .arch-svg .cd { fill: var(--color-accent); font-size: 9.5px; }
+    .arch-svg .it { fill: var(--color-fg); font-size: 11px; font-weight: 600; }
     .arch-svg .mu { fill: var(--color-fg-subtle); font-size: 10px; }
+    .arch-svg .cd { fill: var(--color-accent); font-size: 9.5px; }
     .arch-svg .flow { fill: none; stroke: var(--color-fg-faint); stroke-width: 1.6; }
-    .arch-svg .ph { fill: var(--color-warn); font-size: 10px; font-weight: 600; }
   </style>
   <defs>
-    <marker id="ta-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <marker id="ap-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
       <path d="M0,0 L8,4 L0,8 z" fill="var(--color-fg-faint)"/>
     </marker>
   </defs>
 
-  <text class="ttl" x="22" y="30">What the app is</text>
-  <text class="ph" x="22" y="47">PLACEHOLDER — replace with this product's domain problem → input → method → value</text>
+  <text class="ttl" x="22" y="30">FrothSeg: bubble segmentation + size distribution, live in the browser</text>
+  <text class="mu" x="22" y="48">A flotation-froth frame in; the instance masks, the bubble-size distribution and the froth state out, with no backend.</text>
 
-  <rect class="bx bx-hi" x="20" y="74" width="194" height="150" rx="11"/>
-  <text class="it" x="34" y="100">The problem</text>
-  <text class="mu" x="34" y="120">a real mining /</text>
-  <text class="mu" x="34" y="136">operations question</text>
-  <text class="mu" x="34" y="156">answered from data</text>
-  <text class="cd mono" x="34" y="182">products/&lt;slug&gt;.md</text>
+  <rect class="bx bx-hi" x="20" y="74" width="180" height="150" rx="10"/>
+  <text class="it" x="34" y="98">Froth frame</text>
+  <text class="mu" x="34" y="118">Upload a REAL froth photo</text>
+  <text class="mu" x="34" y="134">(bring your own), or pick a</text>
+  <text class="mu" x="34" y="150">synthetic sample with exact</text>
+  <text class="mu" x="34" y="166">ground-truth masks.</text>
+  <text class="cd mono" x="34" y="196">Contract 1: the froth gate</text>
+  <text class="mu" x="34" y="212">size/contrast/glare checks</text>
 
-  <rect class="bx" x="248" y="74" width="194" height="150" rx="11"/>
-  <text class="it" x="262" y="100">The input</text>
-  <text class="mu" x="262" y="120">a measurement,</text>
-  <text class="mu" x="262" y="136">image, or signal</text>
-  <text class="mu" x="262" y="156">(Contract 1)</text>
-  <text class="cd mono" x="262" y="182">data/examples/*</text>
+  <rect class="bx" x="232" y="74" width="170" height="150" rx="10"/>
+  <text class="it" x="246" y="98">Front-end (optional)</text>
+  <text class="mu" x="246" y="118">Illumination flatten +</text>
+  <text class="mu" x="246" y="134">specular deglare, so real</text>
+  <text class="mu" x="246" y="150">glare does not wash out</text>
+  <text class="mu" x="246" y="166">the bubble borders.</text>
+  <text class="cd mono" x="246" y="196">src/preprocess/deglare.ts</text>
+  <text class="mu" x="246" y="212">reacts to the Contract-1 flags</text>
 
-  <rect class="bx bx-hi" x="476" y="74" width="194" height="150" rx="11"/>
-  <text class="it" x="490" y="100">The method</text>
-  <text class="mu" x="490" y="120">SOTA, real — a</text>
-  <text class="mu" x="490" y="136">classical baseline</text>
-  <text class="mu" x="490" y="156">+ a learned model</text>
-  <text class="cd mono" x="490" y="182">src/&lt;domain&gt;/ · *.onnx</text>
+  <rect class="bx bx-good" x="434" y="74" width="184" height="150" rx="10"/>
+  <text class="it" x="448" y="98">Live SAM-class core</text>
+  <text class="mu" x="448" y="118">A SAM-family foundation</text>
+  <text class="mu" x="448" y="134">model (SlimSAM/MobileSAM),</text>
+  <text class="mu" x="448" y="150">zero-shot, run as an auto-</text>
+  <text class="mu" x="448" y="166">mask generator on WebGPU.</text>
+  <text class="cd mono" x="448" y="196">onnxruntime-web + WebGPU</text>
+  <text class="mu" x="448" y="212">WASM-SIMD fallback</text>
 
-  <rect class="bx bx-good" x="704" y="74" width="176" height="150" rx="11"/>
-  <text class="it" x="718" y="100">The value</text>
-  <text class="mu" x="718" y="120">a decision-grade</text>
-  <text class="mu" x="718" y="136">number + an</text>
-  <text class="mu" x="718" y="156">interactive readout</text>
-  <text class="cd mono" x="718" y="182">pages/Tool.tsx</text>
+  <rect class="bx bx-good" x="650" y="74" width="186" height="150" rx="10"/>
+  <text class="it" x="664" y="98">What you get</text>
+  <text class="mu" x="664" y="118">Per-bubble instance masks,</text>
+  <text class="mu" x="664" y="134">the size distribution (D10/</text>
+  <text class="mu" x="664" y="150">D50/D90, Sauter d32), the</text>
+  <text class="mu" x="664" y="166">froth state + descriptors.</text>
+  <text class="cd mono" x="664" y="196">src/sam/ + src/viz/</text>
+  <text class="mu" x="664" y="212">everything client-side</text>
 
-  <path class="flow" d="M214,149 H246" marker-end="url(#ta-arrow)"/>
-  <path class="flow" d="M442,149 H474" marker-end="url(#ta-arrow)"/>
-  <path class="flow" d="M670,149 H702" marker-end="url(#ta-arrow)"/>
+  <path class="flow" d="M200,149 H230" marker-end="url(#ap-arrow)"/>
+  <path class="flow" d="M402,149 H432" marker-end="url(#ap-arrow)"/>
+  <path class="flow" d="M618,149 H648" marker-end="url(#ap-arrow)"/>
 
-  <rect class="bx" x="20" y="256" width="860" height="180" rx="11"/>
-  <text class="it" x="36" y="282">It is a real system, not a demo:</text>
-  <text class="mu" x="36" y="306">• a deterministic engine that recomputes live in the browser on every control — no mocked outputs;</text>
-  <text class="mu" x="36" y="328">• an offline pipeline with two validated data contracts, so you can run it on YOUR data, not just the built-in cases;</text>
-  <text class="mu" x="36" y="350">• a learned model trained from real / sourced data and exported to ONNX, running client-side next to a classical baseline;</text>
-  <text class="mu" x="36" y="372">• six documented pages (App · Introduction · Methodology · Implementation · Experiments · Benchmark);</text>
-  <text class="mu" x="36" y="394">• an honest record: every number is sourced or labelled synthetic, every limitation stated.</text>
-  <text class="cd mono" x="36" y="420">replace the four boxes above with the concrete nouns of THIS product (e.g. muckpile image → watershed → PSD → P80).</text>
+  <rect class="bx" x="20" y="248" width="816" height="88" rx="10"/>
+  <text class="it" x="36" y="272">It is a real workbench, not a demo</text>
+  <text class="mu" x="36" y="292">The segmenter genuinely runs in your browser on the frame you provide; nothing is pre-baked for the live path.</text>
+  <text class="mu" x="36" y="310">Synthetic samples carry EXACT masks so the method is scored with real mask metrics (AP, BSD-Wasserstein) against</text>
+  <text class="mu" x="36" y="328">ground truth; that synthetic AP is a controlled benchmark, never reported as real-plant accuracy.</text>
+
+  <rect class="bx" x="20" y="352" width="404" height="92" rx="10"/>
+  <text class="it" x="36" y="376">Classical floor, alongside</text>
+  <text class="mu" x="36" y="396">A cited watershed / SLIC baseline runs too,</text>
+  <text class="mu" x="36" y="414">so you compare the foundation model against</text>
+  <text class="mu" x="36" y="432">the transparent classical method on the frame.</text>
+
+  <rect class="bx bx-good" x="444" y="352" width="392" height="92" rx="10"/>
+  <text class="it" x="460" y="376">Live controls</text>
+  <text class="mu" x="460" y="396">Prompt-grid density, predicted-IoU + stability</text>
+  <text class="mu" x="460" y="414">thresholds and the deglare front-end are all</text>
+  <text class="mu" x="460" y="432">adjustable, and the segmentation re-runs live.</text>
 </svg>

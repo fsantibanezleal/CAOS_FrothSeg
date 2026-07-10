@@ -1,0 +1,1 @@
+{"schema":"frothseg.benchmark/v1","case_id":"edge-framing","methods":[{"method":"watershed_dt","ap":0.309,"ap50":0.624,"ap75":0.263,"bsd_w":1.496,"n_pred":197,"n_gt":274},{"method":"watershed_hmax","ap":0.147,"ap50":0.311,"ap75":0.126,"bsd_w":5.159,"n_pred":379,"n_gt":274},{"method":"slic_merge","ap":0.031,"ap50":0.131,"ap75":0.005,"bsd_w":3.602,"n_pred":312,"n_gt":274}]}

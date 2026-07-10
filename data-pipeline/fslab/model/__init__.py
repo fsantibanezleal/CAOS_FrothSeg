@@ -1,3 +1,4 @@
-"""The pure-Python analytic core — Pyodide-safe, shared by the offline stages AND the live lane (same code path).
-EXAMPLE: an SIR epidemic model. Replace with your product's research-chosen engine (kept here only if pure-Python
-and light enough for the live lane; heavy SOTA engines live in the offline stages, never imported by live)."""
+"""Reserved for a pure-Python, Pyodide-safe analytic core shared by the offline stages and the live lane. FrothSeg
+has none here: the segmentation engines are the classical CV methods in science/segment.py (offline, scikit-image/
+OpenCV) and the SAM-class ONNX model that runs in the browser (onnxruntime-web + WebGPU), not Python. The only
+Pyodide-safe live helper is fslab.live.bsd_from_labels (numpy-only)."""
