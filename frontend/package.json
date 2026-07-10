@@ -12,14 +12,21 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@fasl-work/caos-app-shell": "^0.2.0",
+    "@huggingface/transformers": "^3.8.1",
+    "katex": "^0.16.47",
+    "lucide-react": "^0.469.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.18.1",
+    "uplot": "^1.6.32"
   },
   "devDependencies": {
     "@types/node": "^22.20.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^4.3.4",
+    "tsx": "^4.23.0",
     "typescript": "^5.7.2",
     "vite": "^6.0.7",
     "vitest": "^2.1.8"

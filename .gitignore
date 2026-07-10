@@ -52,3 +52,6 @@ models/*.pth
 .DS_Store
 Thumbs.db
 *.log
+
+# offline SAM verification dumps (model-run, non-committed)
+/verification/
