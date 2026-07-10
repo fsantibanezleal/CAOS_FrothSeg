@@ -7,7 +7,7 @@ from fslab.io.froth_io import coco_rle_to_labels, sha256_file
 
 
 def test_manifest_matches_artifacts_and_gate():
-    m = pipeline.precompute("poly-normal", seed=7)
+    m = pipeline.precompute("poly-normal")
     assert m["schema"].startswith("frothseg.manifest/")
     for key in ("frame", "masks", "bsd", "benchmark"):
         a = m["artifacts"][key]
@@ -20,7 +20,7 @@ def test_manifest_matches_artifacts_and_gate():
 
 
 def test_masks_roundtrip_to_same_instance_count():
-    m = pipeline.precompute("fine-froth", seed=7)
+    m = pipeline.precompute("fine-froth")
     doc = json.loads((pipeline.DERIVED / m["artifacts"]["masks"]["path"]).read_text(encoding="utf-8"))
     lab = coco_rle_to_labels(doc["instances"], doc["height"], doc["width"])
     n_decoded = len({int(i) for i in lab.ravel() if i > 0})
@@ -29,7 +29,7 @@ def test_masks_roundtrip_to_same_instance_count():
 
 
 def test_benchmark_scores_present_for_every_floor_method():
-    m = pipeline.precompute("poly-normal", seed=7)
+    m = pipeline.precompute("poly-normal")
     methods = {b["method"] for b in m["benchmark"]}
     assert {"watershed_dt", "watershed_hmax", "slic_merge"} <= methods
     best = max((b for b in m["benchmark"] if b["ap"] is not None), key=lambda b: b["ap"])

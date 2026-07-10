@@ -25,20 +25,22 @@ MANIFESTS = DERIVED / "manifests"
 STAGES = ("generate", "benchmark", "export")
 
 
-def precompute(case_id: str, seed: int = 42) -> dict:
+def precompute(case_id: str) -> dict:
+    # The synthetic frame is a PURE function of the case's fixed FrothSpec.seed (there is no run-level seed knob):
+    # the manifest records that generation seed, so a re-run is byte-identical and CONTRACT-2 --check is stable.
     case = registry.get_case(case_id)
     t0 = time.perf_counter()
     scene = generate.run(case)
     scores = benchmark.run(scene)
     run_ms = (time.perf_counter() - t0) * 1000.0
-    return export.run(case=case, scene=scene, benchmark=scores, seed=seed, run_ms=run_ms,
+    return export.run(case=case, scene=scene, benchmark=scores, seed=case.spec.seed, run_ms=run_ms,
                       derived_dir=str(DERIVED), manifests_dir=str(MANIFESTS))
 
 
-def run_all(seed: int = 42) -> list[dict]:
+def run_all() -> list[dict]:
     entries = []
     for c in registry.list_cases():
-        precompute(c.id, seed=seed)
+        precompute(c.id)
         entries.append({"case_id": c.id, "category": c.category, "manifest_path": f"manifests/{c.id}.json"})
     write_json(MANIFESTS / "index.json", build_index(entries))
     return entries
@@ -75,7 +77,6 @@ def check() -> int:
 def main() -> None:
     ap = argparse.ArgumentParser(prog="fslab.pipeline")
     ap.add_argument("case", nargs="?", default="all", help="a case id, or 'all'")
-    ap.add_argument("--seed", type=int, default=42)
     ap.add_argument("--check", action="store_true", help="verify committed artifacts vs a fresh run, then exit")
     args = ap.parse_args()
     if args.check:
@@ -83,13 +84,13 @@ def main() -> None:
         print("CONTRACT-2 check: clean" if n == 0 else f"CONTRACT-2 check: {n} MISMATCH(es)")
         raise SystemExit(1 if n else 0)
     if args.case == "all":
-        entries = run_all(args.seed)
+        entries = run_all()
         print(f"precomputed {len(entries)} froth cases -> {DERIVED / 'synth'}")
         for e in entries:
             print(f"  {e['case_id']:18s} [{e['category']}]")
         print(f"index -> {MANIFESTS / 'index.json'}")
     else:
-        m = precompute(args.case, args.seed)
+        m = precompute(args.case)
         best = next((b for b in m["benchmark"] if b["ap"] is not None), None)
         headline = f"floor AP={best['ap']} ({best['method']})" if best else "no bubbles"
         print(f"precomputed {args.case}: lane={m['lane']} bubbles={m['bsd']['count']} {headline} "
