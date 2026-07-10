@@ -112,7 +112,9 @@ def write_bsd_csv(path: str | Path, labels: np.ndarray, bsd: dict) -> int:
     buf = io.StringIO()
     buf.write(f"# frothseg.bsd/v1 count={bsd.get('count')} d10={bsd.get('d10')} d50={bsd.get('d50')} "
               f"d90={bsd.get('d90')} d32={bsd.get('d32')} pctSmall={bsd.get('pctSmall')}\n")
-    wtr = csv.DictWriter(buf, fieldnames=["id", "area_px", "d_eq_px", "ecc", "solidity"])
+    # LF line terminator (not csv's default CRLF) so the committed bytes + sha256 are identical on Windows and
+    # Linux CI; .gitattributes normalizes this file to LF, and the manifest sha256 must match the checkout.
+    wtr = csv.DictWriter(buf, fieldnames=["id", "area_px", "d_eq_px", "ecc", "solidity"], lineterminator="\n")
     wtr.writeheader()
     wtr.writerows(rows)
     data = buf.getvalue().encode("utf-8")
