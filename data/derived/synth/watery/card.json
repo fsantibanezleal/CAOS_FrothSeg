@@ -1,0 +1,1 @@
+{"schema":"frothseg.card/v1","case_id":"watery","category":"stress: watery/thin","labels":["watery"],"expected_band":"thin watery froth, weak borders, low load; borders hard to resolve","frame":"synth/watery/frame.png","bsd":{"count":231,"d10":9.57,"d50":14.63,"d90":23.7,"d32":21.25,"pctSmall":0.03},"best_floor":{"method":"watershed_dt","ap":0.155,"ap50":0.262,"bsd_w":5.898}}

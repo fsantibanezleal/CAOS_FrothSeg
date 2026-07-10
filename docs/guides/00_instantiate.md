@@ -1,28 +1,30 @@
-# Guide — instantiate a new product from this template
+# Guide, how the CAOS archetype is instantiated (as realised in FrothSeg)
 
-1. **Copy** the template tree into the new product repo (its own git repo; code-repo flow `task/* → develop → main`).
-2. **Rename** the package `fslab` → `fslab` (the folder + all imports + `pyproject.toml`
-   `[tool.setuptools.packages.find].where`/name + the scripts' `-m fslab.pipeline` + docs).
-3. **Replace the EXAMPLE engine**: `fslab/model/` + the bodies of `stages/{preprocess,feature_extraction,train,
-   infer,evaluate}` with your research-chosen SOTA engine. **Keep the stage names + both contracts.**
-4. **Write CONTRACT 1** (`io/contract.py`) for YOUR raw data — required columns, units, ranges, explicit outlier
-   policy — plus a tiny `data/examples/` sample that passes it; document it in `data/README.md`. Update
-   `tests/test_contract.py`.
-5. **Define cases-by-category** in `cases/` + `registry.py` (a varied matrix across your real axes + negative/sanity
-   controls). Document them in `docs/cases/`.
-6. **Pin your engines** in `data-pipeline/requirements.txt` (or `-gpu`/`-api`) and add a card per engine in
-   `docs/frameworks/<NN>_<tool>/` (the deep research, made binding — no toy substitute).
-7. **Mirror the contract**: if your trace/manifest shape changed, update `frontend/src/lib/contract.types.ts`
-   (a drift fails `tsc`); build the visualizations in `frontend/src/render` + `App.tsx`.
-8. **Activate only the lanes you need.** Leave the rest dormant with a README marker ("this solution does not
-   require it at the moment") — e.g. `app/` for a static product; `frontend/` for a pipeline-only product.
-9. **Verify**: `scripts/setup` → `scripts/precompute` → `pytest` → `cd frontend && npm run build`. CI guards green.
-10. **Version** from day 1: `CHANGELOG.md` (`X.XX.XXX`, `0.x` while synthetic) + a tag per release.
-11. **Ship the Architecture modal** (ADR-0058, MANDATORY): copy `frontend/src/architecture.ts.txt` â
-    `architecture.ts`, specialise the product-specific SVGs (`public/svg/tech/01-the-app.svg`,
-    `04-the-science.svg`) + tab copy, pass `architecture` to the `AppShell` config in `main.tsx`, and pin
-    `@fasl-work/caos-app-shell` `^0.1.2`. See [guide 05](05_architecture-modal.md). Verified in screenshot-verify.
+FrothSeg is already an instantiation of the CAOS product-repo archetype (ADR-0057). This note records how the
+frozen base was specialised into the froth product, so the mapping is legible; it is not a to-do list.
 
-The base is frozen — you should be editing only the **core** (engine/stages, visualizations, cases/content),
-never the structure, contracts, env or deploy. If you find yourself editing the base, that's the smell ADR-0057
-exists to remove.
+1. **Package.** The offline engine package is `fslab` (`data-pipeline/fslab/`); the scripts run `-m fslab.pipeline`.
+2. **The engine.** The EXAMPLE domain was replaced end to end. `fslab/science/froth_gen.py` is the synthetic
+   Laguerre-foam generator (the exact-ground-truth harness); `fslab/science/segment.py` is the classical floor
+   plus the scoring; the stages are `generate`, `benchmark`, `export` (plus `ingest`, the image gate). The stage
+   names and both data contracts are kept.
+3. **CONTRACT 1.** `io/contract.py` (`validate_image`) is the bring-your-own-froth image gate: shape/dtype/size/
+   contrast accept-reject plus glare/low-contrast/under-exposure flags. `data/examples/froth_sample.png` is a tiny
+   frame that passes it; `tests/test_contract.py` exercises it. Documented in `data/README.md`.
+4. **Cases by category.** `cases/froth_cases.py` plus `registry.py` define the 13 froth cases across the coverage
+   axes (control, polydisperse, fine, coarse, and the stress and transient controls). Documented in `docs/cases/`.
+5. **Engines pinned.** The CV stack is pinned in `data-pipeline/requirements.txt` (numpy, scipy, scikit-image,
+   opencv, pillow, pycocotools); each has a card in `docs/frameworks/`. The live SAM runtime is a frontend
+   dependency (`@huggingface/transformers`), carded in `docs/frameworks/01_transformers-js/`.
+6. **Contract mirror.** `frontend/src/lib/contract.types.ts` mirrors the froth manifest/card/masks schemas (a
+   drift fails `tsc`); the visualisations live in `frontend/src/viz/` and `frontend/src/pages/`.
+7. **Lanes.** The live compute is the browser SAM segmenter (`frontend/src/sam/`), not Pyodide; `fslab/live.py`
+   is a numpy-only BSD helper. The backend `app/` and the GPU precompute lane are dormant for FrothSeg.
+8. **Architecture modal (ADR-0058).** `frontend/src/architecture.ts` supplies the modal config; two hand-authored
+   themed SVGs (`public/svg/tech/01-the-app.svg`, `04-the-science.svg`) are passed to the `AppShell` config in
+   `main.tsx`. See [guide 05](05_architecture-modal.md).
+9. **Verify + version.** `scripts/setup`, `scripts/precompute`, `pytest`, then `cd frontend && npm run build`;
+   `CHANGELOG.md` (`X.XX.XXX`, `0.x` while the froth-state layer uses proxy labels) with a tag per release.
+
+The base is frozen; only the core (engine, stages, visualisations, cases, content) is specialised. Editing the
+structure, contracts, env or deploy is the smell ADR-0057 exists to remove.

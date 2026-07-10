@@ -1,0 +1,1 @@
+{"schema":"frothseg.card/v1","case_id":"edge-framing","category":"stress: framing/glare","labels":["edge"],"expected_band":"off-centre framing with a glare band near the edge","frame":"synth/edge-framing/frame.png","bsd":{"count":274,"d10":7.74,"d50":12.23,"d90":21.4,"d32":19.27,"pctSmall":0.047},"best_floor":{"method":"watershed_dt","ap":0.309,"ap50":0.624,"bsd_w":1.496}}

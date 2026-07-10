@@ -1,29 +1,31 @@
-"""The compact TRACE = the web-replay artifact (decimated trajectory + summary). Part of CONTRACT 2: its shape is
-mirrored by frontend/src/lib/contract.types.ts, so a drift fails the web build. Schema id is versioned."""
+"""The compact CARD = the web selector/gallery artifact for one froth case: just enough to populate the case
+picker and the case header without loading the full manifest + masks. Part of CONTRACT 2: its shape is mirrored
+by frontend/src/lib/contract.types.ts, so a drift fails the web build. Schema id is versioned."""
 from __future__ import annotations
 
-from ..io.schema import SIRResult
+from typing import Any
 
-TRACE_SCHEMA = "example.trace/v1"
-MAX_POINTS = 200  # decimate longer trajectories so the committed artifact stays small (replay, not raw data)
+CARD_SCHEMA = "frothseg.card/v1"
 
 
-def build_trace(result: SIRResult) -> dict:
-    n = len(result.t)
-    if n > MAX_POINTS:
-        idx = [round(i * (n - 1) / (MAX_POINTS - 1)) for i in range(MAX_POINTS)]
-    else:
-        idx = list(range(n))
+def _best_floor(benchmark: list[dict]) -> dict | None:
+    """The headline classical baseline: the method with the highest mask AP (ties -> lowest BSD Wasserstein)."""
+    scored = [b for b in benchmark if b.get("ap") is not None]
+    if not scored:
+        return None
+    best = max(scored, key=lambda b: (b["ap"], -(b["bsd_w"] or 0.0)))
+    return {"method": best["method"], "ap": best["ap"], "ap50": best["ap50"], "bsd_w": best["bsd_w"]}
+
+
+def build_card(*, case: Any, bsd: dict, benchmark: list[dict], frame_rel: str) -> dict:
     return {
-        "schema": TRACE_SCHEMA,
-        "case_id": result.case_id,
-        "t": [round(result.t[i], 3) for i in idx],
-        "S": [round(result.S[i], 2) for i in idx],
-        "I": [round(result.I[i], 2) for i in idx],
-        "R": [round(result.R[i], 2) for i in idx],
-        "summary": {
-            "peak_I": round(result.peak_I, 2),
-            "t_peak": round(result.t_peak, 2),
-            "attack_rate": round(result.attack_rate, 4),
-        },
+        "schema": CARD_SCHEMA,
+        "case_id": case.id,
+        "category": case.category,
+        "labels": list(case.spec.labels),
+        "expected_band": case.expected_band,
+        "frame": frame_rel,
+        "bsd": {"count": bsd.get("count"), "d10": bsd.get("d10"), "d50": bsd.get("d50"),
+                "d90": bsd.get("d90"), "d32": bsd.get("d32"), "pctSmall": bsd.get("pctSmall")},
+        "best_floor": _best_floor(benchmark),
     }

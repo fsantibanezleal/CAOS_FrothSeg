@@ -1,0 +1,1 @@
+{"schema":"frothseg.benchmark/v1","case_id":"defocus","methods":[{"method":"watershed_dt","ap":0.066,"ap50":0.156,"ap75":0.031,"bsd_w":8.477,"n_pred":60,"n_gt":170},{"method":"watershed_hmax","ap":0.023,"ap50":0.046,"ap75":0.016,"bsd_w":11.949,"n_pred":215,"n_gt":170},{"method":"slic_merge","ap":0.007,"ap50":0.035,"ap75":0.0,"bsd_w":4.743,"n_pred":360,"n_gt":170}]}

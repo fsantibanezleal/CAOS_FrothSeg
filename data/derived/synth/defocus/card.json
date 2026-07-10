@@ -1,0 +1,1 @@
+{"schema":"frothseg.card/v1","case_id":"defocus","category":"stress: defocus","labels":["defocus"],"expected_band":"out-of-focus frame; soft borders, merged bubbles","frame":"synth/defocus/frame.png","bsd":{"count":170,"d10":9.6,"d50":17.32,"d90":26.81,"d32":28.46,"pctSmall":0.053},"best_floor":{"method":"watershed_dt","ap":0.066,"ap50":0.156,"bsd_w":8.477}}

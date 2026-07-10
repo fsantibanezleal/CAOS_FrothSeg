@@ -1,62 +1,39 @@
 # 05 · The in-app Architecture / "How it works" modal (ADR-0058)
 
-Every CAOS/Faena web app **MUST** ship an in-app **Architecture / "How it works"** modal, opened by an
-always-visible **ⓘ button in the header**. It is the fast visual proof the app is a *real, complete system* — not a
-demo. The chrome (button + modal) is provided by the shared shell; each product supplies only its diagrams + copy.
+Every CAOS/Faena web app ships an in-app Architecture / "How it works" modal, opened by an always-visible info
+button in the header. It is the fast visual proof the app is a real, complete system, not a demo. The chrome
+(button plus modal) comes from the shared shell; the product supplies only its diagrams and copy.
 
 Binding decision: [`conventions/architecture/0-archetype/ADR-0058-in-app-architecture-modal.md`](../../../conventions/architecture/0-archetype/ADR-0058-in-app-architecture-modal.md)
-(in CAOS_MANAGE). Reference implementations: Veta and Circuita.
+(in CAOS_MANAGE).
 
-## What you inherit from the template
+## How FrothSeg wires it
 
-- **Chrome** — `@fasl-work/caos-app-shell` (≥ **0.1.2**) exposes the ⓘ button + the `ArchitectureModal`. The
-  `ShellConfig` gained an `architecture` field; when it is present the button appears, when absent it is hidden.
-- **Five themed placeholder SVGs** in [`frontend/public/svg/tech/`](../../frontend/public/svg/tech/):
-  `01-the-app.svg`, `02-lanes.svg`, `03-web-flow.svg`, `04-the-science.svg`, `05-data-contracts.svg`. Every colour is
-  a shell CSS-variable token (`--color-surface`, `--color-border`, `--color-accent`, `--color-fg`, `--color-good`,
-  `--color-warn`, …) so the diagram repaints with the active light/dark theme.
-- **A paste-ready config** — [`frontend/src/architecture.ts.txt`](../../frontend/src/architecture.ts.txt) with the
-  five ADR-0058 tabs already wired to the SVGs and bilingual ES/EN bodies.
+- **Config**: `frontend/src/architecture.ts` exports the `ArchitectureConfig` (five tabs with bilingual EN/ES
+  bodies), passed to the `AppShell` config in `frontend/src/main.tsx`. The shell (`@fasl-work/caos-app-shell`,
+  pinned `^0.2.0`) draws the info button and the `ArchitectureModal`; the button appears because the config is
+  present.
+- **Diagrams**: five themed SVGs in `frontend/public/svg/tech/`. Two are hand-authored for FrothSeg,
+  `01-the-app.svg` (the froth workbench: frame in, live SAM segmentation, BSD and froth state out) and
+  `04-the-science.svg` (the SAM automatic mask generator plus the classical floor and the scoring). The other
+  three (`02-lanes.svg`, `03-web-flow.svg`, `05-data-contracts.svg`) are archetype-generic and describe the lanes,
+  the web flow and the two contracts, which FrothSeg also uses. Every colour is a shell CSS-variable token
+  (`--color-surface`, `--color-border`, `--color-accent`, `--color-fg`, `--color-good`, `--color-warn`), so each
+  diagram repaints with the active light or dark theme.
 
-## How to wire it (per product)
+## The five tabs
 
-1. **Copy** `frontend/src/architecture.ts.txt` → `frontend/src/architecture.ts`.
-2. **Specialise** the product-specific tabs:
-   - Replace `public/svg/tech/01-the-app.svg` with a diagram of THIS product's domain (problem → input → method →
-     value) and edit the `app` tab's `body_en` / `body_es`.
-   - Replace `public/svg/tech/04-the-science.svg` with THIS product's real algorithm + equations and edit the
-     `science` tab body.
-   - Tabs `lanes`, `web-flow`, `design` are archetype-generic — the shipped SVGs + copy are reusable as-is. Keep
-     them; tweak only if your product deviates from the archetype.
-   - Add domain tabs if useful (never *fewer* than the five).
-3. **Pass it to the shell** in `frontend/src/main.tsx`:
-
-   ```ts
-   import { architecture } from './architecture';
-
-   const shellConfig = {
-     product: { name: 'YourProduct', mark: <YourIcon size={18} /> },
-     routes: [/* … */],
-     links: { github: '…' },
-     version: '0.06.000',
-     architecture,            // ← turns the ⓘ button on
-   };
-   ```
-
-4. **Pin the shell** to `^0.1.2` in `frontend/package.json` (the version that ships the modal).
-
-## The five mandatory tabs (ADR-0058 minimum)
-
-| id | tab | generic? | what it must show |
-|----|-----|----------|-------------------|
-| `app` | The app | **product** | the domain problem → input → method → value; why it is real, not a demo |
-| `lanes` | Lanes — web / offline / compute | generic | what runs **live in the web** vs **offline/compute** (bake + train) vs **replay** |
-| `web-flow` | Web-app flow | generic | App recomputes live; the 6 pages; contract mirror; copy-data overlay; deploy |
-| `science` | The science | **product** | the real algorithm step by step, with the genuine equations |
-| `design` | Data contracts / design | generic | the two contracts (ingestion + artifact) + the lane gate + cases-by-category |
+| id | tab | source | what it shows |
+|----|-----|--------|----------------|
+| `app` | The app | product | the froth workbench: frame in (upload or synthetic sample), live SAM masks plus BSD plus froth state out |
+| `science` | The method | product | the SAM automatic mask generator step by step with the equations, and the classical floor it is scored against |
+| `lanes` | Live vs precompute | generic | what runs live in the browser (the SAM segmenter) vs offline (the synthetic benchmark) vs replay |
+| `contracts` | Data contracts | generic | CONTRACT 1 (the bring-your-own-froth image gate) and CONTRACT 2 (the committed artifacts with sha256) |
+| `flow` | Web flow | generic | the six pages, the contract mirror, the copy-data overlay, the Pages deploy |
 
 ## Verify before deploy
 
-The screenshot-verify step (mandatory before any deploy) **must open the modal and confirm every tab renders its
-diagram (themed, no broken SVG) + its text with no error**, in both light and dark. A product is **not "done"**
-without the ⓘ Architecture modal at full depth — it is a NON-NEGOTIABLE row in the product-quality bar.
+The screenshot-verify step (mandatory before any deploy) opens the modal and confirms every tab renders its
+diagram (themed, no broken SVG) plus its text with no error, in both light and dark. FrothSeg was verified this
+way (the captured `arch-modal.png`). A product is not done without the Architecture modal at full depth; it is a
+non-negotiable row in the product-quality bar.

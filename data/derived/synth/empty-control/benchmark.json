@@ -1,0 +1,1 @@
+{"schema":"frothseg.benchmark/v1","case_id":"empty-control","methods":[{"method":"watershed_dt","ap":null,"ap50":null,"ap75":null,"bsd_w":null,"n_pred":1,"n_gt":0},{"method":"watershed_hmax","ap":null,"ap50":null,"ap75":null,"bsd_w":null,"n_pred":549,"n_gt":0},{"method":"slic_merge","ap":null,"ap50":null,"ap75":null,"bsd_w":null,"n_pred":399,"n_gt":0}]}
