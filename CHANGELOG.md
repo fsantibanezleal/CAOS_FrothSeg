@@ -3,6 +3,19 @@
 All notable changes to this product. Format: `X.XX.XXX` (display) · see `fslab.__version__`. Keep `0.x`
 while on mock/synthetic data. Tag every release.
 
+## [0.02.002] - 2026-07-11
+
+### Fixed
+- App robustness: the froth frame is now ALWAYS visible. Previously the image only rendered as part of a
+  SUCCESSFUL segmentation (the MaskOverlay was gated on a result), so a failed live run, or simply switching
+  cases, left the panel blank and looked dead. A new effect loads and shows the selected frame as a base preview
+  on every source/case change, and clears any stale result/error so a case switch no longer shows the previous
+  case's masks.
+- Live-segmentation recovery: if a non-wasm device (WebGPU) loads the SAM model but then fails at inference, the
+  run now transparently reloads on wasm and retries once instead of dying; and any run error drops the cached
+  segmenter so the next attempt reloads a fresh model / GPU context. This fixes "failed after running
+  segmentation, then no image shown even on another case" on GPUs where WebGPU inference fails.
+
 ## [0.02.001] · 2026-07-11
 
 ### Fixed
