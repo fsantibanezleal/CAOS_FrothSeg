@@ -50,6 +50,20 @@ export default function Tool() {
     loadIndex().then(setIndex).catch(() => setIndex(null));
   }, []);
 
+  // Always show the selected frame as a base preview, and clear any stale result/error, whenever the source or
+  // case changes. Without this the image only appeared as part of a SUCCESSFUL segmentation, so a failed run (or
+  // just switching cases) left the panel blank / showed the previous case's masks.
+  useEffect(() => {
+    let cancelled = false;
+    setResult(null); setAp(null); setGt(null); setErrMsg(''); setGateFlags([]); setStatus('idle');
+    const src = source === 'sample' ? artifactUrl(`synth/${sampleId}/frame.png`) : uploadUrl;
+    if (!src) { setFrameUrl(''); return; }
+    loadImage(src)
+      .then((img) => { if (!cancelled) setFrameUrl(makePngUrl(img.gray, img.width, img.height)); })
+      .catch(() => { if (!cancelled) setFrameUrl(''); });
+    return () => { cancelled = true; };
+  }, [source, sampleId, uploadUrl]);
+
   const scale = pxPerMm ? Number(pxPerMm) || null : null;
 
   const run = useCallback(async () => {
@@ -86,16 +100,31 @@ export default function Tool() {
         segRef.current = seg;
         setDevice(seg.device);
       }
-      // 5) segment
+      // 5) segment. If a non-wasm device (WebGPU) fails at INFERENCE, transparently reload on wasm and retry once,
+      //    so a GPU that loads the model but cannot run it still produces a result instead of a dead panel.
       setStatus('running');
       setProgress(0);
       const raw = grayToRawImage(gray, img.width, img.height);
-      const r = await segRef.current!.segment(raw, {
+      const segOpts = {
         gridSize: grid,
         predIouThresh: predIou,
         stabilityThresh: stability,
-        onProgress: (d, t) => setProgress(Math.round((d / t) * 100)),
-      });
+        onProgress: (d: number, t: number) => setProgress(Math.round((d / t) * 100)),
+      };
+      let r: SegResult;
+      try {
+        r = await segRef.current!.segment(raw, segOpts);
+      } catch (segErr) {
+        if (segRef.current && segRef.current.device !== 'wasm') {
+          const seg = new FrothSegmenter(DEFAULT_MODEL);
+          await seg.load('wasm');
+          segRef.current = seg;
+          setDevice(seg.device);
+          r = await segRef.current.segment(raw, segOpts);
+        } else {
+          throw segErr;
+        }
+      }
       setResult(r);
       setStatus('done');
       // 6) if synthetic, load GT + score live
@@ -108,6 +137,7 @@ export default function Tool() {
         } catch { /* GT optional */ }
       }
     } catch (e) {
+      segRef.current = null; // drop a possibly-corrupted model / lost GPU context so the next run reloads fresh
       setStatus('error');
       setErrMsg(String(e instanceof Error ? e.message : e));
     }
@@ -206,7 +236,12 @@ export default function Tool() {
           </div>
 
           {!result && status !== 'running' && status !== 'loading-model' && (
-            <div className="fs-panel"><p className="fs-hint">{es ? 'Elige una fuente y pulsa Segmentar. El modelo se descarga una vez (unos MB) y luego corre en tu GPU.' : 'Pick a source and press Segment. The model downloads once (a few MB) and then runs on your GPU.'}</p></div>
+            <div className="fs-panel">
+              {frameUrl && tab === 'segment' && <img src={frameUrl} alt={es ? 'cuadro de espuma' : 'froth frame'} style={{ maxWidth: '100%', borderRadius: 8, display: 'block' }} />}
+              <p className="fs-hint" style={{ marginTop: frameUrl && tab === 'segment' ? '0.6rem' : 0 }}>{frameUrl
+                ? (es ? 'Cuadro de espuma seleccionado. Pulsa Segmentar para correr el modelo SAM en vivo sobre este cuadro.' : 'Selected froth frame. Press Segment to run the SAM model live on this frame.')
+                : (es ? 'Elige una fuente y pulsa Segmentar. El modelo se descarga una vez (unos MB) y luego corre en tu GPU.' : 'Pick a source and press Segment. The model downloads once (a few MB) and then runs on your GPU.')}</p>
+            </div>
           )}
           {(status === 'running' || status === 'loading-model') && (
             <div className="fs-panel"><p className="fs-hint"><span className="fs-spinner" /> {status === 'loading-model' ? (es ? 'descargando el modelo SAM...' : 'downloading the SAM model...') : (es ? `segmentando, ${progress}%` : `segmenting, ${progress}%`)}</p></div>
