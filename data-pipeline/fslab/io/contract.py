@@ -1,4 +1,4 @@
-"""CONTRACT 1 — ingestion (raw froth image -> pipeline). The *bring-your-own-froth* gate.
+"""CONTRACT 1 · ingestion (raw froth image -> pipeline). The *bring-your-own-froth* gate.
 
 A froth frame (uploaded by a user or read from a folder) is ACCEPTED iff it is a real, usable image: a 2D
 grayscale or 3D RGB array, within a sane size band, numeric, and with enough dynamic range to segment. Unusable

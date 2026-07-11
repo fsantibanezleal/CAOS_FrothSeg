@@ -1,4 +1,4 @@
-# data/ — the data contract + layout
+# data/ · the data contract + layout
 
 This folder is governed by the **two data contracts** of ADR-0057, instantiated for FrothSeg (flotation-froth
 bubble segmentation). The synthetic cases here are the mask-metric BENCHMARK harness (the only source of exact
@@ -14,7 +14,7 @@ per-bubble ground truth); the product's real capability is live SAM-class segmen
 | `derived/manifests/` | per-case `<case>.json` (Contract 2) + the flat `index.json` inventory | committed |
 | `demo/` | small deterministic payload for smoke | committed |
 
-## CONTRACT 1 — ingestion (raw froth image → pipeline) — the *bring-your-own-froth* gate
+## CONTRACT 1 · ingestion (raw froth image → pipeline) · the *bring-your-own-froth* gate
 
 Defined in `data-pipeline/fslab/io/contract.py` (`validate_image`). A froth frame is **accepted** iff it is a
 real, usable image; **rejected** with a reason otherwise (never silently coerced); usable-but-degraded frames are
@@ -31,7 +31,7 @@ can kick in. The browser mirrors these thresholds in TypeScript so a bad upload 
 | glare | > 20% near-saturated pixels | **flag** (heavy glare) |
 | under-exposure | > 55% near-black pixels | **flag** (mostly pulp, not froth) |
 
-## CONTRACT 2 — artifact (pipeline → web)
+## CONTRACT 2 · artifact (pipeline → web)
 
 Each pipeline run writes, under `derived/synth/<case>/`: `frame.png` (8-bit grayscale froth image), `masks.json`
 (the EXACT instance ground truth as COCO-RLE, schema `frothseg.masks/v1`), `bsd.csv` (per-instance morphometry +

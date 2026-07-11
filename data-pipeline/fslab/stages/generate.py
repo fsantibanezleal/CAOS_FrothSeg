@@ -1,4 +1,4 @@
-"""Stage: generate — render one synthetic froth SCENE (image + EXACT instance ground truth) from a FrothSpec.
+"""Stage: generate · render one synthetic froth SCENE (image + EXACT instance ground truth) from a FrothSpec.
 
 This is the harness that produces known-GT froth so segmenters can be scored with real mask metrics. The
 geometry/appearance model (Laguerre power-diagram foam, exact-EDT Plateau borders, jittered specular highlights,

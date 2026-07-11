@@ -64,11 +64,11 @@ function Lanes({ es }: { es: boolean }) {
 function Contracts({ es }: { es: boolean }) {
   return (
     <>
-      <h3>{es ? 'CONTRACT 1 — el gate de trae-tu-espuma' : 'CONTRACT 1 — the bring-your-own-froth gate'}</h3>
+      <h3>{es ? 'CONTRACT 1 · el gate de trae-tu-espuma' : 'CONTRACT 1 · the bring-your-own-froth gate'}</h3>
       <p>
         {es ? 'Un cuadro se acepta solo si es una imagen real y usable (lado mínimo 64px, rango dinámico ≥ 0.06); se rechaza con una razón; y se marca (brillo > 20% saturado, bajo contraste, subexposición). El navegador espeja los mismos umbrales, así una subida mala se rechaza antes de gastar una inferencia SAM, y el front-end de deglare reacciona a las marcas.' : 'A frame is accepted only if it is a real, usable image (min side 64px, dynamic range ≥ 0.06); rejected with a reason; and flagged (glare > 20% saturated, low contrast, under-exposure). The browser mirrors the same thresholds, so a bad upload is rejected before spending a SAM inference, and the deglare front-end reacts to the flags.'}
       </p>
-      <h3>{es ? 'CONTRACT 2 — el artefacto commiteado' : 'CONTRACT 2 — the committed artifact'}</h3>
+      <h3>{es ? 'CONTRACT 2 · el artefacto commiteado' : 'CONTRACT 2 · the committed artifact'}</h3>
       <p>
         {es ? 'Cada caso sintético incluye frame.png, máscaras COCO-RLE, un CSV de BSD, el benchmark y un manifiesto con el tamaño en bytes Y el sha256 de cada artefacto. Un chequeo stdlib re-verifica cada sha256 en CI, así un cambio de código que altere silenciosamente un artefacto rompe el build. Los tipos TS del frontend espejan los esquemas Python, así una deriva de esquema falla el build.' : 'Each synthetic case ships frame.png, COCO-RLE masks, a BSD CSV, the benchmark and a manifest carrying each artifact\'s byte size AND sha256. A stdlib check re-verifies every sha256 in CI, so a code change that silently alters an artifact fails the build. The frontend TS types mirror the Python schemas, so a schema drift fails the build.'}
       </p>
@@ -81,9 +81,9 @@ function Pipeline({ es }: { es: boolean }) {
     <>
       <p>{es ? 'El pipeline offline (data-pipeline/fslab) es determinista: cada caso es una función pura de (spec, semilla). Las etapas:' : 'The offline pipeline (data-pipeline/fslab) is deterministic: each case is a pure function of (spec, seed). The stages:'}</p>
       <ol>
-        <li><span className="mono">generate</span> {es ? '— renderiza la espuma sintética + verdad de terreno exacta (froth_gen.py).' : '— render the synthetic froth + exact ground truth (froth_gen.py).'}</li>
-        <li><span className="mono">benchmark</span> {es ? '— corre cada método del piso y lo puntúa contra la verdad (mask AP + BSD Wasserstein).' : '— run each floor method and score it against the truth (mask AP + BSD Wasserstein).'}</li>
-        <li><span className="mono">export</span> {es ? '— codifica frame.png + COCO-RLE + CSV + benchmark + manifiesto con sha256.' : '— encode frame.png + COCO-RLE + CSV + benchmark + manifest with sha256.'}</li>
+        <li><span className="mono">generate</span> {es ? '· renderiza la espuma sintética + verdad de terreno exacta (froth_gen.py).' : '· render the synthetic froth + exact ground truth (froth_gen.py).'}</li>
+        <li><span className="mono">benchmark</span> {es ? '· corre cada método del piso y lo puntúa contra la verdad (mask AP + BSD Wasserstein).' : '· run each floor method and score it against the truth (mask AP + BSD Wasserstein).'}</li>
+        <li><span className="mono">export</span> {es ? '· codifica frame.png + COCO-RLE + CSV + benchmark + manifiesto con sha256.' : '· encode frame.png + COCO-RLE + CSV + benchmark + manifest with sha256.'}</li>
       </ol>
       <p>{es ? 'El segmentador SAM en vivo se verifica offline con el MISMO harness: frontend/scripts/verify_sam.ts corre el segmentador (en Node, onnxruntime) y scripts/score_sam.py lo puntúa con las mismas funciones mask_ap del piso. Así el valor del producto se mide, no se afirma.' : 'The live SAM segmenter is verified offline with the SAME harness: frontend/scripts/verify_sam.ts runs the segmenter (in Node, onnxruntime) and scripts/score_sam.py scores it with the floor\'s same mask_ap functions. So the product value is measured, not asserted.'}</p>
     </>

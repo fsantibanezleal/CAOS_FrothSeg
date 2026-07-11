@@ -96,6 +96,6 @@ Reading it honestly:
 - The real capability is live SAM segmentation of REAL (uploaded) froth; the OpenCV deglare and
   illumination-flatten front-end helps real glare, and motion or defocus are honestly the floor's territory.
 
-Refs: Kirillov et al. 2023 (SAM, doi:10.1109/ICCV51070.2023.00371), Chen et al. 2023 (SlimSAM), Meyer 1994
-(doi:10.1016/0165-1684(94)90060-4), Achanta et al. 2012 (SLIC, doi:10.1109/TPAMI.2012.120), Lin et al. 2014
-(COCO, doi:10.1007/978-3-319-10602-1_48), Aldrich et al. 2010 (doi:10.1016/j.minpro.2010.04.005).
+Refs: Kirillov et al. 2023 (SAM, [doi:10.1109/ICCV51070.2023.00371](https://doi.org/10.1109/ICCV51070.2023.00371)), Chen et al. 2023 (SlimSAM), Meyer 1994
+([doi:10.1016/0165-1684(94](https://doi.org/10.1016/0165-1684(94))90060-4), Achanta et al. 2012 (SLIC, [doi:10.1109/TPAMI.2012.120](https://doi.org/10.1109/TPAMI.2012.120)), Lin et al. 2014
+(COCO, [doi:10.1007/978-3-319-10602-1_48](https://doi.org/10.1007/978-3-319-10602-1_48)), Aldrich et al. 2010 ([doi:10.1016/j.minpro.2010.04.005](https://doi.org/10.1016/j.minpro.2010.04.005)).

@@ -1,4 +1,4 @@
-"""Stage: ingest — apply CONTRACT 1 (the froth-image gate) to a raw frame. The bring-your-own-froth entry point.
+"""Stage: ingest · apply CONTRACT 1 (the froth-image gate) to a raw frame. The bring-your-own-froth entry point.
 
 Reads an image file (or takes an array) and returns an ImageContractReport (accepted + stats + flags, or a
 reject reason). The offline pipeline runs on synthetic scenes that are GT by construction, so it does not need

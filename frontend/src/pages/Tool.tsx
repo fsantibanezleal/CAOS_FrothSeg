@@ -146,7 +146,7 @@ export default function Tool() {
             {source === 'sample' ? (
               <label className="fs-ctl">{es ? 'caso' : 'case'}
                 <select className="fs-sel" value={sampleId} onChange={(e) => setSampleId(e.target.value)}>
-                  {index?.cases.map((c) => <option key={c.case_id} value={c.case_id}>{c.case_id} — {c.category}</option>)}
+                  {index?.cases.map((c) => <option key={c.case_id} value={c.case_id}>{c.case_id} · {c.category}</option>)}
                 </select>
               </label>
             ) : (

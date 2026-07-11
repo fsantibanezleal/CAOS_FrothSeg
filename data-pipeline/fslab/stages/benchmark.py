@@ -1,4 +1,4 @@
-"""Stage: benchmark — run every classical FLOOR method on a scene and score it against the EXACT ground truth.
+"""Stage: benchmark · run every classical FLOOR method on a scene and score it against the EXACT ground truth.
 
 Scores = per-image instance mask AP@[.5:.95] (greedy IoU matching) + the BSD Wasserstein-1 distance between the
 predicted and true bubble-diameter distributions. These are the honest baselines the live SAM-class product must
