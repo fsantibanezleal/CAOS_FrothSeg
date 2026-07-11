@@ -1,4 +1,4 @@
-"""Stage: export (CONTRACT 2) — encode one froth scene into committed artifacts + write the case manifest.
+"""Stage: export (CONTRACT 2) · encode one froth scene into committed artifacts + write the case manifest.
 
 Per case, under data/derived/synth/<case>/:
   frame.png        8-bit grayscale froth image

@@ -97,7 +97,7 @@ function Bsd({ es }: { es: boolean }) {
         {es ? 'La morfometría por burbuja (excentricidad, solidez) viene de skimage.regionprops. La misma reducción BSD corre en vivo en el navegador y offline en Python, así que los números coinciden.' : 'Per-bubble morphometry (eccentricity, solidity) comes from skimage.regionprops. The same BSD reduction runs live in the browser and offline in Python, so the numbers match.'}
         {' '}<InlineMath tex={String.raw`d_{32}`} /> {es ? 'grande + pocas burbujas indica espuma gruesa/colapsante;' : 'large + few bubbles indicates coarse/collapsing froth;'} <InlineMath tex={String.raw`d_{32}`} /> {es ? 'pequeño + muchas indica espuma fina y estable.' : 'small + many indicates fine, stable froth.'}
       </p>
-      <Refs ids={['aldrich2010', 'sauter1928']} label="Refs" />
+      <Refs ids={['aldrich2010', 'sautermean']} label="Refs" />
     </>
   );
 }

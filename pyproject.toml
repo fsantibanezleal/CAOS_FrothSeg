@@ -1,4 +1,4 @@
-# FrothSeg — the offline engine package (fslab, ADR-0057 product-repo archetype).
+# FrothSeg · the offline engine package (fslab, ADR-0057 product-repo archetype).
 # The EXAMPLE engine is numpy-only on purpose (an instantly-installable, no-hang reference); a real product pins
 # its research-chosen SOTA engines in data-pipeline/requirements.txt and documents them in docs/frameworks/.
 [build-system]
@@ -9,7 +9,7 @@ build-backend = "setuptools.build_meta"
 name = "fslab"
 # PEP 440 form of the display version X.XX.XXX (see CHANGELOG.md + fslab.__version__).
 version = "0.2.0"
-description = "FrothSeg — in-browser flotation-froth bubble segmentation (watershed + distilled mask head) producing the bubble-size distribution, with a synthetic-froth benchmark (ADR-0002 live CV + ADR-0054 artifact discipline)."
+description = "FrothSeg · in-browser flotation-froth bubble segmentation (watershed + distilled mask head) producing the bubble-size distribution, with a synthetic-froth benchmark (ADR-0002 live CV + ADR-0054 artifact discipline)."
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }

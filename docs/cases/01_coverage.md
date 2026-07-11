@@ -90,9 +90,9 @@ The measured story is therefore honest and specific: a robust zero-shot foundati
 classical floor on average (0.365 vs 0.262) and especially under glare, with the floor kept as a complementary,
 cited baseline on the blur cases where SAM's mask count drops.
 
-Refs for the live SAM core and the floor: Kirillov et al. 2023 (Segment Anything, DOI 10.1109/ICCV51070.2023.00371);
-Chen et al. 2023 (SlimSAM, arXiv 2312.05284); Meyer 1994 (watershed, DOI 10.1016/0165-1684(94)90060-4);
-Achanta et al. 2012 (SLIC, DOI 10.1109/TPAMI.2012.120).
+Refs for the live SAM core and the floor: Kirillov et al. 2023 (Segment Anything, [doi:10.1109/ICCV51070.2023.00371](https://doi.org/10.1109/ICCV51070.2023.00371));
+Chen et al. 2023 (SlimSAM, arXiv 2312.05284); Meyer 1994 (watershed, [doi:10.1016/0165-1684(94](https://doi.org/10.1016/0165-1684(94))90060-4);
+Achanta et al. 2012 (SLIC, [doi:10.1109/TPAMI.2012.120](https://doi.org/10.1109/TPAMI.2012.120)).
 
 ## Theory: how a case is built and scored
 
@@ -115,14 +115,14 @@ and the distribution is summarized by the surface-weighted Sauter mean
 
 $$d_{32} = \frac{\sum_i d_i^{\,3}}{\sum_i d_i^{\,2}},$$
 
-the standard BSD summary in flotation (Aldrich et al. 2010, DOI 10.1016/j.minpro.2010.04.005). The same reduction
+the standard BSD summary in flotation (Aldrich et al. 2010, [doi:10.1016/j.minpro.2010.04.005](https://doi.org/10.1016/j.minpro.2010.04.005)). The same reduction
 runs live in the browser and offline in Python, so the App numbers match the baked GT.
 
 **Scoring.** A segmenter's masks are matched to GT by greedy IoU, and the case AP is the mean over IoU thresholds
 
 $$\mathrm{AP} = \frac{1}{|\mathcal{T}|}\sum_{t \in \mathcal{T}} \frac{\mathrm{TP}(t)}{\mathrm{TP}(t) + \mathrm{FP}(t) + \mathrm{FN}(t)}, \qquad \mathcal{T} = \{0.5, 0.55, \dots, 0.95\},$$
 
-the COCO-style summary (Lin et al. 2014, DOI 10.1007/978-3-319-10602-1_48). Distribution fidelity is the
+the COCO-style summary (Lin et al. 2014, [doi:10.1007/978-3-319-10602-1_48](https://doi.org/10.1007/978-3-319-10602-1_48)). Distribution fidelity is the
 Wasserstein-1 distance between the predicted and GT diameter CDFs,
 
 $$W_1(P, Q) = \int_{-\infty}^{\infty} \bigl| F_P(x) - F_Q(x) \bigr| \, dx,$$
@@ -149,7 +149,7 @@ blur cases (soft logits, unstable masks) yield so few kept masks.
 ## Data contract and outliers
 
 - **Format.** Each case emits, in the same format a real loader consumes: a grey PNG frame (256x256), COCO-RLE
-  instance masks (Lin et al. 2014, DOI 10.1007/978-3-319-10602-1_48), and a BSD ground-truth CSV. See
+  instance masks (Lin et al. 2014, [doi:10.1007/978-3-319-10602-1_48](https://doi.org/10.1007/978-3-319-10602-1_48)), and a BSD ground-truth CSV. See
   `data/derived/synth/<case>/` and the per-case manifest under `data/derived/manifests/`.
 - **Determinism.** A case is a pure function of `(spec, seed)`; every case has a fixed seed (101-113), so the
   frames, masks and scores regenerate bit-for-bit. The benchmark artifact records the model id, prompt grid and
@@ -164,13 +164,13 @@ blur cases (soft logits, unstable masks) yield so few kept masks.
 
 ## References
 
-- Kirillov, A., et al. (2023). Segment Anything. ICCV 2023. DOI 10.1109/ICCV51070.2023.00371.
-- Chen, Z., Fang, G., Ma, X., Wang, X. (2023). SlimSAM: 0.1% Data Makes Segment Anything Slim. arXiv:2312.05284.
-- Meyer, F. (1994). Topographic distance and watershed lines. Signal Processing 38(1). DOI 10.1016/0165-1684(94)90060-4.
-- Achanta, R., et al. (2012). SLIC superpixels. IEEE TPAMI 34(11). DOI 10.1109/TPAMI.2012.120.
-- Lin, T.-Y., et al. (2014). Microsoft COCO: Common Objects in Context. ECCV 2014. DOI 10.1007/978-3-319-10602-1_48.
+- Kirillov, A., et al. (2023). Segment Anything. ICCV 2023. [doi:10.1109/ICCV51070.2023.00371.](https://doi.org/10.1109/ICCV51070.2023.00371.)
+- Chen, Z., Fang, G., Ma, X., Wang, X. (2023). SlimSAM: 0.1% Data Makes Segment Anything Slim. [arXiv:2312.05284](https://arxiv.org/abs/2312.05284).
+- Meyer, F. (1994). Topographic distance and watershed lines. Signal Processing 38(1). [doi:10.1016/0165-1684(94](https://doi.org/10.1016/0165-1684(94))90060-4.
+- Achanta, R., et al. (2012). SLIC superpixels. IEEE TPAMI 34(11). [doi:10.1109/TPAMI.2012.120.](https://doi.org/10.1109/TPAMI.2012.120.)
+- Lin, T.-Y., et al. (2014). Microsoft COCO: Common Objects in Context. ECCV 2014. [doi:10.1007/978-3-319-10602-1_48.](https://doi.org/10.1007/978-3-319-10602-1_48.)
 - Aldrich, C., et al. (2010). Online monitoring and control of froth flotation systems with machine vision: A review.
-  International Journal of Mineral Processing 96(1-4). DOI 10.1016/j.minpro.2010.04.005 (BSD + froth class as soft sensors; the Sauter mean d32).
+  International Journal of Mineral Processing 96(1-4). [doi:10.1016/j.minpro.2010.04.005](https://doi.org/10.1016/j.minpro.2010.04.005) (BSD + froth class as soft sensors; the Sauter mean d32).
 - Weaire, D., Hutzler, S. (1999). The Physics of Foams. Oxford University Press. ISBN 978-0198505518
   (Plateau laws + the power/Laguerre diagram as the dry-foam model).
-- Aurenhammer, F. (1987). Power diagrams: properties, algorithms and applications. SIAM J. Computing 16(1). DOI 10.1137/0216006.
+- Aurenhammer, F. (1987). Power diagrams: properties, algorithms and applications. SIAM J. Computing 16(1). [doi:10.1137/0216006.](https://doi.org/10.1137/0216006.)
