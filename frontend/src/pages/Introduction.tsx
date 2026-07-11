@@ -25,7 +25,7 @@ export default function Introduction() {
             ? 'La BSD (D10/D50/D90 y la media de Sauter d32) y la clase de espuma son sensores blandos bien establecidos para el estado de flotación.'
             : 'The BSD (D10/D50/D90 and the Sauter mean d32) and the froth class are well-established soft sensors for the flotation state.'}
         </p>
-        <Refs ids={['aldrich2010', 'wang2016', 'fu2019']} label="Refs" />
+        <Refs ids={['aldrich2010', 'wang2018', 'fu2019']} label="Refs" />
       </section>
 
       <section>

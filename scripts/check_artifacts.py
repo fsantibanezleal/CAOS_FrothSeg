@@ -3,7 +3,7 @@ manifest exists; every artifact (frame.png / masks.json / bsd.csv / benchmark.js
 the recorded byte size AND sha256; the lane matches the gate verdict; and masks.json's instance count agrees with
 the manifest. Stdlib only (runs in CI WITHOUT installing the package). Exit non-zero on any drift.
 
-Used by scripts/smoke.* and by .github/workflows/ci.yml — the mechanical guard that a product can't regress to
+Used by scripts/smoke.* and by .github/workflows/ci.yml · the mechanical guard that a product can't regress to
 serving artifacts that don't match their manifests."""
 from __future__ import annotations
 

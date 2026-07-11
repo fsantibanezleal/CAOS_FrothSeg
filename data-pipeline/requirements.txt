@@ -1,4 +1,4 @@
-# PRECOMPUTE lane — the CV stack the synthetic-froth benchmark harness + classical segmentation floor use, in the
+# PRECOMPUTE lane · the CV stack the synthetic-froth benchmark harness + classical segmentation floor use, in the
 # .venv-pipeline (local + CI, never deployed to the browser). Each library is the standard, cited tool for its job
 # (never hand-rolled numpy) and is documented in docs/frameworks/<tool>/. Pinned to the verified install
 # (Python 3.12/3.13, 2026-07-10).

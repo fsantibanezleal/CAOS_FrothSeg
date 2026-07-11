@@ -1,4 +1,4 @@
-"""CONTRACT 2 — artifact (pipeline -> web). The manifest is the authoritative, versioned record of a baked froth
+"""CONTRACT 2 · artifact (pipeline -> web). The manifest is the authoritative, versioned record of a baked froth
 case: its generator spec + seed, the artifact pointers (frame.png / masks.json / bsd.csv) with byte size AND
 sha256, the BSD ground-truth summary, the classical-floor benchmark scores, and the lane/gate verdict. The web
 loads ONLY manifests + artifacts; frontend/src/lib/contract.types.ts mirrors this schema so a drift fails the
