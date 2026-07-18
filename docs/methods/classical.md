@@ -1,6 +1,6 @@
 # Classical segmentation tier (C1..C7)
 
-The classical ladder is the honest, no-training FLOOR that the learned tier must beat. Every method runs offline
+The classical ladder is the honest, no-training floor that the learned tier must beat. Every method runs offline
 in `data-pipeline/fslab/science/segment.py` (the pre-validated Benchmark references) and has a JS/WASM twin in the
 live App. Froth is hard for a specific reason: the boundaries between bubbles are dark, low-gradient valleys
 (Plateau borders), while each bubble carries a bright specular highlight with high gradient, so gradient/edge and
@@ -9,21 +9,21 @@ term.
 
 | ID | Method | Mechanic (froth relevance) | Reference |
 |----|--------|----------------------------|-----------|
-| C1 | `otsu_cc` | Otsu global threshold, then connected components. Labels each connected bright region as ONE instance, so touching bubbles merge: the under-segmentation exhibit. | Otsu (1979), [doi:10.1109/TSMC.1979.4310076](https://doi.org/10.1109/TSMC.1979.4310076) |
+| C1 | `otsu_cc` | Otsu global threshold, then connected components. Labels each connected bright region as one instance, so touching bubbles merge: the under-segmentation exhibit. | Otsu (1979), [doi:10.1109/TSMC.1979.4310076](https://doi.org/10.1109/TSMC.1979.4310076) |
 | C2 | `watershed_immersion` | Marker-less immersion watershed on the morphological gradient. Floods from every regional minimum, so each specular highlight and texture dip is a basin: the over-segmentation exhibit. | Vincent & Soille (1991), [doi:10.1109/34.87344](https://doi.org/10.1109/34.87344) |
 | C3 | `watershed_hmax` | Highlight-seeded: h-maxima of the bright specular spots are the markers (each bubble usually carries one reflection); flood only from markers. The canonical industrial froth trick; degrades under glare. | Sadr-Kazemi & Cilliers (1997), [doi:10.1016/S0892-6875(97)00094-0](https://doi.org/10.1016/S0892-6875(97)00094-0) |
 | C4 | `watershed_dt` | Distance-transform markers (peaks of the EDT) + marker-controlled watershed (Meyer). The generic classical floor; strong on well-separated convex bubbles. | Meyer (1994), [doi:10.1016/0165-1684(94)90060-4](https://doi.org/10.1016/0165-1684(94)90060-4) |
 | C5 | `watershed_hmin` | H-minima (extended-minima) suppression of shallow minima of the negated distance map before flooding; the single knob `h` sets the smallest resolvable bubble and cuts the C2 over-segmentation. | Soille (2004), [doi:10.1007/978-3-662-05088-0](https://doi.org/10.1007/978-3-662-05088-0) |
 | C6 | `slic_merge` | SLIC superpixels + region-adjacency mean-intensity merge. A non-watershed over-segmentation primitive; superpixels snap to highlights more than to true seams. | Achanta et al. (2012), [doi:10.1109/TPAMI.2012.120](https://doi.org/10.1109/TPAMI.2012.120) |
-| C7 | `valley_edge` | Dark-seam / valley detector: bubbles are delineated by the dark inter-bubble valleys, NOT the bright spots, so a black-top-hat isolates the seams, they are removed, and the enclosed caps are labelled. Robust to highlights by construction; the domain-specific froth method. | Wang, Bergholm & Yang (2003), [doi:10.1016/j.mineng.2003.07.014](https://doi.org/10.1016/j.mineng.2003.07.014); Wang & Chen (2015), [doi:10.3390/min5020142](https://doi.org/10.3390/min5020142) |
+| C7 | `valley_edge` | Dark-seam / valley detector: bubbles are delineated by the dark inter-bubble valleys, not the bright spots, so a black-top-hat isolates the seams, they are removed, and the enclosed caps are labelled. Robust to highlights by construction; the domain-specific froth method. | Wang, Bergholm & Yang (2003), [doi:10.1016/j.mineng.2003.07.014](https://doi.org/10.1016/j.mineng.2003.07.014); Wang & Chen (2015), [doi:10.3390/min5020142](https://doi.org/10.3390/min5020142) |
 
 ## Metrics (pre-validated against exact synthetic ground truth)
 
 - **Mask AP / AP50 / AP75** (`mask_ap`): greedy IoU matching of predicted vs GT instances, averaged over IoU
   thresholds 0.5:0.05:0.95 (COCO style).
 - **Panoptic Quality** (`panoptic_quality`): PQ = SQ x RQ, where SQ is the mean IoU over true positives (matched
-  at IoU > 0.5) and RQ = TP / (TP + 0.5 FP + 0.5 FN). Returns the two froth-relevant error modes: SPLIT errors
-  (one GT bubble covered by several predicted segments, over-segmentation) and MERGE errors (one predicted segment
+  at IoU > 0.5) and RQ = TP / (TP + 0.5 FP + 0.5 FN). Returns the two froth-relevant error modes: split errors
+  (one GT bubble covered by several predicted segments, over-segmentation) and merge errors (one predicted segment
   covering several GT bubbles, under-segmentation). Kirillov et al. (2019), [doi:10.1109/CVPR.2019.00963](https://doi.org/10.1109/CVPR.2019.00963).
 - **BSD Wasserstein-1** (`bsd_wasserstein`): earth-mover distance between the predicted and GT bubble-diameter
   distributions, so a method is judged on whether it reproduces the true bubble-size distribution, not only per
@@ -47,17 +47,17 @@ valley-edge detector is the strongest classical method, narrowly ahead of the di
 are the references the learned tier (StarDist, U-Net+watershed, Deep-Watershed, and the novel LamellaStar) must
 beat; see [../../plans/frothseg](the redesign plan) and the learned-tier docs.
 
-## The LIVE twins (App multi-model lane, v0.03.000)
+## The live twins (App multi-model lane, v0.03.000)
 
-Every C1..C7 method also runs LIVE in the browser (`frontend/src/classical/`): pure-TypeScript implementations of
+Every C1..C7 method also runs live in the browser (`frontend/src/classical/`): pure-TypeScript implementations of
 the same cited standards (Otsu with argmax-plateau midpoint; exact Felzenszwalb-Huttenlocher EDT; priority-flood
 marker-controlled watershed; morphological-reconstruction h-extrema; black top-hat; SLIC k-means), selected from
-the App's METHOD control and executed on the chosen frame in milliseconds with no model download, with the live
-mask AP scored against the exact synthetic ground truth. Honesty: the twins share each method's SEMANTICS, not
+the App's method control and executed on the chosen frame in milliseconds with no model download, with the live
+mask AP scored against the exact synthetic ground truth. Honesty: the twins share each method's semantics, not
 bit-exact numerics with scikit-image, so live numbers can differ from the baked references (live C4 AP 0.240 vs
 offline 0.402 on poly-normal); the offline bake remains the pre-validated benchmark and cross-method comparison
 stays offline-vs-offline.
 
-**What this tier is and is NOT:** it is a set of pre/post fixes bolted onto watershed or valley-tracing to survive
+**What this tier is and is not:** it is a set of pre/post fixes bolted onto watershed or valley-tracing to survive
 highlights and low-gradient valleys; it has no learned prior for the faint lamellae, so its quality is bounded by
 marker/threshold tuning. It is the floor, not the product.

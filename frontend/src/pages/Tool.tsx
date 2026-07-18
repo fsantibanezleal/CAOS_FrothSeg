@@ -54,7 +54,7 @@ export default function Tool() {
   }, []);
 
   // Always show the selected frame as a base preview, and clear any stale result/error, whenever the source or
-  // case changes. Without this the image only appeared as part of a SUCCESSFUL segmentation, so a failed run (or
+  // case changes. Without this the image only appeared as part of a successful segmentation, so a failed run (or
   // just switching cases) left the panel blank / showed the previous case's masks.
   useEffect(() => {
     let cancelled = false;
@@ -97,7 +97,7 @@ export default function Tool() {
       setFrameUrl(makePngUrl(gray, img.width, img.height));
       let r: SegResult;
       if (method !== 'sam') {
-        // 4a) LIVE CLASSICAL tier (C1..C7): the JS twins of the offline Python floor, pure CPU, no model
+        // 4a) live classical tier (C1..C7): the JS twins of the offline Python floor, pure CPU, no model
         //     download, runs in milliseconds. The offline bake holds the pre-validated reference numbers.
         setStatus('running');
         setProgress(0);
@@ -120,7 +120,7 @@ export default function Tool() {
           segRef.current = seg;
           setDevice(seg.device);
         }
-        // 5) segment. If a non-wasm device (WebGPU) fails at INFERENCE, transparently reload on wasm and retry
+        // 5) segment. If a non-wasm device (WebGPU) fails at inference, transparently reload on wasm and retry
         //    once, so a GPU that loads the model but cannot run it still produces a result instead of a dead panel.
         setStatus('running');
         setProgress(0);
@@ -180,7 +180,7 @@ export default function Tool() {
       <div className="page-head">
         <h1>{es ? 'App, segmentador de espuma en vivo' : 'App, live froth segmenter'}</h1>
         <p className="lede">
-          {es ? 'Seleccionar una muestra sintética (con verdad de terreno) o sube una foto de espuma real; el modelo SAM segmenta las burbujas en tu navegador y reporta la distribución de tamaño y el estado de la espuma.' : 'Pick a synthetic sample (with ground truth) or upload a real froth photo; the SAM model segments the bubbles in your browser and reports the size distribution and froth state.'}
+          {es ? 'Seleccionar una muestra sintética (con verdad de terreno) o subir una foto de espuma real; el modelo SAM segmenta las burbujas en el navegador y reporta la distribución de tamaño y el estado de la espuma.' : 'Pick a synthetic sample (with ground truth) or upload a real froth photo; the SAM model segments the bubbles in the browser and reports the size distribution and froth state.'}
         </p>
       </div>
 
@@ -208,7 +208,7 @@ export default function Tool() {
             <p className="fs-hint small" style={{ marginTop: '0.4rem' }}>
               {source === 'sample'
                 ? (es ? 'Sintética: verdad de terreno disponible, se puntúa el AP en vivo.' : 'Synthetic: ground truth available, live AP is scored.')
-                : (es ? 'Real: sin verdad de terreno; solo controlas cuál subes, todo lo demás corre igual.' : 'Real: no ground truth; you only pick what to upload, everything else runs the same.')}
+                : (es ? 'Real: sin verdad de terreno; solo cambia la imagen subida, todo lo demás se ejecuta igual.' : 'Real: no ground truth; only the uploaded image changes, everything else runs the same.')}
             </p>
           </div>
 
@@ -221,7 +221,7 @@ export default function Tool() {
               </select>
             </label>
             {method !== 'sam' && (
-              <p className="fs-hint small">{CLASSICAL_METHODS.find((m) => m.id === method)?.note}. {es ? 'Corre en vivo en tu CPU (milisegundos, sin descarga de modelo); el piso clásico citado que el modelo aprendido debe superar.' : 'Runs live on your CPU (milliseconds, no model download); the cited classical floor the learned model must beat.'}</p>
+              <p className="fs-hint small">{CLASSICAL_METHODS.find((m) => m.id === method)?.note}. {es ? 'Se ejecuta en vivo en la CPU (milisegundos, sin descarga de modelo); el piso clásico citado que el modelo aprendido debe superar.' : 'Runs live on the CPU (milliseconds, no model download); the cited classical floor the learned model must beat.'}</p>
             )}
             <label className="fs-ctl">{es ? 'densidad de grilla' : 'grid density'}: {grid}x{grid} ({grid * grid} {es ? 'puntos' : 'points'})
               <input type="range" min={12} max={40} step={4} value={grid} disabled={method !== 'sam'} onChange={(e) => setGrid(+e.target.value)} />
@@ -232,7 +232,7 @@ export default function Tool() {
             <label className="fs-ctl">{es ? 'umbral estabilidad' : 'stability threshold'}: {stability.toFixed(2)}
               <input type="range" min={0.5} max={0.98} step={0.02} value={stability} disabled={method !== 'sam'} onChange={(e) => setStability(+e.target.value)} />
             </label>
-            <p className="fs-hint small">{es ? 'Grilla más densa y umbrales más bajos hallan más burbujas (y más falsos positivos). Ajusta y re-corre.' : 'Denser grid and lower thresholds find more bubbles (and more false positives). Adjust and re-run.'}</p>
+            <p className="fs-hint small">{es ? 'Grilla más densa y umbrales más bajos hallan más burbujas (y más falsos positivos). Ajustar y volver a ejecutar.' : 'Denser grid and lower thresholds find more bubbles (and more false positives). Adjust and re-run.'}</p>
           </div>
 
           <div className="fs-panel">
@@ -268,8 +268,8 @@ export default function Tool() {
             <div className="fs-panel">
               {frameUrl && tab === 'segment' && <img src={frameUrl} alt={es ? 'cuadro de espuma' : 'froth frame'} style={{ maxWidth: '100%', borderRadius: 8, display: 'block' }} />}
               <p className="fs-hint" style={{ marginTop: frameUrl && tab === 'segment' ? '0.6rem' : 0 }}>{frameUrl
-                ? (es ? 'Cuadro de espuma seleccionado. Pulsa Segmentar para correr el modelo SAM en vivo sobre este cuadro.' : 'Selected froth frame. Press Segment to run the SAM model live on this frame.')
-                : (es ? 'Seleccionar una fuente y pulsa Segmentar. El modelo se descarga una vez (unos MB) y luego corre en tu GPU.' : 'Pick a source and press Segment. The model downloads once (a few MB) and then runs on your GPU.')}</p>
+                ? (es ? 'Cuadro de espuma seleccionado. Pulsar Segmentar para ejecutar el modelo SAM en vivo sobre este cuadro.' : 'Selected froth frame. Press Segment to run the SAM model live on this frame.')
+                : (es ? 'Seleccionar una fuente y pulsar Segmentar. El modelo se descarga una vez (unos MB) y luego se ejecuta en la GPU.' : 'Pick a source and press Segment. The model downloads once (a few MB) and then runs on the GPU.')}</p>
             </div>
           )}
           {(status === 'running' || status === 'loading-model') && (
@@ -287,7 +287,7 @@ export default function Tool() {
                 </div>
                 <div style={{ marginTop: '0.7rem' }}>
                   <MaskOverlay baseUrl={frameUrl} labels={result.labels} width={result.width} height={result.height} pxPerMm={scale}
-                    caption={es ? 'Burbujas segmentadas en vivo por el modelo SAM sobre tu cuadro. Al pasar el cursor para leer cada burbuja; rueda para hacer zoom.' : 'Bubbles segmented live by the SAM model on your frame. Hover to read each bubble; scroll to zoom.'} />
+                    caption={es ? 'Burbujas segmentadas en vivo por el modelo SAM sobre el cuadro. Al pasar el cursor se lee cada burbuja; con la rueda se hace zoom.' : 'Bubbles segmented live by the SAM model on the frame. Hover to read each bubble; scroll to zoom.'} />
                 </div>
                 {ap?.ap != null && <p className="fs-hint small">{es ? 'AP de máscara en vivo vs la verdad de terreno sintética (mismas métricas que el benchmark).' : 'Live mask AP vs the synthetic ground truth (same metrics as the benchmark).'} AP50 {ap.ap50} · {ap.nPred} {es ? 'predichas' : 'pred'} / {ap.nGt} GT</p>}
               </>
@@ -332,9 +332,9 @@ export default function Tool() {
               <div className="fs-panel">
                 <div className="fs-panel-t">{es ? 'SAM en vivo vs el piso clásico' : 'Live SAM vs the classical floor'}</div>
                 {source === 'sample' ? (
-                  <p className="fs-hint">{es ? 'El piso clásico (watershed/SLIC, scikit-image) corre offline; su AP para este caso está en Benchmark. Aquí ves el AP en vivo de SAM contra la misma verdad de terreno. En el conjunto completo SAM gana en 10 de 13 casos.' : 'The classical floor (watershed/SLIC, scikit-image) runs offline; its AP for this case is on Benchmark. Here you see SAM\'s live AP against the same ground truth. Over the full set SAM wins 10 of 13 cases.'}</p>
+                  <p className="fs-hint">{es ? 'El piso clásico (watershed/SLIC, scikit-image) se ejecuta offline; su AP para este caso está en Benchmark. Aquí se muestra el AP en vivo de SAM contra la misma verdad de terreno. En el conjunto completo SAM gana en 10 de 13 casos.' : 'The classical floor (watershed/SLIC, scikit-image) runs offline; its AP for this case is on Benchmark. The live SAM AP against the same ground truth is shown here. Over the full set SAM wins 10 of 13 cases.'}</p>
                 ) : (
-                  <p className="fs-hint">{es ? 'El piso clásico usa scikit-image (Python) y corre offline, no en el navegador; para tu subida solo el segmentador SAM corre en vivo. Compara ambos métodos en la página Benchmark sobre los casos sintéticos.' : 'The classical floor uses scikit-image (Python) and runs offline, not in the browser; for your upload only the SAM segmenter runs live. Compare both methods on the Benchmark page over the synthetic cases.'}</p>
+                  <p className="fs-hint">{es ? 'El piso clásico usa scikit-image (Python) y se ejecuta offline, no en el navegador; para la imagen subida solo el segmentador SAM se ejecuta en vivo. Comparar ambos métodos en la página Benchmark sobre los casos sintéticos.' : 'The classical floor uses scikit-image (Python) and runs offline, not in the browser; for the uploaded image only the SAM segmenter runs live. Compare both methods on the Benchmark page over the synthetic cases.'}</p>
                 )}
                 {ap?.ap != null && (
                   <table className="fs-table" style={{ marginTop: '0.5rem' }}>

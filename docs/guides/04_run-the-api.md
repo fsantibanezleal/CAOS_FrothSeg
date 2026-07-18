@@ -1,4 +1,4 @@
-# Guide, run the API (DORMANT for FrothSeg)
+# Guide, run the API (dormant for FrothSeg)
 
 **FrothSeg has no backend API. The `app/` FastAPI backend stays dormant. There is nothing to run here.**
 
@@ -14,5 +14,5 @@ FrothSeg is a static SPA on GitHub Pages (ADR-0055), fully client-side:
 The App's live capability is the browser SAM on real uploaded froth ([02_bring-your-own-data.md](02_bring-your-own-data.md)),
 which needs no server. So the ADR-0002 backend triggers (server-side processing of uploaded data, auth-gated
 private data, paid heavy compute) do not apply. If one ever does, activate `app/` then, per the template's
-dormant backend scaffolding, and have it serve the SAME committed `data/derived` artifacts read-only. Until then,
+dormant backend scaffolding, and have it serve the same committed `data/derived` artifacts read-only. Until then,
 ignore this lane.

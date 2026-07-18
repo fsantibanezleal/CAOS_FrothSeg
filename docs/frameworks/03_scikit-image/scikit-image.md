@@ -1,6 +1,6 @@
 # Framework card, `scikit-image`
 
-The classical segmentation FLOOR and all per-bubble morphometry run on scikit-image. This is the transparent,
+The classical segmentation floor and all per-bubble morphometry run on scikit-image. This is the transparent,
 cited baseline the live SAM-class foundation model must beat, plus the `regionprops` descriptors every downstream
 layer (BSD, froth-state) consumes. It is a precompute-lane library: it runs in the `.venv-pipeline` locally and
 in CI, never in the browser.
@@ -30,15 +30,15 @@ Why scikit-image over rolling our own: watershed, SLIC, h-maxima and regionprops
 research (`research-tools-and-data-2026-07-09.md`) is binding on this point: proper CV libraries, no hand-rolled
 numpy for things these libraries do correctly.
 
-## What it is NOT
+## What it is not
 
-- It is NOT the product method. The live core is a SAM-family foundation model in the browser; scikit-image is the
+- It is not the product method. The live core is a SAM-family foundation model in the browser; scikit-image is the
   baseline it is compared against. On the synthetic harness the foundation model beats this floor on average
   (mean mask AP 0.365 vs 0.262 over the 13 cases in the committed `data/derived/sam_benchmark.json`), and by a wide
   margin under glare (0.407 vs 0.081), while the floor stays complementary on heavy motion blur and defocus.
-- It does NOT run in the browser. There is no scikit-image build for the web; these methods are precompute only.
+- It does not run in the browser. There is no scikit-image build for the web; these methods are precompute only.
   The browser has its own light front-end (`frontend/src/preprocess/deglare.ts`) and the live segmenter.
-- It is NOT trained on froth. Every method here is unsupervised classical CV, which is exactly why it is a fair,
+- It is not trained on froth. Every method here is unsupervised classical CV, which is exactly why it is a fair,
   label-free baseline for a domain where labelled data is scarce.
 
 ## Theory and equations
@@ -125,7 +125,7 @@ channel_axis=-1, start_label=1)` followed by a `scipy.ndimage.mean` region-inten
 
 ## Applying it here
 
-- **Stage**: `benchmark` (`data-pipeline/fslab/stages/benchmark.py`) runs `METHODS = {watershed_dt, watershed_hmax,
+- **Stage**: `benchmark` (`data-pipeline/fslab/stages/benchmark.py`) runs `methods = {watershed_dt, watershed_hmax,
   slic_merge}` on each synthetic scene, then scores the labels with `mask_ap` and `bsd_wasserstein`.
 - **Stage**: `generate` / IO. `froth_io.py` uses `measure.regionprops` to write the per-instance rows of `bsd.csv`
   (id, area_px, d_eq_px, ecc, solidity) for the exact ground-truth masks.
@@ -133,7 +133,7 @@ channel_axis=-1, start_label=1)` followed by a `scipy.ndimage.mean` region-inten
   and the morphometry rows. The label map satisfies the same instance contract as the SAM output and the RLE ground
   truth, so all three are scored by one function.
 
-## Applying it to OTHER data
+## Applying it to other data
 
 These methods are generic instance-segmentation and shape-measurement tools, not froth-specific:
 

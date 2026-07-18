@@ -12,7 +12,7 @@ FrothSeg segments every bubble in a flotation-froth image with a **SAM-family fo
 (a dense grid of point prompts, predicted-IoU and stability filtering, greedy-IoU NMS), it yields per-bubble
 instance masks, the **bubble-size distribution** (D10/D50/D90, the Sauter mean d32) and a **froth-state**
 read-out. A classical floor (scikit-image marker-controlled watershed and SLIC) is the honest cited baseline
-the foundation model must beat. A **synthetic Laguerre-foam generator with exact masks** is the ONLY
+the foundation model must beat. A **synthetic Laguerre-foam generator with exact masks** is the only
 benchmark harness, because per-bubble froth ground truth does not exist publicly.
 
 ## Map

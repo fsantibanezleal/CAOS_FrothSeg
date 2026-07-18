@@ -1,19 +1,19 @@
 # Guide, verify the live SAM core offline
 
-This is how the product's value is MEASURED, not asserted. The live segmenter is a SAM-class foundation model
-(`frontend/src/sam/`). This harness runs the SAME module in Node over synthetic froth with exact ground truth,
-scores it with the SAME metrics the classical floor is scored with, and bakes the result into a committed
+This is how the product's value is measured, not asserted. The live segmenter is a SAM-class foundation model
+(`frontend/src/sam/`). This harness runs the same module in Node over synthetic froth with exact ground truth,
+scores it with the same metrics the classical floor is scored with, and bakes the result into a committed
 artifact the web reads. Because the segmenter code is identical in the browser and in Node, the number you verify
 here is the number the App produces.
 
-## What this is, and what it is NOT
+## What this is, and what it is not
 
-- It **IS** an honest, reproducible measurement: the live core runs against exact GT and is compared to the tuned
+- It **is** an honest, reproducible measurement: the live core runs against exact GT and is compared to the tuned
   classical floor on identical metrics (mask AP, BSD Wasserstein).
-- It is **NOT** real-plant accuracy. It scores against synthetic ground truth (labelled synthetic everywhere).
+- It is **not** real-plant accuracy. It scores against synthetic ground truth (labelled synthetic everywhere).
   The negative controls (`glare-storm`, `motion-fast`, `defocus`) are exactly where methods are supposed to fail.
-- It is **NOT** a CONTRACT-2 artifact. The SAM run is model-dependent (weights, backend), so the baked benchmark
-  is a RECORDED experiment result, written once and committed, not a sha256-checked regenerate-and-compare
+- It is **not** a CONTRACT-2 artifact. The SAM run is model-dependent (weights, backend), so the baked benchmark
+  is a recorded experiment result, written once and committed, not a sha256-checked regenerate-and-compare
   artifact like the pipeline's `frame.png`.
 
 ## The three steps
@@ -40,7 +40,7 @@ prompts); `--model <hf-id>` swaps the model (default `Xenova/slimsam-77-uniform`
 ### 2. Score SAM vs the floor
 
 `scripts/score_sam.py` reads each dump, regenerates the exact GT, and scores it with
-`fslab.science.segment.mask_ap` + `bsd_wasserstein`, the SAME functions the classical floor uses, then prints a
+`fslab.science.segment.mask_ap` + `bsd_wasserstein`, the same functions the classical floor uses, then prints a
 SAM-vs-floor table.
 
 ```bash

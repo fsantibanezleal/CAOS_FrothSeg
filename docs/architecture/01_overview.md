@@ -16,11 +16,11 @@ sits outside the Pyodide gate entirely. Both notions coexist; see [the gate](03_
 
 | Lane | Where | Deps | Notes |
 |---|---|---|---|
-| **Live, flagship (client-side SAM)** | `frontend/src/sam/` (`autoMask.ts`) | `@huggingface/transformers` (onnxruntime-web, WebGPU, WASM fallback) | the real product: a zero-shot SAM-class auto-mask generator segments the shipped froth frame or a user upload, in the browser, with NO froth training labels; the model is fetched from the HF Hub at runtime, not committed |
+| **Live, flagship (client-side SAM)** | `frontend/src/sam/` (`autoMask.ts`) | `@huggingface/transformers` (onnxruntime-web, WebGPU, WASM fallback) | the real product: a zero-shot SAM-class auto-mask generator segments the shipped froth frame or a user upload, in the browser, with no froth training labels; the model is fetched from the HF Hub at runtime, not committed |
 | **Live, base (Pyodide reducer)** | `frontend/src/pyodide` + `fslab/live.py` | numpy only (Pyodide-safe) | the archetype's small live lane: `bsd_from_labels()` turns an instance-label map into the bubble-size distribution; shares the offline BSD math so live and baked numbers are comparable |
 | **Precompute (synthetic benchmark)** | `data-pipeline/` (`fslab`), `.venv-pipeline` | scikit-image, scipy, OpenCV, pycocotools | bakes the committed benchmark artifacts (`frame.png` / `masks.json` / `bsd.csv` / `benchmark.json` / `card.json` + manifest); these libraries are not Pyodide-safe, so this is always offline |
 | **Replay** | `frontend/` | none | always present; the ADR-0054 fallback the SPA paints on first load |
-| **API (backend)** | `app/` (FastAPI) | `requirements-api.txt` | DORMANT; the Pages-first deploy has no server |
+| **API (backend)** | `app/` (FastAPI) | `requirements-api.txt` | dormant; the Pages-first deploy has no server |
 
 A measured **[gate](03_the-gate.md)** records the lane per case. Every synthetic case is `precompute` (the
 classical floor uses scikit-image/scipy/OpenCV on full images); the SAM live run is measured separately, in the

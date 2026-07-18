@@ -1,6 +1,6 @@
 // Froth-state read-out from the live bubble-size distribution: a domain soft-sensor that turns the measured BSD
-// into an operating-state label + indicators + operator-facing notes. This is a HEURISTIC proxy grounded in the
-// froth-vision literature (Aldrich et al. 2010: BSD + froth class as soft sensors), NOT a calibrated plant
+// into an operating-state label + indicators + operator-facing notes. This is a heuristic proxy grounded in the
+// froth-vision literature (Aldrich et al. 2010: BSD + froth class as soft sensors), not a calibrated plant
 // setpoint. The App shows it as an interpretation of what the segmenter measured, always labelled as a proxy.
 import type { Bsd } from './types';
 

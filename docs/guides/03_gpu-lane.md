@@ -1,4 +1,4 @@
-# Guide, the GPU lane (DORMANT for FrothSeg)
+# Guide, the GPU lane (dormant for FrothSeg)
 
 **FrothSeg has no GPU precompute lane. There is nothing to run here.**
 

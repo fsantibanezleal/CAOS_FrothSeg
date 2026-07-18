@@ -23,7 +23,7 @@ redeploy.
 
 ## The model is fetched at runtime, not committed
 
-The SAM-class weights are NOT in git (no multi-tens-of-MB blob; the base-integrity guards in
+The SAM-class weights are not in git (no multi-tens-of-MB blob; the base-integrity guards in
 [`ci.yml`](../../.github/workflows/ci.yml) reject tracked `.pt`/`.pth` and native binaries). At load time
 `frontend/src/sam/autoMask.ts` fetches the default model (`Xenova/slimsam-77-uniform`) from the Hugging Face Hub
 via `@huggingface/transformers`, which caches it in the browser Cache API, so only the first visit pays the

@@ -6,8 +6,8 @@ while on mock/synthetic data. Tag every release.
 ## [0.03.000] · 2026-07-11
 
 ### Added (rebuild P2-live: the App becomes a multi-model workbench)
-- LIVE CLASSICAL TIER C1..C7 in the browser (`frontend/src/classical/`): pure-TypeScript twins of the offline
-  Python floor, a METHOD selector in the App runs any of them live on the selected frame in milliseconds with no
+- live classical tier C1..C7 in the browser (`frontend/src/classical/`): pure-TypeScript twins of the offline
+  Python floor, a method selector in the App runs any of them live on the selected frame in milliseconds with no
   model download: C1 Otsu+CC (under-segmentation baseline, Otsu 1979), C2 marker-less immersion watershed
   (over-segmentation exhibit, Vincent-Soille 1991), C3 highlight-seeded h-maxima watershed (Sadr-Kazemi &
   Cilliers 1997), C4 distance-transform watershed (Meyer 1994), C5 H-minima watershed (Soille 2004), C6 SLIC
@@ -15,13 +15,13 @@ while on mock/synthetic data. Tag every release.
 - The toolbox implements the cited standards from scratch: Otsu with argmax-plateau midpoint, exact Euclidean
   distance transform (Felzenszwalb-Huttenlocher), priority-flood marker-controlled watershed, morphological
   reconstruction h-extrema, black top-hat, SLIC k-means. 8 vitest tests: EDT vs brute force, watershed splits
-  touching blobs, and the tier reproduces the offline SIGNS on a synthetic frame (C1 under-segments to 1, C2
+  touching blobs, and the tier reproduces the offline signs on a synthetic frame (C1 under-segments to 1, C2
   over-segments to 1000+, C3/C4/C5/C7 recover the exact true bubble count 16).
 - Browser-verified end-to-end: C4 on the poly-normal sample runs in 28 ms, 340 instances vs 197 GT, live AP50
   0.424 scored against the exact synthetic ground truth; engine line reads "cpu, classical, live".
 
 ### Honesty
-- The live TS twins share each method's SEMANTICS and provenance with the offline Python floor but not bit-exact
+- The live TS twins share each method's semantics and provenance with the offline Python floor but not bit-exact
   numerics (scikit-image internals differ in details), so live numbers can differ from the baked benchmark (live
   C4 AP 0.240 vs offline 0.402 on poly-normal); the offline bake remains the pre-validated reference and the
   benchmark comparison stays offline-vs-offline.
@@ -29,8 +29,8 @@ while on mock/synthetic data. Tag every release.
 ## [0.02.002] - 2026-07-11
 
 ### Fixed
-- App robustness: the froth frame is now ALWAYS visible. Previously the image only rendered as part of a
-  SUCCESSFUL segmentation (the MaskOverlay was gated on a result), so a failed live run, or simply switching
+- App robustness: the froth frame is now always visible. Previously the image only rendered as part of a
+  successful segmentation (the MaskOverlay was gated on a result), so a failed live run, or simply switching
   cases, left the panel blank and looked dead. A new effect loads and shows the selected frame as a base preview
   on every source/case change, and clears any stale result/error so a case switch no longer shows the previous
   case's masks.
@@ -60,9 +60,9 @@ while on mock/synthetic data. Tag every release.
 
 ### Added
 - **IO layer + froth artifacts (CONTRACT 2):** each case emits, under `data/derived/synth/<case>/`, `frame.png`
-  (8-bit grayscale), `masks.json` (EXACT instance ground truth as COCO-RLE via pycocotools), `bsd.csv`
+  (8-bit grayscale), `masks.json` (exact instance ground truth as COCO-RLE via pycocotools), `bsd.csv`
   (per-instance morphometry + BSD summary), `benchmark.json` (classical-floor scores), and `card.json` (compact
-  web card). Manifest (`frothseg.manifest/v1`) records the generator spec, seed, each artifact's byte size AND
+  web card). Manifest (`frothseg.manifest/v1`) records the generator spec, seed, each artifact's byte size and
   **sha256**, the BSD summary, the benchmark, and the lane/gate verdict.
 - **CONTRACT 1 rewritten as the bring-your-own-froth image gate** (`validate_image`): shape/dtype/size/contrast
   accept-reject + glare / low-contrast / under-exposure flags; the OpenCV front-end reacts to the flags.

@@ -101,7 +101,7 @@ export default function Experiments() {
               <PanelBoundary label="ground-truth overlay">
                 {gt ? (
                   <MaskOverlay baseUrl={artifactUrl(`synth/${sel}/frame.png`)} labels={gt.labels} width={gt.w} height={gt.h}
-                    caption={es ? 'Máscaras de verdad de terreno (sintéticas, exactas). En la App, SAM corre en vivo sobre este mismo cuadro.' : 'Ground-truth masks (synthetic, exact). In the App, SAM runs live on this same frame.'} />
+                    caption={es ? 'Máscaras de verdad de terreno (sintéticas, exactas). En la App, SAM se ejecuta en vivo sobre este mismo cuadro.' : 'Ground-truth masks (synthetic, exact). In the App, SAM runs live on this same frame.'} />
                 ) : <p className="fs-hint small"><span className="fs-spinner" /> {es ? 'cargando máscaras...' : 'loading masks...'}</p>}
               </PanelBoundary>
               <PanelBoundary label="case scores">
@@ -111,7 +111,7 @@ export default function Experiments() {
           </section>
 
           <p className="fs-note good">
-            {es ? 'El AP sintético mide el método contra verdad conocida; no es exactitud de planta real. La capacidad real es sobre la espuma que subes en la App.' : 'Synthetic AP measures the method against known truth; it is not real-plant accuracy. The real capability is on the froth you upload in the App.'}
+            {es ? 'El AP sintético mide el método contra verdad conocida; no es exactitud de planta real. La capacidad real es sobre la espuma que carga el usuario en la App.' : 'Synthetic AP measures the method against known truth; it is not real-plant accuracy. The real capability is on the froth the user uploads in the App.'}
           </p>
           <Refs ids={['kirillov2023', 'lin2014coco', 'aldrich2010']} label="Refs" />
         </>
