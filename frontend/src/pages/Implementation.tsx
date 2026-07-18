@@ -51,11 +51,11 @@ function Lanes({ es }: { es: boolean }) {
       </p>
       <p>
         {es
-          ? 'La vía de PRECÓMPUTO es el benchmark: los casos sintéticos y los puntajes del piso clásico se hornean con el pipeline de Python (scikit-image/OpenCV no son aptos para Pyodide y los cuadros son imágenes completas), y se commitean como artefactos que la web solo lee. La división de vías se registra en cada manifiesto: el benchmark sintético es precómputo; la segmentación SAM es en vivo.'
+          ? 'La vía de PRECÓMPUTO es el benchmark: los casos sintéticos y los puntajes del piso clásico se precalculan con el pipeline de Python (scikit-image/OpenCV no son aptos para Pyodide y los cuadros son imágenes completas), y se commitean como artefactos que la web solo lee. La división de vías se registra en cada manifiesto: el benchmark sintético es precómputo; la segmentación SAM es en vivo.'
           : 'The PRECOMPUTE lane is the benchmark: the synthetic cases and classical-floor scores are baked by the Python pipeline (scikit-image/OpenCV are not Pyodide-safe and the frames are full images), and committed as artifacts the web just reads. The lane split is recorded in each manifest: the synthetic benchmark is precompute; the SAM segmentation is live.'}
       </p>
       <p className="fs-note">
-        {es ? 'Si el hub no está disponible, el segmentador en vivo se degrada con un mensaje claro; el benchmark horneado y el piso clásico siguen visibles porque son artefactos commiteados.' : 'If the hub is unavailable, the live segmenter degrades with a clear message; the baked benchmark and the classical floor stay visible because they are committed artifacts.'}
+        {es ? 'Si el hub no está disponible, el segmentador en vivo se degrada con un mensaje claro; el benchmark precalculado y el piso clásico siguen visibles porque son artefactos commiteados.' : 'If the hub is unavailable, the live segmenter degrades with a clear message; the baked benchmark and the classical floor stay visible because they are committed artifacts.'}
       </p>
     </>
   );

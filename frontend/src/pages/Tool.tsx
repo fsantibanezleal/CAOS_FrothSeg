@@ -79,7 +79,7 @@ export default function Tool() {
       const isSample = source === 'sample';
       const src = isSample ? artifactUrl(`synth/${sampleId}/frame.png`) : uploadUrl;
       if (!src) {
-        setErrMsg(es ? 'Sube una imagen de espuma primero.' : 'Upload a froth image first.');
+        setErrMsg(es ? 'Subir una imagen de espuma primero.' : 'Upload a froth image first.');
         return;
       }
       const img = await loadImage(src);
@@ -180,7 +180,7 @@ export default function Tool() {
       <div className="page-head">
         <h1>{es ? 'App, segmentador de espuma en vivo' : 'App, live froth segmenter'}</h1>
         <p className="lede">
-          {es ? 'Elige una muestra sintética (con verdad de terreno) o sube una foto de espuma real; el modelo SAM segmenta las burbujas en tu navegador y reporta la distribución de tamaño y el estado de la espuma.' : 'Pick a synthetic sample (with ground truth) or upload a real froth photo; the SAM model segments the bubbles in your browser and reports the size distribution and froth state.'}
+          {es ? 'Seleccionar una muestra sintética (con verdad de terreno) o sube una foto de espuma real; el modelo SAM segmenta las burbujas en tu navegador y reporta la distribución de tamaño y el estado de la espuma.' : 'Pick a synthetic sample (with ground truth) or upload a real froth photo; the SAM model segments the bubbles in your browser and reports the size distribution and froth state.'}
         </p>
       </div>
 
@@ -269,7 +269,7 @@ export default function Tool() {
               {frameUrl && tab === 'segment' && <img src={frameUrl} alt={es ? 'cuadro de espuma' : 'froth frame'} style={{ maxWidth: '100%', borderRadius: 8, display: 'block' }} />}
               <p className="fs-hint" style={{ marginTop: frameUrl && tab === 'segment' ? '0.6rem' : 0 }}>{frameUrl
                 ? (es ? 'Cuadro de espuma seleccionado. Pulsa Segmentar para correr el modelo SAM en vivo sobre este cuadro.' : 'Selected froth frame. Press Segment to run the SAM model live on this frame.')
-                : (es ? 'Elige una fuente y pulsa Segmentar. El modelo se descarga una vez (unos MB) y luego corre en tu GPU.' : 'Pick a source and press Segment. The model downloads once (a few MB) and then runs on your GPU.')}</p>
+                : (es ? 'Seleccionar una fuente y pulsa Segmentar. El modelo se descarga una vez (unos MB) y luego corre en tu GPU.' : 'Pick a source and press Segment. The model downloads once (a few MB) and then runs on your GPU.')}</p>
             </div>
           )}
           {(status === 'running' || status === 'loading-model') && (
@@ -287,7 +287,7 @@ export default function Tool() {
                 </div>
                 <div style={{ marginTop: '0.7rem' }}>
                   <MaskOverlay baseUrl={frameUrl} labels={result.labels} width={result.width} height={result.height} pxPerMm={scale}
-                    caption={es ? 'Burbujas segmentadas en vivo por el modelo SAM sobre tu cuadro. Pasa el cursor para leer cada burbuja; rueda para hacer zoom.' : 'Bubbles segmented live by the SAM model on your frame. Hover to read each bubble; scroll to zoom.'} />
+                    caption={es ? 'Burbujas segmentadas en vivo por el modelo SAM sobre tu cuadro. Al pasar el cursor para leer cada burbuja; rueda para hacer zoom.' : 'Bubbles segmented live by the SAM model on your frame. Hover to read each bubble; scroll to zoom.'} />
                 </div>
                 {ap?.ap != null && <p className="fs-hint small">{es ? 'AP de máscara en vivo vs la verdad de terreno sintética (mismas métricas que el benchmark).' : 'Live mask AP vs the synthetic ground truth (same metrics as the benchmark).'} AP50 {ap.ap50} · {ap.nPred} {es ? 'predichas' : 'pred'} / {ap.nGt} GT</p>}
               </>

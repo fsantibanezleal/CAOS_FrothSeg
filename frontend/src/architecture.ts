@@ -25,7 +25,7 @@ export const architecture: ArchitectureConfig = {
         'real de espuma, o eliges una muestra sintética) y devuelve las máscaras por burbuja, la distribución de ' +
         'tamaño (D10/D50/D90, la media de Sauter d32) y una lectura del estado de la espuma.\n\n' +
         'Es un banco de trabajo real, no un demo. El segmentador corre de verdad sobre el cuadro que entregas; nada ' +
-        'en la ruta en vivo está pre-horneado. Un gate CONTRACT-1 valida el cuadro (tamaño, contraste, brillo) y un ' +
+        'en la ruta en vivo está pre-precalculado. Un gate CONTRACT-1 valida el cuadro (tamaño, contraste, brillo) y un ' +
         'front-end liviano de aplanado de iluminación + de-brillo normaliza el brillo real antes del modelo.',
     },
     {
@@ -71,7 +71,7 @@ export const architecture: ArchitectureConfig = {
         'Dos vías. La vía EN VIVO es el segmentador SAM del navegador (onnxruntime-web + WebGPU, con respaldo ' +
         'WASM-SIMD): el modelo se descarga una vez desde el hub de Hugging Face y se cachea; la inferencia corre en ' +
         'el cliente sobre tu cuadro. La vía de PRECÓMPUTO es el benchmark offline: los casos sintéticos y los ' +
-        'puntajes del piso clásico se hornean con el pipeline de Python (scikit-image/OpenCV, no aptos para Pyodide) ' +
+        'puntajes del piso clásico se precalculan con el pipeline de Python (scikit-image/OpenCV, no aptos para Pyodide) ' +
         'y se commitean como artefactos que la web solo lee.\n\n' +
         'La división de vías es una medición, registrada en cada manifiesto de caso, no una suposición: el benchmark ' +
         'sintético es precómputo; la segmentación SAM es en vivo en JS.',

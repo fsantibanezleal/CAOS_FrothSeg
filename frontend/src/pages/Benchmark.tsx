@@ -108,7 +108,7 @@ export default function Benchmark() {
                 </tbody>
               </table>
             </div>
-            <p className="fs-hint small">{es ? 'Verde = mejor método en ese caso. SAM en vivo corre en el navegador; los pisos se hornean offline con scikit-image.' : 'Green = best method for that case. SAM live runs in the browser; the floors are baked offline with scikit-image.'}</p>
+            <p className="fs-hint small">{es ? 'Verde = mejor método en ese caso. SAM en vivo corre en el navegador; los pisos se precalculan offline con scikit-image.' : 'Green = best method for that case. SAM live runs in the browser; the floors are baked offline with scikit-image.'}</p>
           </section>
 
           {sam && (
