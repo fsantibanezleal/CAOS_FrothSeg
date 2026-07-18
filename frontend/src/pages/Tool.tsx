@@ -14,6 +14,8 @@ import { MaskOverlay } from '../viz/MaskOverlay';
 import { BsdHistogram } from '../viz/BsdHistogram';
 import { Gauge } from '../viz/Gauge';
 import { PanelBoundary } from '../viz/PanelBoundary';
+import { CLASSICAL_METHODS, runClassical, type ClassicalMethod } from '../classical/methods';
+import { bsdFromLabels } from '../sam/morphometry';
 
 type Tab = 'segment' | 'bsd' | 'state' | 'compare';
 
@@ -32,6 +34,7 @@ export default function Tool() {
   const [flatten, setFlatten] = useState(false);
   const [deglare, setDeglare] = useState(false);
   const [pxPerMm, setPxPerMm] = useState('');
+  const [method, setMethod] = useState<'sam' | ClassicalMethod>('sam');
 
   // model + run state
   const segRef = useRef<FrothSegmenter | null>(null);
@@ -92,37 +95,54 @@ export default function Tool() {
       const gray = flatten || deglare ? preprocess(img.gray, img.width, img.height, { flatten, deglare }) : img.gray;
       // show the (possibly preprocessed) frame
       setFrameUrl(makePngUrl(gray, img.width, img.height));
-      // 4) model
-      if (!segRef.current) {
-        setStatus('loading-model');
-        const seg = new FrothSegmenter(DEFAULT_MODEL);
-        await seg.load('auto');
-        segRef.current = seg;
-        setDevice(seg.device);
-      }
-      // 5) segment. If a non-wasm device (WebGPU) fails at INFERENCE, transparently reload on wasm and retry once,
-      //    so a GPU that loads the model but cannot run it still produces a result instead of a dead panel.
-      setStatus('running');
-      setProgress(0);
-      const raw = grayToRawImage(gray, img.width, img.height);
-      const segOpts = {
-        gridSize: grid,
-        predIouThresh: predIou,
-        stabilityThresh: stability,
-        onProgress: (d: number, t: number) => setProgress(Math.round((d / t) * 100)),
-      };
       let r: SegResult;
-      try {
-        r = await segRef.current!.segment(raw, segOpts);
-      } catch (segErr) {
-        if (segRef.current && segRef.current.device !== 'wasm') {
+      if (method !== 'sam') {
+        // 4a) LIVE CLASSICAL tier (C1..C7): the JS twins of the offline Python floor, pure CPU, no model
+        //     download, runs in milliseconds. The offline bake holds the pre-validated reference numbers.
+        setStatus('running');
+        setProgress(0);
+        const t0 = performance.now();
+        const labels = runClassical(method, gray, img.width, img.height);
+        let nInstances = 0;
+        for (const v of new Set(labels)) if (v > 0) nInstances++;
+        r = {
+          width: img.width, height: img.height, labels, masks: [], nInstances,
+          device: 'cpu', model: `classical/${method}`,
+          bsd: bsdFromLabels(labels), encoderMs: 0, totalMs: Math.round(performance.now() - t0),
+        };
+        setDevice('cpu · classical, live');
+      } else {
+        // 4b) model
+        if (!segRef.current) {
+          setStatus('loading-model');
           const seg = new FrothSegmenter(DEFAULT_MODEL);
-          await seg.load('wasm');
+          await seg.load('auto');
           segRef.current = seg;
           setDevice(seg.device);
-          r = await segRef.current.segment(raw, segOpts);
-        } else {
-          throw segErr;
+        }
+        // 5) segment. If a non-wasm device (WebGPU) fails at INFERENCE, transparently reload on wasm and retry
+        //    once, so a GPU that loads the model but cannot run it still produces a result instead of a dead panel.
+        setStatus('running');
+        setProgress(0);
+        const raw = grayToRawImage(gray, img.width, img.height);
+        const segOpts = {
+          gridSize: grid,
+          predIouThresh: predIou,
+          stabilityThresh: stability,
+          onProgress: (d: number, t: number) => setProgress(Math.round((d / t) * 100)),
+        };
+        try {
+          r = await segRef.current!.segment(raw, segOpts);
+        } catch (segErr) {
+          if (segRef.current && segRef.current.device !== 'wasm') {
+            const seg = new FrothSegmenter(DEFAULT_MODEL);
+            await seg.load('wasm');
+            segRef.current = seg;
+            setDevice(seg.device);
+            r = await segRef.current.segment(raw, segOpts);
+          } else {
+            throw segErr;
+          }
         }
       }
       setResult(r);
@@ -141,7 +161,7 @@ export default function Tool() {
       setStatus('error');
       setErrMsg(String(e instanceof Error ? e.message : e));
     }
-  }, [source, sampleId, uploadUrl, grid, predIou, stability, flatten, deglare, es]);
+  }, [source, sampleId, uploadUrl, method, grid, predIou, stability, flatten, deglare, es]);
 
   const onUpload = (f: File | null) => {
     if (!f) return;
@@ -194,14 +214,23 @@ export default function Tool() {
 
           <div className="fs-panel">
             <div className="fs-panel-t">{es ? 'Controles del segmentador' : 'Segmenter controls'}</div>
+            <label className="fs-ctl">{es ? 'método' : 'method'}
+              <select className="fs-sel" value={method} onChange={(e) => setMethod(e.target.value as 'sam' | ClassicalMethod)}>
+                <option value="sam">{es ? 'SAM (SlimSAM, aprendido, GPU/WASM)' : 'SAM (SlimSAM, learned, GPU/WASM)'}</option>
+                {CLASSICAL_METHODS.map((m) => <option key={m.id} value={m.id}>{m.label}</option>)}
+              </select>
+            </label>
+            {method !== 'sam' && (
+              <p className="fs-hint small">{CLASSICAL_METHODS.find((m) => m.id === method)?.note}. {es ? 'Corre en vivo en tu CPU (milisegundos, sin descarga de modelo); el piso clásico citado que el modelo aprendido debe superar.' : 'Runs live on your CPU (milliseconds, no model download); the cited classical floor the learned model must beat.'}</p>
+            )}
             <label className="fs-ctl">{es ? 'densidad de grilla' : 'grid density'}: {grid}x{grid} ({grid * grid} {es ? 'puntos' : 'points'})
-              <input type="range" min={12} max={40} step={4} value={grid} onChange={(e) => setGrid(+e.target.value)} />
+              <input type="range" min={12} max={40} step={4} value={grid} disabled={method !== 'sam'} onChange={(e) => setGrid(+e.target.value)} />
             </label>
             <label className="fs-ctl">{es ? 'umbral IoU predicha' : 'predicted-IoU threshold'}: {predIou.toFixed(2)}
-              <input type="range" min={0.5} max={0.95} step={0.02} value={predIou} onChange={(e) => setPredIou(+e.target.value)} />
+              <input type="range" min={0.5} max={0.95} step={0.02} value={predIou} disabled={method !== 'sam'} onChange={(e) => setPredIou(+e.target.value)} />
             </label>
             <label className="fs-ctl">{es ? 'umbral estabilidad' : 'stability threshold'}: {stability.toFixed(2)}
-              <input type="range" min={0.5} max={0.98} step={0.02} value={stability} onChange={(e) => setStability(+e.target.value)} />
+              <input type="range" min={0.5} max={0.98} step={0.02} value={stability} disabled={method !== 'sam'} onChange={(e) => setStability(+e.target.value)} />
             </label>
             <p className="fs-hint small">{es ? 'Grilla más densa y umbrales más bajos hallan más burbujas (y más falsos positivos). Ajusta y re-corre.' : 'Denser grid and lower thresholds find more bubbles (and more false positives). Adjust and re-run.'}</p>
           </div>
