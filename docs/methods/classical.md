@@ -47,6 +47,17 @@ valley-edge detector is the strongest classical method, narrowly ahead of the di
 are the references the learned tier (StarDist, U-Net+watershed, Deep-Watershed, and the novel LamellaStar) must
 beat; see [../../plans/frothseg](the redesign plan) and the learned-tier docs.
 
+## The LIVE twins (App multi-model lane, v0.03.000)
+
+Every C1..C7 method also runs LIVE in the browser (`frontend/src/classical/`): pure-TypeScript implementations of
+the same cited standards (Otsu with argmax-plateau midpoint; exact Felzenszwalb-Huttenlocher EDT; priority-flood
+marker-controlled watershed; morphological-reconstruction h-extrema; black top-hat; SLIC k-means), selected from
+the App's METHOD control and executed on the chosen frame in milliseconds with no model download, with the live
+mask AP scored against the exact synthetic ground truth. Honesty: the twins share each method's SEMANTICS, not
+bit-exact numerics with scikit-image, so live numbers can differ from the baked references (live C4 AP 0.240 vs
+offline 0.402 on poly-normal); the offline bake remains the pre-validated benchmark and cross-method comparison
+stays offline-vs-offline.
+
 **What this tier is and is NOT:** it is a set of pre/post fixes bolted onto watershed or valley-tracing to survive
 highlights and low-gradient valleys; it has no learned prior for the faint lamellae, so its quality is bounded by
 marker/threshold tuning. It is the floor, not the product.
