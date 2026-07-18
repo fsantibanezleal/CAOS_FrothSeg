@@ -1,18 +1,18 @@
 # Guide, run the precompute pipeline (the synthetic froth benchmark harness)
 
-## What this is, and what it is NOT
+## What this is, and what it is not
 
 This offline pipeline bakes the **synthetic froth benchmark harness**: for each case it renders a physically
-flavoured froth image whose per-bubble instance masks are known EXACTLY (by construction), scores the classical
+flavoured froth image whose per-bubble instance masks are known exactly (by construction), scores the classical
 floor against that exact ground truth, and commits the artifacts + a sha256 manifest.
 
-- It **IS** the only source of per-bubble ground truth in this product, so it is the harness that measures mask
+- It **is** the only source of per-bubble ground truth in this product, so it is the harness that measures mask
   quality with real metrics (mask AP, BSD Wasserstein).
-- It is **NOT** the product's live method. The product's live segmenter is a SAM-class foundation model that runs
+- It is **not** the product's live method. The product's live segmenter is a SAM-class foundation model that runs
   in the browser (`frontend/src/sam/`, onnxruntime-web + WebGPU); it is measured by a separate harness, see
   [03_verify-sam.md](03_verify-sam.md).
-- It is **NOT** real-plant data. Public per-bubble froth masks are legally request-only
-  (`research-tools-and-data-2026-07-09`), so every case here is labelled SYNTHETIC and its AP is never reported as
+- It is **not** real-plant data. Public per-bubble froth masks are legally request-only
+  (`research-tools-and-data-2026-07-09`), so every case here is labelled synthetic and its AP is never reported as
   real-plant accuracy. The real-froth capability is the upload lane, see [02_bring-your-own-data.md](02_bring-your-own-data.md).
 
 The engine lives under `data-pipeline/fslab/`: geometry + appearance in `science/froth_gen.py`, the classical
@@ -53,7 +53,7 @@ PYTHONPATH=data-pipeline .venv-pipeline/bin/python        -m fslab.pipeline poly
 ```
 
 The positional argument is a case id or `all` (default); `--check` re-verifies the committed sha256s and exits.
-There is NO run-level seed flag: each synthetic frame is a pure function of the case's fixed `FrothSpec.seed`
+There is no run-level seed flag: each synthetic frame is a pure function of the case's fixed `FrothSpec.seed`
 (101 to 113), so it is byte-identical on every run and the manifest records that generation seed. After the
 editable install, `PYTHONPATH=data-pipeline` is redundant but harmless; keep it if you run the module without
 having installed the package.
@@ -86,7 +86,7 @@ Per case, under `data/derived/synth/<case>/`:
 | file | format | contents |
 |---|---|---|
 | `frame.png` | 8-bit grayscale PNG | the rendered froth image |
-| `masks.json` | COCO-RLE (`frothseg.masks/v1`) | the EXACT instance ground truth, one RLE record per bubble |
+| `masks.json` | COCO-RLE (`frothseg.masks/v1`) | the exact instance ground truth, one RLE record per bubble |
 | `bsd.csv` | CSV (`frothseg.bsd/v1`) | per-instance morphometry (`id, area_px, d_eq_px, ecc, solidity`) + a BSD summary header |
 | `benchmark.json` | JSON (`frothseg.benchmark/v1`) | the classical-floor method scores (mask AP, AP50/75, BSD Wasserstein) |
 | `card.json` | JSON | the compact web selector card |
@@ -111,7 +111,7 @@ checkable. Two guards enforce it:
 PYTHONPATH=data-pipeline .venv-pipeline/Scripts/python.exe -m fslab.pipeline --check
 
 # 2. On-disk manifest audit (stdlib only, no package install needed): index references every case, every
-#    artifact exists, is non-empty, and matches the recorded byte size AND sha256; lane matches the gate.
+#    artifact exists, is non-empty, and matches the recorded byte size and sha256; lane matches the gate.
 ./scripts/smoke.ps1        # runs scripts/check_artifacts.py
 ```
 
@@ -146,25 +146,25 @@ harness reuses the same functions so the comparison is fair (see [03_verify-sam.
 
 ## Applying this to other data
 
-This stage is a GENERATOR, not a loader: it manufactures froth with exact ground truth so segmenters can be
+This stage is a generator, not a loader: it manufactures froth with exact ground truth so segmenters can be
 scored. To score a method on other froth you need per-bubble ground truth, which real froth does not have. So:
 
 - To score the classical floor (or a new classical method added to `METHODS` in `segment.py`) on a different
   regime, add a `FrothSpec` to `CASES` in `science/froth_gen.py` (a new coverage-axis point, its own seed) and
   re-run the pipeline; you get a new committed case with exact GT.
-- To score the LIVE SAM core against this GT, use the offline verification harness, not this pipeline
+- To score the live SAM core against this GT, use the offline verification harness, not this pipeline
   ([03_verify-sam.md](03_verify-sam.md)).
-- To run the product on REAL froth you photographed, use the upload lane; there is no AP there because there is
+- To run the product on real froth you photographed, use the upload lane; there is no AP there because there is
   no ground truth, but you get live segmentation + BSD + froth-state ([02_bring-your-own-data.md](02_bring-your-own-data.md)).
 
 ## Data contract and outliers
 
-- The generator is deliberately made HARD to game: highlights are jittered and sometimes omitted so
+- The generator is deliberately made hard to game: highlights are jittered and sometimes omitted so
   highlight-seeded watershed cannot win artificially, and `glare-storm` / `motion-fast` / `defocus` are negative
-  controls where methods are SUPPOSED to degrade. Do not tune the generator to make a favourite method look good.
+  controls where methods are supposed to degrade. Do not tune the generator to make a favourite method look good.
 - `empty-control` renders no froth; the expected output is zero bubbles and a `null` AP (there is nothing to
   match). Any method that hallucinates bubbles here is failing the control.
-- The scene lane is classified PRECOMPUTE, not live: scipy/scikit-image/OpenCV are not Pyodide-safe and the frames
+- The scene lane is classified precompute, not live: scipy/scikit-image/OpenCV are not Pyodide-safe and the frames
   are full images, so the generation + classical scoring happen offline and are committed. The browser never runs
   this stage; it runs the SAM segmenter on `frame.png` (or an upload) live.
 - Line endings for `bsd.csv` are forced to LF (via `.gitattributes` + the encoder) so the committed bytes and

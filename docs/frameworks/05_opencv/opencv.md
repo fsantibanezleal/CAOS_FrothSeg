@@ -1,9 +1,9 @@
 # Framework card, `opencv` (opencv-python-headless)
 
 OpenCV is the offline image-operations library. In the shipped pipeline its wired role is narrow and honest: it
-applies the **motion-blur stressor** to the synthetic generator (`cv2.filter2D`). It also names the INTENT of the
+applies the **motion-blur stressor** to the synthetic generator (`cv2.filter2D`). It also names the intent of the
 browser real-froth front-end (deglare and illumination flatten), but that front-end is a deliberately lightweight
-canvas/typed-array port, NOT OpenCV.js. This card is explicit about what runs where, so the docs never overclaim a
+canvas/typed-array port, not OpenCV.js. This card is explicit about what runs where, so the docs never overclaim a
 10 MB WASM OpenCV that is not in the bundle.
 
 Code of record: `data-pipeline/fslab/science/froth_gen.py` (`cv2.filter2D` motion blur) and, for the browser
@@ -14,24 +14,24 @@ front-end this mirrors in spirit, `frontend/src/preprocess/deglare.ts` (pure can
 - **Offline (wired)**: `cv2.filter2D` convolves the rendered frame with a horizontal line kernel to simulate froth
   moving under the camera during exposure. This is the `motion-fast` stress case, a coverage axis that is meant to
   be hard (blur removes the promptable structure SAM needs).
-- **Browser front-end (intent, NOT OpenCV)**: real froth frames carry uneven lighting and bright specular glare
+- **Browser front-end (intent, not OpenCV)**: real froth frames carry uneven lighting and bright specular glare
   that wash out bubble borders. The offline OpenCV playbook for this is illumination flatten plus specular
   attenuation. Rather than ship a ~10 MB `opencv.js` WASM blob just for a preprocessing step, the browser does the
-  SAME intent at a fraction of the weight in pure canvas/typed arrays: retinex-style illumination division and a
+  same intent at a fraction of the weight in pure canvas/typed arrays: retinex-style illumination division and a
   soft-clip glare attenuation (`deglare.ts`). It is honest to call this an OpenCV-flavoured port, not OpenCV.
 
 Why OpenCV for the offline stressor: `filter2D` is the standard, correct separable convolution; using it (rather
 than a hand-rolled kernel loop) keeps the generator on the proper CV stack the research mandates.
 
-## What it is NOT
+## What it is not
 
-- It is NOT in the browser bundle. There is no `opencv.js` shipped. Anything the live app does for glare/lighting is
+- It is not in the browser bundle. There is no `opencv.js` shipped. Anything the live app does for glare/lighting is
   the canvas port in `deglare.ts`, which is smaller and good enough as a pre-segmentation normaliser, not a full
   OpenCV replacement.
-- It is NOT a segmentation method. OpenCV here only degrades the synthetic image (motion blur) and, conceptually,
+- It is not a segmentation method. OpenCV here only degrades the synthetic image (motion blur) and, conceptually,
   normalises real frames; the segmentation is scikit-image (floor) or the SAM-class model (product).
-- **UNVERIFIED / intended, not wired**: the research plan and the `requirements.txt` comment also list OpenCV for
-  specular inpaint and for optical-flow froth velocity. As of this build those are NOT implemented in the pipeline;
+- **unverified / intended, not wired**: the research plan and the `requirements.txt` comment also list OpenCV for
+  specular inpaint and for optical-flow froth velocity. As of this build those are not implemented in the pipeline;
   the only `cv2` call in the code is the motion-blur `filter2D`. Treat optical-flow velocity and inpaint as planned
   roles, and do not present them as shipped.
 
@@ -91,7 +91,7 @@ if spec.motion_blur > 1:                        # linear motion-blur stressor
     img = cv2.filter2D(img, -1, k)
 ```
 
-The browser front-end intent (from `deglare.ts`, pure canvas, NO OpenCV):
+The browser front-end intent (from `deglare.ts`, pure canvas, no OpenCV):
 
 ```ts
 export function preprocess(gray: Float32Array, w: number, h: number, o: DeglareOptions = {}): Float32Array {
@@ -107,11 +107,11 @@ export function preprocess(gray: Float32Array, w: number, h: number, o: DeglareO
 - **Stage `generate`** (`froth_gen.render`): `cv2.filter2D` produces the motion-blur case. **Input**: the rendered
   grayscale frame. **Output**: the blurred grayscale frame. Purely a stressor; the ground-truth masks are unchanged
   (the blur is on the appearance, not the geometry), which is what makes it a fair "hard case" for the segmenters.
-- **Browser (front-end)**: `deglare.ts` runs BEFORE the live segmenter on real, uploaded frames; the flatten and
+- **Browser (front-end)**: `deglare.ts` runs before the live segmenter on real, uploaded frames; the flatten and
   deglare toggles are user-visible, and the CONTRACT-1 flags decide when to apply them. This helps the real-glare
   path; motion and defocus remain the classical floor's territory (see the SAM verification).
 
-## Applying it to OTHER data
+## Applying it to other data
 
 - **`cv2.filter2D`** is a generic linear filter: any custom kernel (motion, emboss, sharpen, edge) over any image.
   The line-kernel motion blur generalises to any camera-motion simulation for data augmentation or robustness tests.
@@ -133,7 +133,7 @@ export function preprocess(gray: Float32Array, w: number, h: number, o: DeglareO
 - **Browser port is approximate**: the canvas flatten/deglare are simple, cheap normalisers (box-blur division and
   a soft-clip), not OpenCV's full retinex or inpaint. They reduce glare and lighting drift enough to help the
   segmenter; they do not reconstruct saturated-out detail. State this to users, do not imply full deglare.
-- **UNVERIFIED roles**: optical-flow froth velocity and specular inpaint are named in the plan but not wired; any
+- **unverified roles**: optical-flow froth velocity and specular inpaint are named in the plan but not wired; any
   doc or UI must not present them as available until the code exists.
 
 ## Caveats and license

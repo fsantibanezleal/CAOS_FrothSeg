@@ -1,19 +1,19 @@
 # Guide, bring your own froth
 
-The product's real capability is live segmentation of REAL froth you provide, not just the baked synthetic cases.
+The product's real capability is live segmentation of real froth you provide, not just the baked synthetic cases.
 Public per-bubble froth masks are legally request-only (`research-tools-and-data-2026-07-09`), so FrothSeg does
-not ship a redistributable real dataset; instead it segments the froth photo or frame YOU upload, live, with a
+not ship a redistributable real dataset; instead it segments the froth photo or frame you upload, live, with a
 SAM-class foundation model. The door is **CONTRACT 1**, the image gate.
 
-## What this is, and what it is NOT
+## What this is, and what it is not
 
-- It **IS** a real inference path: upload a froth image in the App, the browser runs the SAM auto-mask generator
+- It **is** a real inference path: upload a froth image in the App, the browser runs the SAM auto-mask generator
   on it (WebGPU, WASM fallback), and you get per-bubble instance masks, the bubble-size distribution (BSD), and a
   froth-state read-out, all client-side, no server.
-- It is **NOT** a place to obtain a mask-AP number for your image. AP requires per-bubble ground truth, which a
-  real froth photo does not have. The AP read-out only exists for the SYNTHETIC samples, where the exact GT is
+- It is **not** a place to obtain a mask-AP number for your image. AP requires per-bubble ground truth, which a
+  real froth photo does not have. The AP read-out only exists for the synthetic samples, where the exact GT is
   known (`frontend/src/sam/score.ts`, mirrored to `fslab.science.segment.mask_ap`).
-- It is **NOT** a training step. SAM is zero-shot; there are no froth labels and nothing is fitted to your image.
+- It is **not** a training step. SAM is zero-shot; there are no froth labels and nothing is fitted to your image.
 
 ## CONTRACT 1: the image gate (accept / reject / flag)
 
@@ -31,16 +31,16 @@ and applies these thresholds:
 
 | threshold | value | verdict |
 |---|---|---|
-| min side | 64 px | below this a frame has too few pixels per bubble, REJECT |
-| max side | 8192 px | guard against pathological uploads, REJECT |
-| dynamic range (reject) | < 0.06 | a blank / flat / constant frame, REJECT |
-| dynamic range (flag) | < 0.15 | low contrast, FLAG (recommend deglare / flatten) |
-| saturated fraction (flag) | > 0.20 | heavy glare, FLAG |
-| dark fraction (flag) | > 0.55 | under-exposed / mostly pulp, FLAG |
+| min side | 64 px | below this a frame has too few pixels per bubble, reject |
+| max side | 8192 px | guard against pathological uploads, reject |
+| dynamic range (reject) | < 0.06 | a blank / flat / constant frame, reject |
+| dynamic range (flag) | < 0.15 | low contrast, flag (recommend deglare / flatten) |
+| saturated fraction (flag) | > 0.20 | heavy glare, flag |
+| dark fraction (flag) | > 0.55 | under-exposed / mostly pulp, flag |
 
 Plus structural rejects: unsupported shape (must be 2D gray or 3D RGB/RGBA), non-numeric dtype, or NaN/Inf
-pixels. Nothing is silently coerced: a bad frame is REJECTED with a reason; a usable-but-degraded frame is
-ACCEPTED but FLAGGED so the UI can warn and the front-end can react.
+pixels. Nothing is silently coerced: a bad frame is rejected with a reason; a usable-but-degraded frame is
+accepted but flagged so the UI can warn and the front-end can react.
 
 ## The deglare / illumination-flatten front-end
 
@@ -61,7 +61,7 @@ offers both methods and lets you compare.
 | froth-state read-out (class + health gauge) | yes, a labelled heuristic proxy | yes |
 | mask AP / BSD Wasserstein vs GT | no (no ground truth exists) | yes (exact GT known) |
 
-The froth-state read-out (`frontend/src/sam/frothState.ts`) is a HEURISTIC proxy grounded in the froth-vision
+The froth-state read-out (`frontend/src/sam/frothState.ts`) is a heuristic proxy grounded in the froth-vision
 literature (Aldrich et al. 2010: BSD + froth class as soft sensors), not a calibrated plant setpoint. It is
 always shown as an interpretation of what the segmenter measured, labelled as a proxy.
 
@@ -86,7 +86,7 @@ confident masks.
 - **Domain shift is real.** Froth appearance varies by ore, cell, camera and lighting; a read-out calibrated on
   one site does not transfer to another. The froth-state class is a proxy, not a site setpoint.
 - **Extending the gate.** If your froth legitimately does not fit (for example a much larger sensor), extend
-  CONTRACT 1 and its tests DELIBERATELY, in both the Python source and the TS mirror so they stay in lockstep;
+  CONTRACT 1 and its tests deliberately, in both the Python source and the TS mirror so they stay in lockstep;
   never loosen it just to make a bad frame pass.
 - **To score a method with real metrics you still need the synthetic harness** (exact GT), see
   [01_precompute-pipeline.md](01_precompute-pipeline.md) and the offline SAM verification in

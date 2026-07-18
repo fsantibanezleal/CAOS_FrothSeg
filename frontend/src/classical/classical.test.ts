@@ -1,4 +1,4 @@
-// Invariant tests for the LIVE classical tier, mirroring the offline Python tests
+// Invariant tests for the live classical tier, mirroring the offline Python tests
 // (tests/test_froth_science.py): the under/over-segmentation exhibits must have the expected SIGN and the strong
 // methods must recover roughly the true bubble count on a synthetic froth-like frame with exact known layout.
 import { describe, expect, it } from 'vitest';
@@ -61,7 +61,7 @@ describe('gray toolbox', () => {
     const w = 30, h = 12;
     const mask = new Uint8Array(w * h).fill(1);
     const surface = new Float32Array(w * h);
-    // markers sit at the surface MINIMA (distance 0), the correct watershed convention: flooding rises outward
+    // markers sit at the surface minima (distance 0), the correct watershed convention: flooding rises outward
     for (let y = 0; y < h; y++) for (let x = 0; x < w; x++)
       surface[y * w + x] = Math.min(Math.hypot(x - 8, y - 6), Math.hypot(x - 22, y - 6));
     const markers = new Int32Array(w * h);

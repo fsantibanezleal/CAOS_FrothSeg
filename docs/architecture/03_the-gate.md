@@ -1,7 +1,7 @@
 # The live-vs-precompute gate
 
 `data-pipeline/fslab/core/gate.py :: classify_lane()`. The archetype's gate asks whether a case can run **live in
-Pyodide**: it does iff, by MEASUREMENT and never by hand-wave, it is pure-Python, its wheels are a subset of the
+Pyodide**: it does iff, by measurement and never by hand-wave, it is pure-Python, its wheels are a subset of the
 Pyodide-safe set (`LIVE_WHEELS = {numpy}`), its runtime is within the interaction budget
 (`run_ms <= RUN_MS_GATE`, 1500 ms), and its artifact is small (`trace_bytes <= TRACE_BYTES_GATE`, 256 KiB).
 Otherwise the case is **precompute** and the SPA replays the committed artifact. Either way a committed artifact
@@ -31,7 +31,7 @@ its accuracy is recorded once in `data/derived/sam_benchmark.json` (see
 [the live lane](04_live-lane-pyodide.md).
 
 The archetype's Pyodide lane still exists in a minimal form: `fslab/live.py :: bsd_from_labels()` is numpy-only,
-Pyodide-safe, and reduces any instance-label map (from SAM or from a classical method) to the BSD with the SAME
+Pyodide-safe, and reduces any instance-label map (from SAM or from a classical method) to the BSD with the same
 maths the offline ground truth uses ($d_{eq} = 2\sqrt{A/\pi}$, $d_{32} = \sum d_i^3 / \sum d_i^2$), so the live
 and baked numbers are directly comparable.
 

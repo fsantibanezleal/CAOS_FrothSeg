@@ -4,7 +4,7 @@
 // training labels. This is the product's live core; it runs in the browser on WebGPU (WASM fallback) and in
 // Node (onnxruntime-node) for the offline verification harness, sharing this exact code.
 //
-// Algorithm = the standard SamAutomaticMaskGenerator (Kirillov et al. 2023, SAM): the image is encoded ONCE,
+// Algorithm = the standard SamAutomaticMaskGenerator (Kirillov et al. 2023, SAM): the image is encoded once,
 // then each grid point is decoded to 3 candidate masks; we take the highest predicted-IoU candidate, score its
 // stability (IoU of the logits thresholded at +/- an offset), filter on predicted-IoU / stability / area, and
 // suppress duplicates with greedy IoU NMS.

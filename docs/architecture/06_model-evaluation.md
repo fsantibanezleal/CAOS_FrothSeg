@@ -1,13 +1,13 @@
 # Model evaluation: how a segmenter is scored
 
-Every method, the classical floor and the live SAM-class core alike, is scored with the SAME two metrics on the
+Every method, the classical floor and the live SAM-class core alike, is scored with the same two metrics on the
 synthetic froth where the per-bubble ground truth is exact. Scoring the foundation model with the identical
 functions the floor is scored with is what makes the head-to-head fair, not an assertion.
 
 **What this measures.** Segmentation quality against known truth on a controlled harness: instance mask AP and
 BSD fidelity, per case.
 
-**What this does NOT measure.** Real-plant accuracy. There is no public per-bubble froth ground truth, so the AP
+**What this does not measure.** Real-plant accuracy. There is no public per-bubble froth ground truth, so the AP
 here is on labelled synthetic froth only. It is reported as synthetic everywhere and must never be quoted as a
 plant number.
 
@@ -38,7 +38,7 @@ one.
 The classical floor is scored offline inside the benchmark stage (`stages/benchmark.py` calling
 `science/segment.mask_ap` and `bsd_wasserstein`) and committed to each case's `benchmark.json`.
 
-The live SAM core is scored with the EXACT same functions so the comparison is apples to apples. The one portable
+The live SAM core is scored with the exact same functions so the comparison is apples to apples. The one portable
 module `frontend/src/sam/{autoMask,morphometry,score}.ts` runs both in the browser (onnxruntime-web, WebGPU with
 WASM fallback) and in Node (onnxruntime-node). `frontend/scripts/verify_sam.ts` runs the segmenter in Node and
 dumps the instance labels to `verification/sam/<case>.json`; `scripts/score_sam.py` and
@@ -46,7 +46,7 @@ dumps the instance labels to `verification/sam/<case>.json`; `scripts/score_sam.
 and `bsd_wasserstein`, writing the committed `data/derived/sam_benchmark.json` (schema
 `frothseg.sam_benchmark/v1`). In the App itself, `frontend/src/sam/score.ts` mirrors the Python `mask_ap`, so on a
 synthetic sample the browser shows a live SAM-vs-GT agreement next to the baked benchmark. The SAM result is a
-RECORDED, model-dependent experiment result, not a sha-checked CONTRACT-2 artifact.
+recorded, model-dependent experiment result, not a sha-checked CONTRACT-2 artifact.
 
 ## The verified result
 
@@ -93,7 +93,7 @@ Reading it honestly:
   are supposed to fail, and SAM is not tuned to the synthetic set (the standard SAM automatic-mask-generator
   defaults are used). The specular highlights are deliberately jittered and sometimes dropped so highlight-seeded
   watershed cannot win artificially.
-- The real capability is live SAM segmentation of REAL (uploaded) froth; the OpenCV deglare and
+- The real capability is live SAM segmentation of real (uploaded) froth; the OpenCV deglare and
   illumination-flatten front-end helps real glare, and motion or defocus are honestly the floor's territory.
 
 Refs: Kirillov et al. 2023 (SAM, [doi:10.1109/ICCV51070.2023.00371](https://doi.org/10.1109/ICCV51070.2023.00371)), Chen et al. 2023 (SlimSAM), Meyer 1994

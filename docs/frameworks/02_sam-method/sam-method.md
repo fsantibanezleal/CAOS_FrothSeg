@@ -9,14 +9,14 @@ instance-label map plus a bubble-size distribution (BSD). This card is the algor
 Source of truth: `frontend/src/sam/autoMask.ts` (the exact code this card describes), with the reduction in
 `morphometry.ts` and the scoring in `score.ts`.
 
-## What it is, and what it is NOT
+## What it is, and what it is not
 
 **It is** the standard `SamAutomaticMaskGenerator` of Kirillov et al. 2023, applied zero-shot to flotation
 froth: encode once, prompt with a grid, keep best-of-3 masks by predicted IoU, filter on predicted-IoU /
 stability / area, dedupe by greedy IoU NMS. It runs the same in the browser (onnxruntime-web, WebGPU with a
 WASM fallback) and in Node (onnxruntime-node) for the offline verification harness.
 
-**It is NOT**:
+**It is not**:
 
 - **Not a froth-trained model.** SlimSAM/MobileSAM were trained on general images, never on flotation froth.
   There is no froth fine-tuning here; the generality is the point, because public per-bubble froth labels are
@@ -136,7 +136,7 @@ benchmark is honest). Grid density and the thresholds are exposed as live App co
 (a denser grid or looser thresholds recover more small bubbles but cost latency and admit noise) is
 user-visible.
 
-## Applying it to OTHER froth
+## Applying it to other froth
 
 - **Uploads are the real capability.** Point the segmenter at any froth image or extracted frame the user
   brings; nothing about the method assumes a shipped case. The OpenCV deglare and illumination-flatten

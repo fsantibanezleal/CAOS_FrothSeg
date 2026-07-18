@@ -11,8 +11,8 @@ benchmark, verify the live SAM core, and the archetype-standard chrome.
 - [Run the precompute pipeline](guides/01_precompute-pipeline.md), `python -m fslab.pipeline` generates every
   synthetic froth case (image plus exact instance ground truth), benchmarks the scikit-image floor against that
   ground truth, and exports the committed artifacts plus manifest; `--check` re-verifies the sha256s (CONTRACT 2).
-- [Verify the live SAM core offline](guides/03_verify-sam.md), how the product value is MEASURED not asserted:
-  `frontend/scripts/verify_sam.ts` runs the SAME segmenter module in Node, `scripts/score_sam.py` scores it with
+- [Verify the live SAM core offline](guides/03_verify-sam.md), how the product value is measured not asserted:
+  `frontend/scripts/verify_sam.ts` runs the same segmenter module in Node, `scripts/score_sam.py` scores it with
   the floor's `mask_ap` and `bsd_wasserstein`, and `scripts/bake_sam_benchmark.py` bakes
   `data/derived/sam_benchmark.json` (mean SAM AP 0.365 vs floor 0.262, wins 10 of 13).
 

@@ -30,13 +30,13 @@ function Sam({ es }: { es: boolean }) {
     <>
       <p>
         {es
-          ? 'El método en vivo es Segment Anything (SAM): un modelo fundacional promptable que produce máscaras de instancia zero-shot, sin etiquetas de entrenamiento del dominio, exactamente lo que la espuma necesita porque los datos etiquetados escasean. La imagen pasa por un encoder pesado UNA vez para producir un embedding; luego un decoder liviano toma prompts (puntos) y devuelve máscaras.'
-          : 'The live method is Segment Anything (SAM): a promptable foundation model that produces zero-shot instance masks, with no domain training labels, exactly what froth needs because labelled data is scarce. The image passes through a heavy encoder ONCE to produce an embedding; a lightweight decoder then takes prompts (points) and returns masks.'}
+          ? 'El método en vivo es Segment Anything (SAM): un modelo fundacional promptable que produce máscaras de instancia zero-shot, sin etiquetas de entrenamiento del dominio, exactamente lo que la espuma necesita porque los datos etiquetados escasean. La imagen pasa por un encoder pesado una vez para producir un embedding; luego un decoder liviano toma prompts (puntos) y devuelve máscaras.'
+          : 'The live method is Segment Anything (SAM): a promptable foundation model that produces zero-shot instance masks, with no domain training labels, exactly what froth needs because labelled data is scarce. The image passes through a heavy encoder once to produce an embedding; a lightweight decoder then takes prompts (points) and returns masks.'}
       </p>
       <Refs ids={['kirillov2023']} label="Refs" />
       <p>
         {es
-          ? 'Para correr en el navegador usamos una variante destilada y podada, SlimSAM (o MobileSAM), que reemplaza el encoder ViT-H de 637M por un Tiny-ViT de pocos millones de parámetros, corriendo sobre onnxruntime-web con WebGPU (respaldo WASM-SIMD). El mismo modelo corre en Node para el benchmark offline.'
+          ? 'Para ejecutar en el navegador usamos una variante destilada y podada, SlimSAM (o MobileSAM), que reemplaza el encoder ViT-H de 637M por un Tiny-ViT de pocos millones de parámetros, ejecutándose sobre onnxruntime-web con WebGPU (respaldo WASM-SIMD). El mismo modelo se ejecuta en Node para el benchmark offline.'
           : 'To run in the browser we use a distilled, pruned variant, SlimSAM (or MobileSAM), which replaces the 637M ViT-H encoder with a few-million-parameter Tiny-ViT, running on onnxruntime-web with WebGPU (WASM-SIMD fallback). The same model runs in Node for the offline benchmark.'}
       </p>
       <Refs ids={['chen2023slimsam', 'zhang2023mobilesam', 'transformersjs', 'webgpu']} label="Refs" />
@@ -94,7 +94,7 @@ function Bsd({ es }: { es: boolean }) {
       <p>{es ? 'La distribución de tamaño de burbuja se resume por percentiles D10/D50/D90 y por la media de Sauter d32, la media ponderada por superficie, el resumen estándar en flotación:' : 'The bubble-size distribution is summarised by the D10/D50/D90 percentiles and by the Sauter mean d32, the surface-weighted mean, the standard flotation summary:'}</p>
       <Equation tex={String.raw`d_{32} = \frac{\sum_i d_i^{\,3}}{\sum_i d_i^{\,2}}`} caption={es ? 'media de Sauter (ponderada por superficie)' : 'Sauter mean (surface-weighted)'} />
       <p>
-        {es ? 'La morfometría por burbuja (excentricidad, solidez) viene de skimage.regionprops. La misma reducción BSD corre en vivo en el navegador y offline en Python, así que los números coinciden.' : 'Per-bubble morphometry (eccentricity, solidity) comes from skimage.regionprops. The same BSD reduction runs live in the browser and offline in Python, so the numbers match.'}
+        {es ? 'La morfometría por burbuja (excentricidad, solidez) viene de skimage.regionprops. La misma reducción BSD se ejecuta en vivo en el navegador y offline en Python, así que los números coinciden.' : 'Per-bubble morphometry (eccentricity, solidity) comes from skimage.regionprops. The same BSD reduction runs live in the browser and offline in Python, so the numbers match.'}
         {' '}<InlineMath tex={String.raw`d_{32}`} /> {es ? 'grande + pocas burbujas indica espuma gruesa/colapsante;' : 'large + few bubbles indicates coarse/collapsing froth;'} <InlineMath tex={String.raw`d_{32}`} /> {es ? 'pequeño + muchas indica espuma fina y estable.' : 'small + many indicates fine, stable froth.'}
       </p>
       <Refs ids={['aldrich2010', 'sautermean']} label="Refs" />
@@ -107,8 +107,8 @@ function Synth({ es }: { es: boolean }) {
     <>
       <p>
         {es
-          ? 'Como no hay máscaras de espuma públicas por burbuja, generamos espuma sintética cuya verdad de terreno es exacta por construcción, en el mismo formato que consume un cargador real (PNG + máscaras COCO-RLE + BSD). Es SOLO el banco de validación, no el producto.'
-          : 'Because there are no public per-bubble froth masks, we generate synthetic froth whose ground truth is exact by construction, in the same format a real loader consumes (PNG + COCO-RLE masks + BSD). It is ONLY the validation harness, not the product.'}
+          ? 'Como no hay máscaras de espuma públicas por burbuja, generamos espuma sintética cuya verdad de terreno es exacta por construcción, en el mismo formato que consume un cargador real (PNG + máscaras COCO-RLE + BSD). Es solo el banco de validación, no el producto.'
+          : 'Because there are no public per-bubble froth masks, we generate synthetic froth whose ground truth is exact by construction, in the same format a real loader consumes (PNG + COCO-RLE masks + BSD). It is only the validation harness, not the product.'}
       </p>
       <p>
         {es ? 'La geometría es un diagrama de potencia (Laguerre), el modelo estándar de espuma seca (leyes de Plateau): centros empacados con radios log-normales para controlar d32, y cada píxel se asigna al sitio de mínima distancia de potencia:' : 'The geometry is a power (Laguerre) diagram, the standard dry-foam model (Plateau laws): centres packed with log-normal radii to control d32, and each pixel is assigned to the site of minimum power distance:'}
@@ -126,7 +126,7 @@ function Score({ es }: { es: boolean }) {
   return (
     <>
       <p>
-        {es ? 'SAM y el piso clásico se puntúan con las MISMAS métricas sobre la espuma sintética con máscaras exactas, así la comparación es justa. Precisión media de máscara de instancia con emparejamiento voraz por IoU sobre umbrales de 0.5 a 0.95:' : 'SAM and the classical floor are scored with the SAME metrics on synthetic froth with exact masks, so the comparison is fair. Mean instance mask precision with greedy IoU matching over thresholds 0.5 to 0.95:'}
+        {es ? 'SAM y el piso clásico se puntúan con las mismas métricas sobre la espuma sintética con máscaras exactas, así la comparación es justa. Precisión media de máscara de instancia con emparejamiento voraz por IoU sobre umbrales de 0.5 a 0.95:' : 'SAM and the classical floor are scored with the same metrics on synthetic froth with exact masks, so the comparison is fair. Mean instance mask precision with greedy IoU matching over thresholds 0.5 to 0.95:'}
       </p>
       <Equation tex={String.raw`\mathrm{IoU}(A,B) = \frac{|A \cap B|}{|A \cup B|}, \qquad \mathrm{AP} = \frac{1}{|\mathcal{T}|}\sum_{t \in \mathcal{T}} \frac{\mathrm{TP}(t)}{\mathrm{TP}(t) + \mathrm{FP}(t) + \mathrm{FN}(t)}, \quad \mathcal{T} = \{0.5, 0.55, \dots, 0.95\}`} />
       <p>{es ? 'La fidelidad de la distribución se mide con la distancia Wasserstein-1 entre los diámetros predichos y los verdaderos (0 = perfecto):' : 'Distribution fidelity is the Wasserstein-1 distance between predicted and true diameters (0 = perfect):'}</p>

@@ -1,4 +1,4 @@
-// Grayscale image toolbox for the LIVE classical tier (C1..C7), the JS twins of the offline
+// Grayscale image toolbox for the live classical tier (C1..C7), the JS twins of the offline
 // data-pipeline/fslab/science/segment.py. Pure TypeScript over Float32Array [0,1] images so every classical
 // method runs client-side with no model download. Algorithms are the cited standards: Otsu 1979 thresholding,
 // Felzenszwalb-Huttenlocher exact Euclidean distance transform, morphological reconstruction for h-extrema

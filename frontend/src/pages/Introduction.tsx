@@ -8,7 +8,7 @@ export default function Introduction() {
         <h1>{es ? 'Introducción' : 'Introduction'}</h1>
         <p className="lede">
           {es
-            ? 'Por qué el tamaño de burbuja de la espuma importa en flotación, por qué segmentarla es difícil, y qué hace FrothSeg: un segmentador fundacional zero-shot que corre en el navegador sobre espuma real.'
+            ? 'Por qué el tamaño de burbuja de la espuma importa en flotación, por qué segmentarla es difícil, y qué hace FrothSeg: un segmentador fundacional zero-shot que se ejecuta en el navegador sobre espuma real.'
             : 'Why froth bubble size matters in flotation, why segmenting it is hard, and what FrothSeg does: a zero-shot foundation segmenter that runs in the browser on real froth.'}
         </p>
       </div>
@@ -42,8 +42,8 @@ export default function Introduction() {
         <h2>{es ? 'Qué hace FrothSeg' : 'What FrothSeg does'}</h2>
         <p>
           {es
-            ? 'FrothSeg segmenta cada burbuja con un modelo fundacional de la familia SAM (Segment Anything) corrido zero-shot, sin etiquetas de espuma, enteramente en el navegador vía WebGPU. Devuelve las máscaras por burbuja, la BSD y una lectura del estado de la espuma. Como la escasez de datos hace inviable enviar un dataset real etiquetado, la capacidad real es segmentar la espuma que TÚ subes; un generador de espuma sintética con máscaras exactas sirve solo como banco de pruebas para medir el método con métricas de máscara reales.'
-            : 'FrothSeg segments every bubble with a SAM-family foundation model (Segment Anything) run zero-shot, with no froth labels, entirely in the browser via WebGPU. It returns per-bubble masks, the BSD and a froth-state read-out. Because data scarcity makes shipping a real labelled dataset infeasible, the real capability is segmenting the froth YOU upload; a synthetic froth generator with exact masks serves only as the benchmark harness to score the method with real mask metrics.'}
+            ? 'FrothSeg segmenta cada burbuja con un modelo fundacional de la familia SAM (Segment Anything) corrido zero-shot, sin etiquetas de espuma, enteramente en el navegador vía WebGPU. Devuelve las máscaras por burbuja, la BSD y una lectura del estado de la espuma. Como la escasez de datos hace inviable enviar un dataset real etiquetado, la capacidad real es segmentar la espuma que carga el usuario; un generador de espuma sintética con máscaras exactas sirve solo como banco de pruebas para medir el método con métricas de máscara reales.'
+            : 'FrothSeg segments every bubble with a SAM-family foundation model (Segment Anything) run zero-shot, with no froth labels, entirely in the browser via WebGPU. It returns per-bubble masks, the BSD and a froth-state read-out. Because data scarcity makes shipping a real labelled dataset infeasible, the real capability is segmenting the froth the user uploads; a synthetic froth generator with exact masks serves only as the benchmark harness to score the method with real mask metrics.'}
         </p>
         <Refs ids={['kirillov2023', 'zhang2023mobilesam', 'chen2023slimsam']} label="Refs" />
         <p className="fs-note good">

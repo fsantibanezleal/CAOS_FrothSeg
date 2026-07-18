@@ -1,6 +1,6 @@
-// The LIVE classical tier C1..C7, the in-browser twins of the offline Python floor
+// The live classical tier C1..C7, the in-browser twins of the offline Python floor
 // (data-pipeline/fslab/science/segment.py). Same method semantics, same provenance, running client-side in pure
-// TypeScript so the App is a genuine MULTI-MODEL workbench: pick a method, run it live on the selected frame, and
+// TypeScript so the App is a genuine multi-model workbench: pick a method, run it live on the selected frame, and
 // compare against the pre-validated offline references. Provenance per method:
 //   C1 otsu_cc              Otsu 1979 + connected components, the under-segmentation baseline.
 //   C2 watershed_immersion  marker-less immersion watershed on the morphological gradient (Vincent-Soille 1991),
