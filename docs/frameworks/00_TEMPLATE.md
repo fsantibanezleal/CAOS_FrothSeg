@@ -1,7 +1,7 @@
 # Framework card, `<tool>` (TEMPLATE)
 
 Copy to `docs/frameworks/<NN>_<tool>/<tool>.md` for **every** research-chosen engine/library. The deep research is
-**binding**: each engine used by the pipeline gets a card here AND an exact pin in the matching requirements file
+**binding**: each engine used by the pipeline gets a card here and an exact pin in the matching requirements file
 (`data-pipeline/requirements.txt`, `requirements-gpu.txt`, or `requirements-api.txt`). No toy substitute for a SOTA
 engine the research prescribed.
 

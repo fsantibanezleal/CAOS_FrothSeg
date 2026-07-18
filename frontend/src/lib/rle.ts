@@ -1,5 +1,5 @@
 // COCO-RLE decode (the format masks.json uses, produced by pycocotools in the pipeline). Port of pycocotools
-// maskApi.c `rleFrString` + `rleDecode`. Used to overlay the EXACT synthetic ground truth against the live SAM
+// maskApi.c `rleFrString` + `rleDecode`. Used to overlay the exact synthetic ground truth against the live SAM
 // masks in the App/Experiments, so "SAM vs GT" is shown on real committed masks, not an approximation.
 import type { MaskInstance, MasksDoc } from './contract.types';
 

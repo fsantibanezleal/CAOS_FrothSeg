@@ -20,17 +20,17 @@ scipy is the standard scientific-computing library; FrothSeg uses two of its sub
 
 Why scipy over a hand-rolled version: the EDT is the one place a naive implementation quietly goes wrong. A
 chamfer or grid-step approximation gives the wrong border geometry and biases the watershed markers; scipy computes
-the EXACT Euclidean transform (Felzenszwalb-Huttenlocher style separable algorithm). The research dossier is
+the exact Euclidean transform (Felzenszwalb-Huttenlocher style separable algorithm). The research dossier is
 explicit that the earlier draft's hand-rolled chamfer/blur had to be replaced with scipy.ndimage, so the border
 darkening and the marker seeding are geometrically correct.
 
-## What it is NOT
+## What it is not
 
-- It is NOT a segmentation method. scipy provides the distance transform and the metric; the segmentation itself is
+- It is not a segmentation method. scipy provides the distance transform and the metric; the segmentation itself is
   scikit-image (the floor) or the SAM-class model (the product).
-- It does NOT run in the browser. The live BSD reduction is re-implemented in TypeScript
+- It does not run in the browser. The live BSD reduction is re-implemented in TypeScript
   (`frontend/src/sam/morphometry.ts`) so the browser numbers match; scipy is precompute only.
-- `wasserstein_distance` is NOT an accuracy score. It measures how close two size histograms are in shape; a method
+- `wasserstein_distance` is not an accuracy score. It measures how close two size histograms are in shape; a method
   can miss individual bubbles yet still land a low Wasserstein if the aggregate distribution is right, which is why
   the benchmark reports it alongside mask AP, not instead of it.
 
@@ -86,7 +86,7 @@ Exact-EDT border darkening and defocus (from `froth_gen.py`):
 from scipy import ndimage as ndi
 import numpy as np
 
-# darken toward the nearest cell boundary via the EXACT Euclidean distance transform of the interiors
+# darken toward the nearest cell boundary via the exact Euclidean distance transform of the interiors
 edge = np.zeros((h, w), bool)
 edge[:, :-1] |= lab[:, :-1] != lab[:, 1:]
 edge[:-1, :] |= lab[:-1, :] != lab[1:, :]
@@ -121,7 +121,7 @@ W1 = wasserstein_distance(_diams(pred), _diams(gt))  # 0 = distributions match
 - **In the floor** (`segment.watershed_dt` / `watershed_hmax`): `distance_transform_edt` inside the foreground
   gives the marker seeds; `ndi.label` turns marker points into integer markers; `ndi.mean` drives the SLIC merge.
 
-## Applying it to OTHER data
+## Applying it to other data
 
 - **The EDT is a universal geometry primitive**: skeletonisation, morphology, marker seeding for any watershed,
   proximity maps, and physically-flavoured shading of any tessellation. Any binary mask in, exact distances out.

@@ -1,7 +1,7 @@
 # Frameworks
 
 One card per research-chosen engine/library, **the deep research, made binding**. Every engine FrothSeg uses
-gets a card here AND an exact pin in the matching `requirements-*.txt` (Python offline stack) or
+gets a card here and an exact pin in the matching `requirements-*.txt` (Python offline stack) or
 `frontend/package.json` (the live segmenter). No hand-rolled toy substitute for a SOTA engine the research
 prescribed: the classical floor is scikit-image, the foam geometry is scipy, the masks are pycocotools, the
 segmenter is a real SAM-family model via transformers.js.

@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 // Interactive instance-mask overlay: the froth frame with the segmented bubbles painted as translucent coloured
 // instances over it. Meets the interactive-viz rubric: hover value-readout (per-bubble area + equivalent
 // diameter), an opacity control, an outline-only mode, and a scroll-to-zoom / drag-to-pan viewport, theme-aware.
-// Renders from a base image (URL) + an Int32 label map; the SAME component shows the live SAM masks and the
+// Renders from a base image (URL) + an Int32 label map; the same component shows the live SAM masks and the
 // ground-truth masks (Experiments) since both are just label maps.
 
 export interface MaskOverlayProps {

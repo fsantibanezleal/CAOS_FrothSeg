@@ -1,14 +1,14 @@
 # Cases + categories
 
-Each case declares a **CATEGORY** (the froth coverage-axis taxonomy), its generator params, an **expected band**
+Each case declares a **category** (the froth coverage-axis taxonomy), its generator params, an **expected band**
 (what a froth-vision expert should see), and a **real|synthetic** flag. `registry.list_categories()` groups them.
-The **App shows ONE selected case**; **Experiments/Benchmark show cross-case summaries by category** (the App is
+The **App shows one selected case**; **Experiments/Benchmark show cross-case summaries by category** (the App is
 never a cross-case dashboard).
 
 Every case here is **synthetic**, and that is on purpose: public per-bubble froth masks are legally request-only
-(`research-tools-and-data-2026-07-09`), so a synthetic Laguerre-foam renderer is the only source of EXACT
+(`research-tools-and-data-2026-07-09`), so a synthetic Laguerre-foam renderer is the only source of exact
 per-bubble ground truth. These cases are the **mask-metric harness**, not real plant froth. The product's real
-capability is live SAM-class segmentation of REAL (uploaded) froth; see [`../../data/README.md`](../../data/README.md)
+capability is live SAM-class segmentation of real (uploaded) froth; see [`../../data/README.md`](../../data/README.md)
 and plan section 0.
 
 ## Where they live
@@ -38,7 +38,7 @@ that wins only by luck is caught.
 
 ## The coverage matrix
 
-The full 13-case table (each case's expected band, its stressor params, and the VERIFIED SAM AP vs the classical
+The full 13-case table (each case's expected band, its stressor params, and the verified SAM AP vs the classical
 floor AP scored on the exact synthetic ground truth) is in **[`01_coverage.md`](01_coverage.md)**. That page also
 carries the geometry + scoring maths, how the harness applies to any other froth-like data, and the data
 contract / outlier behavior.

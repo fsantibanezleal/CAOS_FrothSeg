@@ -1,20 +1,20 @@
 # Coverage matrix: the 13 synthetic froth cases
 
 This is the full coverage matrix for FrothSeg's benchmark harness: every case, its category, what a froth-vision
-expert should see in it, the stressor that defines it, and the VERIFIED live-SAM AP against the classical floor
+expert should see in it, the stressor that defines it, and the verified live-SAM AP against the classical floor
 AP, scored on the exact synthetic ground truth.
 
-## What this is, and what it is NOT
+## What this is, and what it is not
 
 - It **is** a controlled benchmark: 13 synthetic Laguerre-foam frames whose per-bubble instance masks are known
-  EXACTLY by construction (they are the render's own labels), so a segmenter can be scored with real
+  exactly by construction (they are the render's own labels), so a segmenter can be scored with real
   instance-mask AP and BSD distance against known truth. Public per-bubble froth masks are legally request-only
   (`research-tools-and-data-2026-07-09`), so a synthetic set is the only source of exact GT.
-- It **is NOT** real-plant accuracy. A synthetic AP measures a method against a known, controllable target; it
+- It **is not** real-plant accuracy. A synthetic AP measures a method against a known, controllable target; it
   does not measure how the method does on a real concentrator's froth camera. Never quote a number on this page
   as a plant AP.
-- The product's real capability is **live SAM-class segmentation of REAL (uploaded) froth**, which has no ground
-  truth, so it reports the BSD and froth-state read-out, not an AP. This harness is how you would validate a NEW
+- The product's real capability is **live SAM-class segmentation of real (uploaded) froth**, which has no ground
+  truth, so it reports the BSD and froth-state read-out, not an AP. This harness is how you would validate a new
   segmenter (or a re-tuned one) before trusting it on real froth; see "Applying this to other data" below.
 
 ## The matrix
@@ -103,7 +103,7 @@ distance,
 
 $$\mathrm{cell}(p) = \arg\min_i \bigl(\, \lVert p - c_i \rVert^2 - r_i^2 \,\bigr).$$
 
-The cell labels ARE the ground-truth instance masks, so there is no annotation error. Appearance adds
+The cell labels are the ground-truth instance masks, so there is no annotation error. Appearance adds
 distance-transform border darkening, per-bubble specular highlights (deliberately jittered and sometimes dropped,
 so a highlight-seeded method cannot win artificially), and the per-case stressor.
 

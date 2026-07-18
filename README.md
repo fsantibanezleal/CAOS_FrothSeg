@@ -20,7 +20,7 @@ froth whose per-bubble ground truth is known exactly.
 ## Status
 
 **Live** (v0.2.0). The App is a real workbench: pick a synthetic sample (with exact ground truth) or upload a
-real froth photo; the segmenter runs in your browser and reports the masks, the BSD and the froth state, with
+real froth photo; the segmenter runs in the browser and reports the masks, the BSD and the froth state, with
 live controls (prompt-grid density, predicted-IoU and stability thresholds, an illumination-flatten and deglare
 front-end). Deep docs live in [docs/](docs/); the plan of record is the management repo
 (`wip/mining-analytics-hub/products/frothseg/`).
@@ -37,7 +37,7 @@ both. Synthetic AP is a controlled benchmark, never reported as real-plant accur
    rejected with a reason otherwise, and flagged (glare, low contrast, under-exposure) so the UI and the deglare
    front-end react. The browser mirrors the same thresholds (`frontend/src/lib/imageGate.ts`).
 2. **Artifact contract, pipeline to web.** Each synthetic case ships `frame.png`, `masks.json` (COCO-RLE ground
-   truth), `bsd.csv`, `benchmark.json` and a manifest recording every artifact's byte size AND sha256, re-verified
+   truth), `bsd.csv`, `benchmark.json` and a manifest recording every artifact's byte size and sha256, re-verified
    in CI (`scripts/check_artifacts.py`) so a silent drift fails the build. A TS mirror of the schema fails the web
    build on drift.
 

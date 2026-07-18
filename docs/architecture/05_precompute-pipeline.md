@@ -1,7 +1,7 @@
 # The staged precompute pipeline
 
 `data-pipeline/fslab/pipeline.py` orchestrates the froth offline pipeline: for each synthetic case it renders a
-scene with EXACT per-bubble ground truth, scores the classical floor against that truth, and writes the committed
+scene with exact per-bubble ground truth, scores the classical floor against that truth, and writes the committed
 artifacts plus a manifest. The stage names and signatures are frozen (ADR-0057); the per-product rework is the
 science inside them.
 
@@ -9,7 +9,7 @@ science inside them.
 place a segmenter can be scored with real mask metrics. It bakes the artifacts the web replays and the
 classical-floor numbers the live SAM core is compared against.
 
-**What this is NOT.** It is not the product. The product is live SAM-class segmentation of REAL (uploaded) froth,
+**What this is not.** It is not the product. The product is live SAM-class segmentation of real (uploaded) froth,
 which runs in the browser and is measured live in JS, never here. Public per-bubble froth masks are legally
 request-only, so the committed cases are synthetic and labelled synthetic everywhere; synthetic mask AP is not
 real-plant AP.
@@ -18,9 +18,9 @@ real-plant AP.
 
 | Stage | Module | Does |
 |---|---|---|
-| ingest (CONTRACT 1) | `stages/ingest.py` | apply the bring-your-own-froth image gate to a REAL frame (accept / reject with a reason / flag glare and low contrast). Not part of the synthetic all-cases run, since synthetic scenes are ground truth by construction. |
-| generate | `stages/generate.py` | render one synthetic froth scene: a grayscale image plus the EXACT `int32` instance map and the BSD ground truth (`science/froth_gen.py`). |
-| benchmark | `stages/benchmark.py` | run every classical FLOOR method on the scene and score it against the exact GT: instance mask AP@[.5:.95] plus BSD Wasserstein-1 (`science/segment.py`). |
+| ingest (CONTRACT 1) | `stages/ingest.py` | apply the bring-your-own-froth image gate to a real frame (accept / reject with a reason / flag glare and low contrast). Not part of the synthetic all-cases run, since synthetic scenes are ground truth by construction. |
+| generate | `stages/generate.py` | render one synthetic froth scene: a grayscale image plus the exact `int32` instance map and the BSD ground truth (`science/froth_gen.py`). |
+| benchmark | `stages/benchmark.py` | run every classical floor method on the scene and score it against the exact GT: instance mask AP@[.5:.95] plus BSD Wasserstein-1 (`science/segment.py`). |
 | export (CONTRACT 2) | `stages/export.py` | encode the scene into `frame.png`, `masks.json` (COCO-RLE), `bsd.csv`, `benchmark.json`, `card.json`, and write the authoritative manifest with per-artifact sha256 and the lane verdict. |
 
 `pipeline.precompute(case_id, seed)` chains generate, then benchmark, then export. `run_all` iterates every case
@@ -52,7 +52,7 @@ the Sauter mean diameter is controllable. Since $d_{32} = \langle d^3\rangle/\la
 \tfrac{5}{2}\sigma^2)$ for a log-normal, the generator sets $\mu = \ln d_{32} - \tfrac{5}{2}\sigma^2$ to hit a
 target $d_{32}$.
 
-**Appearance.** A base grey darkened at cell boundaries using the EXACT Euclidean distance transform
+**Appearance.** A base grey darkened at cell boundaries using the exact Euclidean distance transform
 (`scipy.ndimage.distance_transform_edt` of the boundary set), plus a per-bubble specular highlight that is
 deliberately jittered and sometimes dropped so highlight-seeded watershed cannot win artificially, plus per-case
 stressors: a glare lobe, horizontal motion blur (`cv2.filter2D`), Gaussian defocus (`scipy.ndimage.gaussian_filter`),
@@ -88,10 +88,10 @@ distributions). The metrics are defined once and reused for the live SAM core, s
 (`core/manifest.py`, schema `frothseg.manifest/v1`, generator `laguerre-power-diagram/v1`). The manifest is a
 pure function of `(spec, seed)`: no wall-clock, so a re-run does not dirty git.
 
-The export stage classifies the case lane by MEASUREMENT (`core/gate.py`). The synthetic GT and classical
+The export stage classifies the case lane by measurement (`core/gate.py`). The synthetic GT and classical
 benchmark are baked offline because scipy, scikit-image, and OpenCV are not Pyodide-safe and the frames are full
 images, so the [gate](03_the-gate.md) marks the case `precompute` and the SPA replays the committed artifact. The
-LIVE capability is separate: the browser SAM-class segmenter (`frontend/src/sam`, onnxruntime-web with WebGPU,
+live capability is separate: the browser SAM-class segmenter (`frontend/src/sam`, onnxruntime-web with WebGPU,
 WASM fallback) runs on `frame.png` or an upload and is timed live in JS, not in this pipeline.
 
 ## Applying it to other data

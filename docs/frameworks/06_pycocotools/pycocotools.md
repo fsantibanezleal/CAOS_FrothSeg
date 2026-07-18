@@ -1,6 +1,6 @@
 # Framework card, `pycocotools`
 
-pycocotools encodes the EXACT synthetic instance ground truth into the standard COCO run-length (RLE) mask format
+pycocotools encodes the exact synthetic instance ground truth into the standard COCO run-length (RLE) mask format
 (`masks.json`), so the committed masks are read by every eval toolkit (COCO, detectron2, mmdet) and, crucially, by
 the browser. The web app decodes those same RLE strings with a line-for-line TypeScript port
 (`frontend/src/lib/rle.ts`), so "SAM vs ground truth" is overlaid on the real committed masks, not an approximation.
@@ -23,13 +23,13 @@ the ground truth as COCO RLE means the masks are portable to any standard evalua
 compressed, column-major), and the same bytes decode identically in Python and in the browser. The mask AP
 protocol used to score every method (`segment.mask_ap`) is the COCO AP@[.5:.05:.95] definition.
 
-## What it is NOT
+## What it is not
 
-- It does NOT run in the browser. pycocotools is a C-extension Python package; the browser uses the pure-TS decode
+- It does not run in the browser. pycocotools is a C-extension Python package; the browser uses the pure-TS decode
   port `rle.ts`, which mirrors pycocotools' `maskApi.c` (`rleFrString` + `rleDecode`) exactly.
-- It is NOT the source of the masks. The masks come from the Laguerre generator's exact label map; pycocotools only
-  ENCODES that known ground truth into the transport format. There is no model inference here.
-- It is NOT used for the live SAM masks' storage. The live masks are produced in-browser and compared against the
+- It is not the source of the masks. The masks come from the Laguerre generator's exact label map; pycocotools only
+  encodes that known ground truth into the transport format. There is no model inference here.
+- It is not used for the live SAM masks' storage. The live masks are produced in-browser and compared against the
   decoded GT; only the synthetic ground truth is committed as RLE.
 
 ## Theory and equations
@@ -94,7 +94,7 @@ def masks_to_coco_rle(labels: np.ndarray) -> list[dict]:
     return out
 ```
 
-Decode the SAME strings in the browser (from `rle.ts`, a port of pycocotools `maskApi.c`):
+Decode the same strings in the browser (from `rle.ts`, a port of pycocotools `maskApi.c`):
 
 ```ts
 export function decodeInstance(inst: MaskInstance): Uint8Array {
@@ -122,10 +122,10 @@ export function decodeInstance(inst: MaskInstance): Uint8Array {
   matches the source, so a single changed byte fails the gate. The masks are therefore provably lossless.
 - **Browser overlay** (`rle.ts` `decodeLabels`): decodes `masks.json` into an int32 label map to draw the exact GT
   under the live SAM masks in the App/Experiments. Because the decoder is a faithful port of pycocotools, it
-  recovers the SAME instances (same count) and therefore the SAME Sauter mean d32 as the Python encode, which is the
+  recovers the same instances (same count) and therefore the same Sauter mean d32 as the Python encode, which is the
   cross-language guarantee the "SAM vs GT" comparison rests on.
 
-## Applying it to OTHER data
+## Applying it to other data
 
 - **COCO RLE is the portable instance-mask format for any dataset**: swap the froth labels for cells, parts,
   defects, or any int32 instance map and `masks_to_coco_rle` produces a `masks.json` that detectron2, mmdet, or the

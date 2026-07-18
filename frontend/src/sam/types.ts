@@ -1,4 +1,4 @@
-// Shared types for the SAM-class froth segmenter. The SAME module runs in the browser (onnxruntime-web +
+// Shared types for the SAM-class froth segmenter. The same module runs in the browser (onnxruntime-web +
 // WebGPU) and in Node (onnxruntime-node) for the offline verification harness, so it depends only on
 // @huggingface/transformers + typed arrays, never on the DOM.
 

@@ -72,7 +72,7 @@ if (env.backends?.onnx?.wasm) env.backends.onnx.wasm.numThreads = 1;
 const model = await SamModel.from_pretrained('Xenova/slimsam-77-uniform', { device: 'webgpu', dtype: 'fp32' });
 const processor = await AutoProcessor.from_pretrained('Xenova/slimsam-77-uniform');
 
-// 1) Encode the image ONCE (heavy). This is the only full forward through the ViT encoder.
+// 1) Encode the image once (heavy). This is the only full forward through the ViT encoder.
 const inputs = await processor(image); // image = a transformers.js RawImage
 const emb = await model.get_image_embeddings(inputs);
 

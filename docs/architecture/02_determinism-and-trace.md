@@ -29,7 +29,7 @@ Per case, `stages/export.py` writes, under `data/derived/synth/<case>/`:
 | File | Format | Content |
 |---|---|---|
 | `frame.png` | 8-bit grayscale PNG (Pillow) | the rendered froth image |
-| `masks.json` | COCO-RLE (`pycocotools.mask.encode`) | the EXACT per-bubble instance ground truth; one record per instance with `counts`, `area`, `bbox` |
+| `masks.json` | COCO-RLE (`pycocotools.mask.encode`) | the exact per-bubble instance ground truth; one record per instance with `counts`, `area`, `bbox` |
 | `bsd.csv` | CSV + commented header | per-instance morphometry rows (`id, area_px, d_eq_px, ecc, solidity`) with the BSD summary in the header line |
 | `benchmark.json` | JSON | the classical-floor scores (mask AP, AP50, AP75, BSD Wasserstein) per method |
 | `card.json` | JSON | the compact web selector card (`core/trace.py :: build_card`) |
@@ -51,7 +51,7 @@ Its output depends on model weights fetched from the HF Hub at runtime and on de
 floating point (WebGPU vs WASM vs onnxruntime-node), so it is **not** a pure function of `(spec, seed)` and
 cannot be sha-pinned. It is therefore a **recorded experiment result**, not a CONTRACT-2 artifact:
 `frontend/scripts/verify_sam.ts` runs the exact `frontend/src/sam` module in Node and dumps per-case labels,
-then `scripts/bake_sam_benchmark.py` regenerates the ground truth and scores those labels with the SAME
+then `scripts/bake_sam_benchmark.py` regenerates the ground truth and scores those labels with the same
 `fslab.science.segment.mask_ap` and `bsd_wasserstein` the floor uses, writing `data/derived/sam_benchmark.json`
 (schema `frothseg.sam_benchmark/v1`) once. That committed record holds the verified numbers the Experiments and
 Benchmark pages transcribe: mean SAM AP 0.365 vs floor 0.262 across 13 cases, SAM winning 10 of 13. It is

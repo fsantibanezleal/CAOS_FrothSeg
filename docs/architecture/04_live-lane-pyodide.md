@@ -3,8 +3,8 @@
 FrothSeg's flagship live capability is a **SAM-family foundation model running client-side**, not Pyodide
 recompute. `frontend/src/sam/` is one portable TypeScript module (`autoMask.ts`, `morphometry.ts`, `score.ts`,
 `frothState.ts`, `types.ts`) that depends only on `@huggingface/transformers` and typed arrays, never the DOM, so
-the SAME code runs in the browser (onnxruntime-web) and in Node (onnxruntime-node) for the offline verification.
-It segments the shipped froth frame or a user upload with NO froth training labels (zero-shot).
+the same code runs in the browser (onnxruntime-web) and in Node (onnxruntime-node) for the offline verification.
+It segments the shipped froth frame or a user upload with no froth training labels (zero-shot).
 
 ## The device path: WebGPU, with a single-threaded WASM fallback
 
@@ -66,7 +66,7 @@ provenance, the Apache-2.0 license, and the offline-degradation behaviour.
 
 Because `frontend/src/sam` has no DOM dependency, `frontend/scripts/verify_sam.ts` runs the exact segmenter under
 onnxruntime-node and dumps per-case labels, which `scripts/bake_sam_benchmark.py` scores against the exact
-synthetic ground truth using `fslab.science.segment.mask_ap` and `bsd_wasserstein`, the SAME functions the
+synthetic ground truth using `fslab.science.segment.mask_ap` and `bsd_wasserstein`, the same functions the
 classical floor is scored with (COCO-style AP over IoU 0.5:0.05:0.95; Lin et al. 2014). This is why the live
 browser numbers and the committed benchmark are comparable, and why the product's headline (mean SAM AP 0.365 vs
 floor 0.262 across 13 cases, SAM winning 10 of 13, and dramatically under glare, 0.407 vs 0.081) is a measured
