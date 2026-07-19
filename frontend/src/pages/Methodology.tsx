@@ -16,7 +16,7 @@ export default function Methodology() {
         <h1>{es ? 'Metodología' : 'Methodology'}</h1>
         <p className="lede">
           {es
-            ? 'El generador automático de máscaras SAM, el piso clásico, la distribución de tamaño de burbuja y el banco sintético, con la matemática término por término.'
+            ? 'El generador automático de máscaras SAM, el piso clásico, la distribución de tamaño de burbuja y el entorno sintético, con la matemática término por término.'
             : 'The SAM automatic mask generator, the classical floor, the bubble-size distribution, and the synthetic harness, with the maths term by term.'}
         </p>
       </div>
@@ -107,7 +107,7 @@ function Synth({ es }: { es: boolean }) {
     <>
       <p>
         {es
-          ? 'Como no hay máscaras de espuma públicas por burbuja, generamos espuma sintética cuya verdad de terreno es exacta por construcción, en el mismo formato que consume un cargador real (PNG + máscaras COCO-RLE + BSD). Es solo el banco de validación, no el producto.'
+          ? 'Como no hay máscaras de espuma públicas por burbuja, generamos espuma sintética cuya verdad de terreno es exacta por construcción, en el mismo formato que consume un cargador real (PNG + máscaras COCO-RLE + BSD). Es solo el entorno de validación, no el producto.'
           : 'Because there are no public per-bubble froth masks, we generate synthetic froth whose ground truth is exact by construction, in the same format a real loader consumes (PNG + COCO-RLE masks + BSD). It is only the validation harness, not the product.'}
       </p>
       <p>
@@ -132,7 +132,7 @@ function Score({ es }: { es: boolean }) {
       <p>{es ? 'La fidelidad de la distribución se mide con la distancia Wasserstein-1 entre los diámetros predichos y los verdaderos (0 = perfecto):' : 'Distribution fidelity is the Wasserstein-1 distance between predicted and true diameters (0 = perfect):'}</p>
       <Equation tex={String.raw`W_1(P, Q) = \int_{-\infty}^{\infty} \bigl| F_P(x) - F_Q(x) \bigr|\, dx`} caption={es ? 'distancia Wasserstein-1 entre las BSD (fidelidad de distribución)' : 'Wasserstein-1 distance between the BSDs (distribution fidelity)'} />
       <p className="fs-note good">
-        {es ? 'El AP sintético mide el método contra verdad conocida en un banco controlado; no es exactitud de planta real. Los resultados por caso están en Experiments y Benchmark.' : 'Synthetic AP measures the method against known truth on a controlled harness; it is not real-plant accuracy. Per-case results are in Experiments and Benchmark.'}
+        {es ? 'El AP sintético mide el método contra verdad conocida en un entorno controlado; no es exactitud de planta real. Los resultados por caso están en Experiments y Benchmark.' : 'Synthetic AP measures the method against known truth on a controlled harness; it is not real-plant accuracy. Per-case results are in Experiments and Benchmark.'}
       </p>
       <Refs ids={['lin2014coco']} label="Refs" />
     </>

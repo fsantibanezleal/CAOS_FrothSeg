@@ -171,7 +171,7 @@ export default function Tool() {
     setSource('upload');
   };
 
-  const froth = result ? classifyFroth(result.bsd, scale) : null;
+  const froth = result ? classifyFroth(result.bsd, scale, es ? 'es' : 'en') : null;
   const diams = result ? diametersFromLabels(result.labels) : [];
   const gtDiams = gt ? diametersFromLabels(gt) : [];
 
