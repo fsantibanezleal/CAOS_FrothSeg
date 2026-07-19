@@ -70,7 +70,7 @@ while on mock/synthetic data. Tag every release.
 - Pyodide-safe `live.bsd_from_labels` reduces a SAM/classical label map to the BSD summary (live == baked).
 
 ### Changed
-- **Replaced the EXAMPLE SIR domain** with the froth domain end to end: stages are now `generate -> benchmark ->
+- **Replaced the example SIR domain** with the froth domain end to end: stages are now `generate -> benchmark ->
   export` (plus `ingest` = the image gate); registry serves the 13 synthetic froth cases by category; example
   input is a froth frame (`data/examples/froth_sample.png`).
 - Pinned the real CV stack in `data-pipeline/requirements.txt` (scipy, scikit-image, opencv, pillow, pycocotools).

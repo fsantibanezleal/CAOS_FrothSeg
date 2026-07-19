@@ -59,7 +59,7 @@ export default function Benchmark() {
       <div className="page-head">
         <h1>Benchmark</h1>
         <p className="lede">
-          {es ? 'El barrido offline completo sobre todos los casos sintéticos: cada método del piso clásico y el segmentador SAM en vivo, con AP de máscara de instancia contra verdad de terreno exacta. Estos son los artefactos commiteados (vía de precómputo).' : 'The full offline sweep across all synthetic cases: every classical-floor method and the live SAM segmenter, with instance mask AP against exact ground truth. These are the committed artifacts (precompute lane).'}
+          {es ? 'El barrido offline completo sobre todos los casos sintéticos: cada método del piso clásico y el segmentador SAM en vivo, con AP de máscara de instancia contra verdad de terreno exacta. Estos son los artefactos versionados (vía de precómputo).' : 'The full offline sweep across all synthetic cases: every classical-floor method and the live SAM segmenter, with instance mask AP against exact ground truth. These are the committed artifacts (precompute lane).'}
         </p>
       </div>
 
@@ -114,7 +114,7 @@ export default function Benchmark() {
           {sam && (
             <>
               <p className="fs-note good">
-                {es ? `Resumen: AP medio SAM ${sam.summary.mean_sam_ap} vs piso ${sam.summary.mean_floor_ap} (ventaja ${sam.summary.delta}), SAM gana ${sam.summary.sam_wins}/${sam.summary.n_cases} casos. El AP sintético es un banco controlado, no exactitud de planta real.` : `Summary: mean SAM AP ${sam.summary.mean_sam_ap} vs floor ${sam.summary.mean_floor_ap} (advantage ${sam.summary.delta}), SAM wins ${sam.summary.sam_wins}/${sam.summary.n_cases} cases. Synthetic AP is a controlled harness, not real-plant accuracy.`}
+                {es ? `Resumen: AP medio SAM ${sam.summary.mean_sam_ap} vs piso ${sam.summary.mean_floor_ap} (ventaja ${sam.summary.delta}), SAM gana ${sam.summary.sam_wins}/${sam.summary.n_cases} casos. El AP sintético es un entorno controlado, no exactitud de planta real.` : `Summary: mean SAM AP ${sam.summary.mean_sam_ap} vs floor ${sam.summary.mean_floor_ap} (advantage ${sam.summary.delta}), SAM wins ${sam.summary.sam_wins}/${sam.summary.n_cases} cases. Synthetic AP is a controlled harness, not real-plant accuracy.`}
               </p>
               <Refs ids={['kirillov2023', 'meyer1994', 'achanta2012slic', 'lin2014coco']} label="Refs" />
             </>
