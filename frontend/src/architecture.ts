@@ -1,6 +1,6 @@
 // In-app Architecture / "How it works" modal config (ADR-0058) for FrothSeg. Passed to
 // <AppShell config={{ ...config, architecture }}>. The header ⓘ button opens the modal; each tab pairs a
-// hand-authored THEMED SVG (frontend/public/svg/tech/, shell CSS-var tokens -> repaints with the theme) with a
+// hand-authored themed SVG (frontend/public/svg/tech/, shell CSS-var tokens -> repaints with the theme) with a
 // bilingual EN/ES body.
 import type { ArchitectureConfig } from '@fasl-work/caos-app-shell';
 
@@ -24,7 +24,7 @@ export const architecture: ArchitectureConfig = {
         'burbuja (BSD) y el estado de la espuma, completamente en el navegador. Recibe un cuadro (una foto ' +
         'real de espuma, o una muestra sintética) y devuelve las máscaras por burbuja, la distribución de ' +
         'tamaño (D10/D50/D90, la media de Sauter d32) y una lectura del estado de la espuma.\n\n' +
-        'Es un banco de trabajo real, no un demo. El segmentador se ejecuta de verdad sobre el cuadro provisto; nada ' +
+        'Es un entorno interactivo real, no una demo. El segmentador se ejecuta de verdad sobre el cuadro provisto; nada ' +
         'en la ruta en vivo está precalculado. Un gate CONTRACT-1 valida el cuadro (tamaño, contraste, brillo) y un ' +
         'front-end liviano de aplanado de iluminación + de-brillo normaliza el brillo real antes del modelo.',
     },
@@ -72,7 +72,7 @@ export const architecture: ArchitectureConfig = {
         'WASM-SIMD): el modelo se descarga una vez desde el hub de Hugging Face y se cachea; la inferencia se ejecuta en ' +
         'el cliente sobre el cuadro. La vía de precómputo es el benchmark offline: los casos sintéticos y los ' +
         'puntajes del piso clásico se precalculan con el pipeline de Python (scikit-image/OpenCV, no aptos para Pyodide) ' +
-        'y se commitean como artefactos que la web solo lee.\n\n' +
+        'y se versionan como artefactos que la web solo lee.\n\n' +
         'La división de vías es una medición, registrada en cada manifiesto de caso, no una suposición: el benchmark ' +
         'sintético es precómputo; la segmentación SAM es en vivo en JS.',
     },
@@ -91,7 +91,7 @@ export const architecture: ArchitectureConfig = {
         'Dos contratos de datos acotan el producto. CONTRACT 1 (ingesta) es el gate de espuma propia: un ' +
         'cuadro se acepta solo si es una imagen real y usable (tamaño, rango dinámico), se rechaza con una razón en ' +
         'caso contrario, y se marca (brillo, bajo contraste, subexposición) para que el front-end y la UI ' +
-        'reaccionen. CONTRACT 2 (artefacto) es el registro commiteado: cada caso sintético incluye frame.png, ' +
+        'reaccionen. CONTRACT 2 (artefacto) es el registro versionado: cada caso sintético incluye frame.png, ' +
         'máscaras COCO-RLE, un CSV de BSD, el benchmark y un manifiesto con el sha256 de cada artefacto, ' +
         're-verificado en CI para que una deriva silenciosa rompa el build.',
     },
@@ -106,9 +106,9 @@ export const architecture: ArchitectureConfig = {
         '(SAM vs floor across the coverage cases) and Benchmark (the committed offline sweep). The App reacts to its ' +
         'source selector and live controls; the doc pages transcribe the persisted research, not memory.',
       body_es:
-        'Las seis páginas: la App (el banco en vivo), Introduction, Methodology (el generador automático de máscaras ' +
+        'Las seis páginas: la App (el entorno en vivo), Introduction, Methodology (el generador automático de máscaras ' +
         'SAM + el piso clásico, con la matemática real en KaTeX), Implementation (el stack + contratos + vías), ' +
-        'Experiments (SAM vs piso a lo largo de los casos de cobertura) y Benchmark (el barrido offline commiteado). ' +
+        'Experiments (SAM vs piso a lo largo de los casos de cobertura) y Benchmark (el barrido offline versionado). ' +
         'La App reacciona a su selector de fuente y controles en vivo; las páginas de documentación transcriben la ' +
         'investigación persistida, no la memoria.',
     },
