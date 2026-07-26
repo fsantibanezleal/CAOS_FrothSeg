@@ -1,4 +1,4 @@
-import { Refs, SubTabs, useShellLang } from '@fasl-work/caos-app-shell';
+import { Callout, Equation, Refs, SubTabs, useShellLang } from '@fasl-work/caos-app-shell';
 
 export default function Implementation() {
   const es = useShellLang() === 'es';
@@ -10,6 +10,7 @@ export default function Implementation() {
     { id: 'runtimes', label: es ? 'Runtimes científicos' : 'Scientific runtimes', content: <Runtimes es={es} /> },
     { id: 'reproducibility', label: es ? 'Reproducibilidad' : 'Reproducibility', content: <Reproducibility es={es} /> },
     { id: 'extension', label: es ? 'Extender' : 'Extend', content: <Extension es={es} /> },
+    { id: 'deployment', label: es ? 'Despliegue' : 'Deployment', content: <Deployment es={es} /> },
   ];
   return (
     <div className="page-body prose fs-science-page">
@@ -32,16 +33,21 @@ function Architecture({ es }: { es: boolean }) {
     <div className="fs-implementation-chapter">
       <ImplLead n="01" title={es ? 'Separación por responsabilidad, conectada por contratos' : 'Separation by responsibility, connected by contracts'} text={es ? 'Los datos crudos nunca dependen de la web; la web nunca decide resultados científicos. Cada frontera tiene un formato verificable.' : 'Raw data never depends on the web; the web never decides scientific results. Every boundary has a verifiable format.'} />
       <SystemArchitectureDiagram es={es} />
+      <Equation
+        tex={String.raw`\mathrm{release}=\operatorname{Verify}\!\left(H(\mathrm{data}),H(\mathrm{code}),H(\mathrm{model}),H(\mathrm{artifacts})\right)`}
+        caption={es ? 'La publicación verifica identidades criptográficas; no recalcula la ciencia.' : 'Publication verifies cryptographic identities; it does not recompute the science.'}
+      />
       <div className="fs-architecture-notes">
         <article><span>A</span><strong>{es ? 'Plano científico' : 'Scientific plane'}</strong><p>{es ? 'Ingesta, generación, entrenamiento GPU, inferencia oficial, evaluación y exportación.' : 'Ingestion, generation, GPU training, official inference, evaluation, and export.'}</p></article>
         <article><span>B</span><strong>{es ? 'Plano de evidencia' : 'Evidence plane'}</strong><p>{es ? 'Manifiestos, hashes, métricas, checkpoints, reportes y artefactos canónicos.' : 'Manifests, hashes, metrics, checkpoints, reports, and canonical artifacts.'}</p></article>
         <article><span>C</span><strong>{es ? 'Superficie web' : 'Web surface'}</strong><p>{es ? 'Explora resultados precalculados y ejecuta solo motores livianos sobre cargas.' : 'Explores precomputed results and runs only lightweight engines on uploads.'}</p></article>
       </div>
-      <p className="fs-note good">
+      <Callout variant="honest" title={es ? 'Frontera de autoridad' : 'Authority boundary'}>
         {es
           ? 'El despliegue copia artefactos ya verificados. No genera datos, no entrena y no ejecuta el benchmark.'
           : 'Deployment copies already verified artifacts. It does not generate data, train models, or run the benchmark.'}
-      </p>
+      </Callout>
+      <Refs ids={['lin2014coco', 'ravi2024sam2', 'aldrich2010']} label="Refs" />
     </div>
   );
 }
@@ -71,6 +77,11 @@ function Repository({ es }: { es: boolean }) {
           ? 'El entorno de pipeline contiene NumPy, SciPy, scikit-image, OpenCV y pycocotools. El entorno GPU añade PyTorch y runtimes oficiales. StarDist conserva su entorno TensorFlow separado para evitar resolver stacks incompatibles dentro de una sola instalación.'
           : 'The pipeline environment contains NumPy, SciPy, scikit-image, OpenCV, and pycocotools. The GPU environment adds PyTorch and official runtimes. StarDist keeps a separate TensorFlow environment to avoid resolving incompatible stacks in one installation.'}
       </p>
+      <Equation tex={String.raw`\mathcal E_{\mathrm{runtime}}\cap\mathcal E_{\mathrm{gpu}}=\mathcal E_{\mathrm{shared}}`} caption={es ? 'Los entornos comparten solo contratos y dependencias compatibles.' : 'Environments share only contracts and compatible dependencies.'} />
+      <Callout variant="honest" title={es ? 'Estructura pública' : 'Public structure'}>
+        {es ? 'Los nombres mostrados corresponden a módulos versionados del repositorio público; no revelan rutas locales, secretos ni infraestructura privada.' : 'Shown names refer to versioned modules in the public repository; they expose no local paths, secrets, or private infrastructure.'}
+      </Callout>
+      <Refs ids={['ronneberger2015unet', 'schmidt2018stardist', 'stringer2021cellpose']} label="Refs" />
     </div>
   );
 }
@@ -112,6 +123,7 @@ function Pipelines({ es }: { es: boolean }) {
     <div className="fs-implementation-chapter">
       <ImplLead n="03" title={es ? 'Pipelines distintos para decisiones distintas' : 'Distinct pipelines for distinct decisions'} text={es ? 'Procesar, entrenar, inferir, evaluar y publicar son operaciones independientes. Pueden repetirse sin convertir una compilación web en un experimento científico.' : 'Processing, training, inference, evaluation, and publication are independent operations. They can be repeated without turning a web build into a scientific experiment.'} />
       <PipelineOrchestrationDiagram es={es} />
+      <Equation tex={String.raw`R_{k+1}=S_k(R_k;\,c,s),\qquad H(R_{k+1})\;\text{recorded}`} caption={es ? 'Cada etapa Sₖ transforma un directorio de corrida con configuración c y semilla s.' : 'Each stage Sₖ transforms a run directory using configuration c and seed s.'} />
       <div className="fs-pipeline-tracks">
         {tracks.map((track) => (
           <article key={track.id}>
@@ -121,11 +133,12 @@ function Pipelines({ es }: { es: boolean }) {
           </article>
         ))}
       </div>
-      <p className="fs-note">
+      <Callout variant="honest" title={es ? 'Mutabilidad controlada' : 'Controlled mutability'}>
         {es
-          ? 'Las corridas de prueba y CI escriben en un directorio sandbox indicado por --output. Solo una operación de release explícita actualiza data/derived.'
-          : 'Test and CI runs write to an explicit sandbox directory through --output. Only an intentional release operation updates data/derived.'}
-      </p>
+          ? 'Las corridas de prueba y CI escriben en un directorio sandbox indicado por --output. Solo una operación de release explícita actualiza los artefactos canónicos.'
+          : 'Test and CI runs write to an explicit sandbox directory through --output. Only an intentional release operation updates canonical artifacts.'}
+      </Callout>
+      <Refs ids={['lin2014coco', 'kuhn1955hungarian', 'luiten2021hota']} label="Refs" />
     </div>
   );
 }
@@ -143,15 +156,20 @@ function Artifacts({ es }: { es: boolean }) {
     <div className="fs-implementation-chapter">
       <ImplLead n="04" title={es ? 'Los resultados científicos son artefactos direccionables' : 'Scientific results are addressable artifacts'} text={es ? 'Una cifra visible puede rastrearse hasta un método, una muestra, un checkpoint y una configuración. El manifiesto hace esa cadena verificable por máquinas.' : 'A visible number can be traced to a method, sample, checkpoint, and configuration. The manifest makes that chain machine-verifiable.'} />
       <ArtifactContractDiagram es={es} />
+      <Equation tex={String.raw`a=\left(p,\;n,\;H_{\mathrm{SHA256}},\;\sigma,\;v\right)`} caption={es ? 'Cada artefacto registra ruta p, bytes n, hash, esquema σ y versión v.' : 'Every artifact records path p, byte count n, hash, schema σ, and version v.'} />
       <div className="fs-artifact-cards">
         {artifactTypes.map(([name, purpose, evidence]) => <article key={name}><code>{name}</code><p>{purpose}</p><span>{evidence}</span></article>)}
       </div>
       <h3>{es ? 'Contrato del showcase' : 'Showcase contract'}</h3>
       <p>
         {es
-          ? 'Cada uno de los 15 métodos se cruza con los 13 casos canónicos: 195 pares obligatorios. Cada par contiene visualización y análisis compacto. El manifiesto temporal añade cinco secuencias de ocho cuadros con tres artefactos verificados por cuadro.'
-          : 'Each of the 15 methods is crossed with all 13 canonical cases: 195 required pairs. Every pair contains a visualization and compact analysis. The temporal manifest adds five eight-frame sequences with three verified artifacts per frame.'}
+          ? 'Cada uno de los 15 métodos se cruza con los 12 casos de presentación: 180 pares obligatorios. El control diagnóstico vacío permanece en el benchmark de 13 casos. Cada par visible contiene visualización y análisis compacto. El manifiesto temporal añade cinco secuencias de ocho cuadros con artefactos verificados por cuadro.'
+          : 'Each of the 15 methods is crossed with all 12 presentation cases: 180 required pairs. The empty diagnostic control remains in the 13-case benchmark. Every visible pair contains a visualization and compact analysis. The temporal manifest adds five eight-frame sequences with verified artifacts per frame.'}
       </p>
+      <Callout variant="honest" title={es ? 'Integridad' : 'Integrity'}>
+        {es ? 'Un archivo faltante, extra, duplicado o con hash distinto invalida el paquete completo; la interfaz no rellena huecos.' : 'A missing, extra, duplicated, or hash-mismatched file invalidates the complete package; the interface does not fill gaps.'}
+      </Callout>
+      <Refs ids={['lin2014coco', 'villani2009ot']} label="Refs" />
     </div>
   );
 }
@@ -172,11 +190,15 @@ function Runtimes({ es }: { es: boolean }) {
         {groups.map(([id, runtime, description], index) => <article key={id}><span>{String(index + 1).padStart(2, '0')}</span><div><strong>{id}</strong><code>{runtime}</code><p>{description}</p></div></article>)}
       </div>
       <h3>{es ? 'Paridad entre runtimes' : 'Cross-runtime parity'}</h3>
+      <Equation tex={String.raw`\Delta_{\mathrm{AP}}=\left|\mathrm{AP}_{web}-\mathrm{AP}_{offline}\right|\le 0.03`} caption={es ? 'Tolerancia máxima de AP para aceptar un gemelo interactivo clásico.' : 'Maximum AP tolerance for accepting a classical interactive twin.'} />
       <p>
         {es
           ? 'Los motores interactivos clásicos se comparan contra Python sobre condiciones retenidas mediante AP, F-score de frontera y razón de conteo. Un método solo aparece para cargas si pasa esa puerta; el resto permanece disponible como resultado precalculado.'
           : 'Interactive classical engines are compared against Python on held-out conditions using AP, boundary F-score, and count ratio. A method appears for uploads only if it passes that gate; every other method remains available as a precomputed result.'}
       </p>
+      <Callout variant="honest" title={es ? 'Disponibilidad' : 'Availability'}>
+        {es ? 'Una dependencia instalada no prueba una implementación. El registro exige checkpoint o configuración, inferencia, evaluación retenida, artefactos y documentación.' : 'An installed dependency does not prove implementation. The registry requires a checkpoint or configuration, inference, held-out evaluation, artifacts, and documentation.'}
+      </Callout>
       <Refs ids={['meyer1994', 'achanta2012slic', 'kirillov2023']} label="Refs" />
     </div>
   );
@@ -187,7 +209,7 @@ function Reproducibility({ es }: { es: boolean }) {
     [es ? 'Datos' : 'Data', es ? 'split por grupo, licencia, escala y checksum' : 'group split, license, scale, and checksum'],
     [es ? 'Código' : 'Code', es ? 'commit y versión de dependencias' : 'commit and dependency versions'],
     [es ? 'Modelo' : 'Model', es ? 'semilla, dispositivo, checkpoint y calibración' : 'seed, device, checkpoint, and calibration'],
-    [es ? 'Cobertura' : 'Coverage', es ? '960 celdas y 195 pares canónicos' : '960 cells and 195 canonical pairs'],
+    [es ? 'Cobertura' : 'Coverage', es ? '960 celdas, 180 pares visibles y benchmark de 13 casos' : '960 cells, 180 visible pairs, and a 13-case benchmark'],
     [es ? 'Interfaz' : 'Interface', es ? 'rutas, temas, móvil, errores y contratos' : 'routes, themes, mobile, errors, and contracts'],
     [es ? 'Release' : 'Release', es ? 'reporte, versión, CI, despliegue y SHA exacto' : 'report, version, CI, deployment, and exact SHA'],
   ];
@@ -195,6 +217,7 @@ function Reproducibility({ es }: { es: boolean }) {
     <div className="fs-implementation-chapter">
       <ImplLead n="06" title={es ? 'Una cadena de custodia para resultados' : 'A chain of custody for results'} text={es ? 'Reproducir no significa solo volver a ejecutar: significa demostrar que la entrada, el código, la decisión y la salida corresponden a la misma corrida.' : 'Reproducibility means more than rerunning: it means proving that input, code, decision, and output belong to the same run.'} />
       <VerificationGateDiagram es={es} />
+      <Equation tex={String.raw`\mathrm{complete}=\bigwedge_{g\in G}\mathrm{pass}(g),\qquad G=\{\mathrm{data,science,artifacts,content,UI,release}\}`} caption={es ? 'La completitud es una conjunción: una puerta fallida detiene la release.' : 'Completeness is a conjunction: one failed gate stops the release.'} />
       <div className="fs-gate-grid">
         {gates.map(([title, text], index) => <article key={title}><span>{index + 1}</span><strong>{title}</strong><p>{text}</p></article>)}
       </div>
@@ -204,6 +227,10 @@ function Reproducibility({ es }: { es: boolean }) {
           ? 'Faltan muestras, métodos o métricas; un hash no coincide; un checkpoint aprendido no existe; la calibración usa test; la documentación anuncia otra disponibilidad; la web no carga un par canónico; o la versión esperada no coincide con el tag.'
           : 'A release fails when samples, methods, or metrics are missing; a hash drifts; a learned checkpoint is absent; calibration uses test; documentation advertises different availability; the web cannot load a canonical pair; or the expected version does not match the tag.'}
       </p>
+      <Callout variant="honest" title={es ? 'Pruebas no equivalen a valor' : 'Tests do not equal value'}>
+        {es ? 'Las puertas prueban consistencia y cobertura. La utilidad industrial permanece separada y requiere evidencia externa gobernada.' : 'The gates prove consistency and coverage. Industrial usefulness remains separate and requires governed external evidence.'}
+      </Callout>
+      <Refs ids={['aldrich2010', 'brier1950']} label="Refs" />
     </div>
   );
 }
@@ -217,15 +244,44 @@ function Extension({ es }: { es: boolean }) {
         <li><span>02</span><div><strong>{es ? 'Implementar' : 'Implement'}</strong><p>{es ? 'Inferencia sobre imagen y lote; entrenamiento/exportación si aprende.' : 'Image and batch inference; training/export when learned.'}</p></div></li>
         <li><span>03</span><div><strong>{es ? 'Calibrar' : 'Calibrate'}</strong><p>{es ? 'Fijar umbrales en calibration, nunca en test.' : 'Fix thresholds on calibration, never on test.'}</p></div></li>
         <li><span>04</span><div><strong>{es ? 'Evaluar' : 'Evaluate'}</strong><p>{es ? 'Completar las 64 muestras, métricas, runtime, memoria y tamaño.' : 'Complete all 64 samples, metrics, runtime, memory, and size.'}</p></div></li>
-        <li><span>05</span><div><strong>{es ? 'Publicar' : 'Publish'}</strong><p>{es ? 'Generar los 13 casos, actualizar manifiestos y verificar hashes.' : 'Generate all 13 cases, update manifests, and verify hashes.'}</p></div></li>
+        <li><span>05</span><div><strong>{es ? 'Publicar' : 'Publish'}</strong><p>{es ? 'Generar los 12 casos de presentación, conservar el control vacío en el benchmark, actualizar manifiestos y verificar hashes.' : 'Generate the 12 presentation cases, retain the empty control in the benchmark, update manifests, and verify hashes.'}</p></div></li>
         <li><span>06</span><div><strong>{es ? 'Documentar' : 'Document'}</strong><p>{es ? 'Explicar hipótesis, formulación, limitaciones, resultados y reproducción.' : 'Explain hypothesis, formulation, limitations, results, and reproduction.'}</p></div></li>
       </ol>
+      <Equation tex={String.raw`|\mathcal M_{\mathrm{test}}|=64,\qquad |\mathcal M_{\mathrm{canonical}}|=12`} caption={es ? 'Un método nuevo completa test y los doce casos de exposición; el control vacío permanece en benchmark.' : 'A new method completes the test and twelve presentation cases; the empty control remains in the benchmark.'} />
       <pre className="fs-command">{`# Validate without touching canonical artifacts
 python -m fslab.pipeline all --output runs/precompute-check
 python scripts/evaluate_<method>.py --split test --output runs/<method>
 python -m fslab.pipeline showcase --input runs/release --output runs/showcase
 python scripts/check_product_completeness.py --profile development`}</pre>
+      <Refs ids={['zhu2025gcfsegnet', 'fan2024parallel', 'carion2025sam3']} label="Refs" />
     </div>
+  );
+}
+
+function Deployment({ es }: { es: boolean }) {
+  return (
+    <div className="fs-implementation-chapter">
+      <ImplLead n="08" title={es ? 'Publicar el artefacto exacto que fue validado' : 'Publish the exact artifact that was validated'} text={es ? 'La release enlaza versión, commit, bundle web y manifiestos científicos. El servidor estático recibe ese estado inmutable; no ejecuta entrenamiento ni inferencia canónica.' : 'A release binds version, commit, web bundle, and scientific manifests. Static hosting receives that immutable state; it performs no training or canonical inference.'} />
+      <FlowDiagram stages={es ? ['Validar', 'Construir', 'Firmar', 'Publicar', 'Comprobar'] : ['Validate', 'Build', 'Sign', 'Publish', 'Verify']} />
+      <Equation tex={String.raw`H(B_{\mathrm{deployed}})=H(B_{\mathrm{validated}}),\qquad commit_{\mathrm{deploy}}=commit_{\mathrm{release}}`} caption={es ? 'El bundle desplegado debe ser idéntico al validado y pertenecer al mismo commit.' : 'The deployed bundle must equal the validated bundle and belong to the same commit.'} />
+      <p>{es ? 'La verificación posterior solicita las seis rutas, los chunks dinámicos, los manifiestos y una muestra de artefactos grandes. También confirma que los enlaces profundos cargan mediante el fallback de SPA.' : 'Post-deploy verification requests all six routes, dynamic chunks, manifests, and a sample of large artifacts. It also confirms that deep links load through the SPA fallback.'}</p>
+      <p>{es ? 'El control operativo registra la ejecución de CI, la ejecución de despliegue, el commit exacto y la URL pública. Una página alcanzable con evidencia científica antigua se considera una falla.' : 'Operational evidence records the CI run, deployment run, exact commit, and public URL. A reachable page serving stale scientific evidence is considered a failure.'}</p>
+      <Callout variant="honest" title={es ? 'Sin cómputo científico online' : 'No online scientific compute'}>
+        {es ? 'La interacción de carga es una herramienta adicional y limitada. El benchmark, el entrenamiento y las predicciones oficiales permanecen offline y se publican como evidencia verificable.' : 'Upload interaction is an additional bounded tool. Benchmarking, training, and official predictions remain offline and are published as verifiable evidence.'}
+      </Callout>
+      <Refs ids={['onnxruntimeweb', 'webgpu']} label="Refs" />
+    </div>
+  );
+}
+
+function FlowDiagram({ stages }: { stages: string[] }) {
+  return (
+    <figure className="fs-orchestration-diagram">
+      <svg viewBox="0 0 1080 220" role="img">
+        <defs><marker id="deploy-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="currentColor" /></marker></defs>
+        {stages.map((stage, index) => <g key={stage} transform={`translate(${20 + index * 212} 48)`}><rect width="170" height="90" rx="14" /><text x="85" y="52" textAnchor="middle">{stage}</text>{index < stages.length - 1 && <path d="M170 45H202" markerEnd="url(#deploy-arrow)" />}</g>)}
+      </svg>
+    </figure>
   );
 }
 

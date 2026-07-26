@@ -1,4 +1,4 @@
-import { Equation, Refs, SubTabs, useShellLang } from '@fasl-work/caos-app-shell';
+import { Callout, Equation, Refs, SubTabs, useShellLang } from '@fasl-work/caos-app-shell';
 
 export default function Methodology() {
   const es = useShellLang() === 'es';
@@ -51,11 +51,26 @@ function Protocol({ es }: { es: boolean }) {
           ? 'La ingesta valida forma, rango dinámico y metadatos de agrupación. La inferencia emite etiquetas de instancia y probabilidades cuando existen. La evaluación consume únicamente esos contratos: ningún evaluador conoce detalles internos del modelo.'
           : 'Ingestion validates shape, dynamic range, and grouping metadata. Inference emits instance labels and probabilities when available. Evaluation consumes only those contracts: no evaluator knows model internals.'}
       </p>
-      <p className="fs-note good">
+      <Equation
+        tex={String.raw`\mathcal D=\mathcal D_{\mathrm{train}}\;\dot\cup\;\mathcal D_{\mathrm{val}}\;\dot\cup\;\mathcal D_{\mathrm{cal}}\;\dot\cup\;\mathcal D_{\mathrm{test}}`}
+        caption={es ? 'Partición disjunta: ninguna unidad geométrica aparece en más de un split.' : 'Disjoint partition: no geometry unit appears in more than one split.'}
+      />
+      <Equation
+        tex={String.raw`\hat\theta=\arg\max_{\theta}\operatorname{AP}_{\mathrm{val}}(\theta),\qquad \hat\tau=\arg\max_{\tau}\operatorname{AP}_{\mathrm{cal}}(\hat\theta,\tau)`}
+        caption={es ? 'Los pesos se seleccionan en validación y los umbrales en calibración.' : 'Weights are selected on validation and thresholds on calibration.'}
+      />
+      <p>{es
+        ? 'El contrato impide comparar métodos con reglas de decisión distintas. Una falla de inferencia permanece como una celda fallida; nunca se elimina del denominador ni se reemplaza por cero sin registrar el estado.'
+        : 'The contract prevents comparing methods under different decision rules. An inference failure remains a failed cell; it is never dropped from the denominator or silently replaced by zero.'}</p>
+      <p>{es
+        ? 'Los casos canónicos explican mecanismos y errores, mientras que las 64 muestras retenidas determinan el ranking. Esta separación evita escoger imágenes visualmente convenientes después de conocer los resultados.'
+        : 'Canonical cases explain mechanisms and failures, while the 64 held-out samples determine the ranking. This separation prevents selecting visually convenient images after results are known.'}</p>
+      <Callout variant="honest" title={es ? 'Alcance de la evidencia' : 'Evidence scope'}>
         {es
-          ? 'El conjunto canónico de 13 casos sirve para explicación visual y diagnóstico. No se mezcla con el ranking de prueba.'
-          : 'The 13-case canonical set is used for visual explanation and diagnosis. It is never mixed into the test ranking.'}
-      </p>
+          ? 'La cadena demuestra reproducibilidad en el banco controlado. No convierte datos sintéticos en exactitud industrial ni permite ajustar el sistema después de consultar test.'
+          : 'The chain demonstrates reproducibility on the controlled benchmark. It does not turn synthetic data into industrial accuracy or permit tuning after inspecting the test set.'}
+      </Callout>
+      <Refs ids={['lin2014coco', 'aldrich2010']} label="Refs" />
     </div>
   );
 }
@@ -99,6 +114,23 @@ function DataProtocol({ es }: { es: boolean }) {
           ? 'El diseño cruza espuma fina, gruesa, bimodal, acuosa y cargada con brillo, baja luz, desenfoque, movimiento, encuadre parcial y combinaciones compuestas. La verdad exacta conserva área, contorno e identidad de cada burbuja.'
           : 'The design crosses fine, coarse, bimodal, watery, and loaded froth with glare, low light, defocus, motion, edge framing, and compound degradations. Exact truth preserves every bubble’s area, boundary, and identity.'}
       </p>
+      <Equation
+        tex={String.raw`g_i=g_j\Longrightarrow s_i=s_j,\qquad g_i\ne g_j\;\not\Longrightarrow\;s_i=s_j`}
+        caption={es ? 'Todas las apariencias de una geometría latente g comparten el mismo split s.' : 'All appearances of one latent geometry g share the same split s.'}
+      />
+      <Equation
+        tex={String.raw`d_{\mathrm{mm}}=\frac{d_{\mathrm{px}}}{\kappa},\qquad \kappa\;[\mathrm{px/mm}]`}
+        caption={es ? 'La conversión física requiere una calibración de cámara κ suministrada.' : 'Physical conversion requires a supplied camera calibration κ.'}
+      />
+      <p>{es
+        ? 'La unidad de partición incluye fuente, sitio, campaña, video y semilla geométrica. Dos cuadros adyacentes no pueden separarse entre train y test aunque sus píxeles no sean idénticos.'
+        : 'The split unit includes source, site, campaign, video, and geometry seed. Adjacent frames cannot be divided between train and test even when their pixels are not identical.'}</p>
+      <Callout variant="honest" title={es ? 'Datos reales' : 'Real data'}>
+        {es
+          ? 'Una imagen real sin máscara manual puede demostrar comportamiento y costo, pero no AP ni error de frontera. Las cifras de test real requieren anotación independiente y escala gobernada.'
+          : 'A real image without an independent manual mask can demonstrate behavior and cost, but not AP or boundary error. Real-test claims require independent annotation and governed scale.'}
+      </Callout>
+      <Refs ids={['weaire1999foams', 'aurenhammer1987', 'aldrich2010']} label="Refs" />
       <h3>{es ? 'Ingreso de datos industriales' : 'Industrial-data ingestion'}</h3>
       <p>
         {es
@@ -138,13 +170,31 @@ function Classical({ es }: { es: boolean }) {
         ))}
       </div>
       <h3>{es ? 'Formulación común del watershed' : 'Common watershed formulation'}</h3>
-      <Equation tex={String.raw`\hat{Y}=\operatorname{Watershed}\!\left(E,\;M,\;\Omega\right)`} />
+      <Equation
+        tex={String.raw`\hat{Y}=\operatorname{Watershed}\!\left(E,\;M,\;\Omega\right)`}
+        caption={es ? 'E es la elevación, M los marcadores y Ω el dominio permitido.' : 'E is the elevation, M the markers, and Ω the admissible domain.'}
+      />
       <p>
         {es
           ? 'E es la superficie de elevación (gradiente, borde o distancia negada), M son marcadores y Ω limita la región de espuma. C2–C5 y C7 difieren precisamente en cómo construyen esas tres cantidades.'
           : 'E is the elevation surface (gradient, boundary, or negative distance), M contains markers, and Ω limits the froth region. C2–C5 and C7 differ precisely in how those three quantities are constructed.'}
       </p>
-      <Refs ids={['meyer1994', 'vincent1991', 'achanta2012slic']} label="Refs" />
+      <Equation
+        tex={String.raw`D(x)=\min_{b\in\partial\Omega}\lVert x-b\rVert_2,\qquad M=\operatorname{Maxima}\!\left(H_h(D)\right)`}
+        caption={es ? 'C4 usa distancia euclidiana; C5 suprime máximos o mínimos someros con profundidad h.' : 'C4 uses Euclidean distance; C5 suppresses shallow extrema with depth h.'}
+      />
+      <p>{es
+        ? 'C1 prueba la hipótesis más débil: que el nivel de gris separa interior y fondo. C2 prueba si el gradiente crudo contiene cuencas útiles. C3–C5 controlan el número de cuencas mediante semillas o supresión morfológica.'
+        : 'C1 tests the weakest hypothesis: gray level separates interior and background. C2 tests whether the raw gradient contains useful basins. C3-C5 control basin count through markers or morphological suppression.'}</p>
+      <p>{es
+        ? 'C6 reduce la imagen a superpíxeles y fusiona regiones vecinas con evidencia de color y valle compartido. C7 invierte la atención: busca lamelas oscuras y las convierte en barreras, evitando confundir reflejos blancos con límites.'
+        : 'C6 reduces the image to superpixels and merges neighboring regions using color and shared-valley evidence. C7 reverses the cue: it seeks dark lamellae and turns them into barriers, avoiding the confusion of white highlights with boundaries.'}</p>
+      <Callout variant="honest" title={es ? 'Límite clásico' : 'Classical limit'}>
+        {es
+          ? 'Los siete métodos son ejecutables y útiles como controles, pero sus parámetros no se transfieren automáticamente entre cámaras, iluminación y regímenes de espuma.'
+          : 'All seven methods are executable and useful as controls, but their parameters do not transfer automatically across cameras, lighting, and froth regimes.'}
+      </Callout>
+      <Refs ids={['meyer1994', 'vincent1991', 'achanta2012slic', 'jahedsaravani2017', 'wang2003froth']} label="Refs" />
     </div>
   );
 }
@@ -172,18 +222,31 @@ function Learned({ es }: { es: boolean }) {
         {families.map(([id, title, text]) => <article key={id}><span>{id}</span><strong>{title}</strong><p>{text}</p></article>)}
       </div>
       <h3>{es ? 'Objetivos densos' : 'Dense targets'}</h3>
-      <Equation tex={String.raw`\mathcal{L}=\lambda_f\mathcal{L}_{Dice+BCE}(F)+\lambda_b\mathcal{L}_{BCE}(B)+\lambda_d\mathcal{L}_{SmoothL1}(D)+\lambda_c\mathcal{L}_{MSE}(C)`} />
+      <Equation
+        tex={String.raw`\mathcal{L}=\lambda_f\mathcal{L}_{Dice+BCE}(F)+\lambda_b\mathcal{L}_{BCE}(B)+\lambda_d\mathcal{L}_{SmoothL1}(D)+\lambda_c\mathcal{L}_{MSE}(C)`}
+        caption={es ? 'Objetivo multicanal de interior F, borde B, distancia D y centro C.' : 'Multi-head objective for interior F, boundary B, distance D, and center C.'}
+      />
       <p>
         {es
           ? 'F representa interior, B borde de instancia, D distancia normalizada al borde y C centros por instancia cuando el modelo los usa. En inferencia, D y C proponen semillas; B impide que la inundación atraviese lamelas.'
           : 'F represents interior, B instance boundary, D normalized distance to the boundary, and C per-instance centers when used. At inference, D and C propose markers; B prevents flooding across lamellae.'}
       </p>
-      <p className="fs-note">
+      <Equation
+        tex={String.raw`P_k(x)=p(x)\,\mathbf 1\!\left[r_k(x)>0\right],\qquad \mathbf v(x)=-\nabla\phi_k(x)`}
+        caption={es ? 'StarDist representa radios rₖ; Cellpose agrupa píxeles mediante un campo de flujo v.' : 'StarDist represents radial distances rₖ; Cellpose groups pixels through a flow field v.'}
+      />
+      <p>{es
+        ? 'L1–L3 aprenden campos densos y conservan un postproceso interpretable. L4 impone geometría estrellada; L5 usa un generalista de objetos densos; L6 resuelve detección y máscara por instancia; L7 aporta memoria de video.'
+        : 'L1-L3 learn dense fields while retaining interpretable post-processing. L4 imposes star-convex geometry; L5 uses a dense-object generalist; L6 solves detection and per-instance masks; L7 contributes video memory.'}</p>
+      <p>{es
+        ? 'N1 combina las señales que la física de espuma vuelve informativas: valle de lamela, distancia interior, centro y consistencia temporal. Sus variantes se seleccionan en validation y el resultado final se compara sin alterar el líder de referencia.'
+        : 'N1 combines signals made informative by froth physics: lamella valley, interior distance, center, and temporal consistency. Its variants are selected on validation and the finalist is compared without altering the reference leader.'}</p>
+      <Callout variant="honest" title={es ? 'Resultado actual' : 'Current result'}>
         {es
-          ? 'Cellpose-SAM es el líder medido del test con AP 0,510. La ablación preregistrada mejoró LamellaStar a AP 0,472, bajo el líder; se informa como mejora interna, no como superioridad.'
-          : 'Cellpose-SAM is the measured test leader at AP 0.510. The preregistered ablation improved LamellaStar to AP 0.472, below the leader; it is reported as an internal improvement, not superiority.'}
-      </p>
-      <Refs ids={['kirillov2023']} label="Refs" />
+          ? 'Cellpose-SAM lidera el test controlado con AP 0,510. LamellaStar alcanza AP 0,490 tras dos estudios preregistrados. No existe una afirmación de superioridad porque N1 no excede al líder bajo el mismo protocolo.'
+          : 'Cellpose-SAM leads the controlled test at AP 0.510. LamellaStar reaches AP 0.490 after two preregistered studies. There is no superiority claim because N1 does not exceed the leader under the same protocol.'}
+      </Callout>
+      <Refs ids={['ronneberger2015unet', 'schmidt2018stardist', 'stringer2021cellpose', 'redmon2016yolo', 'ravi2024sam2', 'zhu2025gcfsegnet', 'fan2024parallel']} label="Refs" />
     </div>
   );
 }
@@ -211,6 +274,24 @@ function Training({ es }: { es: boolean }) {
           ? 'Los entrenamientos PyTorch y los modelos fundacionales verifican CUDA cuando la corrida declara GPU; no existe una caída silenciosa a CPU. Los checkpoints se enlazan por SHA-256 y los exportadores verifican paridad numérica antes de aceptar un artefacto.'
           : 'PyTorch training and foundation-model runs verify CUDA whenever a run declares GPU; silent CPU fallback is not allowed. Checkpoints are linked by SHA-256, and exporters verify numerical parity before accepting an artifact.'}
       </p>
+      <Equation
+        tex={String.raw`\theta_{t+1}=\theta_t-\eta_t\,\frac{\hat m_t}{\sqrt{\hat v_t}+\epsilon}`}
+        caption={es ? 'Actualización adaptativa; ηₜ y la semilla quedan fijadas en el manifiesto de corrida.' : 'Adaptive update; ηₜ and the seed are fixed in the run manifest.'}
+      />
+      <Equation
+        tex={String.raw`t^*=\arg\max_t\operatorname{AP}_{\mathrm{val}}(\theta_t),\qquad \theta^*=\theta_{t^*}`}
+        caption={es ? 'El checkpoint se elige únicamente por la métrica de validación predeclarada.' : 'The checkpoint is selected only by the preregistered validation metric.'}
+      />
+      <p>{es
+        ? 'Cada ejecución guarda el historial completo, no solo el mejor número. La selección puede auditarse contra pérdidas, AP, memoria, tiempo, semilla, versión del conjunto y hash del código científico.'
+        : 'Each run preserves the full history, not only the best number. Selection can be audited against losses, AP, memory, time, seed, dataset version, and scientific-code hash.'}</p>
+      <p>{es
+        ? 'Los modelos oficiales conservan su identidad de origen. Una adaptación local registra exactamente qué capas fueron optimizadas y qué checkpoint upstream inició la corrida.'
+        : 'Official models retain their upstream identity. A local adaptation records exactly which layers were optimized and which upstream checkpoint initialized the run.'}</p>
+      <Callout variant="honest" title={es ? 'No hay selección sobre test' : 'No test-set selection'}>
+        {es ? 'Una nueva arquitectura o ensemble vuelve a validation. El test no se reutiliza como tablero de optimización.' : 'A new architecture or ensemble returns to validation. The test is not reused as an optimization dashboard.'}
+      </Callout>
+      <Refs ids={['ronneberger2015unet', 'stringer2021cellpose']} label="Refs" />
     </div>
   );
 }
@@ -227,6 +308,14 @@ function Inference({ es }: { es: boolean }) {
       />
       <InferenceDiagram es={es} />
       <h3>{es ? 'Postproceso de los modelos densos' : 'Dense-model post-processing'}</h3>
+      <Equation
+        tex={String.raw`\Omega_\tau=\{x:p_F(x)\ge\tau_F\},\qquad M=\operatorname{Maxima}_{d_{\min}}\!\left(p_C(x)\,p_D(x)\right)`}
+        caption={es ? 'El foreground y las semillas usan umbrales fijados en calibración.' : 'Foreground and markers use thresholds fixed on calibration.'}
+      />
+      <Equation
+        tex={String.raw`\hat Y=\operatorname{Watershed}\!\left(p_B-\alpha p_D,\;M,\;\Omega_\tau\right)`}
+        caption={es ? 'El borde eleva barreras y la distancia estabiliza el interior de las cuencas.' : 'Boundary probability raises barriers and distance stabilizes basin interiors.'}
+      />
       <ol className="fs-numbered-method">
         <li><strong>{es ? 'Interior' : 'Interior'}</strong><span>{es ? 'Aplicar el umbral de foreground calibrado.' : 'Apply the calibrated foreground threshold.'}</span></li>
         <li><strong>{es ? 'Semillas' : 'Markers'}</strong><span>{es ? 'Combinar distancia aprendida y evidencia de centro; extraer máximos separados.' : 'Combine learned distance and center evidence; extract separated maxima.'}</span></li>
@@ -240,6 +329,16 @@ function Inference({ es }: { es: boolean }) {
           ? 'El pipeline offline procesa imágenes o videos completos, usa los runtimes científicos y exporta máscaras, tablas y proveniencia. La web reproduce esos artefactos para los 15 métodos. Solo una carga arbitraria utiliza cuatro motores interactivos explícitamente separados.'
           : 'The offline pipeline processes complete images or videos, uses the scientific runtimes, and exports masks, tables, and provenance. The web replays those artifacts for all 15 methods. Only arbitrary uploads use four explicitly separated interactive engines.'}
       </p>
+      <p>{es
+        ? 'Los métodos que ya producen polígonos o máscaras no son forzados a usar watershed. El adaptador convierte su salida nativa al mapa entero común y conserva puntuaciones por instancia cuando existen.'
+        : 'Methods that natively produce polygons or masks are not forced through watershed. Their adapter converts native output to the common integer map and preserves per-instance scores when available.'}</p>
+      <p>{es
+        ? 'La ejecución en mosaicos conserva solape y recorta bordes antes de reconciliar identidades. Esta regla evita contar dos veces una burbuja que atraviesa la frontera entre tiles.'
+        : 'Tiled execution preserves overlap and trims tile borders before reconciling identities. This rule prevents double-counting a bubble that crosses a tile boundary.'}</p>
+      <Callout variant="honest" title={es ? 'Separación de carriles' : 'Lane separation'}>
+        {es ? 'Los métodos de alto costo se ejecutan mediante los pipelines completos del repositorio y sus resultados verificados se presentan aquí. Las cargas locales ofrecen cuatro métodos validados para este runtime.' : 'Compute-intensive methods run through the repository’s complete pipelines and their verified results are presented here. Local uploads offer four methods validated for this runtime.'}
+      </Callout>
+      <Refs ids={['meyer1994', 'ronneberger2015unet', 'onnxruntimeweb']} label="Refs" />
     </div>
   );
 }
@@ -255,23 +354,35 @@ function Temporal({ es }: { es: boolean }) {
           : 'Framewise segmentation is associated through overlap and bipartite assignment. SAM 2.1 is evaluated separately as a memory-based propagator conditioned on initial masks.'}
       />
       <TemporalIdentityDiagram es={es} />
-      <Equation tex={String.raw`C_{ij}=1-\operatorname{IoU}\!\left(Y^{t-1}_i,Y^t_j\right),\qquad \pi^*=\arg\min_{\pi}\sum_i C_{i,\pi(i)}`} />
+      <Equation
+        tex={String.raw`C_{ij}=1-\operatorname{IoU}\!\left(Y^{t-1}_i,Y^t_j\right),\qquad \pi^*=\arg\min_{\pi}\sum_i C_{i,\pi(i)}`}
+        caption={es ? 'Costo de asociación y asignación bipartita óptima entre cuadros.' : 'Association cost and optimal bipartite assignment between frames.'}
+      />
       <p>
         {es
           ? 'La asignación húngara conserva IDs cuando el IoU supera el umbral. Nacimientos, desapariciones, divisiones y uniones quedan como eventos explícitos en lugar de ser ocultados dentro de un promedio.'
           : 'Hungarian assignment preserves IDs when IoU exceeds the threshold. Births, disappearances, splits, and merges remain explicit events instead of being hidden inside an average.'}
       </p>
+      <Equation
+        tex={String.raw`\mathrm{HOTA}=\sqrt{\mathrm{DetA}\,\mathrm{AssA}},\qquad \mathrm{IDF1}=\frac{2\,IDTP}{2\,IDTP+IDFP+IDFN}`}
+        caption={es ? 'HOTA equilibra detección y asociación; IDF1 mide continuidad de identidad.' : 'HOTA balances detection and association; IDF1 measures identity continuity.'}
+      />
       <div className="fs-metric-defs">
         <article><strong>IDF1</strong><p>{es ? 'Precisión y exhaustividad de identidad en todos los cuadros.' : 'Identity precision and recall across all frames.'}</p></article>
         <article><strong>HOTA</strong><p>{es ? 'Balance entre detección y asociación.' : 'Balance between detection and association.'}</p></article>
         <article><strong>{es ? 'Fragmentaciones' : 'Fragmentations'}</strong><p>{es ? 'Veces que una trayectoria persistente se interrumpe.' : 'Times a persistent track is interrupted.'}</p></article>
         <article><strong>Flow EPE</strong><p>{es ? 'Error de desplazamiento de centroides en píxeles.' : 'Centroid displacement error in pixels.'}</p></article>
       </div>
-      <p className="fs-note good">
-        {es
-          ? 'El benchmark temporal usa cinco secuencias de ocho cuadros con identidades exactas. La propagación SAM 2.1 recibe prompts solo en el primer cuadro.'
-          : 'The temporal benchmark uses five eight-frame sequences with exact identities. SAM 2.1 propagation receives prompts only in the first frame.'}
-      </p>
+      <p>{es
+        ? 'Los eventos se derivan de cambios explícitos en correspondencias: nacimiento sin predecesor, desaparición sin sucesor, división de una identidad y unión de varias. La métrica no confunde estos eventos con un simple cambio de área.'
+        : 'Events are derived from explicit correspondence changes: birth without a predecessor, disappearance without a successor, one-to-many split, and many-to-one merge. The metric does not confuse these events with a simple area change.'}</p>
+      <p>{es
+        ? 'El flujo óptico sirve como señal auxiliar y como prueba de desplazamiento, pero no reemplaza identidades. Una trayectoria debe conservar correspondencia de instancia incluso cuando la forma se deforma.'
+        : 'Optical flow is an auxiliary cue and displacement test, but it does not replace identities. A track must preserve instance correspondence even as shape deforms.'}</p>
+      <Callout variant="honest" title={es ? 'Cobertura temporal' : 'Temporal coverage'}>
+        {es ? 'El banco temporal contiene cinco secuencias de ocho cuadros. Solo se muestran predicciones cuando el pipeline ha persistido máscaras e identidades reales para ese método.' : 'The temporal benchmark contains five eight-frame sequences. Predictions are shown only when the pipeline has persisted real masks and identities for that method.'}
+      </Callout>
+      <Refs ids={['kuhn1955hungarian', 'luiten2021hota', 'ravi2024sam2', 'carion2025sam3']} label="Refs" />
     </div>
   );
 }
@@ -287,10 +398,10 @@ function Evaluation({ es }: { es: boolean }) {
           : 'No single metric describes froth error. The protocol combines IoU matching, panoptic quality, boundaries, count, size distribution, calibration, time, and memory.'}
       />
       <div className="fs-equation-grid">
-        <article><strong>Mask AP</strong><Equation tex={String.raw`\mathrm{AP}=\frac1{10}\sum_{\tau=.50}^{.95}\frac{TP_\tau}{TP_\tau+FP_\tau+FN_\tau}`} /></article>
-        <article><strong>Panoptic quality</strong><Equation tex={String.raw`\mathrm{PQ}=\underbrace{\frac{\sum_{(p,g)}IoU(p,g)}{|TP|}}_{SQ}\;\underbrace{\frac{|TP|}{|TP|+\frac12|FP|+\frac12|FN|}}_{RQ}`} /></article>
-        <article><strong>{es ? 'Diámetro equivalente' : 'Equivalent diameter'}</strong><Equation tex={String.raw`d_i=2\sqrt{A_i/\pi},\qquad d_{32}=\frac{\sum_i d_i^3}{\sum_i d_i^2}`} /></article>
-        <article><strong>{es ? 'Calibración' : 'Calibration'}</strong><Equation tex={String.raw`\mathrm{Brier}=\frac1N\sum_i(p_i-y_i)^2,\qquad ECE=\sum_b\frac{|b|}{N}|\mathrm{acc}(b)-\mathrm{conf}(b)|`} /></article>
+        <article><strong>Mask AP</strong><Equation tex={String.raw`\mathrm{AP}=\frac1{10}\sum_{\tau=.50}^{.95}\frac{TP_\tau}{TP_\tau+FP_\tau+FN_\tau}`} caption={es ? 'Promedio sobre diez umbrales IoU.' : 'Average over ten IoU thresholds.'} /></article>
+        <article><strong>Panoptic quality</strong><Equation tex={String.raw`\mathrm{PQ}=\underbrace{\frac{\sum_{(p,g)}IoU(p,g)}{|TP|}}_{SQ}\;\underbrace{\frac{|TP|}{|TP|+\frac12|FP|+\frac12|FN|}}_{RQ}`} caption={es ? 'Calidad espacial SQ por reconocimiento RQ.' : 'Spatial quality SQ times recognition quality RQ.'} /></article>
+        <article><strong>{es ? 'Diámetro equivalente' : 'Equivalent diameter'}</strong><Equation tex={String.raw`d_i=2\sqrt{A_i/\pi},\qquad d_{32}=\frac{\sum_i d_i^3}{\sum_i d_i^2}`} caption={es ? 'Diámetro de área equivalente y media de Sauter.' : 'Area-equivalent diameter and Sauter mean.'} /></article>
+        <article><strong>{es ? 'Calibración' : 'Calibration'}</strong><Equation tex={String.raw`\mathrm{Brier}=\frac1N\sum_i(p_i-y_i)^2,\qquad ECE=\sum_b\frac{|b|}{N}|\mathrm{acc}(b)-\mathrm{conf}(b)|`} caption={es ? 'Exactitud probabilística y brecha de calibración.' : 'Probability accuracy and calibration gap.'} /></article>
       </div>
       <h3>{es ? 'Lectura de los errores' : 'Reading the errors'}</h3>
       <div className="fs-error-matrix">
@@ -305,7 +416,16 @@ function Evaluation({ es }: { es: boolean }) {
           ? 'Se publican medias macro por muestra y conteos micro agrupados. Las 960 celdas método–muestra deben estar presentes. El umbral predeclarado es AP 0.30 en el banco controlado; no equivale a preparación industrial ni a superioridad fuera de este dominio.'
           : 'Per-sample macro means and pooled micro counts are both published. All 960 method–sample cells must be present. The predeclared threshold is AP 0.30 on the controlled benchmark; it does not imply industrial readiness or superiority outside this domain.'}
       </p>
-      <Refs ids={['lin2014coco', 'aldrich2010', 'sautermean']} label="Refs" />
+      <p>{es
+        ? 'Los conteos micro revelan si un método obtiene una media aceptable concentrando errores en escenas densas. Las medias macro impiden que las escenas con más burbujas dominen por completo la comparación.'
+        : 'Micro counts reveal whether a method achieves an acceptable mean by concentrating errors in dense scenes. Macro means prevent scenes with more bubbles from completely dominating the comparison.'}</p>
+      <p>{es
+        ? 'La distancia Wasserstein sobre BSD cuantifica el sesgo de proceso que un IoU puede ocultar: una máscara visualmente cercana todavía puede desplazar D50 o d32 y alterar la interpretación metalúrgica.'
+        : 'Wasserstein distance on BSD quantifies process bias that IoU can hide: a visually close mask may still shift D50 or d32 and alter metallurgical interpretation.'}</p>
+      <Callout variant="honest" title={es ? 'Interpretación' : 'Interpretation'}>
+        {es ? 'El umbral AP 0,30 es un gate interno del banco controlado, no una norma industrial. La selección de planta exige test externo, calibración física y criterio operativo.' : 'The AP 0.30 threshold is an internal controlled-benchmark gate, not an industrial standard. Plant selection requires an external test, physical calibration, and operating criteria.'}
+      </Callout>
+      <Refs ids={['lin2014coco', 'aldrich2010', 'sautermean', 'brier1950', 'villani2009ot']} label="Refs" />
     </div>
   );
 }
@@ -351,11 +471,11 @@ function SplitDiagram({ es }: { es: boolean }) {
         </g>
         <g className="split">
           {([
-            [520, 42, '#36d6c5', 'TRAIN 192'],
-            [730, 42, '#7fb4ff', 'VALIDATION 64'],
-            [520, 166, '#ffb454', 'CALIBRATION 64'],
-            [730, 166, '#e888a5', 'TEST 64'],
-          ] as Array<[number, number, string, string]>).map(([x, y, color, label]) => <g key={label} transform={`translate(${x} ${y})`}><rect width="176" height="82" rx="13" style={{ stroke: color }} /><text x="88" y="35" textAnchor="middle">{label}</text><text x="88" y="58" textAnchor="middle" className="small">{es ? 'grupos completos' : 'whole groups'}</text></g>)}
+            [520, 42, 'train', 'TRAIN 192'],
+            [730, 42, 'validation', 'VALIDATION 64'],
+            [520, 166, 'calibration', 'CALIBRATION 64'],
+            [730, 166, 'test', 'TEST 64'],
+          ] as Array<[number, number, string, string]>).map(([x, y, cls, label]) => <g key={label} className={cls} transform={`translate(${x} ${y})`}><rect width="176" height="82" rx="13" /><text x="88" y="35" textAnchor="middle">{label}</text><text x="88" y="58" textAnchor="middle" className="small">{es ? 'grupos completos' : 'whole groups'}</text></g>)}
         </g>
         <text x="205" y="213" textAnchor="middle" className="caption">{es ? 'dos apariencias, un único destino' : 'two appearances, one destination'}</text>
         <text x="480" y="272" textAnchor="middle" className="caption">{es ? 'ninguna geometría cruza divisiones' : 'no geometry crosses splits'}</text>

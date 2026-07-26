@@ -7,7 +7,8 @@ from fslab.learning.multitask_models import (
     probabilities_to_instances,
     targets,
 )
-from fslab.learning.train_multitask import Config, _training_config
+from fslab.learning.evaluate_ensemble import _combine, _tta_probabilities
+from fslab.learning.train_multitask import Config, _augment, _training_config
 
 
 def test_each_multitask_method_has_a_distinct_real_graph():
@@ -63,3 +64,58 @@ def test_validation_is_default_and_does_not_change_checkpoint_identity():
 
     assert validation.evaluation_split == "validation"
     assert _training_config(validation) == _training_config(test)
+
+
+def test_later_stopping_epoch_remains_checkpoint_compatible():
+    assert _training_config(Config(method="lamellastar", epochs=40)) == _training_config(
+        Config(method="lamellastar", epochs=80)
+    )
+
+
+def test_paired_augmentation_is_deterministic_and_preserves_target_values():
+    import torch
+
+    images = torch.linspace(0, 1, 2 * 1 * 8 * 8).reshape(2, 1, 8, 8)
+    truth = torch.zeros((2, 4, 8, 8))
+    truth[:, :, 2:6, 1:5] = 1
+    first_images, first_truth = _augment(
+        images, truth, rng=np.random.default_rng(20260727)
+    )
+    second_images, second_truth = _augment(
+        images, truth, rng=np.random.default_rng(20260727)
+    )
+    assert torch.equal(first_images, second_images)
+    assert torch.equal(first_truth, second_truth)
+    assert set(torch.unique(first_truth).tolist()) == {0.0, 1.0}
+    assert first_images.min() >= 0
+    assert first_images.max() <= 1
+
+
+def test_probability_and_logit_ensemble_modes_are_distinct_and_bounded():
+    members = [
+        np.array([[[[0.1, 0.8]]]], dtype=np.float32),
+        np.array([[[[0.4, 0.9]]]], dtype=np.float32),
+    ]
+    probability_mean = _combine(members, "probability-mean")
+    logit_mean = _combine(members, "logit-mean")
+    assert np.allclose(probability_mean, [[[[0.25, 0.85]]]])
+    assert not np.allclose(probability_mean, logit_mean)
+    assert np.all((logit_mean > 0) & (logit_mean < 1))
+
+
+def test_d4_test_time_augmentation_inverse_aligns_predictions():
+    import torch
+
+    class PointwiseModel(torch.nn.Module):
+        def forward(self, image):
+            return torch.cat((image, image * 2, image * 3, image * 4), dim=1)
+
+    images = torch.linspace(0, 1, 2 * 1 * 8 * 8).reshape(2, 1, 8, 8)
+    model = PointwiseModel()
+    plain = _tta_probabilities(
+        model, images, device=torch.device("cpu"), batch_size=2, tta="none"
+    )
+    augmented = _tta_probabilities(
+        model, images, device=torch.device("cpu"), batch_size=2, tta="d4"
+    )
+    assert np.allclose(plain, augmented, atol=1e-7)

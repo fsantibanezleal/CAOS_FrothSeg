@@ -275,13 +275,25 @@ export interface CaseIndex {
 export interface TemporalSequenceMetrics {
   condition_id: string;
   frames: number;
+  matched_gt_instances?: number;
+  false_positive_instances?: number;
+  false_negative_instances?: number;
+  id_switches?: number;
   id_switch_rate: number;
   mean_frame_coverage: number;
+  id_precision?: number;
+  id_recall?: number;
   idf1: number;
+  detection_accuracy?: number;
+  association_accuracy?: number;
   hota: number;
   track_fragmentations: number;
+  event_true_positives?: number;
+  event_false_positives?: number;
+  event_false_negatives?: number;
   event_precision: number;
   event_recall: number;
+  event_f1?: number;
   flow_epe_px: number | null;
 }
 

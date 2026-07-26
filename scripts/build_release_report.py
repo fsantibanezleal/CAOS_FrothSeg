@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "data-pipeline"))
 
 from fslab.model_registry import METHODS  # noqa: E402
+from fslab.showcase import decode_label_runs  # noqa: E402
 
 MODEL_RUNS = {
     "unet_watershed": "models/unet-watershed-v2/run.json",
@@ -236,18 +237,68 @@ def build() -> dict:
         document = _load(relative)
         if "sam2" in relative:
             values = document.get("temporal_metrics", {})
+            prediction_rows = [document]
+            expected_method_id = "L7"
         else:
             sequences = document.get("sequences", [])
             values = sequences[0] if sequences else {}
+            prediction_rows = sequences
+            expected_method_id = "L1"
         missing_temporal = sorted(REQUIRED_TEMPORAL_METRICS - values.keys())
         if missing_temporal:
             errors.append(
                 f"incomplete temporal metrics in {relative}: {', '.join(missing_temporal)}"
             )
+        if document.get("method_id") != expected_method_id:
+            errors.append(f"temporal method id mismatch in {relative}")
+        expected_rows = 1 if expected_method_id == "L7" else 5
+        if len(prediction_rows) != expected_rows:
+            errors.append(
+                f"incomplete temporal prediction sequence inventory in {relative}"
+            )
+        prediction_frame_count = 0
+        for row in prediction_rows:
+            frame_artifacts = row.get("frame_artifacts", [])
+            if (
+                len(frame_artifacts) != 8
+                or {frame.get("frame_index") for frame in frame_artifacts}
+                != set(range(8))
+                or not isinstance(row.get("truth_events"), list)
+                or not isinstance(row.get("predicted_events"), list)
+            ):
+                errors.append(f"incomplete temporal prediction/event evidence in {relative}")
+            prediction_frame_count += len(frame_artifacts)
+            for artifact in frame_artifacts:
+                for name in ("prediction", "overlay"):
+                    artifact_relative = artifact.get(f"{name}_path")
+                    artifact_path = (
+                        path.parent / artifact_relative
+                        if isinstance(artifact_relative, str)
+                        else None
+                    )
+                    if (
+                        artifact_path is None
+                        or not artifact_path.is_file()
+                        or _sha(artifact_path) != artifact.get(f"{name}_sha256")
+                    ):
+                        errors.append(
+                            f"missing or stale temporal {name} artifact in {relative}"
+                        )
+                    elif (
+                        name == "prediction"
+                        and not decode_label_runs(artifact_path.read_bytes()).any()
+                    ):
+                        errors.append(
+                            f"empty temporal prediction artifact in {relative}"
+                        )
         temporal.append({
             "path": relative,
             "sha256": _sha(path),
             "schema": document["schema"],
+            "method_id": document.get("method_id"),
+            "prediction_kind": document.get("prediction_kind"),
+            "prediction_sequence_count": len(prediction_rows),
+            "prediction_frame_count": prediction_frame_count,
             "metrics": {key: values.get(key) for key in sorted(REQUIRED_TEMPORAL_METRICS)},
         })
 

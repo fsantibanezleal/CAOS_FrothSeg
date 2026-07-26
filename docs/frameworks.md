@@ -20,7 +20,7 @@ their official frameworks, and foundation integrations use official runtimes.
 - [11, Cellpose-SAM](frameworks/11_cellpose-sam/README.md), official `cpsam_v2` CUDA inference and checkpoint provenance.
 - [12, YOLO segmentation](frameworks/12_yolo-seg/README.md), official Ultralytics training from exact polygon exports and its license gate.
 - [13, SAM 2.1](frameworks/13_sam2/README.md), official Meta image/video integration and acceptance evidence.
-- [14, LamellaStar](frameworks/14_lamellastar/README.md), the four-head experimental hypothesis and its negative v1 result.
+- [14, LamellaStar](frameworks/14_lamellastar/README.md), the four-head research model, preregistered refinement studies, and measured runner-up result.
 - [00, card TEMPLATE](frameworks/00_TEMPLATE.md), copy per engine to `frameworks/<NN>_<tool>/<tool>.md`.
 
 *(The optional SlimSAM interaction is a frontend npm engine, so its binding pin lives in `frontend/package.json`. The Python

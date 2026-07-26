@@ -28,6 +28,8 @@ frontend/public/data/
 frontend/public/manifests/
 frontend/public/pyodide/
 *.tsbuildinfo
+data/derived/.showcase-staging-*/
+data/derived/.showcase-previous-*/
 
 # --- Secrets / env (public repo · only .env.example is committed) ---
 .env
@@ -73,6 +75,7 @@ Thumbs.db
 !/verification/workbench-contract.json
 !/verification/classical-live-parity.json
 !/verification/n1-preregistered-ablation.json
+!/verification/sam3-feasibility.json
 !/verification/visual-qa/
 /verification/visual-qa/*
 !/verification/visual-qa/manifest.json

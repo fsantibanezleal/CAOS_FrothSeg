@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Refs, SubTabs, useShellLang } from '@fasl-work/caos-app-shell';
+import { Callout, Equation, Refs, SubTabs, useShellLang } from '@fasl-work/caos-app-shell';
 import { loadMethodBenchmark } from '../api/artifacts';
 import type { MethodBenchmarkDoc, MethodBenchmarkRow, MethodMetricSummary } from '../lib/contract.types';
 import { BarChart, type BarDatum } from '../viz/BarChart';
@@ -15,10 +15,10 @@ const FAMILY_LABELS: Record<MethodBenchmarkRow['tier'], { en: string; es: string
 };
 
 const FAMILY_COLORS: Record<MethodBenchmarkRow['tier'], string> = {
-  classical: '#58b9ac',
-  'domain-sota': '#7fb4ff',
-  foundation: '#b59af2',
-  frontier: '#ffb454',
+  classical: 'var(--color-good)',
+  'domain-sota': 'var(--color-accent)',
+  foundation: 'var(--color-fg-subtle)',
+  frontier: 'var(--color-warn)',
 };
 
 export default function Benchmark() {
@@ -83,9 +83,11 @@ function Overview({ es, benchmark }: BenchmarkProps) {
         <article><span>{second?.id}</span><strong>{es ? 'segundo método' : 'runner-up'}</strong><p>AP {fmt(second?.test?.mean_ap)}</p></article>
         <article><span>{bestClassical?.id}</span><strong>{es ? 'mejor clásico' : 'best classical'}</strong><p>AP {fmt(bestClassical?.test?.mean_ap)}</p></article>
       </div>
+      <Equation tex={String.raw`\mathrm{AP}=\frac{1}{10}\sum_{\tau=0.50}^{0.95}\mathrm{AP}_{\tau}`} caption={es ? 'El ranking promedia correspondencia de instancias en diez umbrales IoU.' : 'Ranking averages instance correspondence over ten IoU thresholds.'} />
       <h3>{es ? 'Qué significa el liderazgo' : 'What leadership means'}</h3>
       <p>{es ? 'Cellpose-SAM obtiene la mayor correspondencia de instancias y conserva fronteras fuertes en este banco controlado. La diferencia con L1 no autoriza una conclusión universal: ambos deben revisarse por condición, distribución de tamaños, costo y dominio de datos antes de elegir una ruta de producción.' : 'Cellpose-SAM achieves the strongest instance correspondence and preserves strong boundaries on this controlled benchmark. Its margin over L1 does not authorize a universal conclusion: both must be examined by condition, size distribution, compute, and data domain before selecting a production path.'}</p>
-      <p className="fs-note good">{es ? 'Cobertura verificada: cada uno de los 15 métodos tiene exactamente 64 resultados de prueba. Los 13 casos canónicos se mantienen fuera de este ranking.' : 'Verified coverage: every one of the 15 methods has exactly 64 test results. The 13 canonical cases remain outside this ranking.'}</p>
+      <Callout variant="honest" title={es ? 'Cobertura y alcance' : 'Coverage and scope'}>{es ? 'Cada uno de los 15 métodos tiene exactamente 64 resultados de prueba. Los casos canónicos se mantienen fuera del ranking y el control vacío permanece como prueba negativa, no como caso de exposición.' : 'Every one of the 15 methods has exactly 64 test results. Canonical presentation cases remain outside the ranking and the empty control stays a negative test, not a presentation case.'}</Callout>
+      <Refs ids={['lin2014coco', 'aldrich2010']} label="Refs" />
     </div>
   );
 }
@@ -128,6 +130,7 @@ function Ranking({ es, benchmark }: BenchmarkProps) {
       <div className="fs-ranking-notes">
         {ranked.slice(0, 4).map((method, index) => <article key={method.id}><span>{String(index + 1).padStart(2, '0')}</span><strong>{method.id} · {method.name}</strong><p>{metricExplanation(method, metric, es)}</p></article>)}
       </div>
+      <Refs ids={['lin2014coco', 'villani2009ot', 'sautermean']} label="Refs" />
     </div>
   );
 }
@@ -144,13 +147,14 @@ function ConditionAnalysis({ es, benchmark }: BenchmarkProps) {
     key: method.id,
     label: `${method.id} ${method.name}`,
     value,
-    color: value >= global ? 'var(--color-good)' : '#f0883e',
+    color: value >= global ? 'var(--color-good)' : 'var(--color-warn)',
     sub: `global ${global.toFixed(2)}`,
   }));
   const winner = rows[0];
   return (
     <div className="fs-benchmark-chapter">
       <BenchmarkLead n="03" title={es ? 'La robustez es condicional, no absoluta' : 'Robustness is conditional, not absolute'} text={es ? 'Seleccione una perturbación para comparar el AP de cada método con su propio promedio global. Así se distingue una caída general de una sensibilidad específica.' : 'Select a perturbation to compare each method’s AP with its own global mean. This separates general weakness from condition-specific sensitivity.'} />
+      <Equation tex={String.raw`\Delta_{m,c}=\mathrm{AP}_{m,c}-\overline{\mathrm{AP}}_m`} caption={es ? 'Cambio de AP del método m bajo la condición c respecto de su media.' : 'AP change for method m under condition c relative to its mean.'} />
       <label className="fs-inline-selector">{es ? 'Condición retenida' : 'Held-out condition'}
         <select value={condition} onChange={(event) => setCondition(event.target.value)}>
           {conditions.map((item) => <option key={item} value={item}>{item}</option>)}
@@ -165,6 +169,7 @@ function ConditionAnalysis({ es, benchmark }: BenchmarkProps) {
         <BarChart data={data} ariaLabel={`mask AP under ${condition}`} valueFmt={(value) => value.toFixed(3)} defaultBaseline="zero" note={es ? 'Verde: esta condición supera el promedio propio del método. Naranja: cae por debajo.' : 'Green: this condition exceeds the method’s own mean. Orange: it falls below it.'} />
       </PanelBoundary>
       <p>{conditionInterpretation(condition, es)}</p>
+      <Refs ids={['aldrich2010', 'wang2018', 'fu2019']} label="Refs" />
     </div>
   );
 }
@@ -175,6 +180,7 @@ function MorphometryAnalysis({ es, benchmark }: BenchmarkProps) {
   return (
     <div className="fs-benchmark-chapter">
       <BenchmarkLead n="04" title={es ? 'Una máscara útil debe conservar la distribución de tamaños' : 'A useful mask must preserve the size distribution'} text={es ? 'El diagrama cruza calidad de instancia con error relativo de d32. La zona deseada combina AP alto con error morfométrico bajo.' : 'The diagram crosses instance quality with relative d32 error. The desired region combines high AP with low morphometric error.'} />
+      <Equation tex={String.raw`d_{32}=\frac{\sum_i d_i^3}{\sum_i d_i^2},\qquad \varepsilon_{32}=\frac{|\hat d_{32}-d_{32}|}{d_{32}}`} caption={es ? 'Media de Sauter y su error relativo.' : 'Sauter mean and its relative error.'} />
       <MetricScatter
         methods={rows}
         x={(method) => method.test!.mean_ap}
@@ -192,6 +198,7 @@ function MorphometryAnalysis({ es, benchmark }: BenchmarkProps) {
         <article><strong>{es ? 'Borde desplazado' : 'Boundary offset'}</strong><p>{es ? 'Puede conservar identidad y aun sesgar área, circularidad y d32.' : 'Can preserve identity while biasing area, circularity, and d32.'}</p></article>
       </div>
       <p className="fs-note">{es ? 'Los diámetros están expresados en píxeles en el banco controlado. La conversión a milímetros requiere una escala física registrada por cámara.' : 'Diameters are expressed in pixels on the controlled benchmark. Conversion to millimeters requires a camera-specific recorded physical scale.'}</p>
+      <Refs ids={['sautermean', 'villani2009ot', 'jahedsaravani2017']} label="Refs" />
     </div>
   );
 }
@@ -203,6 +210,7 @@ function ComputeAnalysis({ es, benchmark }: BenchmarkProps) {
   return (
     <div className="fs-benchmark-chapter">
       <BenchmarkLead n="05" title={es ? 'La frontera de calidad y costo' : 'The quality–cost frontier'} text={es ? 'Cada punto combina AP y latencia media. El tamaño representa memoria pico; el color identifica la familia. CPU y GPU se comparan como mediciones de sus runtimes declarados, no como hardware equivalente.' : 'Each point combines AP and mean latency. Size represents peak memory; color identifies the family. CPU and GPU are compared as measurements of their declared runtimes, not as equivalent hardware.'} />
+      <Equation tex={String.raw`\mathcal P=\{m:\nexists m'\;(\mathrm{AP}_{m'}\ge\mathrm{AP}_m\land t_{m'}\le t_m)\}`} caption={es ? 'Frontera de Pareto: calidad mayor y latencia menor sin dominación.' : 'Pareto frontier: higher quality and lower latency without domination.'} />
       <MetricScatter
         methods={rows}
         x={(method) => method.compute.mean_inference_ms}
@@ -219,6 +227,7 @@ function ComputeAnalysis({ es, benchmark }: BenchmarkProps) {
         {rows.sort((a, b) => a.compute.mean_inference_ms - b.compute.mean_inference_ms).slice(0, 5).map((method) => <article key={method.id}><span>{method.id}</span><strong>{method.compute.mean_inference_ms.toFixed(1)} ms</strong><p>{method.compute.hardware_lane.toUpperCase()} · {method.compute.peak_memory_mib.toFixed(0)} MiB · AP {method.test!.mean_ap.toFixed(3)}</p></article>)}
       </div>
       <p className="fs-note">{es ? 'La latencia no incluye transferencia de red ni decodificación de video. El p95 y la memoria pico permanecen en la matriz completa.' : 'Latency excludes network transfer and video decoding. p95 and peak memory remain available in the complete matrix.'}</p>
+      <Refs ids={['transformersjs', 'onnxruntimeweb']} label="Refs" />
     </div>
   );
 }
@@ -230,6 +239,7 @@ function CalibrationAnalysis({ es, benchmark }: BenchmarkProps) {
     <div className="fs-benchmark-chapter">
       <BenchmarkLead n="06" title={es ? 'Confianza que corresponde con frecuencia de acierto' : 'Confidence that corresponds to empirical accuracy'} text={es ? 'La calibración usa una división independiente. Brier penaliza probabilidades equivocadas; ECE compara confianza y exactitud por intervalos.' : 'Calibration uses an independent split. Brier penalizes incorrect probabilities; ECE compares confidence and accuracy across bins.'} />
       <CalibrationDiagram es={es} />
+      <Equation tex={String.raw`\mathrm{Brier}=\frac1N\sum_i(p_i-y_i)^2,\qquad ECE=\sum_b\frac{|b|}{N}|\mathrm{acc}(b)-\mathrm{conf}(b)|`} caption={es ? 'Puntuación probabilística y error de calibración por intervalos.' : 'Probability score and binned calibration error.'} />
       {calibrated.length ? (
         <div className="fs-calibration-methods">
           {calibrated.map((method) => <article key={method.id}><div><span>{method.id}</span><strong>{method.name}</strong></div><div><small>Brier ↓</small><b>{fmt(method.test?.mean_brier)}</b></div><div><small>ECE ↓</small><b>{fmt(method.test?.mean_ece)}</b></div></article>)}
@@ -237,6 +247,7 @@ function CalibrationAnalysis({ es, benchmark }: BenchmarkProps) {
       ) : <p className="fs-note">{es ? 'Los métodos sin probabilidades calibrables no reciben una cifra inventada. Sus parámetros de umbral se muestran como decisiones operativas, no como incertidumbre.' : 'Methods without calibratable probabilities do not receive an invented score. Their thresholds are shown as operating decisions, not uncertainty.'}</p>}
       <h3>{es ? 'Por qué importa' : 'Why it matters'}</h3>
       <p>{es ? 'Una confianza de 0.8 debería corresponder aproximadamente a ocho aciertos de cada diez bajo el dominio calibrado. Sin esa relación, un umbral de alarma o rechazo no tiene significado probabilístico.' : 'A confidence of 0.8 should correspond to approximately eight correct outcomes out of ten within the calibrated domain. Without that relationship, an alarm or rejection threshold has no probabilistic meaning.'}</p>
+      <Refs ids={['brier1950']} label="Refs" />
     </div>
   );
 }
@@ -255,6 +266,7 @@ function CompleteMatrix({ es, benchmark }: BenchmarkProps) {
         </table>
       </div>
       <MethodReading method={selected} es={es} />
+      <Refs ids={['lin2014coco', 'sautermean', 'villani2009ot']} label="Refs" />
     </div>
   );
 }
@@ -264,13 +276,14 @@ function Scope({ es, benchmark }: BenchmarkProps) {
   return (
     <div className="fs-benchmark-chapter">
       <BenchmarkLead n="08" title={es ? 'Lo que este benchmark permite afirmar' : 'What this benchmark supports'} text={es ? 'La evidencia establece una comparación reproducible dentro de un banco controlado. No reemplaza validación externa ni convierte una diferencia sintética en rendimiento industrial.' : 'The evidence establishes a reproducible comparison within a controlled benchmark. It does not replace external validation or turn a synthetic difference into industrial performance.'} />
+      <Equation tex={String.raw`\mathrm{claim}\subseteq\mathrm{protocol}\times\mathrm{data}\times\mathrm{metrics}`} caption={es ? 'Una afirmación no puede exceder el protocolo, los datos ni las métricas que la sostienen.' : 'A claim cannot exceed the protocol, data, or metrics that support it.'} />
       <ClaimBoundaryDiagram es={es} />
       <div className="fs-scope-columns">
         <article className="supported"><span>✓</span><div><strong>{es ? 'Sostenido por la evidencia' : 'Supported by the evidence'}</strong><ul><li>{es ? '15 implementaciones bajo el mismo test.' : '15 implementations under the same test.'}</li><li>{es ? 'Ranking, robustez, morfometría y costo medidos.' : 'Measured ranking, robustness, morphometry, and compute.'}</li><li>{es ? 'Cellpose-SAM lidera este banco con AP 0.510.' : 'Cellpose-SAM leads this benchmark at AP 0.510.'}</li><li>{es ? 'Cinco métodos superan el umbral AP 0.30.' : 'Five methods exceed the AP 0.30 threshold.'}</li></ul></div></article>
         <article className="unsupported"><span>×</span><div><strong>{es ? 'No sostenido todavía' : 'Not supported yet'}</strong><ul><li>{es ? 'Exactitud representativa en una planta.' : 'Representative accuracy at a plant.'}</li><li>{es ? 'Transferencia entre cámaras, minerales o circuitos.' : 'Transfer across cameras, ores, or circuits.'}</li><li>{es ? 'Calibración física universal de tamaños.' : 'Universal physical size calibration.'}</li><li>{es ? 'Superioridad fuera de este protocolo.' : 'Superiority outside this protocol.'}</li></ul></div></article>
       </div>
       <h3>{es ? 'Resultado de investigación' : 'Research result'}</h3>
-      <p>{es ? 'La ablación preregistrada mejoró LamellaStar a AP 0,472 y superó el umbral AP 0,30. Cellpose-SAM conserva el liderazgo con AP 0,510; por eso el resultado se presenta como una mejora interna medida, no como superioridad.' : 'The preregistered ablation improved LamellaStar to AP 0.472 and cleared the AP 0.30 threshold. Cellpose-SAM remains the leader at AP 0.510, so this is reported as a measured internal improvement, not superiority.'}</p>
+      <p>{es ? 'Dos estudios preregistrados mejoraron LamellaStar a AP 0,490 y superaron el umbral AP 0,30. Cellpose-SAM conserva el liderazgo con AP 0,510; por eso el resultado se presenta como una mejora interna medida, no como superioridad.' : 'Two preregistered studies improved LamellaStar to AP 0.490 and cleared the AP 0.30 threshold. Cellpose-SAM remains the leader at AP 0.510, so this is reported as a measured internal improvement, not superiority.'}</p>
       <Refs ids={['lin2014coco', 'aldrich2010', 'meyer1994', 'achanta2012slic']} label="Refs" />
     </div>
   );

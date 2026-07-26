@@ -2,6 +2,7 @@
 // the baked benchmark + the synthetic samples the App runs bounded live tools on; live inference itself is
 // in-browser (src/sam), no backend.
 import type { BenchmarkDoc, CaseCard, CaseIndex, CaseManifest, LearnedBenchmarkDoc, MasksDoc, MethodBenchmarkDoc, SamBenchmarkDoc, TemporalBenchmarkDoc } from '../lib/contract.types';
+import type { TemporalShowcaseManifest } from '../lib/workbench';
 
 const base = import.meta.env.BASE_URL;
 
@@ -26,3 +27,5 @@ export const loadMethodBenchmark = (): Promise<MethodBenchmarkDoc> =>
   getJSON<MethodBenchmarkDoc>('method-benchmark.json');
 export const loadTemporalBenchmark = (): Promise<TemporalBenchmarkDoc> =>
   getJSON<TemporalBenchmarkDoc>('temporal/unet-watershed-v2.json');
+export const loadTemporalShowcase = (): Promise<TemporalShowcaseManifest> =>
+  getJSON<TemporalShowcaseManifest>('showcase/temporal/manifest.json');

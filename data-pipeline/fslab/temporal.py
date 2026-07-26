@@ -88,6 +88,34 @@ def _presence_events(frames: list[np.ndarray]) -> list[tuple[int, str]]:
     return events
 
 
+def identity_events(frames: list[np.ndarray]) -> list[dict[str, int | str]]:
+    """Return auditable birth/disappearance events with persistent instance ids."""
+    if not frames:
+        return []
+    events: list[dict[str, int | str]] = []
+    previous = set(int(value) for value in np.unique(frames[0]) if value > 0)
+    for frame_index, frame in enumerate(frames[1:], start=1):
+        current = set(int(value) for value in np.unique(frame) if value > 0)
+        events.extend(
+            {
+                "frame_index": frame_index,
+                "type": "birth",
+                "instance_id": instance_id,
+            }
+            for instance_id in sorted(current - previous)
+        )
+        events.extend(
+            {
+                "frame_index": frame_index,
+                "type": "disappearance",
+                "instance_id": instance_id,
+            }
+            for instance_id in sorted(previous - current)
+        )
+        previous = current
+    return events
+
+
 def _event_counts(
     predicted: list[np.ndarray],
     truth: list[np.ndarray],

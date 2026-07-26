@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Refs, SubTabs, useShellLang } from '@fasl-work/caos-app-shell';
+import { Callout, Equation, Refs, SubTabs, useShellLang } from '@fasl-work/caos-app-shell';
 import {
   artifactUrl, loadMasks, loadMethodBenchmark, loadSamBenchmark, loadTemporalBenchmark,
 } from '../api/artifacts';
@@ -61,6 +61,8 @@ function ExperimentalDesign({ es }: { es: boolean }) {
     <div className="fs-experiment-chapter">
       <ExperimentLead n="01" title={es ? 'Una matriz factorial con verdad exacta' : 'A factorial matrix with exact truth'} text={es ? 'La geometría de burbujas, la apariencia y las degradaciones se controlan por separado. Esto permite atribuir una caída de calidad a una condición y no a un cambio oculto de contenido.' : 'Bubble geometry, appearance, and degradations are controlled separately. This makes it possible to attribute a quality drop to a condition rather than to a hidden content change.'} />
       <ExperimentMatrixDiagram es={es} />
+      <Equation tex={String.raw`N=16\cdot12\cdot2=384,\qquad N_{\mathrm{test}}=16\cdot4=64`} caption={es ? 'Diseño factorial completo y subconjunto retenido por condición.' : 'Complete factorial design and held-out subset per condition.'} />
+      <Equation tex={String.raw`\Delta_{m,c}=\operatorname{AP}(m,c)-\operatorname{AP}(m,\mathrm{all})`} caption={es ? 'Cambio de robustez del método m bajo la condición c.' : 'Robustness change for method m under condition c.'} />
       <div className="fs-experiment-facts">
         <article><span>16</span><strong>{es ? 'condiciones' : 'conditions'}</strong><p>{es ? 'Espuma, óptica, movimiento y compuestos.' : 'Froth, optics, motion, and compounds.'}</p></article>
         <article><span>12</span><strong>{es ? 'grupos / condición' : 'groups / condition'}</strong><p>{es ? 'Geometrías latentes independientes.' : 'Independent latent geometries.'}</p></article>
@@ -74,7 +76,8 @@ function ExperimentalDesign({ es }: { es: boolean }) {
         <li><span>Q3</span><p>{es ? '¿La preinicialización fundacional mejora el AP sin destruir fidelidad morfométrica?' : 'Does foundation pretraining improve AP without damaging morphometric fidelity?'}</p></li>
         <li><span>Q4</span><p>{es ? '¿Qué condiciones causan uniones, separaciones, pérdida de frontera o pérdida de identidad temporal?' : 'Which conditions cause merges, splits, boundary loss, or temporal identity loss?'}</p></li>
       </ol>
-      <p className="fs-note good">{es ? 'La unidad de comparación principal es la muestra retenida. El caso canónico es una herramienta visual, no una réplica adicional del test.' : 'The primary comparison unit is the held-out sample. A canonical case is a visual diagnostic tool, not an extra test replicate.'}</p>
+      <Callout variant="honest" title={es ? 'Unidad de comparación' : 'Comparison unit'}>{es ? 'La unidad de comparación principal es la muestra retenida. El caso canónico es una herramienta visual, no una réplica adicional del test.' : 'The primary comparison unit is the held-out sample. A canonical case is a visual diagnostic tool, not an extra test replicate.'}</Callout>
+      <Refs ids={['lin2014coco', 'weaire1999foams', 'aurenhammer1987']} label="Refs" />
     </div>
   );
 }
@@ -156,6 +159,8 @@ function TemporalStudy({ es, temporal }: { es: boolean; temporal: TemporalBenchm
     <div className="fs-experiment-chapter">
       <ExperimentLead n="04" title={es ? 'Separar detección de asociación' : 'Separate detection from association'} text={es ? 'Una máscara correcta en cada cuadro no garantiza una trayectoria correcta. El experimento temporal mide explícitamente si una identidad se mantiene, desaparece, se fragmenta o cambia.' : 'A correct mask in every frame does not guarantee a correct track. The temporal experiment explicitly measures whether an identity persists, disappears, fragments, or switches.'} />
       <TemporalExperimentDiagram es={es} />
+      <Equation tex={String.raw`\mathrm{IDF1}=\frac{2IDTP}{2IDTP+IDFP+IDFN}`} caption={es ? 'Continuidad de identidad agregada sobre todos los cuadros.' : 'Identity continuity aggregated over all frames.'} />
+      <Equation tex={String.raw`\mathrm{HOTA}=\sqrt{\mathrm{DetA}\,\mathrm{AssA}}`} caption={es ? 'Media geométrica de exactitud de detección y asociación.' : 'Geometric mean of detection and association accuracy.'} />
       <div className="fs-temporal-results">
         <article><span>IDF1</span><strong>{temporal.mean_idf1.toFixed(3)}</strong><p>{es ? 'identidad global' : 'global identity'}</p></article>
         <article><span>HOTA</span><strong>{temporal.mean_hota.toFixed(3)}</strong><p>{es ? 'detección × asociación' : 'detection × association'}</p></article>
@@ -171,7 +176,8 @@ function TemporalStudy({ es, temporal }: { es: boolean; temporal: TemporalBenchm
           </article>
         ))}
       </div>
-      <p className="fs-note">{es ? 'SAM 2.1 se evalúa en un protocolo distinto: recibe doce máscaras exactas en el primer cuadro y propaga esas identidades. Ese resultado mide propagación, no descubrimiento automático.' : 'SAM 2.1 is evaluated under a different protocol: it receives twelve exact masks on the first frame and propagates those identities. That result measures propagation, not automatic discovery.'}</p>
+      <Callout variant="honest" title={es ? 'Protocolos no equivalentes' : 'Non-equivalent protocols'}>{es ? 'SAM 2.1 recibe doce máscaras exactas en el primer cuadro y propaga esas identidades. Ese resultado mide propagación, no descubrimiento automático.' : 'SAM 2.1 receives twelve exact masks in the first frame and propagates those identities. That result measures propagation, not automatic discovery.'}</Callout>
+      <Refs ids={['luiten2021hota', 'ravi2024sam2']} label="Refs" />
     </div>
   );
 }
@@ -198,6 +204,7 @@ function ErrorAnatomy({ es, methods }: { es: boolean; methods: MethodBenchmarkDo
         <ErrorStage label="D32 error" value={sizeBias} status={inverseQuality(sizeBias, .3, .12)} text={es ? 'sesgo de tamaño de proceso' : 'process-size bias'} inverse />
         <ErrorStage label="BSD W1" value={test.mean_bsd_wasserstein ?? 0} status={inverseQuality(test.mean_bsd_wasserstein ?? 0, 4, 1.5)} text={es ? 'distancia entre distribuciones' : 'distribution distance'} inverse />
       </div>
+      <Equation tex={String.raw`\mathrm{precision}=\frac{TP}{TP+FP},\quad \mathrm{recall}=\frac{TP}{TP+FN},\quad F_1=\frac{2PR}{P+R}`} caption={es ? 'Conteos micro de correspondencia de instancias.' : 'Micro counts for instance correspondence.'} />
       <div className="fs-causal-reading">
         <strong>{selected.id} · {selected.name}</strong>
         <p>{explainError(selected, es)}</p>
@@ -211,6 +218,7 @@ function ErrorAnatomy({ es, methods }: { es: boolean; methods: MethodBenchmarkDo
           <div><span>F1</span><strong>{test.micro.instance_f1.toFixed(3)}</strong></div>
         </div>
       )}
+      <Refs ids={['lin2014coco', 'villani2009ot', 'sautermean']} label="Refs" />
     </div>
   );
 }
@@ -232,7 +240,7 @@ function SamStudy({ es, benchmark }: { es: boolean; benchmark: SamBenchmarkDoc |
     key: item.case_id,
     label: item.case_id,
     value: item.sam_ap ?? 0,
-    color: item.floor_ap != null && (item.sam_ap ?? 0) >= item.floor_ap ? 'var(--color-good)' : '#f0883e',
+    color: item.floor_ap != null && (item.sam_ap ?? 0) >= item.floor_ap ? 'var(--color-good)' : 'var(--color-warn)',
     sub: item.floor_ap != null ? `floor ${item.floor_ap.toFixed(2)}` : '',
   })) ?? [], [benchmark]);
   const selectedCase = benchmark?.cases.find((item) => item.case_id === selected) ?? null;
@@ -240,6 +248,7 @@ function SamStudy({ es, benchmark }: { es: boolean; benchmark: SamBenchmarkDoc |
   return (
     <div className="fs-experiment-chapter">
       <ExperimentLead n="06" title={es ? 'Prompts puntuales como estudio de sensibilidad' : 'Point prompts as a sensitivity study'} text={es ? 'Este experimento histórico pregunta si una grilla regular de puntos recupera instancias sin ajuste específico. Se conserva como evidencia secundaria, separada de la matriz principal de 15 métodos.' : 'This historical experiment asks whether a regular point grid can recover instances without task-specific tuning. It is retained as secondary evidence, separate from the primary 15-method matrix.'} />
+      <Equation tex={String.raw`\mathcal P=\{(x_i,y_j):x_i=i\Delta_x,\;y_j=j\Delta_y\}`} caption={es ? 'Grilla regular de prompts usada por el estudio histórico.' : 'Regular prompt grid used by the historical study.'} />
       <div className="fs-study-result">
         <div><span>{es ? 'AP medio' : 'mean AP'}</span><strong>{benchmark.summary.mean_sam_ap?.toFixed(3) ?? '--'}</strong></div>
         <div><span>{es ? 'referencia clásica' : 'classical reference'}</span><strong>{benchmark.summary.mean_floor_ap?.toFixed(3) ?? '--'}</strong></div>
@@ -274,6 +283,7 @@ function ExperimentProvenance({ es, methods, temporal }: { es: boolean; methods:
         <article><span>03</span><strong>temporal-benchmark/v1</strong><p>{temporal ? `${temporal.sequences.length} × ${temporal.sequences[0]?.frames ?? 0} ${es ? 'cuadros ·' : 'frames ·'} ${temporal.device}` : 'loading'}</p></article>
         <article><span>04</span><strong>release-report/v1</strong><p>{es ? 'Cobertura, bloqueos y puerta de afirmación.' : 'Coverage, blockers, and claim gate.'}</p></article>
       </div>
+      <Equation tex={String.raw`H_{\mathrm{run}}=H(\mathrm{config}\Vert\mathrm{data}\Vert\mathrm{checkpoint}\Vert\mathrm{metrics})`} caption={es ? 'La identidad de corrida enlaza configuración, datos, pesos y resultados.' : 'Run identity binds configuration, data, weights, and results.'} />
       <pre className="fs-command">{`python scripts/build_method_benchmark.py
 python scripts/benchmark_temporal.py
 python scripts/benchmark_sam2_video.py

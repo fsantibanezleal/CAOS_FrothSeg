@@ -28,7 +28,7 @@ scores remain a separate diagnostic and are never mixed into the test ranking.
 | ID | Method | AP | AP50 | PQ | Current bar |
 |---|---|---:|---:|---:|---|
 | L5 | Cellpose-SAM, fine-tuned from `cpsam_v2` | 0.5099 | 0.8238 | 0.7227 | pass |
-| N1 | LamellaStar | 0.4717 | 0.7755 | 0.6967 | pass |
+| N1 | LamellaStar | 0.4904 | 0.7891 | 0.7089 | pass |
 | L1 | Boundary U-Net + watershed | 0.4153 | 0.6987 | 0.6559 | pass |
 | L2 | Deep-marker watershed | 0.3247 | 0.5990 | 0.5694 | pass |
 | L3 | GC-FSegNet | 0.3190 | 0.5958 | 0.5582 | pass |
@@ -56,7 +56,7 @@ automatic object discovery.
 Implementation completeness does not imply quality success. All 15 methods are
 implemented, and five learned/research methods clear the present AP bar.
 Cellpose-SAM remains the leader. The preregistered LamellaStar revision improves
-from AP 0.2145 to 0.4717 but does not exceed the leader, so the evidence does
+from AP 0.2145 to 0.4904 but does not exceed the leader, so the evidence does
 not support a superiority claim.
 
 Synthetic metrics are not real-plant accuracy. A plant claim requires a

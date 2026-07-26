@@ -48,8 +48,8 @@ const config: ShellConfig = {
   architecture,
   footer: {
     provenance: {
-      en: 'Offline product: C1-C7, L1-L7, N1 with trained checkpoints and release evidence. Companion web: bounded live evaluation.',
-      es: 'Producto offline: C1-C7, L1-L7, N1 con checkpoints entrenados y evidencia de release. Web: evaluación en vivo acotada.',
+      en: 'Repository: complete processing, training, inference, evaluation, and export pipelines. Site: verified result exploration and four local-image methods.',
+      es: 'Repositorio: pipelines completos de procesamiento, entrenamiento, inferencia, evaluación y exportación. Sitio: resultados verificados y cuatro métodos para imágenes locales.',
     },
     disclaimer: {
       en: 'The website replays precomputed evidence and offers light interaction. Synthetic AP is controlled evidence, not plant accuracy.',
@@ -61,6 +61,7 @@ const config: ShellConfig = {
 function ShellLicenseCorrection() {
   const lang = useShellLang();
   useEffect(() => {
+    document.documentElement.lang = lang;
     const node = document.querySelector(
       '.footer-meta a[href*="github"] + span + .faint',
     );

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Pause, Play, ScanSearch } from 'lucide-react';
-import { Refs, useShellLang } from '@fasl-work/caos-app-shell';
+import { Callout, Equation, Refs, useShellLang } from '@fasl-work/caos-app-shell';
 import { artifactUrl } from '../api/artifacts';
 
 interface TemporalFrame {
@@ -72,6 +72,7 @@ export default function Introduction() {
           </p>
         </div>
         <ChallengeDiagram es={es} />
+        <Refs ids={['wang2003froth', 'jahedsaravani2017', 'aldrich2010']} label="Refs" />
       </section>
 
       <section className="fs-intro-section">
@@ -85,6 +86,7 @@ export default function Introduction() {
           </p>
         </div>
         <TemporalShowcase es={es} />
+        <Refs ids={['ravi2024sam2', 'luiten2021hota']} label="Refs" />
       </section>
 
       <section className="fs-intro-section fs-measurement-section">
@@ -110,11 +112,52 @@ export default function Introduction() {
             <p>{es ? 'Calibración, incertidumbre, errores de unión y separación.' : 'Calibration, uncertainty, merge errors, and split errors.'}</p>
           </article>
         </div>
-        <p className="fs-note good">
+        <div className="fs-equation-grid">
+          <article>
+            <strong>{es ? 'Diámetro equivalente' : 'Equivalent diameter'}</strong>
+            <Equation tex={String.raw`d_i=2\sqrt{A_i/\pi}`} caption={es ? 'Aᵢ es el área segmentada de la burbuja i.' : 'Aᵢ is the segmented area of bubble i.'} />
+          </article>
+          <article>
+            <strong>{es ? 'Media de Sauter' : 'Sauter mean'}</strong>
+            <Equation tex={String.raw`d_{32}=\frac{\sum_i d_i^3}{\sum_i d_i^2}`} caption={es ? 'Promedio ponderado por superficie, sensible a burbujas gruesas.' : 'Surface-weighted mean, sensitive to coarse bubbles.'} />
+          </article>
+          <article>
+            <strong>{es ? 'Cobertura' : 'Coverage'}</strong>
+            <Equation tex={String.raw`\phi=\frac{1}{|\Omega|}\sum_{x\in\Omega}\mathbf 1[\hat Y(x)>0]`} caption={es ? 'Fracción del campo observada como interior de espuma.' : 'Fraction of the field observed as froth interior.'} />
+          </article>
+        </div>
+        <ul className="fs-symbol-list">
+          <li><strong>{es ? 'Aᵢ' : 'Aᵢ'}</strong><span>{es ? 'área de la instancia i' : 'area of instance i'}</span></li>
+          <li><strong>dᵢ</strong><span>{es ? 'diámetro circular equivalente' : 'equivalent circular diameter'}</span></li>
+          <li><strong>D10 · D50 · D90</strong><span>{es ? 'percentiles de la distribución de tamaños' : 'size-distribution percentiles'}</span></li>
+          <li><strong>d32</strong><span>{es ? 'media de Sauter' : 'Sauter mean diameter'}</span></li>
+          <li><strong>Ω</strong><span>{es ? 'región válida de medición' : 'valid measurement region'}</span></li>
+          <li><strong>Ŷ</strong><span>{es ? 'mapa entero de instancias predichas' : 'predicted integer instance map'}</span></li>
+          <li><strong>φ</strong><span>{es ? 'cobertura de espuma' : 'froth coverage'}</span></li>
+          <li><strong>IDF1</strong><span>{es ? 'continuidad de identidad temporal' : 'temporal identity continuity'}</span></li>
+          <li><strong>HOTA</strong><span>{es ? 'balance de detección y asociación' : 'detection-association balance'}</span></li>
+          <li><strong>κ</strong><span>{es ? 'calibración física de cámara en px/mm' : 'physical camera calibration in px/mm'}</span></li>
+        </ul>
+        <Callout variant="honest" title={es ? 'Qué demuestra y qué no' : 'What this proves and what it does not'}>
           {es
-            ? 'Los resultados publicados corresponden a un banco sintético controlado con verdad exacta; no representan exactitud en planta. Los datos industriales deben calibrarse y validarse por dominio.'
-            : 'Published results belong to a controlled synthetic benchmark with exact truth; they do not represent plant accuracy. Industrial data requires domain-specific calibration and validation.'}
-        </p>
+            ? 'Los resultados publicados corresponden a un banco sintético controlado con verdad exacta. Permiten comparar algoritmos y medir sus fallas, pero no representan exactitud en planta. Los datos industriales requieren anotación externa, calibración y validación por dominio.'
+            : 'Published results belong to a controlled synthetic benchmark with exact truth. They support algorithm comparison and failure measurement, but do not represent plant accuracy. Industrial data requires external annotation, calibration, and domain-specific validation.'}
+        </Callout>
+        <Refs ids={['aldrich2010', 'sautermean']} label="Refs" />
+      </section>
+
+      <section className="fs-intro-section">
+        <div className="fs-section-heading">
+          <span className="eyebrow">{es ? 'Contrato de uso' : 'Use contract'}</span>
+          <h2>{es ? 'Un resultado útil conserva máscara, medida, identidad y procedencia' : 'A useful result preserves mask, measurement, identity, and provenance'}</h2>
+          <p>{es
+            ? 'Cada predicción conserva la imagen de origen, el método, su checkpoint o configuración, el mapa entero de instancias, la calibración aplicada, las mediciones derivadas y los hashes de los artefactos. Esta cadena permite revisar una cifra sin confiar en una captura de pantalla.'
+            : 'Each prediction preserves its source image, method, checkpoint or configuration, integer instance map, applied calibration, derived measurements, and artifact hashes. This chain makes a number reviewable without trusting a screenshot.'}</p>
+          <p>{es
+            ? 'En cargas locales, el navegador ofrece solo motores que realmente puede ejecutar y exporta el trabajo para el pipeline científico completo. En casos precalculados, todos los métodos permanecen disponibles mediante resultados generados antes del despliegue.'
+            : 'For local uploads, the browser offers only engines it can genuinely execute and exports a job for the complete scientific pipeline. For precomputed cases, every method remains available through results generated before deployment.'}</p>
+        </div>
+        <Refs ids={['lin2014coco', 'onnxruntimeweb']} label="Refs" />
       </section>
     </div>
   );
@@ -126,20 +169,20 @@ function FrothSignalDiagram({ es }: { es: boolean }) {
       <svg viewBox="0 0 720 500" role="img">
         <defs>
           <linearGradient id="hero-bg" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stopColor="#0b2430" />
-            <stop offset="1" stopColor="#07151d" />
+            <stop offset="0" className="fs-hero-bg-start" />
+            <stop offset="1" className="fs-hero-bg-end" />
           </linearGradient>
           <linearGradient id="hero-signal" x1="0" y1="0" x2="1" y2="0">
-            <stop stopColor="#36d6c5" />
-            <stop offset="1" stopColor="#7fb4ff" />
+            <stop className="fs-hero-signal-start" />
+            <stop offset="1" className="fs-hero-signal-end" />
           </linearGradient>
           <filter id="hero-glow"><feGaussianBlur stdDeviation="5" result="b" /><feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge></filter>
         </defs>
         <rect width="720" height="500" rx="28" fill="url(#hero-bg)" />
-        <g opacity=".16" stroke="#b9f5ef">
+        <g className="fs-hero-grid">
           {Array.from({ length: 10 }, (_, i) => <path key={i} d={`M0 ${60 + i * 42} H720`} />)}
         </g>
-        <g fill="#102f3b" stroke="#6ddbd0" strokeWidth="3">
+        <g className="fs-hero-bubbles">
           <circle cx="120" cy="115" r="54" /><circle cx="218" cy="94" r="40" /><circle cx="304" cy="128" r="62" />
           <circle cx="88" cy="224" r="46" /><circle cx="180" cy="207" r="53" /><circle cx="277" cy="235" r="43" />
           <circle cx="362" cy="195" r="60" /><circle cx="113" cy="323" r="65" /><circle cx="238" cy="330" r="55" />
@@ -148,9 +191,9 @@ function FrothSignalDiagram({ es }: { es: boolean }) {
         </g>
         <g fill="none" stroke="url(#hero-signal)" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" filter="url(#hero-glow)">
           <path d="M448 382 L486 382 L501 330 L526 425 L550 300 L575 362 L596 232 L620 352 L649 279 L676 279" />
-          <circle cx="596" cy="232" r="7" fill="#7fb4ff" stroke="none" className="fs-signal-pulse" />
+          <circle cx="596" cy="232" r="7" className="fs-signal-pulse fs-signal-dot" />
         </g>
-        <g fill="#d9fffb" fontFamily="ui-monospace, monospace">
+        <g className="fs-hero-metrics" fontFamily="ui-monospace, monospace">
           <text x="455" y="92" fontSize="15" opacity=".7">{es ? 'INSTANCIAS' : 'INSTANCES'}</text>
           <text x="455" y="129" fontSize="34" fontWeight="700">214</text>
           <text x="455" y="179" fontSize="15" opacity=".7">d32</text>
@@ -158,9 +201,9 @@ function FrothSignalDiagram({ es }: { es: boolean }) {
           <text x="455" y="263" fontSize="15" opacity=".7">{es ? 'COBERTURA' : 'COVERAGE'}</text>
           <text x="455" y="297" fontSize="29" fontWeight="700">91.6%</text>
         </g>
-        <path d="M417 52 V448" stroke="#28505b" strokeWidth="2" />
-        <text x="36" y="42" fill="#92bdb9" fontFamily="ui-monospace, monospace" fontSize="13">{es ? 'SUPERFICIE OBSERVADA' : 'OBSERVED SURFACE'}</text>
-        <text x="455" y="42" fill="#92bdb9" fontFamily="ui-monospace, monospace" fontSize="13">{es ? 'SEÑAL RECUPERADA' : 'RECOVERED SIGNAL'}</text>
+        <path d="M417 52 V448" className="fs-hero-divider" />
+        <text x="36" y="42" className="fs-hero-label" fontFamily="ui-monospace, monospace" fontSize="13">{es ? 'SUPERFICIE OBSERVADA' : 'OBSERVED SURFACE'}</text>
+        <text x="455" y="42" className="fs-hero-label" fontFamily="ui-monospace, monospace" fontSize="13">{es ? 'SEÑAL RECUPERADA' : 'RECOVERED SIGNAL'}</text>
       </svg>
       <figcaption>{es ? 'Contornos por instancia → morfometría → señal temporal' : 'Instance contours → morphometry → temporal signal'}</figcaption>
     </figure>
@@ -232,11 +275,11 @@ function ChallengeDiagram({ es }: { es: boolean }) {
 }
 
 function ChallengeGlyph({ index }: { index: number }) {
-  const bubble = { fill: '#14333d', stroke: '#62d4c9', strokeWidth: 3 } as const;
-  if (index === 0) return <g><circle cx="82" cy="72" r="45" {...bubble} /><circle cx="149" cy="72" r="45" {...bubble} /><path d="M116 29 Q98 72 116 115" fill="none" stroke="#ffb454" strokeWidth="4" strokeDasharray="6 5" /></g>;
-  if (index === 1) return <g><circle cx="75" cy="76" r="48" {...bubble} /><circle cx="154" cy="68" r="43" {...bubble} /><ellipse cx="120" cy="47" rx="62" ry="19" fill="#fff" opacity=".78" /><path d="M86 37 L153 96" stroke="#ffb454" strokeWidth="4" /></g>;
+  const bubble = { className: 'fs-challenge-bubble' } as const;
+  if (index === 0) return <g><circle cx="82" cy="72" r="45" {...bubble} /><circle cx="149" cy="72" r="45" {...bubble} /><path d="M116 29 Q98 72 116 115" className="fs-challenge-alert" strokeDasharray="6 5" /></g>;
+  if (index === 1) return <g><circle cx="75" cy="76" r="48" {...bubble} /><circle cx="154" cy="68" r="43" {...bubble} /><ellipse cx="120" cy="47" rx="62" ry="19" className="fs-challenge-glare" /><path d="M86 37 L153 96" className="fs-challenge-alert" /></g>;
   if (index === 2) return <g>{[[45,38,9],[80,35,15],[128,48,28],[188,74,48],[52,100,21],[105,106,12]].map(([x,y,r]) => <circle key={`${x}`} cx={x} cy={y} r={r} {...bubble} />)}</g>;
-  return <g><circle cx="52" cy="72" r="27" {...bubble} /><circle cx="121" cy="72" r="36" {...bubble} /><path d="M78 72 H90 M158 72 H184" stroke="#ffb454" strokeWidth="4" markerEnd="url(#chain-arrow)" /><path d="M189 48 L221 72 L189 96" fill="none" stroke="#62d4c9" strokeWidth="3" /></g>;
+  return <g><circle cx="52" cy="72" r="27" {...bubble} /><circle cx="121" cy="72" r="36" {...bubble} /><path d="M78 72 H90 M158 72 H184" className="fs-challenge-alert" markerEnd="url(#chain-arrow)" /><path d="M189 48 L221 72 L189 96" className="fs-challenge-flow" /></g>;
 }
 
 function TemporalShowcase({ es }: { es: boolean }) {

@@ -20,7 +20,15 @@ from . import registry
 from .core.manifest import build_index
 from .io.formats import write_json
 from .model_registry import registry_document
-from .showcase import TEMPORAL_CASE_IDS, TEMPORAL_FRAMES, bake as bake_showcase_artifacts
+from .showcase import (
+    PRIMARY_EXCLUDED_CASE_IDS,
+    TEMPORAL_CASE_IDS,
+    TEMPORAL_FRAMES,
+    TEMPORAL_METRIC_FIELDS,
+    TEMPORAL_PREDICTION_SOURCES,
+    bake as bake_showcase_artifacts,
+    decode_label_runs,
+)
 from .stages import benchmark, export, generate
 
 # data-pipeline/fslab/pipeline.py -> parents[2] = repo root (works under `pip install -e .` too)
@@ -127,11 +135,16 @@ def check() -> int:
         import json
 
         showcase = json.loads(showcase_path.read_text(encoding="utf-8"))
-        expected_artifacts = len(registry.list_cases()) * len(registry_document()["methods"])
+        primary_cases = [
+            case
+            for case in registry.list_cases()
+            if case.id not in PRIMARY_EXCLUDED_CASE_IDS
+        ]
+        expected_artifacts = len(primary_cases) * len(registry_document()["methods"])
         expected_pairs = {
             (method["id"], case.id)
             for method in registry_document()["methods"]
-            for case in registry.list_cases()
+            for case in primary_cases
         }
         artifacts = showcase.get("artifacts", [])
         observed_pairs = {
@@ -141,7 +154,10 @@ def check() -> int:
         if (
             not showcase.get("complete")
             or showcase.get("method_count") != len(registry_document()["methods"])
-            or showcase.get("case_count") != len(registry.list_cases())
+            or showcase.get("case_count") != len(primary_cases)
+            or showcase.get("benchmark_case_count") != len(registry.list_cases())
+            or showcase.get("excluded_primary_cases")
+            != list(PRIMARY_EXCLUDED_CASE_IDS)
             or showcase.get("artifact_count") != expected_artifacts
             or len(artifacts) != expected_artifacts
             or observed_pairs != expected_pairs
@@ -180,21 +196,73 @@ def check() -> int:
             expected_showcase_paths.add(temporal_relative)
             temporal = json.loads(temporal_path.read_text(encoding="utf-8"))
             sequences = temporal.get("sequences", [])
+            expected_prediction_pairs = {
+                (method_id, case_id)
+                for method_id, config in TEMPORAL_PREDICTION_SOURCES.items()
+                for case_id in config["required_cases"]
+            }
+            observed_prediction_pairs = {
+                (prediction.get("method_id"), sequence.get("case_id"))
+                for sequence in sequences
+                for prediction in sequence.get("predictions", [])
+            }
+            availability = temporal.get("method_availability", [])
             if (
-                temporal.get("schema") != "frothseg.temporal-showcase/v1"
+                temporal.get("schema") != "frothseg.temporal-showcase/v2"
                 or temporal.get("source_kind") != "deterministic_generated"
                 or temporal.get("label_kind") != "ground_truth"
-                or temporal.get("prediction_method") is not None
                 or temporal.get("sequence_count") != len(TEMPORAL_CASE_IDS)
                 or temporal.get("frames_per_sequence") != TEMPORAL_FRAMES
                 or temporal.get("artifact_count")
-                != len(TEMPORAL_CASE_IDS) * TEMPORAL_FRAMES * 3
+                != (
+                    len(TEMPORAL_CASE_IDS) * TEMPORAL_FRAMES * 3
+                    + len(expected_prediction_pairs) * TEMPORAL_FRAMES * 2
+                )
+                or temporal.get("prediction_method_count")
+                != len(TEMPORAL_PREDICTION_SOURCES)
+                or temporal.get("prediction_sequence_count")
+                != len(expected_prediction_pairs)
+                or temporal.get("prediction_frame_count")
+                != len(expected_prediction_pairs) * TEMPORAL_FRAMES
                 or temporal.get("complete") is not True
                 or {sequence.get("case_id") for sequence in sequences}
                 != set(TEMPORAL_CASE_IDS)
+                or observed_prediction_pairs != expected_prediction_pairs
+                or {row.get("method_id") for row in availability}
+                != {method["id"] for method in registry_document()["methods"]}
             ):
                 print("  DRIFT temporal showcase coverage")
                 mismatches += 1
+            availability_by_id = {
+                row.get("method_id"): row for row in availability
+            }
+            for method in registry_document()["methods"]:
+                row = availability_by_id.get(method["id"], {})
+                expected_cases = sorted(
+                    TEMPORAL_PREDICTION_SOURCES.get(method["id"], {}).get(
+                        "required_cases",
+                        (),
+                    )
+                )
+                if expected_cases:
+                    valid = (
+                        row.get("status") == "available"
+                        and row.get("available_sequence_ids") == expected_cases
+                        and row.get("identity_contract") != "none"
+                    )
+                else:
+                    valid = (
+                        row.get("status") == "not_precomputed"
+                        and row.get("available_sequence_ids") == []
+                        and row.get("identity_contract") == "none"
+                        and bool(row.get("reason"))
+                    )
+                if not valid:
+                    print(
+                        "  DRIFT temporal method availability: "
+                        f"{method['id']}"
+                    )
+                    mismatches += 1
             for sequence in sequences:
                 frames = sequence.get("frames", [])
                 if len(frames) != TEMPORAL_FRAMES:
@@ -213,6 +281,78 @@ def check() -> int:
                             mismatches += 1
                         if isinstance(relative_path, str):
                             expected_showcase_paths.add(relative_path)
+                for prediction in sequence.get("predictions", []):
+                    if (
+                        not isinstance(prediction.get("truth_events"), list)
+                        or not isinstance(prediction.get("predicted_events"), list)
+                        or set(TEMPORAL_METRIC_FIELDS)
+                        - set(prediction.get("metrics", {}))
+                    ):
+                        print(
+                            "  DRIFT temporal identity/event evidence: "
+                            f"{prediction.get('method_id')}/{sequence.get('case_id')}"
+                        )
+                        mismatches += 1
+                    evidence_relative = prediction.get("evidence_path")
+                    evidence_path = (
+                        DERIVED / evidence_relative
+                        if isinstance(evidence_relative, str)
+                        else None
+                    )
+                    if (
+                        evidence_path is None
+                        or not evidence_path.is_file()
+                        or hashlib.sha256(evidence_path.read_bytes()).hexdigest()
+                        != prediction.get("evidence_sha256")
+                    ):
+                        print(
+                            "  DRIFT temporal source evidence: "
+                            f"{prediction.get('method_id')}/{sequence.get('case_id')}"
+                        )
+                        mismatches += 1
+                    prediction_frames = prediction.get("frames", [])
+                    if (
+                        len(prediction_frames) != TEMPORAL_FRAMES
+                        or {frame.get("frame_index") for frame in prediction_frames}
+                        != set(range(TEMPORAL_FRAMES))
+                    ):
+                        print(
+                            "  DRIFT temporal prediction frame count: "
+                            f"{prediction.get('method_id')}/{sequence.get('case_id')}"
+                        )
+                        mismatches += 1
+                    for frame in prediction_frames:
+                        for name in ("prediction", "overlay"):
+                            relative_path = frame.get(f"{name}_path")
+                            expected_sha256 = frame.get(f"{name}_sha256")
+                            path = (
+                                DERIVED / relative_path
+                                if isinstance(relative_path, str)
+                                else None
+                            )
+                            if path is None or not path.is_file():
+                                print(
+                                    f"  MISSING temporal {name}: {relative_path}"
+                                )
+                                mismatches += 1
+                            elif (
+                                hashlib.sha256(path.read_bytes()).hexdigest()
+                                != expected_sha256
+                            ):
+                                print(
+                                    f"  DRIFT temporal {name}: {relative_path}"
+                                )
+                                mismatches += 1
+                            elif (
+                                name == "prediction"
+                                and not decode_label_runs(path.read_bytes()).any()
+                            ):
+                                print(
+                                    f"  EMPTY temporal prediction: {relative_path}"
+                                )
+                                mismatches += 1
+                            if isinstance(relative_path, str):
+                                expected_showcase_paths.add(relative_path)
         actual_showcase_paths = {
             path.relative_to(DERIVED).as_posix()
             for path in showcase_path.parent.rglob("*")

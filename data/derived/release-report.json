@@ -18,7 +18,7 @@
   },
   "method_benchmark": {
     "path": "data/derived/method-benchmark.json",
-    "sha256": "1b3ad36a646cac9448544db73ace2b94ca0e5862badf5dd7ba4e2df1c187caf2",
+    "sha256": "1fbddeecedcf3f827f1d2b62cef53e2096ff58fd93ad477a39780925b7bd08ec",
     "method_count": 15,
     "implemented_count": 15,
     "leader": {
@@ -618,40 +618,40 @@
       "tier": "frontier",
       "implementation_state": "implemented",
       "quality_status": "passes-current-bar",
-      "test_mean_ap": 0.471671875,
-      "test_mean_boundary_fscore": 0.9776218750000001,
-      "test_mean_bsd_wasserstein": 1.05859375,
+      "test_mean_ap": 0.490359375,
+      "test_mean_boundary_fscore": 0.9826265625,
+      "test_mean_bsd_wasserstein": 0.9242031249999999,
       "test_cell_count": 64,
       "test_micro": {
         "association_iou": 0.5,
         "nGt": 17846,
-        "nPred": 14839,
-        "tp": 12678,
-        "fp": 2161,
-        "fn": 5168,
-        "merges": 2475,
-        "splits": 639,
-        "instance_precision": 0.8543702405822495,
-        "instance_recall": 0.7104112966491091,
-        "instance_f1": 0.7757687012391006
+        "nPred": 14328,
+        "tp": 12496,
+        "fp": 1832,
+        "fn": 5350,
+        "merges": 2539,
+        "splits": 478,
+        "instance_precision": 0.8721384701284198,
+        "instance_recall": 0.700212932870111,
+        "instance_f1": 0.7767762789830298
       },
       "compute": {
         "hardware_lane": "gpu",
         "device": "NVIDIA GeForce RTX 4070 Laptop GPU",
-        "mean_inference_ms": 73.9396153846154,
-        "p95_inference_ms": 178.9225999999996,
+        "mean_inference_ms": 72.81107692307693,
+        "p95_inference_ms": 200.02519999999947,
         "peak_memory_mib": 266.5,
         "peak_memory_metric": "cuda-peak-allocated",
-        "model_artifact_bytes": 1638138,
-        "model_artifact_sha256": "5861f672bc9c31749964f5c8c641d6c0abfec3ff8cbfbd09b388d8378daca895",
+        "model_artifact_bytes": 1637944,
+        "model_artifact_sha256": "ef2a6ad69983a5b60948d1dbea285111c3722e442d61c9edafcae5629352f734",
         "model_artifact_committed": true,
-        "training_duration_seconds": 393.818,
+        "training_duration_seconds": 305.437,
         "run_manifest": "models/lamellastar-v1/run.json"
       },
-      "canonical_mean_ap": 0.48608333333333337,
+      "canonical_mean_ap": 0.48966666666666664,
       "run": {
         "path": "models/lamellastar-v1/run.json",
-        "sha256": "baa93e730a5e4e23964420c377630acc3a0e05fdef4700abae42fd0355665587"
+        "sha256": "4cf1470f3c808746919cf1a0a4e905f0fe7a1c9279ed72f6c835a1870afe791c"
       },
       "docs_path": "docs/frameworks/14_lamellastar/README.md"
     }
@@ -659,8 +659,12 @@
   "temporal_evidence": [
     {
       "path": "data/derived/temporal/unet-watershed-v2.json",
-      "sha256": "79ef36853a44472081cbc651fbf4c1b4c30ec7e1ed19fc7a091e3700820e0954",
+      "sha256": "a3d82a7b8b076071109afc76bed73ed218b408047a6c6c3ab7312b2928fe1a55",
       "schema": "frothseg.temporal-benchmark/v1",
+      "method_id": "L1",
+      "prediction_kind": "framewise_segmentation_with_iou_identity_association",
+      "prediction_sequence_count": 5,
+      "prediction_frame_count": 40,
       "metrics": {
         "event_precision": 0.012048192771084338,
         "event_recall": 1.0,
@@ -672,8 +676,12 @@
     },
     {
       "path": "data/derived/temporal/sam2-1-hiera-tiny.json",
-      "sha256": "e778c28320b6445eb118c20f80318a01793d7c19dd5b31e3481fd7f3626660a8",
+      "sha256": "0e0fa8c6207195bd13b006c82d2ac0ee827d8aab8a4c2dd43f9ff46fc148097d",
       "schema": "frothseg.sam2-video-benchmark/v1",
+      "method_id": "L7",
+      "prediction_kind": "native_prompted_video_propagation",
+      "prediction_sequence_count": 1,
+      "prediction_frame_count": 8,
       "metrics": {
         "event_precision": 1.0,
         "event_recall": 1.0,

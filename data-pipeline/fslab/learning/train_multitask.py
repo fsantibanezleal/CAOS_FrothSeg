@@ -38,12 +38,16 @@ class Config:
     batch_size: int = 8
     device: str = "cuda"
     evaluation_split: str = "validation"
+    augmentation: str = "none"
 
 
 def _training_config(config: Config) -> dict:
     """Return fields that affect optimization and checkpoint compatibility."""
     values = asdict(config)
     values.pop("evaluation_split")
+    # Epochs is a stopping point, not part of the optimizer trajectory. A run
+    # may therefore continue a compatible checkpoint to a later stopping point.
+    values.pop("epochs")
     return values
 
 
@@ -67,6 +71,32 @@ def _tensor_data(cache_split: dict[str, np.ndarray], *, include_centers: bool):
         for label in cache_split["labels"]
     ])
     return images, torch.from_numpy(target_array)
+
+
+def _augment(images, truth, *, rng: np.random.Generator):
+    """Apply deterministic paired geometry plus image-only photometric jitter."""
+    import torch
+
+    augmented_images = []
+    augmented_truth = []
+    for image, target in zip(images, truth, strict=True):
+        turns = int(rng.integers(0, 4))
+        image = torch.rot90(image, turns, dims=(1, 2))
+        target = torch.rot90(target, turns, dims=(1, 2))
+        if bool(rng.integers(0, 2)):
+            image = torch.flip(image, dims=(2,))
+            target = torch.flip(target, dims=(2,))
+        if bool(rng.integers(0, 2)):
+            image = torch.flip(image, dims=(1,))
+            target = torch.flip(target, dims=(1,))
+        gain = float(rng.uniform(0.85, 1.15))
+        bias = float(rng.uniform(-0.08, 0.08))
+        noise = torch.from_numpy(
+            rng.normal(0.0, 0.02, size=tuple(image.shape)).astype(np.float32)
+        )
+        augmented_images.append(torch.clamp(image * gain + bias + noise, 0.0, 1.0))
+        augmented_truth.append(target)
+    return torch.stack(augmented_images), torch.stack(augmented_truth)
 
 
 def _loss(logits, truth):
@@ -190,6 +220,8 @@ def train(config: Config, cache_path: Path, output: Path, *, resume: bool = True
     calibration_cache = select_split(cache, "calibration")
     if config.evaluation_split not in {"validation", "test"}:
         raise ValueError("evaluation_split must be validation or test")
+    if config.augmentation not in {"none", "geometric-photometric"}:
+        raise ValueError("augmentation must be none or geometric-photometric")
     evaluation_cache = select_split(cache, config.evaluation_split)
     include_centers = config.method == "lamellastar"
     train_images, train_truth = _tensor_data(train_cache, include_centers=include_centers)
@@ -207,6 +239,8 @@ def train(config: Config, cache_path: Path, output: Path, *, resume: bool = True
         checkpoint = torch.load(checkpoint_path, map_location="cpu", weights_only=False)
         checkpoint_config = dict(checkpoint["config"])
         checkpoint_config.pop("evaluation_split", None)
+        checkpoint_config.pop("epochs", None)
+        checkpoint_config.setdefault("augmentation", "none")
         if checkpoint_config != _training_config(config):
             raise RuntimeError("checkpoint configuration mismatch")
         model.load_state_dict(checkpoint["model"])
@@ -225,8 +259,18 @@ def train(config: Config, cache_path: Path, output: Path, *, resume: bool = True
         losses = []
         for start in range(0, len(order), config.batch_size):
             indices = order[start:start + config.batch_size]
-            image = train_images[indices].to(device)
-            truth = train_truth[indices].to(device)
+            image = train_images[indices]
+            truth = train_truth[indices]
+            if config.augmentation == "geometric-photometric":
+                image, truth = _augment(
+                    image,
+                    truth,
+                    rng=np.random.default_rng(
+                        config.seed * 1_000_003 + epoch * 10_007 + start
+                    ),
+                )
+            image = image.to(device)
+            truth = truth.to(device)
             optimizer.zero_grad(set_to_none=True)
             loss = _loss(model(image), truth)
             loss.backward()
@@ -335,6 +379,11 @@ def main() -> None:
         choices=("validation", "test"),
         default="validation",
     )
+    parser.add_argument(
+        "--augmentation",
+        choices=("none", "geometric-photometric"),
+        default="none",
+    )
     parser.add_argument("--no-resume", action="store_true")
     args = parser.parse_args()
     config = Config(
@@ -346,6 +395,7 @@ def main() -> None:
         batch_size=args.batch_size,
         device=args.device,
         evaluation_split=args.evaluation_split,
+        augmentation=args.augmentation,
     )
     manifest = train(config, args.cache, args.output, resume=not args.no_resume)
     print(json.dumps(manifest["evaluation"], indent=2))

@@ -8,9 +8,9 @@ export const architecture: ArchitectureConfig = {
       es: 'El producto',
       svg: 'svg/tech/01-the-app.svg',
       body_en:
-        'FrothSeg is an offline-first instance-segmentation system. Its reproducible workflow covers data generation, leakage-resistant splits, classical algorithms, GPU training, official foundation-model inference, calibration, evaluation, export, and temporal analysis.\n\nThe website replays all 15 offline methods across 13 canonical cases and offers four upload-only interactive methods.',
+        'FrothSeg is a complete instance-segmentation system. Its reproducible workflow covers data generation, leakage-resistant splits, classical algorithms, GPU training, official foundation-model inference, calibration, evaluation, export, and temporal analysis.\n\nThe website presents all 15 methods across 12 selected cases. The empty-image diagnostic remains in the 13-case benchmark, and four verified methods are available for local uploads.',
       body_es:
-        'FrothSeg es un sistema offline-first de segmentación de instancias. Su flujo reproducible cubre generación de datos, splits sin fuga, algoritmos clásicos, entrenamiento GPU, inferencia con modelos fundacionales, calibración, evaluación, exportación y análisis temporal.\n\nLa web reproduce los 15 métodos offline en 13 casos canónicos y ofrece cuatro métodos interactivos solo para cargas.',
+        'FrothSeg es un sistema completo de segmentación de instancias. Su flujo reproducible cubre generación de datos, splits sin fuga, algoritmos clásicos, entrenamiento GPU, inferencia con modelos fundacionales, calibración, evaluación, exportación y análisis temporal.\n\nLa web presenta los 15 métodos en 12 casos seleccionados. El diagnóstico con imagen vacía permanece en el benchmark de 13 casos, y cuatro métodos verificados están disponibles para cargas locales.',
     },
     {
       id: 'methods',
@@ -18,9 +18,9 @@ export const architecture: ArchitectureConfig = {
       es: 'Escalera de métodos',
       svg: 'svg/tech/04-the-science.svg',
       body_en:
-        'The registry contains 15 implemented offline methods. C1-C7 are classical. L1-L4 and L6 are trained for the task. L5 Cellpose-SAM and L7 SAM2.1 use official foundation implementations. N1 LamellaStar is an evaluated research model.\n\nCellpose-SAM leads the controlled held-out test at AP 0.5099. A preregistered LamellaStar ablation improved N1 to AP 0.4717 and cleared the AP 0.30 comparison threshold, but did not exceed the leader.',
+        'The registry contains 15 implemented offline methods. C1-C7 are classical. L1-L4 and L6 are trained for the task. L5 Cellpose-SAM and L7 SAM2.1 use official foundation implementations. N1 LamellaStar is an evaluated research model.\n\nCellpose-SAM leads the controlled held-out test at AP 0.5099. Two preregistered LamellaStar studies improved N1 to AP 0.4904 and cleared the AP 0.30 comparison threshold, but did not exceed the leader.',
       body_es:
-        'El registro contiene 15 métodos offline implementados. C1-C7 son clásicos. L1-L4 y L6 se entrenan para la tarea. L5 Cellpose-SAM y L7 SAM2.1 usan implementaciones fundacionales oficiales. N1 LamellaStar es un modelo de investigación evaluado.\n\nCellpose-SAM lidera el test controlado retenido con AP 0,5099. Una ablación preregistrada mejoró LamellaStar a AP 0,4717 y superó el umbral comparativo AP 0,30, pero no superó al líder.',
+        'El registro contiene 15 métodos offline implementados. C1-C7 son clásicos. L1-L4 y L6 se entrenan para la tarea. L5 Cellpose-SAM y L7 SAM2.1 usan implementaciones fundacionales oficiales. N1 LamellaStar es un modelo de investigación evaluado.\n\nCellpose-SAM lidera el test controlado retenido con AP 0,5099. Dos estudios preregistrados mejoraron LamellaStar a AP 0,4904 y superaron el umbral comparativo AP 0,30, pero no superaron al líder.',
     },
     {
       id: 'flow',
@@ -28,9 +28,9 @@ export const architecture: ArchitectureConfig = {
       es: 'Flujo de datos',
       svg: 'svg/tech/03-web-flow.svg',
       body_en:
-        'Exact synthetic geometry and independent appearance variants are grouped before splitting. Training, validation, calibration, and untouched test never share a latent geometry group. Models are trained or loaded from official checkpoints, calibrated without test access, evaluated once, and exported with provenance.\n\nA dedicated showcase stage converts all 15 methods by 13 canonical cases into 195 checked label and preview pairs for the ten-view workbench.',
+        'Exact synthetic geometry and independent appearance variants are grouped before splitting. Training, validation, calibration, and untouched test never share a latent geometry group. Models are trained or loaded from official checkpoints, calibrated without test access, evaluated once, and exported with provenance.\n\nA dedicated showcase stage converts all 15 methods by 12 presentation cases into 180 checked label and preview pairs for the workbench. The 13th empty-image diagnostic is retained in benchmark evidence.',
       body_es:
-        'La geometría sintética exacta y las variantes de apariencia independientes se agrupan antes del split. Entrenamiento, validación, calibración y test no utilizado durante el ajuste nunca comparten un grupo geométrico latente. Los modelos se entrenan o cargan desde checkpoints oficiales, se calibran sin acceso al test, se evalúan una vez y se exportan con procedencia.\n\nUna etapa específica genera 195 pares verificados de etiquetas y vistas previas, correspondientes a 15 métodos por 13 casos canónicos, para las diez vistas del área de análisis.',
+        'La geometría sintética exacta y las variantes de apariencia independientes se agrupan antes del split. Entrenamiento, validación, calibración y test no utilizado durante el ajuste nunca comparten un grupo geométrico latente. Los modelos se entrenan o cargan desde checkpoints oficiales, se calibran sin acceso al test, se evalúan una vez y se exportan con procedencia.\n\nUna etapa específica genera 180 pares verificados de etiquetas y vistas previas, correspondientes a 15 métodos por 12 casos de presentación. El diagnóstico con imagen vacía se conserva como evidencia del benchmark.',
     },
     {
       id: 'lanes',
@@ -48,9 +48,9 @@ export const architecture: ArchitectureConfig = {
       es: 'Contratos',
       svg: 'svg/tech/05-data-contracts.svg',
       body_en:
-        'The ingestion schema validates real images. Artifact records preserve format, byte size, and SHA-256. Model manifests add dataset checksum, split, seed, environment, device, checkpoint lineage, calibration, metrics, and parity. The release report also records all 15 methods, temporal evidence, and the 195-pair showcase manifest.\n\nSynthetic AP is controlled-benchmark evidence, never plant accuracy.',
+        'The ingestion schema validates real images. Artifact records preserve format, byte size, and SHA-256. Model manifests add dataset checksum, split, seed, environment, device, checkpoint lineage, calibration, metrics, and parity. The release report also records all 15 methods, temporal evidence, the 180-pair presentation manifest, and the separate 13-case benchmark contract.\n\nSynthetic AP is controlled-benchmark evidence, never plant accuracy.',
       body_es:
-        'El esquema de ingesta valida imágenes reales. Los registros de artefactos conservan formato, tamaño y SHA-256. Los manifiestos de modelos agregan checksum del dataset, split, semilla, entorno, dispositivo, linaje del checkpoint, calibración, métricas y paridad. El informe de versión también registra los 15 métodos, la evidencia temporal y el manifiesto de 195 pares.\n\nEl AP sintético es evidencia controlada, nunca exactitud de planta.',
+        'El esquema de ingesta valida imágenes reales. Los registros de artefactos conservan formato, tamaño y SHA-256. Los manifiestos de modelos agregan checksum del dataset, split, semilla, entorno, dispositivo, linaje del checkpoint, calibración, métricas y paridad. El informe de versión también registra los 15 métodos, la evidencia temporal, el manifiesto de presentación con 180 pares y el contrato separado del benchmark de 13 casos.\n\nEl AP sintético es evidencia controlada, nunca exactitud de planta.',
     },
   ],
 };

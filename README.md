@@ -24,14 +24,16 @@ Version 0.04.000 implements all 15 registered methods:
 | Classical | C1-C7 | Otsu+CC, immersion watershed, marker watershed, distance watershed, H-minima watershed, SLIC+RAG, lamella-valley watershed |
 | Domain learned | L1-L4, L6 | boundary U-Net, deep-marker watershed, GC-FSegNet, official StarDist 2D, official Ultralytics YOLO segmentation |
 | Foundation | L5, L7 | official Cellpose-SAM `cpsam_v2`, official SAM 2.1 image and video |
-| Frontier | N1 | LamellaStar four-head research model |
+| Research | N1 | LamellaStar four-head research model |
 
 The primary comparison uses 64 untouched test images whose latent geometry
 groups are isolated from training, validation, and calibration. Cellpose-SAM,
 fine-tuned for two complete passes over all 192 training images, is the current
-leader at mask AP 0.5099, AP50 0.8238, and PQ 0.7227. Boundary U-Net is second
-at AP 0.4153. LamellaStar did not beat the accepted leader, so there is no
-beyond-SOTA claim. The repository preserves that negative result.
+leader at mask AP 0.5099, AP50 0.8238, and PQ 0.7227. LamellaStar reaches AP
+0.4904 after two preregistered studies, making it the measured runner-up without
+exceeding Cellpose-SAM. Boundary U-Net follows at AP 0.4153. The repository
+reports the LamellaStar gain as an internal improvement without a superiority
+claim.
 
 All numbers are synthetic controlled-benchmark results, not plant accuracy.
 See `data/derived/method-benchmark.json` and

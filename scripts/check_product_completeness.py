@@ -12,7 +12,14 @@ sys.path.insert(0, str(ROOT / "data-pipeline"))
 
 from fslab.model_registry import METHODS, validate_registry  # noqa: E402
 from fslab.registry import list_cases  # noqa: E402
-from fslab.showcase import TEMPORAL_CASE_IDS, TEMPORAL_FRAMES  # noqa: E402
+from fslab.showcase import (  # noqa: E402
+    PRIMARY_EXCLUDED_CASE_IDS,
+    TEMPORAL_CASE_IDS,
+    TEMPORAL_FRAMES,
+    TEMPORAL_METRIC_FIELDS,
+    TEMPORAL_PREDICTION_SOURCES,
+    decode_label_runs,
+)
 
 
 def _sha256(path: Path) -> str:
@@ -47,10 +54,11 @@ def check_development() -> list[str]:
         showcase = json.loads(showcase_path.read_text(encoding="utf-8"))
         expected_ids = {method.id for method in METHODS}
         expected_case_ids = {case.id for case in list_cases()}
+        primary_case_ids = expected_case_ids - set(PRIMARY_EXCLUDED_CASE_IDS)
         expected_pairs = {
             (method.id, case_id)
             for method in METHODS
-            for case_id in expected_case_ids
+            for case_id in primary_case_ids
         }
         artifacts = showcase.get("artifacts", [])
         observed_pairs = {
@@ -61,16 +69,22 @@ def check_development() -> list[str]:
             showcase.get("schema") != "frothseg.showcase/v1"
             or showcase.get("complete") is not True
             or showcase.get("method_count") != 15
-            or showcase.get("case_count") != 13
-            or showcase.get("artifact_count") != 195
-            or len(showcase.get("cases", [])) != 13
-            or len(set(showcase.get("cases", []))) != 13
+            or showcase.get("case_count") != len(primary_case_ids)
+            or showcase.get("benchmark_case_count") != len(expected_case_ids)
+            or showcase.get("excluded_primary_cases")
+            != list(PRIMARY_EXCLUDED_CASE_IDS)
+            or showcase.get("artifact_count") != len(expected_pairs)
+            or len(showcase.get("cases", [])) != len(primary_case_ids)
+            or len(set(showcase.get("cases", []))) != len(primary_case_ids)
             or set(showcase.get("methods", [])) != expected_ids
-            or set(showcase.get("cases", [])) != expected_case_ids
-            or len(artifacts) != 195
+            or set(showcase.get("cases", [])) != primary_case_ids
+            or len(artifacts) != len(expected_pairs)
             or observed_pairs != expected_pairs
         ):
-            errors.append("showcase does not cover all 15 methods x 13 canonical cases")
+            errors.append(
+                "showcase does not cover all 15 methods x 12 primary cases "
+                "while retaining 13 benchmark cases"
+            )
         expected_showcase_paths: set[str] = set()
         for artifact in artifacts:
             for name in ("labels", "preview", "analysis"):
@@ -111,21 +125,72 @@ def check_development() -> list[str]:
             expected_showcase_paths.add(temporal_relative)
             temporal = json.loads(temporal_path.read_text(encoding="utf-8"))
             sequences = temporal.get("sequences", [])
+            expected_prediction_pairs = {
+                (method_id, case_id)
+                for method_id, config in TEMPORAL_PREDICTION_SOURCES.items()
+                for case_id in config["required_cases"]
+            }
+            observed_prediction_pairs = {
+                (prediction.get("method_id"), sequence.get("case_id"))
+                for sequence in sequences
+                for prediction in sequence.get("predictions", [])
+            }
+            availability = {
+                row.get("method_id"): row
+                for row in temporal.get("method_availability", [])
+            }
             if (
-                temporal.get("schema") != "frothseg.temporal-showcase/v1"
+                temporal.get("schema") != "frothseg.temporal-showcase/v2"
                 or temporal.get("source_kind") != "deterministic_generated"
                 or temporal.get("label_kind") != "ground_truth"
-                or temporal.get("prediction_method") is not None
                 or temporal.get("sequence_count") != len(TEMPORAL_CASE_IDS)
                 or temporal.get("frames_per_sequence") != TEMPORAL_FRAMES
                 or temporal.get("artifact_count")
-                != len(TEMPORAL_CASE_IDS) * TEMPORAL_FRAMES * 3
+                != (
+                    len(TEMPORAL_CASE_IDS) * TEMPORAL_FRAMES * 3
+                    + len(expected_prediction_pairs) * TEMPORAL_FRAMES * 2
+                )
+                or temporal.get("prediction_method_count")
+                != len(TEMPORAL_PREDICTION_SOURCES)
+                or temporal.get("prediction_sequence_count")
+                != len(expected_prediction_pairs)
+                or temporal.get("prediction_frame_count")
+                != len(expected_prediction_pairs) * TEMPORAL_FRAMES
                 or temporal.get("complete") is not True
                 or len(sequences) != len(TEMPORAL_CASE_IDS)
                 or {sequence.get("case_id") for sequence in sequences}
                 != set(TEMPORAL_CASE_IDS)
+                or observed_prediction_pairs != expected_prediction_pairs
+                or set(availability) != expected_ids
             ):
-                errors.append("temporal showcase does not cover five canonical 8-frame sequences")
+                errors.append(
+                    "temporal showcase lacks complete truth and governed L1/L7 predictions"
+                )
+            for method_id in expected_ids:
+                row = availability.get(method_id, {})
+                expected_sequences = sorted(
+                    TEMPORAL_PREDICTION_SOURCES.get(method_id, {}).get(
+                        "required_cases",
+                        (),
+                    )
+                )
+                if expected_sequences:
+                    valid = (
+                        row.get("status") == "available"
+                        and row.get("available_sequence_ids") == expected_sequences
+                        and row.get("identity_contract") != "none"
+                    )
+                else:
+                    valid = (
+                        row.get("status") == "not_precomputed"
+                        and row.get("available_sequence_ids") == []
+                        and row.get("identity_contract") == "none"
+                        and bool(row.get("reason"))
+                    )
+                if not valid:
+                    errors.append(
+                        f"invalid temporal availability contract: {method_id}"
+                    )
             for sequence in sequences:
                 frames = sequence.get("frames", [])
                 if (
@@ -155,6 +220,75 @@ def check_development() -> list[str]:
                             )
                         if isinstance(relative_path, str):
                             expected_showcase_paths.add(relative_path)
+                for prediction in sequence.get("predictions", []):
+                    if (
+                        not isinstance(prediction.get("truth_events"), list)
+                        or not isinstance(prediction.get("predicted_events"), list)
+                        or set(TEMPORAL_METRIC_FIELDS)
+                        - set(prediction.get("metrics", {}))
+                    ):
+                        errors.append(
+                            "incomplete temporal identity/event evidence: "
+                            f"{prediction.get('method_id')}/{sequence.get('case_id')}"
+                        )
+                    evidence_relative = prediction.get("evidence_path")
+                    evidence_path = (
+                        ROOT / "data/derived" / evidence_relative
+                        if isinstance(evidence_relative, str)
+                        else None
+                    )
+                    if (
+                        evidence_path is None
+                        or not evidence_path.is_file()
+                        or _sha256(evidence_path)
+                        != prediction.get("evidence_sha256")
+                    ):
+                        errors.append(
+                            "missing or stale temporal source evidence: "
+                            f"{prediction.get('method_id')}/{sequence.get('case_id')}"
+                        )
+                    prediction_frames = prediction.get("frames", [])
+                    if (
+                        len(prediction_frames) != TEMPORAL_FRAMES
+                        or {frame.get("frame_index") for frame in prediction_frames}
+                        != set(range(TEMPORAL_FRAMES))
+                    ):
+                        errors.append(
+                            "incomplete temporal prediction frames: "
+                            f"{prediction.get('method_id')}/{sequence.get('case_id')}"
+                        )
+                    for frame in prediction_frames:
+                        for name in ("prediction", "overlay"):
+                            relative_path = frame.get(f"{name}_path")
+                            path = (
+                                ROOT / "data/derived" / relative_path
+                                if isinstance(relative_path, str)
+                                else None
+                            )
+                            if (
+                                path is None
+                                or not path.is_file()
+                                or _sha256(path)
+                                != frame.get(f"{name}_sha256")
+                            ):
+                                errors.append(
+                                    f"missing or stale temporal {name}: "
+                                    f"{prediction.get('method_id')}/"
+                                    f"{sequence.get('case_id')}/"
+                                    f"{frame.get('frame_index')}"
+                                )
+                            elif (
+                                name == "prediction"
+                                and not decode_label_runs(path.read_bytes()).any()
+                            ):
+                                errors.append(
+                                    "empty enabled temporal prediction: "
+                                    f"{prediction.get('method_id')}/"
+                                    f"{sequence.get('case_id')}/"
+                                    f"{frame.get('frame_index')}"
+                                )
+                            if isinstance(relative_path, str):
+                                expected_showcase_paths.add(relative_path)
         actual_showcase_paths = {
             path.relative_to(ROOT / "data/derived").as_posix()
             for path in showcase_path.parent.rglob("*")
@@ -194,8 +328,25 @@ def check_development() -> list[str]:
         for row in benchmark.get("methods", []):
             test = row.get("test") or {}
             compute = row.get("compute") or {}
+            canonical_cases = row.get("canonical_cases", [])
+            empty_control = next(
+                (
+                    case
+                    for case in canonical_cases
+                    if case.get("case_id") == "empty-control"
+                ),
+                None,
+            )
             if len(test.get("cases", [])) != 64 or not test.get("micro"):
                 errors.append(f"{row.get('id')}: lacks per-cell or micro held-out evidence")
+            if (
+                len(canonical_cases) != 13
+                or empty_control is None
+                or empty_control.get("n_gt", empty_control.get("nGt")) != 0
+            ):
+                errors.append(
+                    f"{row.get('id')}: empty-control evidence was removed from benchmark"
+                )
             if (
                 float(compute.get("mean_inference_ms", 0)) <= 0
                 or float(compute.get("peak_memory_mib", 0)) <= 0
@@ -222,6 +373,57 @@ def check_development() -> list[str]:
                     f"classical browser parity is stale for "
                     f"{implementation.get('path', '<missing path>')}"
                 )
+
+    workbench_path = ROOT / "verification/workbench-contract.json"
+    if workbench_path.is_file():
+        workbench = json.loads(workbench_path.read_text(encoding="utf-8"))
+        required_views = {
+            "segmentation",
+            "boundary-error",
+            "size-distribution",
+            "morphometry",
+            "confidence-calibration",
+            "froth-state",
+            "temporal",
+            "provenance",
+            "export",
+            "method-comparison",
+        }
+        if (
+            workbench.get("canonical_case_count") != 12
+            or workbench.get("benchmark_case_count") != 13
+            or workbench.get("precomputed_method_count") != 15
+            or workbench.get("precomputed_method_case_artifacts") != 180
+            or workbench.get("view_count") != len(required_views)
+            or set(workbench.get("views", [])) != required_views
+            or set(workbench.get("canonical_precomputed_methods", []))
+            != expected_ids
+            or workbench.get("temporal_prediction_methods") != ["L1", "L7"]
+            or workbench.get("temporal_prediction_sequences") != 6
+            or workbench.get("temporal_prediction_frames") != 48
+        ):
+            errors.append("workbench contract has empty or stale enabled UI data")
+
+    visual_path = ROOT / "verification/visual-qa/manifest.json"
+    if visual_path.is_file():
+        visual = json.loads(visual_path.read_text(encoding="utf-8"))
+        panels = visual.get("app_panels", {})
+        interactions = visual.get("interaction_checks", {})
+        if (
+            panels.get("all_rendered") is not True
+            or panels.get("canonical_cases") != 12
+            or panels.get("benchmark_cases") != 13
+            or panels.get("precomputed_methods") != 15
+            or panels.get("method_case_artifacts") != 180
+            or panels.get("temporal_prediction_methods") != 2
+            or panels.get("temporal_prediction_sequences") != 6
+            or panels.get("temporal_prediction_frames") != 48
+            or panels.get("error_boundaries") != 0
+            or interactions.get("temporal_predictions") != "passed"
+            or visual.get("browser_console_errors") != 0
+            or visual.get("result") != "passed"
+        ):
+            errors.append("visual QA manifest has stale counts or unverified UI data")
     return errors
 
 

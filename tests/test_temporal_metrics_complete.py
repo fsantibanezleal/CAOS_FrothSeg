@@ -1,6 +1,6 @@
 import numpy as np
 
-from fslab.temporal import temporal_metrics
+from fslab.temporal import identity_events, temporal_metrics
 
 
 def test_perfect_sequence_has_complete_temporal_scores():
@@ -29,3 +29,15 @@ def test_identity_switch_and_gap_are_reported():
     assert metrics.track_fragmentations == 1
     assert metrics.event_precision == 1.0
     assert metrics.event_recall == 1.0
+
+
+def test_identity_events_retain_frame_type_and_persistent_id():
+    first = np.zeros((4, 4), dtype=np.int32)
+    first[0:2, 0:2] = 7
+    second = np.zeros((4, 4), dtype=np.int32)
+    second[2:4, 2:4] = 11
+
+    assert identity_events([first, second]) == [
+        {"frame_index": 1, "type": "birth", "instance_id": 11},
+        {"frame_index": 1, "type": "disappearance", "instance_id": 7},
+    ]

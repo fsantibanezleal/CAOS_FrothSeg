@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useShellLang } from '@fasl-work/caos-app-shell';
 import {
-  artifactUrl, loadBenchmark, loadIndex, loadMasks, loadMethodBenchmark, loadTemporalBenchmark,
+  artifactUrl, loadIndex, loadMasks, loadMethodBenchmark, loadTemporalBenchmark,
 } from '../api/artifacts';
 import type {
-  BenchmarkDoc, CaseIndex, MethodBenchmarkDoc, MethodBenchmarkRow, TemporalBenchmarkDoc,
+  CaseIndex, MethodBenchmarkDoc, MethodBenchmarkRow, TemporalBenchmarkDoc,
 } from '../lib/contract.types';
 import { decodeLabels } from '../lib/rle';
 import { validateImage } from '../lib/imageGate';
@@ -23,21 +23,19 @@ import {
   CLASSICAL_METHODS, LIVE_CLASSICAL_METHODS, runClassical, type ClassicalMethod,
 } from '../classical/methods';
 import { bsdFromLabels } from '../sam/morphometry';
+import {
+  primaryShowcaseCases, visibleStillTabs, type StillTab, type WorkbenchSource,
+} from '../lib/workbench';
+import { SequenceWorkbench } from './SequenceWorkbench';
 
-type Tab = 'segment' | 'boundary' | 'bsd' | 'morphometry' | 'confidence'
-  | 'state' | 'temporal' | 'provenance' | 'export' | 'compare';
-
-const TABS: Tab[] = [
-  'segment', 'boundary', 'bsd', 'morphometry', 'confidence',
-  'state', 'temporal', 'provenance', 'export', 'compare',
-];
+type Tab = StillTab;
 
 export default function Tool() {
   const es = useShellLang() === 'es';
   const [index, setIndex] = useState<CaseIndex | null>(null);
   const [temporal, setTemporal] = useState<TemporalBenchmarkDoc | null>(null);
-  const [canonicalBenchmark, setCanonicalBenchmark] = useState<BenchmarkDoc | null>(null);
   const [methodBenchmark, setMethodBenchmark] = useState<MethodBenchmarkDoc | null>(null);
+  const [workbenchSource, setWorkbenchSource] = useState<WorkbenchSource>('still');
   const [source, setSource] = useState<'sample' | 'upload'>('sample');
   const [sampleId, setSampleId] = useState('poly-normal');
   const [uploadUrl, setUploadUrl] = useState<string | null>(null);
@@ -79,32 +77,24 @@ export default function Tool() {
   useEffect(() => {
     let cancelled = false;
     setResult(null); setAp(null); setGt(null); setErrMsg(''); setGateFlags([]); setStatus('idle'); setDevice('');
+    if (workbenchSource !== 'still') {
+      setFrameUrl('');
+      return;
+    }
     const src = source === 'sample' ? artifactUrl(`synth/${sampleId}/frame.png`) : uploadUrl;
     if (!src) { setFrameUrl(''); return; }
     loadImage(src)
       .then((img) => { if (!cancelled) setFrameUrl(makePngUrl(img.gray, img.width, img.height)); })
       .catch(() => { if (!cancelled) setFrameUrl(''); });
     return () => { cancelled = true; };
-  }, [source, sampleId, uploadUrl]);
-
-  useEffect(() => {
-    let cancelled = false;
-    if (source !== 'sample') {
-      setCanonicalBenchmark(null);
-      return;
-    }
-    loadBenchmark(sampleId)
-      .then((document) => { if (!cancelled) setCanonicalBenchmark(document); })
-      .catch(() => { if (!cancelled) setCanonicalBenchmark(null); });
-    return () => { cancelled = true; };
-  }, [source, sampleId]);
+  }, [workbenchSource, source, sampleId, uploadUrl]);
 
   useEffect(() => {
     setTab('segment');
-  }, [source]);
+  }, [workbenchSource, source]);
 
   useEffect(() => {
-    if (source !== 'sample') return;
+    if (workbenchSource !== 'still' || source !== 'sample') return;
     let cancelled = false;
     setStatus('running');
     setErrMsg('');
@@ -148,7 +138,7 @@ export default function Tool() {
       setErrMsg(String(reason instanceof Error ? reason.message : reason));
     });
     return () => { cancelled = true; };
-  }, [source, sampleId, showcaseMethodId, methodBenchmark]);
+  }, [workbenchSource, source, sampleId, showcaseMethodId, methodBenchmark]);
 
   const scale = pxPerMm ? Number(pxPerMm) || null : null;
 
@@ -259,10 +249,10 @@ export default function Tool() {
   const froth = result ? classifyFroth(result.bsd, scale, es ? 'es' : 'en') : null;
   const diams = result ? diametersFromLabels(result.labels) : [];
   const gtDiams = gt ? diametersFromLabels(gt) : [];
-  const temporalRow = temporal?.sequences.find((row) => row.condition_id === sampleId);
   const boundaryPixels = result ? countBoundaryPixels(result.labels, result.width, result.height) : 0;
   const showcaseMethod = methodBenchmark?.methods.find((candidate) => candidate.id === showcaseMethodId) ?? null;
-  const visibleTabs = TABS;
+  const primaryCases = useMemo(() => primaryShowcaseCases(index?.cases ?? []), [index]);
+  const visibleTabs = visibleStillTabs(source === 'sample' ? 'canonical' : 'upload', Boolean(result));
   const liveComparison = useMemo(() => {
     if (!analysisFrame || !result) return [];
     return LIVE_CLASSICAL_METHODS.map((candidate) => {
@@ -279,23 +269,56 @@ export default function Tool() {
       <div className="page-head">
         <h1>{es ? 'Banco de trabajo de segmentación' : 'Froth segmentation workbench'}</h1>
         <p className="lede">
-          {es ? 'Explore máscaras de instancia y diagnósticos de 15 métodos offline en 13 casos canónicos. Cargue una imagen local para ejecutar uno de cuatro métodos interactivos validados.' : 'Explore instance masks and diagnostics from 15 offline methods across 13 canonical cases. Upload a local image to run one of four validated interactive methods.'}
+          {es
+            ? 'Examine 15 métodos en 12 imágenes canónicas o reproduzca cinco secuencias con referencia temporal. Las cargas locales usan solo cuatro motores interactivos.'
+            : 'Examine 15 methods on 12 canonical stills or replay five sequences with temporal reference. Local uploads use only four interactive engines.'}
         </p>
       </div>
 
+      <section className="fs-source-model" aria-label={es ? 'Modelo de fuente' : 'Source model'}>
+        <div>
+          <span className="fs-source-kicker">{es ? 'Fuente de análisis' : 'Analysis source'}</span>
+          <strong>{workbenchSource === 'still'
+            ? (es ? 'Imagen fija' : 'Still image')
+            : (es ? 'Secuencia temporal' : 'Temporal sequence')}</strong>
+          <p>{workbenchSource === 'still'
+            ? (es ? 'Compare artefactos precalculados o evalúe una imagen local.' : 'Compare precomputed artifacts or evaluate a local image.')
+            : (es ? 'Reproduzca cuadros, identidades, seguimiento y eventos medidos offline.' : 'Replay frames, identities, tracking, and events measured offline.')}</p>
+        </div>
+        <div className="fs-source-switch" role="group" aria-label={es ? 'Tipo de fuente' : 'Source type'}>
+          <button
+            type="button"
+            className={workbenchSource === 'still' ? 'on' : ''}
+            aria-pressed={workbenchSource === 'still'}
+            onClick={() => setWorkbenchSource('still')}
+          >
+            <span>01</span>{es ? 'Imagen fija' : 'Still image'}
+          </button>
+          <button
+            type="button"
+            className={workbenchSource === 'sequence' ? 'on' : ''}
+            aria-pressed={workbenchSource === 'sequence'}
+            onClick={() => setWorkbenchSource('sequence')}
+          >
+            <span>02</span>{es ? 'Secuencia' : 'Sequence'}
+          </button>
+        </div>
+      </section>
+
+      {workbenchSource === 'still' && (
       <div className="fs-layout">
         {/* ---- controls ---- */}
         <div className="fs-controls">
           <div className="fs-panel">
-            <div className="fs-panel-t">{es ? 'Fuente' : 'Source'}</div>
+            <div className="fs-panel-t">{es ? 'Fuente de imagen fija' : 'Still-image input'}</div>
             <div className="fs-seg" style={{ marginBottom: '0.5rem' }}>
-              <button className={`chip${source === 'sample' ? ' on' : ''}`} onClick={() => setSource('sample')}>{es ? 'Casos canónicos' : 'Canonical cases'}</button>
-              <button className={`chip${source === 'upload' ? ' on' : ''}`} onClick={() => setSource('upload')}>{es ? 'Cargar imagen' : 'Upload image'}</button>
+              <button className={`chip${source === 'sample' ? ' on' : ''}`} onClick={() => setSource('sample')}>{es ? 'Galería precalculada' : 'Precomputed gallery'}</button>
+              <button className={`chip${source === 'upload' ? ' on' : ''}`} onClick={() => setSource('upload')}>{es ? 'Imagen local' : 'Local image'}</button>
             </div>
             {source === 'sample' ? (
-              <label className="fs-ctl">{es ? 'caso' : 'case'}
+              <label className="fs-ctl">{es ? 'caso principal (12 disponibles)' : 'primary case (12 available)'}
                 <select className="fs-sel" value={sampleId} onChange={(e) => setSampleId(e.target.value)}>
-                  {index?.cases.map((c) => <option key={c.case_id} value={c.case_id}>{c.case_id} · {c.category}</option>)}
+                  {primaryCases.map((c) => <option key={c.case_id} value={c.case_id}>{caseLabel(c.case_id, c.category, es)}</option>)}
                 </select>
               </label>
             ) : (
@@ -306,8 +329,8 @@ export default function Tool() {
             )}
             <p className="fs-hint small" style={{ marginTop: '0.4rem' }}>
               {source === 'sample'
-                ? (es ? 'Caso sintético anotado: se puntúa el artefacto de inferencia offline seleccionado.' : 'Annotated synthetic case: the selected offline inference artifact is scored.')
-                : (es ? 'Real: sin verdad de terreno; solo cambia la imagen subida, todo lo demás se ejecuta igual.' : 'Real: no ground truth; only the uploaded image changes, everything else runs the same.')}
+                ? (es ? 'Caso sintético anotado para explicación visual. Los controles diagnósticos permanecen en Benchmark y Metodología.' : 'Annotated synthetic case for visual analysis. Diagnostic controls remain documented in Benchmark and Methodology.')
+                : (es ? 'La imagen permanece en este navegador. Sin anotación local no se afirma exactitud.' : 'The image stays in this browser. Without a local annotation, no accuracy claim is made.')}
             </p>
           </div>
 
@@ -320,7 +343,7 @@ export default function Tool() {
               </select>
             </label>
             {method !== 'sam' && (
-              <p className="fs-hint small">{CLASSICAL_METHODS.find((m) => m.id === method)?.note}. {es ? 'Se ejecuta sobre esta imagen en CPU, sin descargar un modelo.' : 'Runs on this image in the CPU, with no model download.'}</p>
+              <p className="fs-hint small">{classicalMethodNote(method, es)}. {es ? 'Se ejecuta sobre esta imagen en CPU, sin descargar un modelo.' : 'Runs on this image in the CPU, with no model download.'}</p>
             )}
             {method === 'sam' && (
               <>
@@ -380,20 +403,20 @@ export default function Tool() {
           {source === 'upload' && <button className="chip on" style={{ padding: '0.5rem', fontSize: '0.9rem' }} onClick={run} disabled={status === 'running' || status === 'loading-model'}>
             {status === 'loading-model' ? (es ? 'Cargando modelo...' : 'Loading model...') : status === 'running' ? (es ? `Segmentando ${progress}%` : `Segmenting ${progress}%`) : (es ? 'Segmentar' : 'Segment')}
           </button>}
-          {device && <p className="fs-hint small">{source === 'sample' ? (es ? 'artefacto' : 'artifact') : (es ? 'motor' : 'engine')}: <span className="mono">{device}</span> · {result?.model?.split('/').pop()}</p>}
+          {result && device && <p className="fs-hint small">{source === 'sample' ? (es ? 'artefacto' : 'artifact') : (es ? 'motor' : 'engine')}: <span className="mono">{device}</span> · {result.model.split('/').pop()}</p>}
           {gateFlags.length > 0 && <p className="fs-note">{es ? 'avisos del cuadro: ' : 'frame flags: '}{gateFlags.join('; ')}</p>}
           {errMsg && <p className="fs-note">{errMsg}</p>}
         </div>
 
         {/* ---- main ---- */}
         <div className="fs-main">
-          <div className="fs-tabs" role="tablist">
+          {visibleTabs.length > 0 && <div className="fs-tabs" role="tablist" aria-label={es ? 'Análisis de imagen fija' : 'Still-image analysis'}>
             {visibleTabs.map((t) => (
               <button key={t} role="tab" aria-selected={tab === t} className={`fs-tab${tab === t ? ' on' : ''}`} onClick={() => setTab(t)}>
                 {label(t, es)}
               </button>
             ))}
-          </div>
+          </div>}
 
           {source === 'sample' && tab === 'segment' && !result && (
             <PanelBoundary label="precomputed instance segmentation">
@@ -415,6 +438,16 @@ export default function Tool() {
                 <p className="fs-hint">{es ? 'Máscara de instancias generada por inferencia offline para este caso canónico. El navegador carga el artefacto validado y no vuelve a ejecutar el modelo.' : 'Instance mask generated by offline inference for this canonical case. The browser loads the validated artifact and does not rerun the model.'}</p>
               </div>
             </PanelBoundary>
+          )}
+
+          {source === 'sample' && !result && tab !== 'segment' && tab !== 'compare' && (
+            <div className="fs-panel fs-result-loading">
+              <span className="fs-spinner" aria-hidden="true" />
+              <div>
+                <strong>{es ? 'Cargando el artefacto seleccionado' : 'Loading the selected artifact'}</strong>
+                <p>{es ? 'La vista se habilitará con la misma máscara precalculada, sin recomputar el método.' : 'This view will use the same precomputed mask without rerunning the method.'}</p>
+              </div>
+            </div>
           )}
 
           {source === 'upload' && !result && status !== 'running' && status !== 'loading-model' && (
@@ -570,27 +603,6 @@ export default function Tool() {
             </PanelBoundary>
           )}
 
-          {result && tab === 'temporal' && (
-            <PanelBoundary label="temporal">
-              <div className="fs-panel">
-                <div className="fs-panel-t">{es ? 'Secuencia y asociación' : 'Sequence and association'}</div>
-                {source === 'sample' && temporalRow ? (
-                  <>
-                    <div className="fs-kpis">
-                      <Kpi value={temporalRow.idf1.toFixed(3)} label="IDF1" />
-                      <Kpi value={temporalRow.hota.toFixed(3)} label="HOTA" />
-                      <Kpi value={temporalRow.track_fragmentations} label={es ? 'fragmentos' : 'fragments'} />
-                      <Kpi value={temporalRow.flow_epe_px?.toFixed(2) ?? '--'} label="flow EPE px" />
-                    </div>
-                    <p className="fs-hint">{es ? 'Replay offline del U-Net sobre la secuencia exacta de este caso. No se vuelve a inferir al desplegar.' : 'Offline U-Net replay on this case’s exact sequence. Deployment does not rerun inference.'}</p>
-                  </>
-                ) : (
-                  <p className="fs-note">{es ? 'Este cuadro no tiene una secuencia temporal validada. Use el comando de exportación para preparar un trabajo de video offline.' : 'This frame has no validated temporal sequence. Use the export view to prepare an offline video job.'}</p>
-                )}
-              </div>
-            </PanelBoundary>
-          )}
-
           {result && tab === 'provenance' && (
             <PanelBoundary label="provenance">
               <div className="fs-panel">
@@ -629,53 +641,36 @@ export default function Tool() {
           {source === 'upload' && result && tab === 'compare' && (
             <PanelBoundary label="compare">
               <div className="fs-panel">
-                <div className="fs-panel-t">{es ? 'Resultados del cuadro seleccionado' : 'Selected-frame results'}</div>
-                <p className="fs-hint">{es ? 'C1, C3 y C4 se calculan sobre el cuadro actual. Para C2, C5, C6 y C7 se muestran los resultados precalculados del mismo caso de referencia.' : 'C1, C3, and C4 are computed on the current frame. C2, C5, C6, and C7 show precomputed results for the same reference case.'}</p>
+                <div className="fs-panel-t">{es ? 'Cuatro métodos interactivos · imagen actual' : 'Four interactive methods · current image'}</div>
+                <p className="fs-hint">{es ? 'C1, C3 y C4 se calculan ahora. SlimSAM aparece con resultado solo cuando es el motor seleccionado; el navegador no simula métodos offline.' : 'C1, C3, and C4 are computed now. SlimSAM has a result only when selected; the browser does not imitate offline methods.'}</p>
                 <table className="fs-table" style={{ marginTop: '0.5rem' }}>
-                  <thead><tr><th>{es ? 'método' : 'method'}</th><th>{es ? 'disponibilidad' : 'availability'}</th><th className="num">{es ? 'n actual' : 'current n'}</th><th className="num">AP {es ? 'actual' : 'current'}</th><th className="num">{es ? 'n precalculado' : 'precomputed n'}</th><th className="num">AP {es ? 'precalculado' : 'precomputed'}</th></tr></thead>
+                  <thead><tr><th>{es ? 'método' : 'method'}</th><th>{es ? 'ejecución' : 'execution'}</th><th className="num">{es ? 'instancias' : 'instances'}</th><th className="num">AP</th></tr></thead>
                   <tbody>
-                    {CLASSICAL_METHODS.map((candidate) => {
+                    <tr>
+                      <th>SlimSAM zero-shot</th>
+                      <td>{method === 'sam' ? (es ? 'resultado actual' : 'current result') : (es ? 'seleccionar para ejecutar' : 'select to run')}</td>
+                      <td className="num">{method === 'sam' ? result.nInstances : '--'}</td>
+                      <td className="num">{method === 'sam' ? (ap?.ap?.toFixed(3) ?? '--') : '--'}</td>
+                    </tr>
+                    {LIVE_CLASSICAL_METHODS.map((candidate) => {
                       const live = liveComparison.find((row) => row.id === candidate.id);
-                      const offline = canonicalBenchmark?.methods.find((score) => score.method === candidate.id);
                       return <tr key={candidate.id}>
                         <th>{candidate.label}</th>
-                        <td>{candidate.lane === 'validated-live' ? (es ? 'interactivo + precalculado' : 'interactive + precomputed') : (es ? 'precalculado' : 'precomputed')}</td>
+                        <td>{es ? 'CPU · imagen actual' : 'CPU · current image'}</td>
                         <td className="num">{live?.count ?? '--'}</td>
                         <td className="num">{live?.ap?.toFixed(3) ?? '--'}</td>
-                        <td className="num">{offline?.n_pred ?? '--'}</td>
-                        <td className="num">{offline?.ap?.toFixed(3) ?? '--'}</td>
                       </tr>;
                     })}
                   </tbody>
                 </table>
-                {source === 'upload' && <p className="fs-note">{es ? 'Para C2/C5/C6/C7 sobre una carga real, exporte el trabajo y ejecute el pipeline offline.' : 'For C2/C5/C6/C7 on a real upload, export the job and run the offline pipeline.'}</p>}
-                <div className="fs-panel-t" style={{ marginTop: '1.2rem' }}>{es ? 'Los 15 métodos, prueba retenida de 64 casos' : 'All 15 methods, 64-case held-out test'}</div>
-                <p className="fs-hint">{es ? 'Estos resultados fueron calculados antes del despliegue con el mismo protocolo. El navegador solo lee el artefacto de evaluación.' : 'These results were computed before deployment under one protocol. The browser only reads the evaluation artifact.'}</p>
-                <div style={{ overflowX: 'auto' }}>
-                  <table className="fs-table" style={{ marginTop: '0.5rem' }}>
-                    <thead><tr><th>ID</th><th>{es ? 'método' : 'method'}</th><th>{es ? 'familia' : 'family'}</th><th className="num">AP</th><th className="num">AP50</th><th className="num">PQ</th><th className="num">Boundary F</th><th className="num">ms/image</th></tr></thead>
-                    <tbody>
-                      {methodBenchmark?.methods.map((candidate) => (
-                        <tr key={candidate.id}>
-                          <td className="mono">{candidate.id}</td>
-                          <th>{candidate.name}</th>
-                          <td>{methodFamily(candidate, es)}</td>
-                          <td className="num">{candidate.test?.mean_ap.toFixed(3) ?? '--'}</td>
-                          <td className="num">{candidate.test?.mean_ap50.toFixed(3) ?? '--'}</td>
-                          <td className="num">{candidate.test?.mean_pq?.toFixed(3) ?? '--'}</td>
-                          <td className="num">{candidate.test?.mean_boundary_fscore?.toFixed(3) ?? '--'}</td>
-                          <td className="num">{candidate.compute.mean_inference_ms.toFixed(1)}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                {!methodBenchmark && <p className="fs-note">{es ? 'No se pudo cargar la matriz de evaluación.' : 'The evaluation matrix could not be loaded.'}</p>}
+                <p className="fs-note">{es ? 'Los otros 11 métodos permanecen disponibles para los 12 casos precalculados y en Benchmark; no se ofrecen como ejecución sobre cargas.' : 'The other 11 methods remain available for all 12 precomputed cases and in Benchmark; they are not offered as upload execution.'}</p>
               </div>
             </PanelBoundary>
           )}
         </div>
       </div>
+      )}
+      {workbenchSource === 'sequence' && <SequenceWorkbench es={es} temporal={temporal} />}
     </div>
   );
 }
@@ -710,10 +705,37 @@ function label(t: Tab, es: boolean): string {
     : t === 'morphometry' ? (es ? 'Morfometría' : 'Morphometry')
     : t === 'confidence' ? (es ? 'Confianza' : 'Confidence')
     : t === 'state' ? (es ? 'Estado' : 'Froth state')
-    : t === 'temporal' ? (es ? 'Temporal' : 'Temporal')
     : t === 'provenance' ? (es ? 'Proveniencia' : 'Provenance')
     : t === 'export' ? (es ? 'Exportar' : 'Export')
     : (es ? 'Comparar' : 'Compare');
+}
+
+function caseLabel(caseId: string, category: string, es: boolean): string {
+  const labels: Record<string, [string, string]> = {
+    bursting: ['Bursting topology', 'Topología de ruptura'],
+    'coarse-froth': ['Coarse froth', 'Espuma gruesa'],
+    defocus: ['Optical defocus', 'Desenfoque óptico'],
+    'edge-framing': ['Edge framing', 'Encuadre de borde'],
+    'fine-froth': ['Fine froth', 'Espuma fina'],
+    'glare-storm': ['Specular glare', 'Brillo especular'],
+    'high-load': ['High solids loading', 'Alta carga de sólidos'],
+    'low-light-noise': ['Low-light sensor noise', 'Ruido de sensor con poca luz'],
+    'mono-clean': ['Monodisperse reference', 'Referencia monodispersa'],
+    'motion-fast': ['Fast surface motion', 'Movimiento rápido de superficie'],
+    'poly-normal': ['Nominal polydisperse froth', 'Espuma polidispersa nominal'],
+    watery: ['Thin and watery froth', 'Espuma delgada y acuosa'],
+  };
+  return labels[caseId]?.[es ? 1 : 0] ?? category;
+}
+
+function classicalMethodNote(method: ClassicalMethod, es: boolean): string {
+  if (!es) return CLASSICAL_METHODS.find((candidate) => candidate.id === method)?.note ?? '';
+  const notes: Partial<Record<ClassicalMethod, string>> = {
+    otsu_cc: 'línea base que subsegmenta burbujas en contacto',
+    watershed_hmax: 'método clásico de espuma con marcadores de brillos',
+    watershed_dt: 'referencia clásica genérica basada en distancia',
+  };
+  return notes[method] ?? '';
 }
 
 function Kpi({ value, label: kpiLabel }: { value: string | number; label: string }) {

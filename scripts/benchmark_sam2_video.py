@@ -18,13 +18,20 @@ from PIL import Image
 
 from fslab.foundation.sam2_1 import MODEL_ID, UPSTREAM_COMMIT
 from fslab.science.froth_gen import CASES, generate_sequence
-from fslab.temporal import temporal_metrics
+from fslab.showcase import encode_label_runs, preview, sha256
+from fslab.temporal import identity_events, temporal_metrics
 
 
 def _iou(left: np.ndarray, right: np.ndarray) -> float:
     intersection = np.logical_and(left, right).sum()
     union = np.logical_or(left, right).sum()
     return float(intersection / union) if union else 1.0
+
+
+def _write_json(path: Path, payload: dict) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(json.dumps(payload, indent=2, sort_keys=True) + "\n")
 
 
 def main() -> None:
@@ -37,11 +44,27 @@ def main() -> None:
         type=Path,
         default=Path("data/derived/temporal/sam2-1-hiera-tiny.json"),
     )
+    parser.add_argument(
+        "--model-run",
+        type=Path,
+        default=Path("models/sam2-1-hiera-tiny/run.json"),
+    )
     parser.add_argument("--objects", type=int, default=12)
     parser.add_argument("--frames", type=int, default=8)
+    parser.add_argument(
+        "--artifacts-root",
+        type=Path,
+        help="prediction artifact directory; defaults to the output path without .json",
+    )
     args = parser.parse_args()
     if not torch.cuda.is_available():
         raise RuntimeError("SAM 2.1 video benchmark requires CUDA; CPU fallback is forbidden")
+    model_run = json.loads(args.model_run.read_text(encoding="utf-8"))
+    if (
+        model_run.get("model", {}).get("id") != MODEL_ID
+        or model_run.get("upstream_commit") != UPSTREAM_COMMIT
+    ):
+        raise ValueError("SAM 2.1 model provenance does not match the executable")
 
     spec = next(case for case in CASES if case.name == "motion-fast")
     sequence = generate_sequence(spec, frames=args.frames)
@@ -116,13 +139,40 @@ def main() -> None:
         for object_id in prompted_ids:
             cohort[labels == object_id] = object_id
         prompted_truth.append(cohort)
+    report_root = args.output.resolve().parent
+    artifacts_root = (args.artifacts_root or args.output.with_suffix("")).resolve()
+    if not artifacts_root.is_relative_to(report_root):
+        raise ValueError("prediction artifacts must stay under the temporal report directory")
+    frame_artifacts = []
+    for frame_index, frame in enumerate(sequence):
+        labels = predicted[frame_index]
+        frame_root = artifacts_root / spec.name / f"{frame_index:03d}"
+        frame_root.mkdir(parents=True, exist_ok=True)
+        labels_path = frame_root / "prediction.rle"
+        overlay_path = frame_root / "prediction-overlay.png"
+        source = np.rint(np.clip(frame["image"], 0.0, 1.0) * 255.0).astype(np.uint8)
+        labels_path.write_bytes(encode_label_runs(labels))
+        preview(source, labels).save(overlay_path, optimize=True)
+        frame_artifacts.append(
+            {
+                "frame_index": frame_index,
+                "prediction_path": labels_path.relative_to(report_root).as_posix(),
+                "prediction_sha256": sha256(labels_path),
+                "overlay_path": overlay_path.relative_to(report_root).as_posix(),
+                "overlay_sha256": sha256(overlay_path),
+            }
+        )
     report = {
         "schema": "frothseg.sam2-video-benchmark/v1",
         "method": "sam2_1",
+        "method_id": "L7",
+        "prediction_kind": "native_prompted_video_propagation",
         "protocol": "first-frame ground-truth mask prompts; forward propagation",
         "condition_id": spec.name,
         "model_id": MODEL_ID,
         "upstream_commit": UPSTREAM_COMMIT,
+        "checkpoint_sha256": model_run["model"]["sha256"],
+        "checkpoint_bytes": model_run["model"]["bytes"],
         "device": props.name,
         "frames": args.frames,
         "prompted_objects": len(prompted_ids),
@@ -133,11 +183,15 @@ def main() -> None:
             [predicted[index] for index in range(args.frames)],
             prompted_truth,
         )),
+        "truth_events": identity_events(prompted_truth),
+        "predicted_events": identity_events(
+            [predicted[index] for index in range(args.frames)]
+        ),
         "duration_seconds": round(time.perf_counter() - started, 3),
         "frame_metrics": frame_rows,
+        "frame_artifacts": frame_artifacts,
     }
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(report, indent=2), encoding="utf-8")
+    _write_json(args.output, report)
     print(json.dumps(report, indent=2))
 
 
