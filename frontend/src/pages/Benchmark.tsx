@@ -56,7 +56,7 @@ export default function Benchmark() {
       const vals = order.map((c) => apFor(c, method)).filter((v): v is number => v != null);
       if (vals.length) rows.push({ key: method, label: method, value: vals.reduce((a, b) => a + b, 0) / vals.length });
     }
-    if (sam?.summary.mean_sam_ap != null) rows.unshift({ key: 'sam', label: 'SAM (live)', value: sam.summary.mean_sam_ap, color: 'var(--color-good)', mark: '★' });
+    if (sam?.summary.mean_sam_ap != null) rows.unshift({ key: 'sam', label: 'SlimSAM (historical)', value: sam.summary.mean_sam_ap, color: 'var(--color-fg-subtle)' });
     if (learned) rows.unshift({ key: 'unet', label: 'L1 U-Net (offline)', value: learned.mean_ap, color: 'var(--color-accent)' });
     return rows;
   }, [order, floors, sam, learned]);
@@ -78,8 +78,8 @@ export default function Benchmark() {
           <section>
             <h2>{es ? 'AP medio por método' : 'Mean AP by method'}</h2>
             <PanelBoundary label="mean AP bars">
-              <BarChart data={methodMeans} ariaLabel="mean mask AP by method" valueFmt={(v) => v.toFixed(3)} defaultBaseline="zero" highlightKey="sam"
-                note={es ? 'Media sobre todos los casos. SAM (★, en vivo) es el modelo fundacional; el resto son los pisos clásicos deterministas.' : 'Mean over all cases. SAM (★, live) is the foundation model; the rest are the deterministic classical floors.'} />
+              <BarChart data={methodMeans} ariaLabel="mean mask AP by method" valueFmt={(v) => v.toFixed(3)} defaultBaseline="zero"
+                note={es ? 'Media sintética diagnóstica. SlimSAM es histórico; L1 está entrenado pero bajo aceptación; C1-C7 son pisos clásicos.' : 'Diagnostic synthetic mean. SlimSAM is historical; L1 is trained but below acceptance; C1-C7 are classical floors.'} />
             </PanelBoundary>
           </section>
 
@@ -121,8 +121,8 @@ export default function Benchmark() {
 
           {sam && (
             <>
-              <p className="fs-note good">
-                {es ? `Resumen: AP medio SAM ${sam.summary.mean_sam_ap} vs piso ${sam.summary.mean_floor_ap} (ventaja ${sam.summary.delta}), SAM gana ${sam.summary.sam_wins}/${sam.summary.n_cases} casos. El AP sintético es un entorno controlado, no exactitud de planta real.` : `Summary: mean SAM AP ${sam.summary.mean_sam_ap} vs floor ${sam.summary.mean_floor_ap} (advantage ${sam.summary.delta}), SAM wins ${sam.summary.sam_wins}/${sam.summary.n_cases} cases. Synthetic AP is a controlled harness, not real-plant accuracy.`}
+              <p className="fs-note">
+                {es ? `Registro histórico SlimSAM: AP medio ${sam.summary.mean_sam_ap}; no es un modelo entrenado para espuma ni un resultado de aceptación. El AP sintético es un entorno controlado, no exactitud de planta real.` : `Historical SlimSAM record: mean AP ${sam.summary.mean_sam_ap}; it is neither froth-trained nor an acceptance result. Synthetic AP is a controlled harness, not real-plant accuracy.`}
               </p>
               <Refs ids={['kirillov2023', 'meyer1994', 'achanta2012slic', 'lin2014coco']} label="Refs" />
             </>
