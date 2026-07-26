@@ -21,7 +21,7 @@ from __future__ import annotations
 
 import numpy as np
 from scipy import ndimage as ndi
-from skimage import feature, filters, measure, morphology, segmentation
+from skimage import feature, filters, graph, measure, morphology, segmentation
 
 
 def _foreground(gray: np.ndarray) -> np.ndarray:
@@ -57,15 +57,21 @@ def watershed_hmax(gray: np.ndarray) -> np.ndarray:
 
 
 def slic_merge(gray: np.ndarray) -> np.ndarray:
-    """SLIC superpixels + mean-intensity region merge, texture-aware baseline."""
+    """SLIC superpixels + actual region-adjacency merging.
+
+    The former implementation merely sorted label ids by mean intensity; it did
+    not merge anything. Here adjacent regions are cut by RAG mean-color distance,
+    masked to froth foreground, and disconnected components are made unique.
+    """
     rgb = np.dstack([gray] * 3)
-    sp = segmentation.slic(rgb, n_segments=400, compactness=8, sigma=1, channel_axis=-1, start_label=1)
-    means = ndi.mean(gray, sp, index=np.arange(1, sp.max() + 1))
-    order = np.argsort(means)
-    remap = np.zeros(sp.max() + 1, dtype=np.int32)
-    for new, old in enumerate(order, start=1):
-        remap[old + 1] = new
-    return remap[sp]
+    sp = segmentation.slic(
+        rgb, n_segments=400, compactness=8, sigma=1,
+        channel_axis=-1, start_label=1,
+    )
+    rag = graph.rag_mean_color(rgb, sp, mode="distance")
+    merged = graph.cut_threshold(sp, rag, thresh=0.08, in_place=False).astype(np.int32)
+    merged[~_foreground(gray)] = 0
+    return _split_disconnected_labels(merged)
 
 
 def otsu_cc(gray: np.ndarray) -> np.ndarray:
@@ -82,7 +88,16 @@ def watershed_immersion(gray: np.ndarray) -> np.ndarray:
     fg = _foreground(gray)
     grad = filters.rank.gradient(_as_ubyte(gray), morphology.disk(1)) if hasattr(filters, "rank") else \
         ndi.morphological_gradient(gray, size=3)
-    ws = segmentation.watershed(grad, mask=fg)  # no markers -> minima-seeded -> over-segments
+    grad_float = grad.astype(np.float32)
+    peak_coords = feature.peak_local_max(
+        -grad_float, min_distance=2, labels=fg, exclude_border=False,
+    )
+    markers = np.zeros_like(grad, dtype=np.int32)
+    for index, (y, x) in enumerate(peak_coords, start=1):
+        markers[y, x] = index
+    if markers.max() == 0:
+        return np.zeros_like(markers)
+    ws = segmentation.watershed(grad, markers=markers, mask=fg)
     return ws.astype(np.int32)
 
 
@@ -118,6 +133,20 @@ def valley_edge(gray: np.ndarray) -> np.ndarray:
 def _as_ubyte(gray: np.ndarray) -> np.ndarray:
     from skimage.util import img_as_ubyte
     return img_as_ubyte(np.clip(gray, 0, 1))
+
+
+def _split_disconnected_labels(labels: np.ndarray) -> np.ndarray:
+    """Give disconnected islands unique ids while preserving region boundaries."""
+    out = np.zeros_like(labels, dtype=np.int32)
+    next_id = 1
+    for label_id in np.unique(labels):
+        if label_id == 0:
+            continue
+        components, count = ndi.label(labels == label_id)
+        for component_id in range(1, count + 1):
+            out[components == component_id] = next_id
+            next_id += 1
+    return out
 
 
 # The classical ladder C1..C7 (plan Section 1.1). Every method runs offline here (the pre-validated Benchmark
