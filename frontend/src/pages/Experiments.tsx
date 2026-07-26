@@ -99,7 +99,7 @@ function RegisteredStudies({ es, methods }: { es: boolean; methods: MethodBenchm
         <div className="fs-study-result">
           <div><span>{es ? 'comparaciones observadas' : 'observed comparisons'}</span><strong>{methods.coverage.observed_cells}</strong></div>
           <div><span>{es ? 'cobertura' : 'coverage'}</span><strong>{methods.coverage.complete ? '100%' : 'incomplete'}</strong></div>
-          <div><span>{es ? 'mejor AP retenido' : 'best held-out AP'}</span><strong>{leader ? `${leader.id} · ${leader.mean_ap.toFixed(3)}` : '—'}</strong></div>
+          <div><span>{es ? 'mejor AP retenido' : 'best held-out AP'}</span><strong>{leader ? `${leader.id} · ${leader.mean_ap.toFixed(3)}` : '--'}</strong></div>
         </div>
       )}
       <p>{es ? 'Los resultados no se reducen a “ganó/perdió”. Por ejemplo, un método puede mejorar AP y empeorar distribución de tamaños, o conservar fronteras y fallar en conteo. Los capítulos de Robustez y Anatomía del error exponen esas diferencias.' : 'Results are not reduced to “won/lost.” A method may improve AP while worsening the size distribution, or preserve boundaries while failing at count. The Robustness and Error anatomy chapters expose those differences.'}</p>
@@ -241,8 +241,8 @@ function SamStudy({ es, benchmark }: { es: boolean; benchmark: SamBenchmarkDoc |
     <div className="fs-experiment-chapter">
       <ExperimentLead n="06" title={es ? 'Prompts puntuales como estudio de sensibilidad' : 'Point prompts as a sensitivity study'} text={es ? 'Este experimento histórico pregunta si una grilla regular de puntos recupera instancias sin ajuste específico. Se conserva como evidencia secundaria, separada de la matriz principal de 15 métodos.' : 'This historical experiment asks whether a regular point grid can recover instances without task-specific tuning. It is retained as secondary evidence, separate from the primary 15-method matrix.'} />
       <div className="fs-study-result">
-        <div><span>{es ? 'AP medio' : 'mean AP'}</span><strong>{benchmark.summary.mean_sam_ap?.toFixed(3) ?? '—'}</strong></div>
-        <div><span>{es ? 'referencia clásica' : 'classical reference'}</span><strong>{benchmark.summary.mean_floor_ap?.toFixed(3) ?? '—'}</strong></div>
+        <div><span>{es ? 'AP medio' : 'mean AP'}</span><strong>{benchmark.summary.mean_sam_ap?.toFixed(3) ?? '--'}</strong></div>
+        <div><span>{es ? 'referencia clásica' : 'classical reference'}</span><strong>{benchmark.summary.mean_floor_ap?.toFixed(3) ?? '--'}</strong></div>
         <div><span>{es ? 'casos ganados' : 'cases won'}</span><strong>{benchmark.summary.sam_wins}/{benchmark.summary.n_cases}</strong></div>
       </div>
       <PanelBoundary label="prompt-grid sensitivity">
@@ -324,11 +324,11 @@ function ErrorStage({ label, value, status, text, inverse = false }: { label: st
 function CaseScoreCards({ score, es }: { score: SamCaseScore; es: boolean }) {
   return (
     <div className="fs-case-score-cards">
-      <article><span>SAM AP</span><strong>{score.sam_ap?.toFixed(3) ?? '—'}</strong></article>
-      <article><span>{es ? 'AP referencia' : 'reference AP'}</span><strong>{score.floor_ap?.toFixed(3) ?? '—'}</strong></article>
+      <article><span>SAM AP</span><strong>{score.sam_ap?.toFixed(3) ?? '--'}</strong></article>
+      <article><span>{es ? 'AP referencia' : 'reference AP'}</span><strong>{score.floor_ap?.toFixed(3) ?? '--'}</strong></article>
       <article><span>{es ? 'burbujas pred. / GT' : 'pred. / GT bubbles'}</span><strong>{score.sam_n} / {score.gt_n}</strong></article>
-      <article><span>BSD W1</span><strong>{score.sam_bsd_w?.toFixed(2) ?? '—'}</strong></article>
-      <article><span>d32 SAM / GT</span><strong>{score.sam_d32 ?? '—'} / {score.gt_d32 ?? '—'}</strong></article>
+      <article><span>BSD W1</span><strong>{score.sam_bsd_w?.toFixed(2) ?? '--'}</strong></article>
+      <article><span>d32 SAM / GT</span><strong>{score.sam_d32 ?? '--'} / {score.gt_d32 ?? '--'}</strong></article>
       <article><span>{es ? 'categoría' : 'category'}</span><strong>{score.category}</strong></article>
     </div>
   );

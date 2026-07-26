@@ -7,6 +7,7 @@ import hashlib
 import json
 import platform
 import time
+import tracemalloc
 from pathlib import Path
 
 import cv2
@@ -118,9 +119,12 @@ def train(
         )
 
     test_rows = []
-    for index, image in enumerate(_normalize(test_cache["images"])):
+    normalized_test_images = _normalize(test_cache["images"])
+    for index, image in enumerate(normalized_test_images):
+        started_inference = time.perf_counter()
         labels, _ = model.predict_instances(image)
         probability, _ = model.predict(image)
+        inference_ms = (time.perf_counter() - started_inference) * 1000
         probability = cv2.resize(
             probability,
             (test_cache["labels"][index].shape[1], test_cache["labels"][index].shape[0]),
@@ -138,10 +142,27 @@ def train(
             "brier": pixel_calibration["brier"],
             "ece": pixel_calibration["ece"],
             "pixel_calibration": pixel_calibration,
+            "inference_ms": round(inference_ms, 3),
         })
     evaluation = summarize_metric_rows(test_rows, split="test")
     evaluation["mean_brier"] = float(np.mean([row["brier"] for row in test_rows]))
     evaluation["mean_ece"] = float(np.mean([row["ece"] for row in test_rows]))
+    evaluation["mean_inference_ms"] = float(np.mean([
+        row["inference_ms"] for row in test_rows
+    ]))
+    evaluation["p95_inference_ms"] = float(np.quantile([
+        row["inference_ms"] for row in test_rows
+    ], 0.95))
+
+    # A separate inference pass measures Python allocations without inflating
+    # the reported latency above.
+    tracemalloc.start()
+    tracemalloc.reset_peak()
+    for image in normalized_test_images:
+        model.predict_instances(image)
+        model.predict(image)
+    _, peak_traced_bytes = tracemalloc.get_traced_memory()
+    tracemalloc.stop()
 
     canonical_rows = []
     for case in list_cases():
@@ -190,6 +211,8 @@ def train(
             "tensorflow": tf.__version__,
             "stardist": stardist_version,
             "device": "CPU",
+            "peak_traced_memory_mib": round(peak_traced_bytes / 1024**2, 3),
+            "peak_memory_metric": "python-tracemalloc",
             "limitation": (
                 "Official TensorFlow >=2.11 has no native-Windows CUDA support; "
                 "use Linux/WSL2 for GPU execution."

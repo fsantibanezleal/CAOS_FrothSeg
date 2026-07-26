@@ -159,7 +159,7 @@ function ConditionAnalysis({ es, benchmark }: BenchmarkProps) {
       <div className="fs-condition-summary">
         <div><span>{es ? 'Mejor método' : 'Best method'}</span><strong>{winner?.method.id} · {winner?.method.name}</strong></div>
         <div><span>AP {condition}</span><strong>{winner?.value.toFixed(3)}</strong></div>
-        <div><span>{es ? 'Cambio vs global' : 'Change vs global'}</span><strong>{winner ? signed(winner.value - winner.global) : '—'}</strong></div>
+        <div><span>{es ? 'Cambio vs global' : 'Change vs global'}</span><strong>{winner ? signed(winner.value - winner.global) : '--'}</strong></div>
       </div>
       <PanelBoundary label={`condition ${condition}`}>
         <BarChart data={data} ariaLabel={`mask AP under ${condition}`} valueFmt={(value) => value.toFixed(3)} defaultBaseline="zero" note={es ? 'Verde: esta condición supera el promedio propio del método. Naranja: cae por debajo.' : 'Green: this condition exceeds the method’s own mean. Orange: it falls below it.'} />
@@ -404,7 +404,7 @@ function metricExplanation(method: MethodBenchmarkRow, metric: MetricKey, es: bo
   const value = metricValue(method.test, metric);
   const metricName: Record<MetricKey, string> = { mean_ap: 'AP', mean_ap50: 'AP50', mean_pq: 'PQ', mean_boundary_fscore: 'Boundary F', mean_bsd_wasserstein: 'BSD W1', mean_d32_relative_error: 'd32 error' };
   const family = es ? FAMILY_LABELS[method.tier].es : FAMILY_LABELS[method.tier].en;
-  return es ? `${family}. ${metricName[metric]} ${value?.toFixed(3) ?? '—'} sobre 64 muestras retenidas.` : `${family}. ${metricName[metric]} ${value?.toFixed(3) ?? '—'} across 64 held-out samples.`;
+  return es ? `${family}. ${metricName[metric]} ${value?.toFixed(3) ?? '--'} sobre 64 muestras retenidas.` : `${family}. ${metricName[metric]} ${value?.toFixed(3) ?? '--'} across 64 held-out samples.`;
 }
 
 function conditionInterpretation(condition: string, es: boolean): string {
@@ -418,7 +418,7 @@ function conditionInterpretation(condition: string, es: boolean): string {
 }
 
 function fmt(value: number | null | undefined, digits = 3): string {
-  return value == null ? '—' : value.toFixed(digits);
+  return value == null ? '--' : value.toFixed(digits);
 }
 
 function signed(value: number): string {

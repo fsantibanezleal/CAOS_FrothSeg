@@ -8,9 +8,9 @@ export const architecture: ArchitectureConfig = {
       es: 'El producto',
       svg: 'svg/tech/01-the-app.svg',
       body_en:
-        'FrothSeg is a complete offline-first scientific repository, not a browser demo. It owns data generation, leakage-resistant splits, classical algorithms, GPU training, official foundation-model inference, calibration, evaluation, export, temporal analysis, and release evidence.\n\nThe website is the companion surface: it replays selected evidence and offers bounded single-frame interaction.',
+        'FrothSeg is an offline-first instance-segmentation system. Its reproducible workflow covers data generation, leakage-resistant splits, classical algorithms, GPU training, official foundation-model inference, calibration, evaluation, export, and temporal analysis.\n\nThe website replays all 15 offline methods across 13 canonical cases and offers four upload-only interactive methods.',
       body_es:
-        'FrothSeg es un repositorio científico completo y offline-first, no una demo de navegador. Contiene generación de datos, splits sin fuga, algoritmos clásicos, entrenamiento GPU, inferencia fundacional oficial, calibración, evaluación, exportación, análisis temporal y evidencia de release.\n\nLa web es la superficie complementaria: reproduce evidencia seleccionada y ofrece interacción acotada sobre un cuadro.',
+        'FrothSeg es un sistema offline-first de segmentación de instancias. Su flujo reproducible cubre generación de datos, splits sin fuga, algoritmos clásicos, entrenamiento GPU, inferencia con modelos fundacionales, calibración, evaluación, exportación y análisis temporal.\n\nLa web reproduce los 15 métodos offline en 13 casos canónicos y ofrece cuatro métodos interactivos solo para cargas.',
     },
     {
       id: 'methods',
@@ -18,9 +18,9 @@ export const architecture: ArchitectureConfig = {
       es: 'Escalera de métodos',
       svg: 'svg/tech/04-the-science.svg',
       body_en:
-        'The registry contains 15 implemented methods. C1-C7 are classical. L1-L4 and L6 are domain-learned. L5 Cellpose-SAM and L7 SAM2.1 are official foundation integrations. N1 LamellaStar is a completed frontier experiment.\n\nCellpose-SAM leads the untouched test. LamellaStar failed its hypothesis, so FrothSeg makes no beyond-SOTA claim.',
+        'The registry contains 15 implemented offline methods. C1-C7 are classical. L1-L4 and L6 are trained for the task. L5 Cellpose-SAM and L7 SAM2.1 use official foundation implementations. N1 LamellaStar is an evaluated research model.\n\nCellpose-SAM leads the controlled held-out test. LamellaStar reached AP 0.2145, below the predeclared AP 0.30 threshold, so the measurements do not support presenting it as an improvement.',
       body_es:
-        'El registro contiene 15 métodos implementados. C1-C7 son clásicos. L1-L4 y L6 son aprendidos del dominio. L5 Cellpose-SAM y L7 SAM2.1 son integraciones fundacionales oficiales. N1 LamellaStar es un experimento de frontera completo.\n\nCellpose-SAM lidera el test intocable. LamellaStar falló su hipótesis, por lo que FrothSeg no declara beyond SOTA.',
+        'El registro contiene 15 métodos offline implementados. C1-C7 son clásicos. L1-L4 y L6 se entrenan para la tarea. L5 Cellpose-SAM y L7 SAM2.1 usan implementaciones fundacionales oficiales. N1 LamellaStar es un modelo de investigación evaluado.\n\nCellpose-SAM lidera el test controlado retenido. LamellaStar alcanzó AP 0,2145, bajo el umbral predefinido de AP 0,30; por lo tanto, las mediciones no permiten presentarlo como una mejora.',
     },
     {
       id: 'flow',
@@ -28,19 +28,19 @@ export const architecture: ArchitectureConfig = {
       es: 'Flujo de datos',
       svg: 'svg/tech/03-web-flow.svg',
       body_en:
-        'Exact synthetic geometry and independent appearance variants are grouped before splitting. Training, validation, calibration, and untouched test never share a latent geometry group. Models are trained or loaded from official checkpoints, calibrated without test access, evaluated once, and exported with provenance.\n\nThe 13 canonical cases are a separate diagnostic suite for readable failure analysis.',
+        'Exact synthetic geometry and independent appearance variants are grouped before splitting. Training, validation, calibration, and untouched test never share a latent geometry group. Models are trained or loaded from official checkpoints, calibrated without test access, evaluated once, and exported with provenance.\n\nA dedicated showcase stage converts all 15 methods by 13 canonical cases into 195 checked label and preview pairs for the ten-view workbench.',
       body_es:
-        'La geometría sintética exacta y las variantes de apariencia independientes se agrupan antes del split. Train, validación, calibración y test intocable nunca comparten un grupo geométrico latente. Los modelos se entrenan o cargan desde checkpoints oficiales, se calibran sin acceso a test, se evalúan una vez y se exportan con procedencia.\n\nLos 13 casos canónicos son un diagnóstico separado para analizar fallas.',
+        'La geometría sintética exacta y las variantes de apariencia independientes se agrupan antes del split. Entrenamiento, validación, calibración y test no utilizado durante el ajuste nunca comparten un grupo geométrico latente. Los modelos se entrenan o cargan desde checkpoints oficiales, se calibran sin acceso al test, se evalúan una vez y se exportan con procedencia.\n\nUna etapa específica genera 195 pares verificados de etiquetas y vistas previas, correspondientes a 15 métodos por 13 casos canónicos, para las diez vistas del área de análisis.',
     },
     {
       id: 'lanes',
-      en: 'Compute lanes',
-      es: 'Vías de cómputo',
+      en: 'Compute placement',
+      es: 'Ubicación del cómputo',
       svg: 'svg/tech/02-lanes.svg',
       body_en:
-        'Offline is mandatory for data generation, training, official research runtimes, full evaluation, temporal sweeps, and export. Replay serves compact versioned results. Live interaction is limited to seven TypeScript classical methods and legacy SlimSAM.\n\nThe browser never retrains or recomputes the benchmark.',
+        'Offline compute is mandatory for data generation, training, official research runtimes, full evaluation, temporal sweeps, and export. Replay serves checked results for every method and canonical case. Upload interaction is limited to cross-checked browser implementations of C1, C3, and C4 plus SlimSAM.\n\nC2, C5, C6, C7, and every learned or foundation-model result remain offline. The browser never retrains or recomputes the benchmark.',
       body_es:
-        'Offline es obligatorio para generación de datos, entrenamiento, runtimes oficiales, evaluación completa, barridos temporales y exportación. Replay sirve resultados compactos versionados. La interacción en vivo se limita a siete clásicos TypeScript y SlimSAM legado.\n\nEl navegador nunca reentrena ni recalcula el benchmark.',
+        'El cómputo offline es obligatorio para generación de datos, entrenamiento, runtimes oficiales, evaluación completa, barridos temporales y exportación. La reproducción sirve resultados verificados para cada método y caso canónico. La interacción con cargas se limita a C1, C3 y C4 validados por paridad, más SlimSAM legado.\n\nC2, C5, C6, C7 y todos los resultados aprendidos o fundacionales permanecen offline. El navegador nunca reentrena ni recalcula el benchmark.',
     },
     {
       id: 'contracts',
@@ -48,9 +48,9 @@ export const architecture: ArchitectureConfig = {
       es: 'Contratos',
       svg: 'svg/tech/05-data-contracts.svg',
       body_en:
-        'The ingestion contract validates real images. The artifact contract records formats, byte sizes, and SHA-256. Model run manifests add dataset checksum, split, seed, environment, device, checkpoint lineage, calibration, metrics, and parity. The release gate requires all 15 methods plus temporal evidence.\n\nSynthetic AP is controlled-benchmark evidence, never plant accuracy.',
+        'The ingestion schema validates real images. Artifact records preserve format, byte size, and SHA-256. Model manifests add dataset checksum, split, seed, environment, device, checkpoint lineage, calibration, metrics, and parity. The release report also records all 15 methods, temporal evidence, and the 195-pair showcase manifest.\n\nSynthetic AP is controlled-benchmark evidence, never plant accuracy.',
       body_es:
-        'El contrato de ingesta valida imágenes reales. El contrato de artefactos registra formatos, tamaños y SHA-256. Los manifiestos de modelos agregan checksum del dataset, split, semilla, entorno, dispositivo, linaje del checkpoint, calibración, métricas y paridad. El gate de release exige los 15 métodos y evidencia temporal.\n\nEl AP sintético es evidencia controlada, nunca exactitud de planta.',
+        'El esquema de ingesta valida imágenes reales. Los registros de artefactos conservan formato, tamaño y SHA-256. Los manifiestos de modelos agregan checksum del dataset, split, semilla, entorno, dispositivo, linaje del checkpoint, calibración, métricas y paridad. El informe de versión también registra los 15 métodos, la evidencia temporal y el manifiesto de 195 pares.\n\nEl AP sintético es evidencia controlada, nunca exactitud de planta.',
     },
   ],
 };

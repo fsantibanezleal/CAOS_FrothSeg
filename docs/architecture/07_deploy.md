@@ -1,7 +1,7 @@
 # Deploy
 
-Default deploy is GitHub Pages, static (ADR-0055 Pages-first): the companion SPA
-plus compact committed artifacts are served statically, with no backend at
+Default deployment is static GitHub Pages: the companion SPA plus compact
+committed artifacts are served with no backend at
 request time. Bounded live inference is client-side; full research inference is
 precomputed offline. See
 [`deploy/pages.md`](../../deploy/pages.md) for the one-time enablement.
@@ -10,12 +10,14 @@ precomputed offline. See
 
 `.github/workflows/deploy-pages.yml` runs on push to `main`:
 
-1. Regenerate the artifacts deterministically: `pip install -r data-pipeline/requirements.txt -e .` then
-   `python -m fslab.pipeline all`, so the site always replays fresh, audited outputs rather than whatever happened
-   to be committed.
+1. Verify the committed scientific artifacts with `python -m fslab.pipeline
+   --check`, `scripts/check_artifacts.py`, and
+   `scripts/check_product_completeness.py`. Deployment does not train, infer,
+   tune, or regenerate the canonical benchmark.
 2. Build the SPA: `cd frontend && npm ci && npm run build`. The `frontend/copy-data.mjs` prebuild overlays
    `data/derived` (the per-case `frame.png`, `masks.json`, `bsd.csv`, `benchmark.json`, `card.json`, the
-   `manifests/`, `method-benchmark.json`, and the baked model evidence) into
+   `manifests/`, `method-benchmark.json`, the 15-by-13 showcase, and the baked
+   model evidence) into
    `frontend/public/data` so the static site serves them.
    The canonical copies live in `data/`; `public/data` is a git-ignored build-time overlay.
 3. Upload `frontend/dist` and deploy to Pages.
@@ -30,7 +32,8 @@ The legacy browser SAM-class weights are not in git (no multi-tens-of-MB blob; t
 [`ci.yml`](../../.github/workflows/ci.yml) reject tracked `.pt`/`.pth` and native binaries). At load time
 `frontend/src/sam/autoMask.ts` fetches the default model (`Xenova/slimsam-77-uniform`) from the Hugging Face Hub
 via `@huggingface/transformers`, which caches it in the browser Cache API, so only the first visit pays the
-download. Provenance and the Apache-2.0 license are documented on the About page. If the Hub is unavailable the
+download. Provenance and the Apache-2.0 license are documented in the
+Methodology and Implementation pages. If the Hub is unavailable the
 segmenter cannot load, and the app degrades gracefully: the baked benchmark, the synthetic samples, the BSD math,
 and all deep pages are served from the committed artifacts and work with no model at all; only the live-inference
 lane is affected, and it surfaces a load error rather than blocking the page.

@@ -1,4 +1,4 @@
-# N1, LamellaStar frontier experiment
+# N1, LamellaStar experimental model
 
 LamellaStar is FrothSeg's in-repository frontier hypothesis: a gated encoder-
 decoder jointly predicts foreground, lamella boundary, interior distance, and

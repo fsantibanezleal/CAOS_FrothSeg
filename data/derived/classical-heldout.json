@@ -156,7 +156,7 @@
           "d90_relative_error": 1.8514,
           "bsd_wasserstein": 17.437,
           "bsd_w": 17.437,
-          "inference_ms": 14.2
+          "inference_ms": 15.797
         },
         {
           "sample_id": "syn2-mono-clean-g10-a01",
@@ -209,7 +209,7 @@
           "d90_relative_error": 1.8452,
           "bsd_wasserstein": 19.182,
           "bsd_w": 19.182,
-          "inference_ms": 1.643
+          "inference_ms": 2.331
         },
         {
           "sample_id": "syn2-mono-clean-g11-a00",
@@ -262,7 +262,7 @@
           "d90_relative_error": 1.5382,
           "bsd_wasserstein": 13.504,
           "bsd_w": 13.504,
-          "inference_ms": 1.747
+          "inference_ms": 2.241
         },
         {
           "sample_id": "syn2-mono-clean-g11-a01",
@@ -315,7 +315,7 @@
           "d90_relative_error": 2.006,
           "bsd_wasserstein": 17.96,
           "bsd_w": 17.96,
-          "inference_ms": 1.623
+          "inference_ms": 2.225
         },
         {
           "sample_id": "syn2-poly-normal-g10-a00",
@@ -368,7 +368,7 @@
           "d90_relative_error": 0.5064,
           "bsd_wasserstein": 3.6,
           "bsd_w": 3.6,
-          "inference_ms": 1.681
+          "inference_ms": 2.378
         },
         {
           "sample_id": "syn2-poly-normal-g10-a01",
@@ -421,7 +421,7 @@
           "d90_relative_error": 0.6896,
           "bsd_wasserstein": 5.173,
           "bsd_w": 5.173,
-          "inference_ms": 1.688
+          "inference_ms": 2.292
         },
         {
           "sample_id": "syn2-poly-normal-g11-a00",
@@ -474,7 +474,7 @@
           "d90_relative_error": 0.4151,
           "bsd_wasserstein": 3.977,
           "bsd_w": 3.977,
-          "inference_ms": 1.914
+          "inference_ms": 3.221
         },
         {
           "sample_id": "syn2-poly-normal-g11-a01",
@@ -527,7 +527,7 @@
           "d90_relative_error": 0.5271,
           "bsd_wasserstein": 4.052,
           "bsd_w": 4.052,
-          "inference_ms": 2.018
+          "inference_ms": 2.32
         },
         {
           "sample_id": "syn2-fine-froth-g10-a00",
@@ -580,7 +580,7 @@
           "d90_relative_error": 0.9673,
           "bsd_wasserstein": 4.736,
           "bsd_w": 4.736,
-          "inference_ms": 1.903
+          "inference_ms": 2.377
         },
         {
           "sample_id": "syn2-fine-froth-g10-a01",
@@ -633,7 +633,7 @@
           "d90_relative_error": 1.0271,
           "bsd_wasserstein": 4.909,
           "bsd_w": 4.909,
-          "inference_ms": 1.891
+          "inference_ms": 2.423
         },
         {
           "sample_id": "syn2-fine-froth-g11-a00",
@@ -686,7 +686,7 @@
           "d90_relative_error": 1.0513,
           "bsd_wasserstein": 3.879,
           "bsd_w": 3.879,
-          "inference_ms": 1.968
+          "inference_ms": 2.416
         },
         {
           "sample_id": "syn2-fine-froth-g11-a01",
@@ -739,7 +739,7 @@
           "d90_relative_error": 0.9913,
           "bsd_wasserstein": 3.336,
           "bsd_w": 3.336,
-          "inference_ms": 1.948
+          "inference_ms": 2.407
         },
         {
           "sample_id": "syn2-coarse-froth-g10-a00",
@@ -792,7 +792,7 @@
           "d90_relative_error": 0.6057,
           "bsd_wasserstein": 16.692,
           "bsd_w": 16.692,
-          "inference_ms": 1.718
+          "inference_ms": 2.744
         },
         {
           "sample_id": "syn2-coarse-froth-g10-a01",
@@ -845,7 +845,7 @@
           "d90_relative_error": 1.1713,
           "bsd_wasserstein": 23.987,
           "bsd_w": 23.987,
-          "inference_ms": 1.768
+          "inference_ms": 2.539
         },
         {
           "sample_id": "syn2-coarse-froth-g11-a00",
@@ -898,7 +898,7 @@
           "d90_relative_error": 0.4362,
           "bsd_wasserstein": 11.36,
           "bsd_w": 11.36,
-          "inference_ms": 1.744
+          "inference_ms": 2.219
         },
         {
           "sample_id": "syn2-coarse-froth-g11-a01",
@@ -951,7 +951,7 @@
           "d90_relative_error": 0.8496,
           "bsd_wasserstein": 14.726,
           "bsd_w": 14.726,
-          "inference_ms": 1.66
+          "inference_ms": 2.426
         },
         {
           "sample_id": "syn2-glare-storm-g10-a00",
@@ -1004,7 +1004,7 @@
           "d90_relative_error": 0.1314,
           "bsd_wasserstein": 7.067,
           "bsd_w": 7.067,
-          "inference_ms": 1.782
+          "inference_ms": 2.424
         },
         {
           "sample_id": "syn2-glare-storm-g10-a01",
@@ -1057,7 +1057,7 @@
           "d90_relative_error": 0.0761,
           "bsd_wasserstein": 10.084,
           "bsd_w": 10.084,
-          "inference_ms": 1.82
+          "inference_ms": 4.116
         },
         {
           "sample_id": "syn2-glare-storm-g11-a00",
@@ -1110,7 +1110,7 @@
           "d90_relative_error": 0.0246,
           "bsd_wasserstein": 4.714,
           "bsd_w": 4.714,
-          "inference_ms": 1.717
+          "inference_ms": 2.405
         },
         {
           "sample_id": "syn2-glare-storm-g11-a01",
@@ -1163,7 +1163,7 @@
           "d90_relative_error": 0.0822,
           "bsd_wasserstein": 5.949,
           "bsd_w": 5.949,
-          "inference_ms": 1.709
+          "inference_ms": 3.687
         },
         {
           "sample_id": "syn2-watery-g10-a00",
@@ -1216,7 +1216,7 @@
           "d90_relative_error": 0.2013,
           "bsd_wasserstein": 15.395,
           "bsd_w": 15.395,
-          "inference_ms": 1.689
+          "inference_ms": 2.405
         },
         {
           "sample_id": "syn2-watery-g10-a01",
@@ -1269,7 +1269,7 @@
           "d90_relative_error": 0.2832,
           "bsd_wasserstein": 14.523,
           "bsd_w": 14.523,
-          "inference_ms": 1.613
+          "inference_ms": 2.494
         },
         {
           "sample_id": "syn2-watery-g11-a00",
@@ -1322,7 +1322,7 @@
           "d90_relative_error": 5.8491,
           "bsd_wasserstein": 37.427,
           "bsd_w": 37.427,
-          "inference_ms": 1.606
+          "inference_ms": 2.345
         },
         {
           "sample_id": "syn2-watery-g11-a01",
@@ -1375,7 +1375,7 @@
           "d90_relative_error": 2.5777,
           "bsd_wasserstein": 25.998,
           "bsd_w": 25.998,
-          "inference_ms": 1.645
+          "inference_ms": 2.35
         },
         {
           "sample_id": "syn2-motion-fast-g10-a00",
@@ -1428,7 +1428,7 @@
           "d90_relative_error": 1.4543,
           "bsd_wasserstein": 20.228,
           "bsd_w": 20.228,
-          "inference_ms": 1.589
+          "inference_ms": 2.697
         },
         {
           "sample_id": "syn2-motion-fast-g10-a01",
@@ -1481,7 +1481,7 @@
           "d90_relative_error": 0.5338,
           "bsd_wasserstein": 17.61,
           "bsd_w": 17.61,
-          "inference_ms": 1.56
+          "inference_ms": 2.288
         },
         {
           "sample_id": "syn2-motion-fast-g11-a00",
@@ -1534,7 +1534,7 @@
           "d90_relative_error": 1.9476,
           "bsd_wasserstein": 21.47,
           "bsd_w": 21.47,
-          "inference_ms": 1.528
+          "inference_ms": 2.322
         },
         {
           "sample_id": "syn2-motion-fast-g11-a01",
@@ -1587,7 +1587,7 @@
           "d90_relative_error": 1.9637,
           "bsd_wasserstein": 21.68,
           "bsd_w": 21.68,
-          "inference_ms": 1.504
+          "inference_ms": 2.348
         },
         {
           "sample_id": "syn2-defocus-g10-a00",
@@ -1640,7 +1640,7 @@
           "d90_relative_error": 2.5326,
           "bsd_wasserstein": 22.822,
           "bsd_w": 22.822,
-          "inference_ms": 1.498
+          "inference_ms": 2.446
         },
         {
           "sample_id": "syn2-defocus-g10-a01",
@@ -1693,7 +1693,7 @@
           "d90_relative_error": 1.9294,
           "bsd_wasserstein": 20.575,
           "bsd_w": 20.575,
-          "inference_ms": 1.498
+          "inference_ms": 2.218
         },
         {
           "sample_id": "syn2-defocus-g11-a00",
@@ -1746,7 +1746,7 @@
           "d90_relative_error": 4.5493,
           "bsd_wasserstein": 36.218,
           "bsd_w": 36.218,
-          "inference_ms": 1.533
+          "inference_ms": 2.277
         },
         {
           "sample_id": "syn2-defocus-g11-a01",
@@ -1799,7 +1799,7 @@
           "d90_relative_error": 4.5326,
           "bsd_wasserstein": 35.798,
           "bsd_w": 35.798,
-          "inference_ms": 1.546
+          "inference_ms": 2.237
         },
         {
           "sample_id": "syn2-high-load-g10-a00",
@@ -1852,7 +1852,7 @@
           "d90_relative_error": 0.6123,
           "bsd_wasserstein": 3.354,
           "bsd_w": 3.354,
-          "inference_ms": 1.609
+          "inference_ms": 3.841
         },
         {
           "sample_id": "syn2-high-load-g10-a01",
@@ -1905,7 +1905,7 @@
           "d90_relative_error": 0.5514,
           "bsd_wasserstein": 3.503,
           "bsd_w": 3.503,
-          "inference_ms": 1.594
+          "inference_ms": 5.601
         },
         {
           "sample_id": "syn2-high-load-g11-a00",
@@ -1958,7 +1958,7 @@
           "d90_relative_error": 0.4285,
           "bsd_wasserstein": 2.726,
           "bsd_w": 2.726,
-          "inference_ms": 1.604
+          "inference_ms": 4.182
         },
         {
           "sample_id": "syn2-high-load-g11-a01",
@@ -2011,7 +2011,7 @@
           "d90_relative_error": 0.4157,
           "bsd_wasserstein": 2.517,
           "bsd_w": 2.517,
-          "inference_ms": 1.597
+          "inference_ms": 4.059
         },
         {
           "sample_id": "syn2-low-light-noise-g10-a00",
@@ -2064,7 +2064,7 @@
           "d90_relative_error": 1.4705,
           "bsd_wasserstein": 8.887,
           "bsd_w": 8.887,
-          "inference_ms": 1.735
+          "inference_ms": 4.195
         },
         {
           "sample_id": "syn2-low-light-noise-g10-a01",
@@ -2117,7 +2117,7 @@
           "d90_relative_error": 0.7124,
           "bsd_wasserstein": 7.36,
           "bsd_w": 7.36,
-          "inference_ms": 1.715
+          "inference_ms": 4.352
         },
         {
           "sample_id": "syn2-low-light-noise-g11-a00",
@@ -2170,7 +2170,7 @@
           "d90_relative_error": 1.1133,
           "bsd_wasserstein": 7.819,
           "bsd_w": 7.819,
-          "inference_ms": 1.879
+          "inference_ms": 3.878
         },
         {
           "sample_id": "syn2-low-light-noise-g11-a01",
@@ -2223,7 +2223,7 @@
           "d90_relative_error": 0.722,
           "bsd_wasserstein": 7.433,
           "bsd_w": 7.433,
-          "inference_ms": 1.766
+          "inference_ms": 3.829
         },
         {
           "sample_id": "syn2-bursting-g10-a00",
@@ -2276,7 +2276,7 @@
           "d90_relative_error": 0.2897,
           "bsd_wasserstein": 3.917,
           "bsd_w": 3.917,
-          "inference_ms": 1.622
+          "inference_ms": 3.824
         },
         {
           "sample_id": "syn2-bursting-g10-a01",
@@ -2329,7 +2329,7 @@
           "d90_relative_error": 0.5364,
           "bsd_wasserstein": 4.679,
           "bsd_w": 4.679,
-          "inference_ms": 1.682
+          "inference_ms": 3.825
         },
         {
           "sample_id": "syn2-bursting-g11-a00",
@@ -2382,7 +2382,7 @@
           "d90_relative_error": 0.8498,
           "bsd_wasserstein": 5.895,
           "bsd_w": 5.895,
-          "inference_ms": 1.81
+          "inference_ms": 3.627
         },
         {
           "sample_id": "syn2-bursting-g11-a01",
@@ -2435,7 +2435,7 @@
           "d90_relative_error": 0.5939,
           "bsd_wasserstein": 5.406,
           "bsd_w": 5.406,
-          "inference_ms": 2.057
+          "inference_ms": 3.527
         },
         {
           "sample_id": "syn2-edge-framing-g10-a00",
@@ -2488,7 +2488,7 @@
           "d90_relative_error": 0.4012,
           "bsd_wasserstein": 2.776,
           "bsd_w": 2.776,
-          "inference_ms": 1.89
+          "inference_ms": 3.658
         },
         {
           "sample_id": "syn2-edge-framing-g10-a01",
@@ -2541,7 +2541,7 @@
           "d90_relative_error": 0.4616,
           "bsd_wasserstein": 2.778,
           "bsd_w": 2.778,
-          "inference_ms": 1.811
+          "inference_ms": 3.738
         },
         {
           "sample_id": "syn2-edge-framing-g11-a00",
@@ -2594,7 +2594,7 @@
           "d90_relative_error": 0.4784,
           "bsd_wasserstein": 3.204,
           "bsd_w": 3.204,
-          "inference_ms": 1.947
+          "inference_ms": 3.667
         },
         {
           "sample_id": "syn2-edge-framing-g11-a01",
@@ -2647,7 +2647,7 @@
           "d90_relative_error": 0.3481,
           "bsd_wasserstein": 3.238,
           "bsd_w": 3.238,
-          "inference_ms": 2.072
+          "inference_ms": 3.745
         },
         {
           "sample_id": "syn2-microbubble-cloud-g10-a00",
@@ -2700,7 +2700,7 @@
           "d90_relative_error": 0.694,
           "bsd_wasserstein": 4.025,
           "bsd_w": 4.025,
-          "inference_ms": 2.416
+          "inference_ms": 4.121
         },
         {
           "sample_id": "syn2-microbubble-cloud-g10-a01",
@@ -2753,7 +2753,7 @@
           "d90_relative_error": 1.3031,
           "bsd_wasserstein": 4.452,
           "bsd_w": 4.452,
-          "inference_ms": 2.256
+          "inference_ms": 4.035
         },
         {
           "sample_id": "syn2-microbubble-cloud-g11-a00",
@@ -2806,7 +2806,7 @@
           "d90_relative_error": 2.1524,
           "bsd_wasserstein": 5.578,
           "bsd_w": 5.578,
-          "inference_ms": 2.753
+          "inference_ms": 3.74
         },
         {
           "sample_id": "syn2-microbubble-cloud-g11-a01",
@@ -2859,7 +2859,7 @@
           "d90_relative_error": 1.6409,
           "bsd_wasserstein": 5.793,
           "bsd_w": 5.793,
-          "inference_ms": 2.502
+          "inference_ms": 4.292
         },
         {
           "sample_id": "syn2-wide-bimodal-proxy-g10-a00",
@@ -2912,7 +2912,7 @@
           "d90_relative_error": 0.2071,
           "bsd_wasserstein": 1.158,
           "bsd_w": 1.158,
-          "inference_ms": 2.433
+          "inference_ms": 4.799
         },
         {
           "sample_id": "syn2-wide-bimodal-proxy-g10-a01",
@@ -2965,7 +2965,7 @@
           "d90_relative_error": 0.2319,
           "bsd_wasserstein": 1.172,
           "bsd_w": 1.172,
-          "inference_ms": 2.248
+          "inference_ms": 6.126
         },
         {
           "sample_id": "syn2-wide-bimodal-proxy-g11-a00",
@@ -3018,7 +3018,7 @@
           "d90_relative_error": 0.2055,
           "bsd_wasserstein": 1.47,
           "bsd_w": 1.47,
-          "inference_ms": 2.36
+          "inference_ms": 4.104
         },
         {
           "sample_id": "syn2-wide-bimodal-proxy-g11-a01",
@@ -3071,7 +3071,7 @@
           "d90_relative_error": 0.2564,
           "bsd_wasserstein": 1.471,
           "bsd_w": 1.471,
-          "inference_ms": 2.427
+          "inference_ms": 3.507
         },
         {
           "sample_id": "syn2-glare-motion-compound-g10-a00",
@@ -3124,7 +3124,7 @@
           "d90_relative_error": 0.0079,
           "bsd_wasserstein": 5.674,
           "bsd_w": 5.674,
-          "inference_ms": 1.902
+          "inference_ms": 3.227
         },
         {
           "sample_id": "syn2-glare-motion-compound-g10-a01",
@@ -3177,7 +3177,7 @@
           "d90_relative_error": 0.1265,
           "bsd_wasserstein": 4.779,
           "bsd_w": 4.779,
-          "inference_ms": 1.899
+          "inference_ms": 3.552
         },
         {
           "sample_id": "syn2-glare-motion-compound-g11-a00",
@@ -3230,7 +3230,7 @@
           "d90_relative_error": 0.1339,
           "bsd_wasserstein": 7.433,
           "bsd_w": 7.433,
-          "inference_ms": 1.94
+          "inference_ms": 3.265
         },
         {
           "sample_id": "syn2-glare-motion-compound-g11-a01",
@@ -3283,7 +3283,7 @@
           "d90_relative_error": 0.0271,
           "bsd_wasserstein": 5.984,
           "bsd_w": 5.984,
-          "inference_ms": 1.905
+          "inference_ms": 3.181
         },
         {
           "sample_id": "syn2-dark-defocus-compound-g10-a00",
@@ -3336,7 +3336,7 @@
           "d90_relative_error": 1.0605,
           "bsd_wasserstein": 12.645,
           "bsd_w": 12.645,
-          "inference_ms": 2.076
+          "inference_ms": 3.941
         },
         {
           "sample_id": "syn2-dark-defocus-compound-g10-a01",
@@ -3389,7 +3389,7 @@
           "d90_relative_error": 1.0904,
           "bsd_wasserstein": 13.021,
           "bsd_w": 13.021,
-          "inference_ms": 2.108
+          "inference_ms": 3.471
         },
         {
           "sample_id": "syn2-dark-defocus-compound-g11-a00",
@@ -3442,7 +3442,7 @@
           "d90_relative_error": 0.155,
           "bsd_wasserstein": 7.381,
           "bsd_w": 7.381,
-          "inference_ms": 2.209
+          "inference_ms": 3.56
         },
         {
           "sample_id": "syn2-dark-defocus-compound-g11-a01",
@@ -3495,15 +3495,17 @@
           "d90_relative_error": 0.3629,
           "bsd_wasserstein": 6.907,
           "bsd_w": 6.907,
-          "inference_ms": 2.257
+          "inference_ms": 4.192
         }
       ],
       "method": "otsu_cc",
       "engine": "scikit-image/SciPy",
       "device": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
-      "duration_seconds": 1.504,
-      "mean_inference_ms": 2.047375,
-      "p95_inference_ms": 2.4320999999999997
+      "duration_seconds": 2.581,
+      "mean_inference_ms": 3.4386875000000003,
+      "p95_inference_ms": 4.731949999999998,
+      "peak_traced_memory_mib": 1.201,
+      "peak_memory_metric": "python-tracemalloc"
     },
     {
       "split": "test",
@@ -3658,7 +3660,7 @@
           "d90_relative_error": 0.6645,
           "bsd_wasserstein": 14.631,
           "bsd_w": 14.631,
-          "inference_ms": 53.989
+          "inference_ms": 115.899
         },
         {
           "sample_id": "syn2-mono-clean-g10-a01",
@@ -3711,7 +3713,7 @@
           "d90_relative_error": 0.6612,
           "bsd_wasserstein": 14.667,
           "bsd_w": 14.667,
-          "inference_ms": 29.191
+          "inference_ms": 76.221
         },
         {
           "sample_id": "syn2-mono-clean-g11-a00",
@@ -3764,7 +3766,7 @@
           "d90_relative_error": 0.6712,
           "bsd_wasserstein": 14.488,
           "bsd_w": 14.488,
-          "inference_ms": 28.216
+          "inference_ms": 74.528
         },
         {
           "sample_id": "syn2-mono-clean-g11-a01",
@@ -3817,7 +3819,7 @@
           "d90_relative_error": 0.6742,
           "bsd_wasserstein": 14.492,
           "bsd_w": 14.492,
-          "inference_ms": 28.093
+          "inference_ms": 71.788
         },
         {
           "sample_id": "syn2-poly-normal-g10-a00",
@@ -3870,7 +3872,7 @@
           "d90_relative_error": 0.5504,
           "bsd_wasserstein": 6.72,
           "bsd_w": 6.72,
-          "inference_ms": 22.269
+          "inference_ms": 57.737
         },
         {
           "sample_id": "syn2-poly-normal-g10-a01",
@@ -3923,7 +3925,7 @@
           "d90_relative_error": 0.5504,
           "bsd_wasserstein": 6.746,
           "bsd_w": 6.746,
-          "inference_ms": 22.009
+          "inference_ms": 52.885
         },
         {
           "sample_id": "syn2-poly-normal-g11-a00",
@@ -3976,7 +3978,7 @@
           "d90_relative_error": 0.5593,
           "bsd_wasserstein": 6.822,
           "bsd_w": 6.822,
-          "inference_ms": 21.607
+          "inference_ms": 56.418
         },
         {
           "sample_id": "syn2-poly-normal-g11-a01",
@@ -4029,7 +4031,7 @@
           "d90_relative_error": 0.566,
           "bsd_wasserstein": 6.792,
           "bsd_w": 6.792,
-          "inference_ms": 21.805
+          "inference_ms": 58.064
         },
         {
           "sample_id": "syn2-fine-froth-g10-a00",
@@ -4082,7 +4084,7 @@
           "d90_relative_error": 0.2886,
           "bsd_wasserstein": 2.412,
           "bsd_w": 2.412,
-          "inference_ms": 23.85
+          "inference_ms": 67.424
         },
         {
           "sample_id": "syn2-fine-froth-g10-a01",
@@ -4135,7 +4137,7 @@
           "d90_relative_error": 0.2815,
           "bsd_wasserstein": 2.307,
           "bsd_w": 2.307,
-          "inference_ms": 45.951
+          "inference_ms": 60.55
         },
         {
           "sample_id": "syn2-fine-froth-g11-a00",
@@ -4188,7 +4190,7 @@
           "d90_relative_error": 0.3029,
           "bsd_wasserstein": 2.489,
           "bsd_w": 2.489,
-          "inference_ms": 44.578
+          "inference_ms": 57.785
         },
         {
           "sample_id": "syn2-fine-froth-g11-a01",
@@ -4241,7 +4243,7 @@
           "d90_relative_error": 0.3096,
           "bsd_wasserstein": 2.377,
           "bsd_w": 2.377,
-          "inference_ms": 43.407
+          "inference_ms": 66.259
         },
         {
           "sample_id": "syn2-coarse-froth-g10-a00",
@@ -4294,7 +4296,7 @@
           "d90_relative_error": 0.757,
           "bsd_wasserstein": 17.947,
           "bsd_w": 17.947,
-          "inference_ms": 46.321
+          "inference_ms": 70.748
         },
         {
           "sample_id": "syn2-coarse-froth-g10-a01",
@@ -4347,7 +4349,7 @@
           "d90_relative_error": 0.7475,
           "bsd_wasserstein": 17.845,
           "bsd_w": 17.845,
-          "inference_ms": 47.721
+          "inference_ms": 69.72
         },
         {
           "sample_id": "syn2-coarse-froth-g11-a00",
@@ -4400,7 +4402,7 @@
           "d90_relative_error": 0.7616,
           "bsd_wasserstein": 18.097,
           "bsd_w": 18.097,
-          "inference_ms": 41.89
+          "inference_ms": 63.156
         },
         {
           "sample_id": "syn2-coarse-froth-g11-a01",
@@ -4453,7 +4455,7 @@
           "d90_relative_error": 0.7701,
           "bsd_wasserstein": 18.127,
           "bsd_w": 18.127,
-          "inference_ms": 42.388
+          "inference_ms": 64.804
         },
         {
           "sample_id": "syn2-glare-storm-g10-a00",
@@ -4506,7 +4508,7 @@
           "d90_relative_error": 0.6845,
           "bsd_wasserstein": 9.432,
           "bsd_w": 9.432,
-          "inference_ms": 251.313
+          "inference_ms": 356.002
         },
         {
           "sample_id": "syn2-glare-storm-g10-a01",
@@ -4559,7 +4561,7 @@
           "d90_relative_error": 0.7063,
           "bsd_wasserstein": 9.576,
           "bsd_w": 9.576,
-          "inference_ms": 259.808
+          "inference_ms": 410.289
         },
         {
           "sample_id": "syn2-glare-storm-g11-a00",
@@ -4612,7 +4614,7 @@
           "d90_relative_error": 0.6306,
           "bsd_wasserstein": 8.402,
           "bsd_w": 8.402,
-          "inference_ms": 113.808
+          "inference_ms": 190.825
         },
         {
           "sample_id": "syn2-glare-storm-g11-a01",
@@ -4665,7 +4667,7 @@
           "d90_relative_error": 0.6608,
           "bsd_wasserstein": 8.717,
           "bsd_w": 8.717,
-          "inference_ms": 181.07
+          "inference_ms": 293.934
         },
         {
           "sample_id": "syn2-watery-g10-a00",
@@ -4718,7 +4720,7 @@
           "d90_relative_error": 0.5638,
           "bsd_wasserstein": 6.579,
           "bsd_w": 6.579,
-          "inference_ms": 47.663
+          "inference_ms": 85.944
         },
         {
           "sample_id": "syn2-watery-g10-a01",
@@ -4771,7 +4773,7 @@
           "d90_relative_error": 0.5685,
           "bsd_wasserstein": 6.53,
           "bsd_w": 6.53,
-          "inference_ms": 45.413
+          "inference_ms": 83.885
         },
         {
           "sample_id": "syn2-watery-g11-a00",
@@ -4824,7 +4826,7 @@
           "d90_relative_error": 0.5846,
           "bsd_wasserstein": 6.631,
           "bsd_w": 6.631,
-          "inference_ms": 44.106
+          "inference_ms": 80.244
         },
         {
           "sample_id": "syn2-watery-g11-a01",
@@ -4877,7 +4879,7 @@
           "d90_relative_error": 0.5846,
           "bsd_wasserstein": 6.603,
           "bsd_w": 6.603,
-          "inference_ms": 46.359
+          "inference_ms": 81.057
         },
         {
           "sample_id": "syn2-motion-fast-g10-a00",
@@ -4930,7 +4932,7 @@
           "d90_relative_error": 0.6136,
           "bsd_wasserstein": 7.538,
           "bsd_w": 7.538,
-          "inference_ms": 44.411
+          "inference_ms": 72.934
         },
         {
           "sample_id": "syn2-motion-fast-g10-a01",
@@ -4983,7 +4985,7 @@
           "d90_relative_error": 0.6179,
           "bsd_wasserstein": 7.523,
           "bsd_w": 7.523,
-          "inference_ms": 47.528
+          "inference_ms": 73.086
         },
         {
           "sample_id": "syn2-motion-fast-g11-a00",
@@ -5036,7 +5038,7 @@
           "d90_relative_error": 0.6101,
           "bsd_wasserstein": 7.921,
           "bsd_w": 7.921,
-          "inference_ms": 45.596
+          "inference_ms": 69.474
         },
         {
           "sample_id": "syn2-motion-fast-g11-a01",
@@ -5089,7 +5091,7 @@
           "d90_relative_error": 0.6011,
           "bsd_wasserstein": 7.93,
           "bsd_w": 7.93,
-          "inference_ms": 46.879
+          "inference_ms": 70.374
         },
         {
           "sample_id": "syn2-defocus-g10-a00",
@@ -5142,7 +5144,7 @@
           "d90_relative_error": 0.6497,
           "bsd_wasserstein": 8.592,
           "bsd_w": 8.592,
-          "inference_ms": 45.648
+          "inference_ms": 74.695
         },
         {
           "sample_id": "syn2-defocus-g10-a01",
@@ -5195,7 +5197,7 @@
           "d90_relative_error": 0.6531,
           "bsd_wasserstein": 8.556,
           "bsd_w": 8.556,
-          "inference_ms": 48.973
+          "inference_ms": 68.282
         },
         {
           "sample_id": "syn2-defocus-g11-a00",
@@ -5248,7 +5250,7 @@
           "d90_relative_error": 0.6687,
           "bsd_wasserstein": 9.072,
           "bsd_w": 9.072,
-          "inference_ms": 52.189
+          "inference_ms": 70.564
         },
         {
           "sample_id": "syn2-defocus-g11-a01",
@@ -5301,7 +5303,7 @@
           "d90_relative_error": 0.6573,
           "bsd_wasserstein": 9.026,
           "bsd_w": 9.026,
-          "inference_ms": 50.194
+          "inference_ms": 68.373
         },
         {
           "sample_id": "syn2-high-load-g10-a00",
@@ -5354,7 +5356,7 @@
           "d90_relative_error": 0.5291,
           "bsd_wasserstein": 6.125,
           "bsd_w": 6.125,
-          "inference_ms": 35.208
+          "inference_ms": 53.545
         },
         {
           "sample_id": "syn2-high-load-g10-a01",
@@ -5407,7 +5409,7 @@
           "d90_relative_error": 0.5299,
           "bsd_wasserstein": 6.109,
           "bsd_w": 6.109,
-          "inference_ms": 34.9
+          "inference_ms": 52.111
         },
         {
           "sample_id": "syn2-high-load-g11-a00",
@@ -5460,7 +5462,7 @@
           "d90_relative_error": 0.5108,
           "bsd_wasserstein": 5.704,
           "bsd_w": 5.704,
-          "inference_ms": 34.371
+          "inference_ms": 52.657
         },
         {
           "sample_id": "syn2-high-load-g11-a01",
@@ -5513,7 +5515,7 @@
           "d90_relative_error": 0.5196,
           "bsd_wasserstein": 5.759,
           "bsd_w": 5.759,
-          "inference_ms": 32.521
+          "inference_ms": 53.796
         },
         {
           "sample_id": "syn2-low-light-noise-g10-a00",
@@ -5566,7 +5568,7 @@
           "d90_relative_error": 0.6125,
           "bsd_wasserstein": 7.357,
           "bsd_w": 7.357,
-          "inference_ms": 40.524
+          "inference_ms": 60.082
         },
         {
           "sample_id": "syn2-low-light-noise-g10-a01",
@@ -5619,7 +5621,7 @@
           "d90_relative_error": 0.6125,
           "bsd_wasserstein": 7.314,
           "bsd_w": 7.314,
-          "inference_ms": 40.636
+          "inference_ms": 60.136
         },
         {
           "sample_id": "syn2-low-light-noise-g11-a00",
@@ -5672,7 +5674,7 @@
           "d90_relative_error": 0.654,
           "bsd_wasserstein": 8.042,
           "bsd_w": 8.042,
-          "inference_ms": 43.401
+          "inference_ms": 61.259
         },
         {
           "sample_id": "syn2-low-light-noise-g11-a01",
@@ -5725,7 +5727,7 @@
           "d90_relative_error": 0.6565,
           "bsd_wasserstein": 8.129,
           "bsd_w": 8.129,
-          "inference_ms": 44.75
+          "inference_ms": 56.876
         },
         {
           "sample_id": "syn2-bursting-g10-a00",
@@ -5778,7 +5780,7 @@
           "d90_relative_error": 0.5607,
           "bsd_wasserstein": 7.129,
           "bsd_w": 7.129,
-          "inference_ms": 33.548
+          "inference_ms": 40.403
         },
         {
           "sample_id": "syn2-bursting-g10-a01",
@@ -5831,7 +5833,7 @@
           "d90_relative_error": 0.5637,
           "bsd_wasserstein": 7.195,
           "bsd_w": 7.195,
-          "inference_ms": 31.839
+          "inference_ms": 42.156
         },
         {
           "sample_id": "syn2-bursting-g11-a00",
@@ -5884,7 +5886,7 @@
           "d90_relative_error": 0.5917,
           "bsd_wasserstein": 7.625,
           "bsd_w": 7.625,
-          "inference_ms": 36.378
+          "inference_ms": 43.081
         },
         {
           "sample_id": "syn2-bursting-g11-a01",
@@ -5937,7 +5939,7 @@
           "d90_relative_error": 0.6029,
           "bsd_wasserstein": 7.555,
           "bsd_w": 7.555,
-          "inference_ms": 35.654
+          "inference_ms": 43.354
         },
         {
           "sample_id": "syn2-edge-framing-g10-a00",
@@ -5990,7 +5992,7 @@
           "d90_relative_error": 0.4688,
           "bsd_wasserstein": 4.515,
           "bsd_w": 4.515,
-          "inference_ms": 35.491
+          "inference_ms": 47.335
         },
         {
           "sample_id": "syn2-edge-framing-g10-a01",
@@ -6043,7 +6045,7 @@
           "d90_relative_error": 0.4727,
           "bsd_wasserstein": 4.532,
           "bsd_w": 4.532,
-          "inference_ms": 36.754
+          "inference_ms": 47.709
         },
         {
           "sample_id": "syn2-edge-framing-g11-a00",
@@ -6096,7 +6098,7 @@
           "d90_relative_error": 0.4908,
           "bsd_wasserstein": 4.629,
           "bsd_w": 4.629,
-          "inference_ms": 36.362
+          "inference_ms": 55.167
         },
         {
           "sample_id": "syn2-edge-framing-g11-a01",
@@ -6149,7 +6151,7 @@
           "d90_relative_error": 0.4908,
           "bsd_wasserstein": 4.658,
           "bsd_w": 4.658,
-          "inference_ms": 38.946
+          "inference_ms": 52.058
         },
         {
           "sample_id": "syn2-microbubble-cloud-g10-a00",
@@ -6202,7 +6204,7 @@
           "d90_relative_error": 0.0792,
           "bsd_wasserstein": 0.797,
           "bsd_w": 0.797,
-          "inference_ms": 47.6
+          "inference_ms": 65.016
         },
         {
           "sample_id": "syn2-microbubble-cloud-g10-a01",
@@ -6255,7 +6257,7 @@
           "d90_relative_error": 0.1031,
           "bsd_wasserstein": 0.855,
           "bsd_w": 0.855,
-          "inference_ms": 48.507
+          "inference_ms": 68.057
         },
         {
           "sample_id": "syn2-microbubble-cloud-g11-a00",
@@ -6308,7 +6310,7 @@
           "d90_relative_error": 0.097,
           "bsd_wasserstein": 0.823,
           "bsd_w": 0.823,
-          "inference_ms": 47.572
+          "inference_ms": 65.286
         },
         {
           "sample_id": "syn2-microbubble-cloud-g11-a01",
@@ -6361,7 +6363,7 @@
           "d90_relative_error": 0.0793,
           "bsd_wasserstein": 0.755,
           "bsd_w": 0.755,
-          "inference_ms": 50.712
+          "inference_ms": 65.736
         },
         {
           "sample_id": "syn2-wide-bimodal-proxy-g10-a00",
@@ -6414,7 +6416,7 @@
           "d90_relative_error": 0.367,
           "bsd_wasserstein": 2.716,
           "bsd_w": 2.716,
-          "inference_ms": 26.843
+          "inference_ms": 37.741
         },
         {
           "sample_id": "syn2-wide-bimodal-proxy-g10-a01",
@@ -6467,7 +6469,7 @@
           "d90_relative_error": 0.3848,
           "bsd_wasserstein": 2.719,
           "bsd_w": 2.719,
-          "inference_ms": 25.017
+          "inference_ms": 38.381
         },
         {
           "sample_id": "syn2-wide-bimodal-proxy-g11-a00",
@@ -6520,7 +6522,7 @@
           "d90_relative_error": 0.3681,
           "bsd_wasserstein": 2.715,
           "bsd_w": 2.715,
-          "inference_ms": 26.109
+          "inference_ms": 34.307
         },
         {
           "sample_id": "syn2-wide-bimodal-proxy-g11-a01",
@@ -6573,7 +6575,7 @@
           "d90_relative_error": 0.399,
           "bsd_wasserstein": 2.762,
           "bsd_w": 2.762,
-          "inference_ms": 23.223
+          "inference_ms": 34.327
         },
         {
           "sample_id": "syn2-glare-motion-compound-g10-a00",
@@ -6626,7 +6628,7 @@
           "d90_relative_error": 0.6467,
           "bsd_wasserstein": 7.123,
           "bsd_w": 7.123,
-          "inference_ms": 72.177
+          "inference_ms": 109.213
         },
         {
           "sample_id": "syn2-glare-motion-compound-g10-a01",
@@ -6679,7 +6681,7 @@
           "d90_relative_error": 0.6467,
           "bsd_wasserstein": 7.2,
           "bsd_w": 7.2,
-          "inference_ms": 49.8
+          "inference_ms": 77.885
         },
         {
           "sample_id": "syn2-glare-motion-compound-g11-a00",
@@ -6732,7 +6734,7 @@
           "d90_relative_error": 0.6338,
           "bsd_wasserstein": 7.803,
           "bsd_w": 7.803,
-          "inference_ms": 101.315
+          "inference_ms": 144.222
         },
         {
           "sample_id": "syn2-glare-motion-compound-g11-a01",
@@ -6785,7 +6787,7 @@
           "d90_relative_error": 0.6085,
           "bsd_wasserstein": 7.621,
           "bsd_w": 7.621,
-          "inference_ms": 71.404
+          "inference_ms": 113.973
         },
         {
           "sample_id": "syn2-dark-defocus-compound-g10-a00",
@@ -6838,7 +6840,7 @@
           "d90_relative_error": 0.6305,
           "bsd_wasserstein": 8.116,
           "bsd_w": 8.116,
-          "inference_ms": 41.557
+          "inference_ms": 69.516
         },
         {
           "sample_id": "syn2-dark-defocus-compound-g10-a01",
@@ -6891,7 +6893,7 @@
           "d90_relative_error": 0.6305,
           "bsd_wasserstein": 8.171,
           "bsd_w": 8.171,
-          "inference_ms": 43.019
+          "inference_ms": 67.396
         },
         {
           "sample_id": "syn2-dark-defocus-compound-g11-a00",
@@ -6944,7 +6946,7 @@
           "d90_relative_error": 0.634,
           "bsd_wasserstein": 7.503,
           "bsd_w": 7.503,
-          "inference_ms": 42.068
+          "inference_ms": 63.622
         },
         {
           "sample_id": "syn2-dark-defocus-compound-g11-a01",
@@ -6997,15 +6999,17 @@
           "d90_relative_error": 0.634,
           "bsd_wasserstein": 7.497,
           "bsd_w": 7.497,
-          "inference_ms": 41.897
+          "inference_ms": 60.682
         }
       ],
       "method": "watershed_immersion",
       "engine": "scikit-image/SciPy",
       "device": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
-      "duration_seconds": 7.633,
-      "mean_inference_ms": 51.31790624999999,
-      "p95_inference_ms": 111.93404999999993
+      "duration_seconds": 12.41,
+      "mean_inference_ms": 80.79739062499999,
+      "p95_inference_ms": 183.83454999999972,
+      "peak_traced_memory_mib": 3.566,
+      "peak_memory_metric": "python-tracemalloc"
     },
     {
       "split": "test",
@@ -7160,7 +7164,7 @@
           "d90_relative_error": 0.0515,
           "bsd_wasserstein": 10.092,
           "bsd_w": 10.092,
-          "inference_ms": 21.635
+          "inference_ms": 26.069
         },
         {
           "sample_id": "syn2-mono-clean-g10-a01",
@@ -7213,7 +7217,7 @@
           "d90_relative_error": 0.0008,
           "bsd_wasserstein": 9.347,
           "bsd_w": 9.347,
-          "inference_ms": 18.69
+          "inference_ms": 25.633
         },
         {
           "sample_id": "syn2-mono-clean-g11-a00",
@@ -7266,7 +7270,7 @@
           "d90_relative_error": 0.0012,
           "bsd_wasserstein": 8.401,
           "bsd_w": 8.401,
-          "inference_ms": 18.654
+          "inference_ms": 24.872
         },
         {
           "sample_id": "syn2-mono-clean-g11-a01",
@@ -7319,7 +7323,7 @@
           "d90_relative_error": 0.021,
           "bsd_wasserstein": 9.305,
           "bsd_w": 9.305,
-          "inference_ms": 19.756
+          "inference_ms": 25.699
         },
         {
           "sample_id": "syn2-poly-normal-g10-a00",
@@ -7372,7 +7376,7 @@
           "d90_relative_error": 0.0803,
           "bsd_wasserstein": 3.696,
           "bsd_w": 3.696,
-          "inference_ms": 17.623
+          "inference_ms": 25.833
         },
         {
           "sample_id": "syn2-poly-normal-g10-a01",
@@ -7425,7 +7429,7 @@
           "d90_relative_error": 0.0231,
           "bsd_wasserstein": 3.845,
           "bsd_w": 3.845,
-          "inference_ms": 16.545
+          "inference_ms": 25.251
         },
         {
           "sample_id": "syn2-poly-normal-g11-a00",
@@ -7478,7 +7482,7 @@
           "d90_relative_error": 0.0128,
           "bsd_wasserstein": 3.687,
           "bsd_w": 3.687,
-          "inference_ms": 16.621
+          "inference_ms": 25.325
         },
         {
           "sample_id": "syn2-poly-normal-g11-a01",
@@ -7531,7 +7535,7 @@
           "d90_relative_error": 0.0085,
           "bsd_wasserstein": 3.283,
           "bsd_w": 3.283,
-          "inference_ms": 16.615
+          "inference_ms": 27.563
         },
         {
           "sample_id": "syn2-fine-froth-g10-a00",
@@ -7584,7 +7588,7 @@
           "d90_relative_error": 0.0294,
           "bsd_wasserstein": 2.564,
           "bsd_w": 2.564,
-          "inference_ms": 18.464
+          "inference_ms": 29.816
         },
         {
           "sample_id": "syn2-fine-froth-g10-a01",
@@ -7637,7 +7641,7 @@
           "d90_relative_error": 0.0051,
           "bsd_wasserstein": 2.811,
           "bsd_w": 2.811,
-          "inference_ms": 18.432
+          "inference_ms": 27.17
         },
         {
           "sample_id": "syn2-fine-froth-g11-a00",
@@ -7690,7 +7694,7 @@
           "d90_relative_error": 0.0349,
           "bsd_wasserstein": 2.061,
           "bsd_w": 2.061,
-          "inference_ms": 18.299
+          "inference_ms": 26.945
         },
         {
           "sample_id": "syn2-fine-froth-g11-a01",
@@ -7743,7 +7747,7 @@
           "d90_relative_error": 0.0047,
           "bsd_wasserstein": 2.116,
           "bsd_w": 2.116,
-          "inference_ms": 20.961
+          "inference_ms": 26.039
         },
         {
           "sample_id": "syn2-coarse-froth-g10-a00",
@@ -7796,7 +7800,7 @@
           "d90_relative_error": 0.1537,
           "bsd_wasserstein": 13.696,
           "bsd_w": 13.696,
-          "inference_ms": 19.478
+          "inference_ms": 26.13
         },
         {
           "sample_id": "syn2-coarse-froth-g10-a01",
@@ -7849,7 +7853,7 @@
           "d90_relative_error": 0.1656,
           "bsd_wasserstein": 13.855,
           "bsd_w": 13.855,
-          "inference_ms": 19.516
+          "inference_ms": 27.755
         },
         {
           "sample_id": "syn2-coarse-froth-g11-a00",
@@ -7902,7 +7906,7 @@
           "d90_relative_error": 0.1919,
           "bsd_wasserstein": 13.047,
           "bsd_w": 13.047,
-          "inference_ms": 18.548
+          "inference_ms": 26.565
         },
         {
           "sample_id": "syn2-coarse-froth-g11-a01",
@@ -7955,7 +7959,7 @@
           "d90_relative_error": 0.1836,
           "bsd_wasserstein": 13.786,
           "bsd_w": 13.786,
-          "inference_ms": 18.38
+          "inference_ms": 27.763
         },
         {
           "sample_id": "syn2-glare-storm-g10-a00",
@@ -8008,7 +8012,7 @@
           "d90_relative_error": 0.1928,
           "bsd_wasserstein": 6.302,
           "bsd_w": 6.302,
-          "inference_ms": 20.041
+          "inference_ms": 28.638
         },
         {
           "sample_id": "syn2-glare-storm-g10-a01",
@@ -8061,7 +8065,7 @@
           "d90_relative_error": 0.1418,
           "bsd_wasserstein": 6.258,
           "bsd_w": 6.258,
-          "inference_ms": 19.186
+          "inference_ms": 29.628
         },
         {
           "sample_id": "syn2-glare-storm-g11-a00",
@@ -8114,7 +8118,7 @@
           "d90_relative_error": 0.1904,
           "bsd_wasserstein": 5.691,
           "bsd_w": 5.691,
-          "inference_ms": 18.966
+          "inference_ms": 30.45
         },
         {
           "sample_id": "syn2-glare-storm-g11-a01",
@@ -8167,7 +8171,7 @@
           "d90_relative_error": 0.1917,
           "bsd_wasserstein": 5.76,
           "bsd_w": 5.76,
-          "inference_ms": 20.218
+          "inference_ms": 27.76
         },
         {
           "sample_id": "syn2-watery-g10-a00",
@@ -8220,7 +8224,7 @@
           "d90_relative_error": 0.1011,
           "bsd_wasserstein": 6.8,
           "bsd_w": 6.8,
-          "inference_ms": 20.384
+          "inference_ms": 26.78
         },
         {
           "sample_id": "syn2-watery-g10-a01",
@@ -8273,7 +8277,7 @@
           "d90_relative_error": 0.3303,
           "bsd_wasserstein": 7.531,
           "bsd_w": 7.531,
-          "inference_ms": 19.37
+          "inference_ms": 27.174
         },
         {
           "sample_id": "syn2-watery-g11-a00",
@@ -8326,7 +8330,7 @@
           "d90_relative_error": 0.0802,
           "bsd_wasserstein": 6.708,
           "bsd_w": 6.708,
-          "inference_ms": 18.618
+          "inference_ms": 27.003
         },
         {
           "sample_id": "syn2-watery-g11-a01",
@@ -8379,7 +8383,7 @@
           "d90_relative_error": 0.1455,
           "bsd_wasserstein": 6.983,
           "bsd_w": 6.983,
-          "inference_ms": 18.994
+          "inference_ms": 29.669
         },
         {
           "sample_id": "syn2-motion-fast-g10-a00",
@@ -8432,7 +8436,7 @@
           "d90_relative_error": 0.2717,
           "bsd_wasserstein": 6.69,
           "bsd_w": 6.69,
-          "inference_ms": 16.917
+          "inference_ms": 28.068
         },
         {
           "sample_id": "syn2-motion-fast-g10-a01",
@@ -8485,7 +8489,7 @@
           "d90_relative_error": 0.1367,
           "bsd_wasserstein": 6.859,
           "bsd_w": 6.859,
-          "inference_ms": 16.703
+          "inference_ms": 25.707
         },
         {
           "sample_id": "syn2-motion-fast-g11-a00",
@@ -8538,7 +8542,7 @@
           "d90_relative_error": 0.133,
           "bsd_wasserstein": 6.62,
           "bsd_w": 6.62,
-          "inference_ms": 17.141
+          "inference_ms": 27.339
         },
         {
           "sample_id": "syn2-motion-fast-g11-a01",
@@ -8591,7 +8595,7 @@
           "d90_relative_error": 0.1598,
           "bsd_wasserstein": 6.745,
           "bsd_w": 6.745,
-          "inference_ms": 18.361
+          "inference_ms": 28.331
         },
         {
           "sample_id": "syn2-defocus-g10-a00",
@@ -8644,7 +8648,7 @@
           "d90_relative_error": 0.0573,
           "bsd_wasserstein": 6.849,
           "bsd_w": 6.849,
-          "inference_ms": 17.149
+          "inference_ms": 25.669
         },
         {
           "sample_id": "syn2-defocus-g10-a01",
@@ -8697,7 +8701,7 @@
           "d90_relative_error": 0.2478,
           "bsd_wasserstein": 7.098,
           "bsd_w": 7.098,
-          "inference_ms": 16.184
+          "inference_ms": 26.074
         },
         {
           "sample_id": "syn2-defocus-g11-a00",
@@ -8750,7 +8754,7 @@
           "d90_relative_error": 0.2371,
           "bsd_wasserstein": 8.345,
           "bsd_w": 8.345,
-          "inference_ms": 17.592
+          "inference_ms": 27.082
         },
         {
           "sample_id": "syn2-defocus-g11-a01",
@@ -8803,7 +8807,7 @@
           "d90_relative_error": 0.206,
           "bsd_wasserstein": 7.973,
           "bsd_w": 7.973,
-          "inference_ms": 18.13
+          "inference_ms": 24.622
         },
         {
           "sample_id": "syn2-high-load-g10-a00",
@@ -8856,7 +8860,7 @@
           "d90_relative_error": 0.0478,
           "bsd_wasserstein": 3.217,
           "bsd_w": 3.217,
-          "inference_ms": 18.901
+          "inference_ms": 25.979
         },
         {
           "sample_id": "syn2-high-load-g10-a01",
@@ -8909,7 +8913,7 @@
           "d90_relative_error": 0.0557,
           "bsd_wasserstein": 3.476,
           "bsd_w": 3.476,
-          "inference_ms": 18.413
+          "inference_ms": 26.625
         },
         {
           "sample_id": "syn2-high-load-g11-a00",
@@ -8962,7 +8966,7 @@
           "d90_relative_error": 0.0502,
           "bsd_wasserstein": 2.916,
           "bsd_w": 2.916,
-          "inference_ms": 19.052
+          "inference_ms": 27.743
         },
         {
           "sample_id": "syn2-high-load-g11-a01",
@@ -9015,7 +9019,7 @@
           "d90_relative_error": 0.0459,
           "bsd_wasserstein": 2.985,
           "bsd_w": 2.985,
-          "inference_ms": 19.271
+          "inference_ms": 24.857
         },
         {
           "sample_id": "syn2-low-light-noise-g10-a00",
@@ -9068,7 +9072,7 @@
           "d90_relative_error": 0.608,
           "bsd_wasserstein": 8.777,
           "bsd_w": 8.777,
-          "inference_ms": 19.303
+          "inference_ms": 28.714
         },
         {
           "sample_id": "syn2-low-light-noise-g10-a01",
@@ -9121,7 +9125,7 @@
           "d90_relative_error": 0.5949,
           "bsd_wasserstein": 8.757,
           "bsd_w": 8.757,
-          "inference_ms": 18.048
+          "inference_ms": 31.574
         },
         {
           "sample_id": "syn2-low-light-noise-g11-a00",
@@ -9174,7 +9178,7 @@
           "d90_relative_error": 0.6362,
           "bsd_wasserstein": 9.551,
           "bsd_w": 9.551,
-          "inference_ms": 18.541
+          "inference_ms": 34.209
         },
         {
           "sample_id": "syn2-low-light-noise-g11-a01",
@@ -9227,7 +9231,7 @@
           "d90_relative_error": 0.6283,
           "bsd_wasserstein": 9.574,
           "bsd_w": 9.574,
-          "inference_ms": 19.199
+          "inference_ms": 33.459
         },
         {
           "sample_id": "syn2-bursting-g10-a00",
@@ -9280,7 +9284,7 @@
           "d90_relative_error": 0.1073,
           "bsd_wasserstein": 4.863,
           "bsd_w": 4.863,
-          "inference_ms": 17.116
+          "inference_ms": 27.48
         },
         {
           "sample_id": "syn2-bursting-g10-a01",
@@ -9333,7 +9337,7 @@
           "d90_relative_error": 0.12,
           "bsd_wasserstein": 5.195,
           "bsd_w": 5.195,
-          "inference_ms": 17.297
+          "inference_ms": 27.576
         },
         {
           "sample_id": "syn2-bursting-g11-a00",
@@ -9386,7 +9390,7 @@
           "d90_relative_error": 0.0554,
           "bsd_wasserstein": 5.294,
           "bsd_w": 5.294,
-          "inference_ms": 17.686
+          "inference_ms": 27.302
         },
         {
           "sample_id": "syn2-bursting-g11-a01",
@@ -9439,7 +9443,7 @@
           "d90_relative_error": 0.0855,
           "bsd_wasserstein": 5.44,
           "bsd_w": 5.44,
-          "inference_ms": 17.43
+          "inference_ms": 26.502
         },
         {
           "sample_id": "syn2-edge-framing-g10-a00",
@@ -9492,7 +9496,7 @@
           "d90_relative_error": 0.0987,
           "bsd_wasserstein": 3.352,
           "bsd_w": 3.352,
-          "inference_ms": 19.344
+          "inference_ms": 27.162
         },
         {
           "sample_id": "syn2-edge-framing-g10-a01",
@@ -9545,7 +9549,7 @@
           "d90_relative_error": 0.1235,
           "bsd_wasserstein": 3.358,
           "bsd_w": 3.358,
-          "inference_ms": 17.73
+          "inference_ms": 26.721
         },
         {
           "sample_id": "syn2-edge-framing-g11-a00",
@@ -9598,7 +9602,7 @@
           "d90_relative_error": 0.107,
           "bsd_wasserstein": 3.608,
           "bsd_w": 3.608,
-          "inference_ms": 18.965
+          "inference_ms": 25.521
         },
         {
           "sample_id": "syn2-edge-framing-g11-a01",
@@ -9651,7 +9655,7 @@
           "d90_relative_error": 0.0527,
           "bsd_wasserstein": 3.828,
           "bsd_w": 3.828,
-          "inference_ms": 17.378
+          "inference_ms": 27.15
         },
         {
           "sample_id": "syn2-microbubble-cloud-g10-a00",
@@ -9704,7 +9708,7 @@
           "d90_relative_error": 0.0675,
           "bsd_wasserstein": 2.258,
           "bsd_w": 2.258,
-          "inference_ms": 18.569
+          "inference_ms": 27.894
         },
         {
           "sample_id": "syn2-microbubble-cloud-g10-a01",
@@ -9757,7 +9761,7 @@
           "d90_relative_error": 0.0792,
           "bsd_wasserstein": 2.236,
           "bsd_w": 2.236,
-          "inference_ms": 20.858
+          "inference_ms": 32.539
         },
         {
           "sample_id": "syn2-microbubble-cloud-g11-a00",
@@ -9810,7 +9814,7 @@
           "d90_relative_error": 0.0506,
           "bsd_wasserstein": 2.196,
           "bsd_w": 2.196,
-          "inference_ms": 19.795
+          "inference_ms": 30.261
         },
         {
           "sample_id": "syn2-microbubble-cloud-g11-a01",
@@ -9863,7 +9867,7 @@
           "d90_relative_error": 0.0065,
           "bsd_wasserstein": 2.153,
           "bsd_w": 2.153,
-          "inference_ms": 20.288
+          "inference_ms": 35.502
         },
         {
           "sample_id": "syn2-wide-bimodal-proxy-g10-a00",
@@ -9916,7 +9920,7 @@
           "d90_relative_error": 0.1911,
           "bsd_wasserstein": 1.278,
           "bsd_w": 1.278,
-          "inference_ms": 16.382
+          "inference_ms": 22.792
         },
         {
           "sample_id": "syn2-wide-bimodal-proxy-g10-a01",
@@ -9969,7 +9973,7 @@
           "d90_relative_error": 0.111,
           "bsd_wasserstein": 1.2,
           "bsd_w": 1.2,
-          "inference_ms": 15.843
+          "inference_ms": 25.093
         },
         {
           "sample_id": "syn2-wide-bimodal-proxy-g11-a00",
@@ -10022,7 +10026,7 @@
           "d90_relative_error": 0.2499,
           "bsd_wasserstein": 1.767,
           "bsd_w": 1.767,
-          "inference_ms": 17.342
+          "inference_ms": 28.907
         },
         {
           "sample_id": "syn2-wide-bimodal-proxy-g11-a01",
@@ -10075,7 +10079,7 @@
           "d90_relative_error": 0.2717,
           "bsd_wasserstein": 1.934,
           "bsd_w": 1.934,
-          "inference_ms": 15.688
+          "inference_ms": 26.301
         },
         {
           "sample_id": "syn2-glare-motion-compound-g10-a00",
@@ -10128,7 +10132,7 @@
           "d90_relative_error": 0.3541,
           "bsd_wasserstein": 6.386,
           "bsd_w": 6.386,
-          "inference_ms": 20.451
+          "inference_ms": 34.082
         },
         {
           "sample_id": "syn2-glare-motion-compound-g10-a01",
@@ -10181,7 +10185,7 @@
           "d90_relative_error": 0.3811,
           "bsd_wasserstein": 6.439,
           "bsd_w": 6.439,
-          "inference_ms": 20.244
+          "inference_ms": 30.486
         },
         {
           "sample_id": "syn2-glare-motion-compound-g11-a00",
@@ -10234,7 +10238,7 @@
           "d90_relative_error": 0.4027,
           "bsd_wasserstein": 6.914,
           "bsd_w": 6.914,
-          "inference_ms": 19.175
+          "inference_ms": 30.8
         },
         {
           "sample_id": "syn2-glare-motion-compound-g11-a01",
@@ -10287,7 +10291,7 @@
           "d90_relative_error": 0.3948,
           "bsd_wasserstein": 6.759,
           "bsd_w": 6.759,
-          "inference_ms": 19.814
+          "inference_ms": 31.129
         },
         {
           "sample_id": "syn2-dark-defocus-compound-g10-a00",
@@ -10340,7 +10344,7 @@
           "d90_relative_error": 0.5759,
           "bsd_wasserstein": 9.1,
           "bsd_w": 9.1,
-          "inference_ms": 17.785
+          "inference_ms": 27.466
         },
         {
           "sample_id": "syn2-dark-defocus-compound-g10-a01",
@@ -10393,7 +10397,7 @@
           "d90_relative_error": 0.649,
           "bsd_wasserstein": 9.373,
           "bsd_w": 9.373,
-          "inference_ms": 17.363
+          "inference_ms": 26.688
         },
         {
           "sample_id": "syn2-dark-defocus-compound-g11-a00",
@@ -10446,7 +10450,7 @@
           "d90_relative_error": 0.5949,
           "bsd_wasserstein": 8.556,
           "bsd_w": 8.556,
-          "inference_ms": 16.276
+          "inference_ms": 29.707
         },
         {
           "sample_id": "syn2-dark-defocus-compound-g11-a01",
@@ -10499,15 +10503,17 @@
           "d90_relative_error": 0.5908,
           "bsd_wasserstein": 8.516,
           "bsd_w": 8.516,
-          "inference_ms": 16.595
+          "inference_ms": 29.945
         }
       ],
       "method": "watershed_hmax",
       "engine": "scikit-image/SciPy",
       "device": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
-      "duration_seconds": 4.472,
-      "mean_inference_ms": 18.411140625,
-      "p95_inference_ms": 20.44095
+      "duration_seconds": 7.432,
+      "mean_inference_ms": 27.8529375,
+      "p95_inference_ms": 33.321,
+      "peak_traced_memory_mib": 2.907,
+      "peak_memory_metric": "python-tracemalloc"
     },
     {
       "split": "test",
@@ -10662,7 +10668,7 @@
           "d90_relative_error": 0.0311,
           "bsd_wasserstein": 2.373,
           "bsd_w": 2.373,
-          "inference_ms": 14.249
+          "inference_ms": 21.942
         },
         {
           "sample_id": "syn2-mono-clean-g10-a01",
@@ -10715,7 +10721,7 @@
           "d90_relative_error": 0.0408,
           "bsd_wasserstein": 2.31,
           "bsd_w": 2.31,
-          "inference_ms": 15.457
+          "inference_ms": 21.607
         },
         {
           "sample_id": "syn2-mono-clean-g11-a00",
@@ -10768,7 +10774,7 @@
           "d90_relative_error": 0.0196,
           "bsd_wasserstein": 2.025,
           "bsd_w": 2.025,
-          "inference_ms": 15.349
+          "inference_ms": 20.969
         },
         {
           "sample_id": "syn2-mono-clean-g11-a01",
@@ -10821,7 +10827,7 @@
           "d90_relative_error": 0.0309,
           "bsd_wasserstein": 1.712,
           "bsd_w": 1.712,
-          "inference_ms": 15.325
+          "inference_ms": 20.905
         },
         {
           "sample_id": "syn2-poly-normal-g10-a00",
@@ -10874,7 +10880,7 @@
           "d90_relative_error": 0.0413,
           "bsd_wasserstein": 0.588,
           "bsd_w": 0.588,
-          "inference_ms": 14.203
+          "inference_ms": 21.88
         },
         {
           "sample_id": "syn2-poly-normal-g10-a01",
@@ -10927,7 +10933,7 @@
           "d90_relative_error": 0.0257,
           "bsd_wasserstein": 0.624,
           "bsd_w": 0.624,
-          "inference_ms": 16.851
+          "inference_ms": 21.16
         },
         {
           "sample_id": "syn2-poly-normal-g11-a00",
@@ -10980,7 +10986,7 @@
           "d90_relative_error": 0.0869,
           "bsd_wasserstein": 0.801,
           "bsd_w": 0.801,
-          "inference_ms": 15.57
+          "inference_ms": 22.517
         },
         {
           "sample_id": "syn2-poly-normal-g11-a01",
@@ -11033,7 +11039,7 @@
           "d90_relative_error": 0.0904,
           "bsd_wasserstein": 0.796,
           "bsd_w": 0.796,
-          "inference_ms": 15.064
+          "inference_ms": 22.647
         },
         {
           "sample_id": "syn2-fine-froth-g10-a00",
@@ -11086,7 +11092,7 @@
           "d90_relative_error": 0.4376,
           "bsd_wasserstein": 1.961,
           "bsd_w": 1.961,
-          "inference_ms": 20.039
+          "inference_ms": 27.874
         },
         {
           "sample_id": "syn2-fine-froth-g10-a01",
@@ -11139,7 +11145,7 @@
           "d90_relative_error": 0.4002,
           "bsd_wasserstein": 1.994,
           "bsd_w": 1.994,
-          "inference_ms": 18.785
+          "inference_ms": 25.853
         },
         {
           "sample_id": "syn2-fine-froth-g11-a00",
@@ -11192,7 +11198,7 @@
           "d90_relative_error": 0.35,
           "bsd_wasserstein": 1.758,
           "bsd_w": 1.758,
-          "inference_ms": 19.403
+          "inference_ms": 26.502
         },
         {
           "sample_id": "syn2-fine-froth-g11-a01",
@@ -11245,7 +11251,7 @@
           "d90_relative_error": 0.256,
           "bsd_wasserstein": 1.441,
           "bsd_w": 1.441,
-          "inference_ms": 20.044
+          "inference_ms": 30.066
         },
         {
           "sample_id": "syn2-coarse-froth-g10-a00",
@@ -11298,7 +11304,7 @@
           "d90_relative_error": 0.017,
           "bsd_wasserstein": 2.882,
           "bsd_w": 2.882,
-          "inference_ms": 15.683
+          "inference_ms": 19.601
         },
         {
           "sample_id": "syn2-coarse-froth-g10-a01",
@@ -11351,7 +11357,7 @@
           "d90_relative_error": 0.068,
           "bsd_wasserstein": 2.525,
           "bsd_w": 2.525,
-          "inference_ms": 15.698
+          "inference_ms": 18.607
         },
         {
           "sample_id": "syn2-coarse-froth-g11-a00",
@@ -11404,7 +11410,7 @@
           "d90_relative_error": 0.039,
           "bsd_wasserstein": 1.611,
           "bsd_w": 1.611,
-          "inference_ms": 13.705
+          "inference_ms": 17.732
         },
         {
           "sample_id": "syn2-coarse-froth-g11-a01",
@@ -11457,7 +11463,7 @@
           "d90_relative_error": 0.0622,
           "bsd_wasserstein": 1.26,
           "bsd_w": 1.26,
-          "inference_ms": 14.204
+          "inference_ms": 18.088
         },
         {
           "sample_id": "syn2-glare-storm-g10-a00",
@@ -11510,7 +11516,7 @@
           "d90_relative_error": 0.1345,
           "bsd_wasserstein": 3.445,
           "bsd_w": 3.445,
-          "inference_ms": 12.899
+          "inference_ms": 17.987
         },
         {
           "sample_id": "syn2-glare-storm-g10-a01",
@@ -11563,7 +11569,7 @@
           "d90_relative_error": 0.1124,
           "bsd_wasserstein": 4.484,
           "bsd_w": 4.484,
-          "inference_ms": 12.878
+          "inference_ms": 18.026
         },
         {
           "sample_id": "syn2-glare-storm-g11-a00",
@@ -11616,7 +11622,7 @@
           "d90_relative_error": 0.0003,
           "bsd_wasserstein": 2.718,
           "bsd_w": 2.718,
-          "inference_ms": 12.479
+          "inference_ms": 18.057
         },
         {
           "sample_id": "syn2-glare-storm-g11-a01",
@@ -11669,7 +11675,7 @@
           "d90_relative_error": 0.0119,
           "bsd_wasserstein": 3.216,
           "bsd_w": 3.216,
-          "inference_ms": 12.537
+          "inference_ms": 18.862
         },
         {
           "sample_id": "syn2-watery-g10-a00",
@@ -11722,7 +11728,7 @@
           "d90_relative_error": 0.5873,
           "bsd_wasserstein": 5.022,
           "bsd_w": 5.022,
-          "inference_ms": 13.383
+          "inference_ms": 21.629
         },
         {
           "sample_id": "syn2-watery-g10-a01",
@@ -11775,7 +11781,7 @@
           "d90_relative_error": 0.6323,
           "bsd_wasserstein": 4.995,
           "bsd_w": 4.995,
-          "inference_ms": 13.392
+          "inference_ms": 19.051
         },
         {
           "sample_id": "syn2-watery-g11-a00",
@@ -11828,7 +11834,7 @@
           "d90_relative_error": 0.5959,
           "bsd_wasserstein": 6.295,
           "bsd_w": 6.295,
-          "inference_ms": 13.978
+          "inference_ms": 21.886
         },
         {
           "sample_id": "syn2-watery-g11-a01",
@@ -11881,7 +11887,7 @@
           "d90_relative_error": 0.5835,
           "bsd_wasserstein": 6.067,
           "bsd_w": 6.067,
-          "inference_ms": 13.696
+          "inference_ms": 19.496
         },
         {
           "sample_id": "syn2-motion-fast-g10-a00",
@@ -11934,7 +11940,7 @@
           "d90_relative_error": 0.305,
           "bsd_wasserstein": 3.36,
           "bsd_w": 3.36,
-          "inference_ms": 14.43
+          "inference_ms": 18.729
         },
         {
           "sample_id": "syn2-motion-fast-g10-a01",
@@ -11987,7 +11993,7 @@
           "d90_relative_error": 0.365,
           "bsd_wasserstein": 4.221,
           "bsd_w": 4.221,
-          "inference_ms": 14.24
+          "inference_ms": 18.93
         },
         {
           "sample_id": "syn2-motion-fast-g11-a00",
@@ -12040,7 +12046,7 @@
           "d90_relative_error": 0.4363,
           "bsd_wasserstein": 3.665,
           "bsd_w": 3.665,
-          "inference_ms": 14.182
+          "inference_ms": 19.018
         },
         {
           "sample_id": "syn2-motion-fast-g11-a01",
@@ -12093,7 +12099,7 @@
           "d90_relative_error": 0.4044,
           "bsd_wasserstein": 3.788,
           "bsd_w": 3.788,
-          "inference_ms": 14.306
+          "inference_ms": 19.11
         },
         {
           "sample_id": "syn2-defocus-g10-a00",
@@ -12146,7 +12152,7 @@
           "d90_relative_error": 0.4058,
           "bsd_wasserstein": 4.456,
           "bsd_w": 4.456,
-          "inference_ms": 13.002
+          "inference_ms": 18.566
         },
         {
           "sample_id": "syn2-defocus-g10-a01",
@@ -12199,7 +12205,7 @@
           "d90_relative_error": 0.4095,
           "bsd_wasserstein": 4.788,
           "bsd_w": 4.788,
-          "inference_ms": 13.02
+          "inference_ms": 18.322
         },
         {
           "sample_id": "syn2-defocus-g11-a00",
@@ -12252,7 +12258,7 @@
           "d90_relative_error": 0.866,
           "bsd_wasserstein": 6.955,
           "bsd_w": 6.955,
-          "inference_ms": 13.664
+          "inference_ms": 17.839
         },
         {
           "sample_id": "syn2-defocus-g11-a01",
@@ -12305,7 +12311,7 @@
           "d90_relative_error": 0.9562,
           "bsd_wasserstein": 7.113,
           "bsd_w": 7.113,
-          "inference_ms": 12.865
+          "inference_ms": 17.832
         },
         {
           "sample_id": "syn2-high-load-g10-a00",
@@ -12358,7 +12364,7 @@
           "d90_relative_error": 0.056,
           "bsd_wasserstein": 0.502,
           "bsd_w": 0.502,
-          "inference_ms": 16.843
+          "inference_ms": 21.084
         },
         {
           "sample_id": "syn2-high-load-g10-a01",
@@ -12411,7 +12417,7 @@
           "d90_relative_error": 0.002,
           "bsd_wasserstein": 0.547,
           "bsd_w": 0.547,
-          "inference_ms": 16.059
+          "inference_ms": 21.459
         },
         {
           "sample_id": "syn2-high-load-g11-a00",
@@ -12464,7 +12470,7 @@
           "d90_relative_error": 0.0266,
           "bsd_wasserstein": 0.435,
           "bsd_w": 0.435,
-          "inference_ms": 17.415
+          "inference_ms": 21.009
         },
         {
           "sample_id": "syn2-high-load-g11-a01",
@@ -12517,7 +12523,7 @@
           "d90_relative_error": 0.0451,
           "bsd_wasserstein": 0.567,
           "bsd_w": 0.567,
-          "inference_ms": 16.017
+          "inference_ms": 22.268
         },
         {
           "sample_id": "syn2-low-light-noise-g10-a00",
@@ -12570,7 +12576,7 @@
           "d90_relative_error": 0.2008,
           "bsd_wasserstein": 1.764,
           "bsd_w": 1.764,
-          "inference_ms": 14.807
+          "inference_ms": 21.816
         },
         {
           "sample_id": "syn2-low-light-noise-g10-a01",
@@ -12623,7 +12629,7 @@
           "d90_relative_error": 0.1518,
           "bsd_wasserstein": 1.231,
           "bsd_w": 1.231,
-          "inference_ms": 14.32
+          "inference_ms": 20.694
         },
         {
           "sample_id": "syn2-low-light-noise-g11-a00",
@@ -12676,7 +12682,7 @@
           "d90_relative_error": 0.1466,
           "bsd_wasserstein": 1.872,
           "bsd_w": 1.872,
-          "inference_ms": 14.445
+          "inference_ms": 20.855
         },
         {
           "sample_id": "syn2-low-light-noise-g11-a01",
@@ -12729,7 +12735,7 @@
           "d90_relative_error": 0.0806,
           "bsd_wasserstein": 1.605,
           "bsd_w": 1.605,
-          "inference_ms": 14.918
+          "inference_ms": 21.91
         },
         {
           "sample_id": "syn2-bursting-g10-a00",
@@ -12782,7 +12788,7 @@
           "d90_relative_error": 0.0865,
           "bsd_wasserstein": 1.531,
           "bsd_w": 1.531,
-          "inference_ms": 13.449
+          "inference_ms": 21.762
         },
         {
           "sample_id": "syn2-bursting-g10-a01",
@@ -12835,7 +12841,7 @@
           "d90_relative_error": 0.0348,
           "bsd_wasserstein": 1.53,
           "bsd_w": 1.53,
-          "inference_ms": 13.42
+          "inference_ms": 20.836
         },
         {
           "sample_id": "syn2-bursting-g11-a00",
@@ -12888,7 +12894,7 @@
           "d90_relative_error": 0.0822,
           "bsd_wasserstein": 1.09,
           "bsd_w": 1.09,
-          "inference_ms": 13.623
+          "inference_ms": 18.75
         },
         {
           "sample_id": "syn2-bursting-g11-a01",
@@ -12941,7 +12947,7 @@
           "d90_relative_error": 0.105,
           "bsd_wasserstein": 1.278,
           "bsd_w": 1.278,
-          "inference_ms": 12.967
+          "inference_ms": 18.249
         },
         {
           "sample_id": "syn2-edge-framing-g10-a00",
@@ -12994,7 +13000,7 @@
           "d90_relative_error": 0.1026,
           "bsd_wasserstein": 1.209,
           "bsd_w": 1.209,
-          "inference_ms": 14.658
+          "inference_ms": 21.171
         },
         {
           "sample_id": "syn2-edge-framing-g10-a01",
@@ -13047,7 +13053,7 @@
           "d90_relative_error": 0.0954,
           "bsd_wasserstein": 0.972,
           "bsd_w": 0.972,
-          "inference_ms": 15.186
+          "inference_ms": 22.04
         },
         {
           "sample_id": "syn2-edge-framing-g11-a00",
@@ -13100,7 +13106,7 @@
           "d90_relative_error": 0.0762,
           "bsd_wasserstein": 1.325,
           "bsd_w": 1.325,
-          "inference_ms": 16.678
+          "inference_ms": 23.494
         },
         {
           "sample_id": "syn2-edge-framing-g11-a01",
@@ -13153,7 +13159,7 @@
           "d90_relative_error": 0.197,
           "bsd_wasserstein": 1.505,
           "bsd_w": 1.505,
-          "inference_ms": 15.277
+          "inference_ms": 20.598
         },
         {
           "sample_id": "syn2-microbubble-cloud-g10-a00",
@@ -13206,7 +13212,7 @@
           "d90_relative_error": 0.8184,
           "bsd_wasserstein": 3.085,
           "bsd_w": 3.085,
-          "inference_ms": 22.947
+          "inference_ms": 28.869
         },
         {
           "sample_id": "syn2-microbubble-cloud-g10-a01",
@@ -13259,7 +13265,7 @@
           "d90_relative_error": 0.9179,
           "bsd_wasserstein": 3.098,
           "bsd_w": 3.098,
-          "inference_ms": 22.065
+          "inference_ms": 29.36
         },
         {
           "sample_id": "syn2-microbubble-cloud-g11-a00",
@@ -13312,7 +13318,7 @@
           "d90_relative_error": 0.9323,
           "bsd_wasserstein": 3.107,
           "bsd_w": 3.107,
-          "inference_ms": 23.505
+          "inference_ms": 33.304
         },
         {
           "sample_id": "syn2-microbubble-cloud-g11-a01",
@@ -13365,7 +13371,7 @@
           "d90_relative_error": 0.9301,
           "bsd_wasserstein": 3.072,
           "bsd_w": 3.072,
-          "inference_ms": 24.131
+          "inference_ms": 37.274
         },
         {
           "sample_id": "syn2-wide-bimodal-proxy-g10-a00",
@@ -13418,7 +13424,7 @@
           "d90_relative_error": 0.2319,
           "bsd_wasserstein": 1.57,
           "bsd_w": 1.57,
-          "inference_ms": 16.198
+          "inference_ms": 24.793
         },
         {
           "sample_id": "syn2-wide-bimodal-proxy-g10-a01",
@@ -13471,7 +13477,7 @@
           "d90_relative_error": 0.2355,
           "bsd_wasserstein": 1.41,
           "bsd_w": 1.41,
-          "inference_ms": 16.109
+          "inference_ms": 27.705
         },
         {
           "sample_id": "syn2-wide-bimodal-proxy-g11-a00",
@@ -13524,7 +13530,7 @@
           "d90_relative_error": 0.2115,
           "bsd_wasserstein": 1.492,
           "bsd_w": 1.492,
-          "inference_ms": 13.739
+          "inference_ms": 23.058
         },
         {
           "sample_id": "syn2-wide-bimodal-proxy-g11-a01",
@@ -13577,7 +13583,7 @@
           "d90_relative_error": 0.202,
           "bsd_wasserstein": 1.398,
           "bsd_w": 1.398,
-          "inference_ms": 14.132
+          "inference_ms": 21.374
         },
         {
           "sample_id": "syn2-glare-motion-compound-g10-a00",
@@ -13630,7 +13636,7 @@
           "d90_relative_error": 0.0378,
           "bsd_wasserstein": 2.949,
           "bsd_w": 2.949,
-          "inference_ms": 12.935
+          "inference_ms": 21.615
         },
         {
           "sample_id": "syn2-glare-motion-compound-g10-a01",
@@ -13683,7 +13689,7 @@
           "d90_relative_error": 0.0173,
           "bsd_wasserstein": 2.801,
           "bsd_w": 2.801,
-          "inference_ms": 14.101
+          "inference_ms": 21.887
         },
         {
           "sample_id": "syn2-glare-motion-compound-g11-a00",
@@ -13736,7 +13742,7 @@
           "d90_relative_error": 0.1638,
           "bsd_wasserstein": 3.403,
           "bsd_w": 3.403,
-          "inference_ms": 11.787
+          "inference_ms": 21.112
         },
         {
           "sample_id": "syn2-glare-motion-compound-g11-a01",
@@ -13789,7 +13795,7 @@
           "d90_relative_error": 0.0158,
           "bsd_wasserstein": 3.09,
           "bsd_w": 3.09,
-          "inference_ms": 11.79
+          "inference_ms": 24.061
         },
         {
           "sample_id": "syn2-dark-defocus-compound-g10-a00",
@@ -13842,7 +13848,7 @@
           "d90_relative_error": 0.7293,
           "bsd_wasserstein": 4.375,
           "bsd_w": 4.375,
-          "inference_ms": 12.746
+          "inference_ms": 24.94
         },
         {
           "sample_id": "syn2-dark-defocus-compound-g10-a01",
@@ -13895,7 +13901,7 @@
           "d90_relative_error": 0.6284,
           "bsd_wasserstein": 5.213,
           "bsd_w": 5.213,
-          "inference_ms": 12.471
+          "inference_ms": 23.06
         },
         {
           "sample_id": "syn2-dark-defocus-compound-g11-a00",
@@ -13948,7 +13954,7 @@
           "d90_relative_error": 0.1781,
           "bsd_wasserstein": 2.426,
           "bsd_w": 2.426,
-          "inference_ms": 13.602
+          "inference_ms": 25.834
         },
         {
           "sample_id": "syn2-dark-defocus-compound-g11-a01",
@@ -14001,15 +14007,17 @@
           "d90_relative_error": 0.265,
           "bsd_wasserstein": 3.047,
           "bsd_w": 3.047,
-          "inference_ms": 14.669
+          "inference_ms": 26.497
         }
       ],
       "method": "watershed_dt",
       "engine": "scikit-image/SciPy",
       "device": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
-      "duration_seconds": 2.595,
-      "mean_inference_ms": 15.181078125000003,
-      "p95_inference_ms": 21.76184999999999
+      "duration_seconds": 3.867,
+      "mean_inference_ms": 22.0941875,
+      "p95_inference_ms": 29.286349999999995,
+      "peak_traced_memory_mib": 1.368,
+      "peak_memory_metric": "python-tracemalloc"
     },
     {
       "split": "test",
@@ -14164,7 +14172,7 @@
           "d90_relative_error": 0.017,
           "bsd_wasserstein": 2.268,
           "bsd_w": 2.268,
-          "inference_ms": 17.822
+          "inference_ms": 25.083
         },
         {
           "sample_id": "syn2-mono-clean-g10-a01",
@@ -14217,7 +14225,7 @@
           "d90_relative_error": 0.0325,
           "bsd_wasserstein": 2.413,
           "bsd_w": 2.413,
-          "inference_ms": 18.324
+          "inference_ms": 25.434
         },
         {
           "sample_id": "syn2-mono-clean-g11-a00",
@@ -14270,7 +14278,7 @@
           "d90_relative_error": 0.0693,
           "bsd_wasserstein": 2.899,
           "bsd_w": 2.899,
-          "inference_ms": 17.788
+          "inference_ms": 25.346
         },
         {
           "sample_id": "syn2-mono-clean-g11-a01",
@@ -14323,7 +14331,7 @@
           "d90_relative_error": 0.0509,
           "bsd_wasserstein": 1.76,
           "bsd_w": 1.76,
-          "inference_ms": 16.903
+          "inference_ms": 24.479
         },
         {
           "sample_id": "syn2-poly-normal-g10-a00",
@@ -14376,7 +14384,7 @@
           "d90_relative_error": 0.0277,
           "bsd_wasserstein": 0.828,
           "bsd_w": 0.828,
-          "inference_ms": 15.611
+          "inference_ms": 23.183
         },
         {
           "sample_id": "syn2-poly-normal-g10-a01",
@@ -14429,7 +14437,7 @@
           "d90_relative_error": 0.1929,
           "bsd_wasserstein": 1.302,
           "bsd_w": 1.302,
-          "inference_ms": 15.458
+          "inference_ms": 21.534
         },
         {
           "sample_id": "syn2-poly-normal-g11-a00",
@@ -14482,7 +14490,7 @@
           "d90_relative_error": 0.1142,
           "bsd_wasserstein": 0.958,
           "bsd_w": 0.958,
-          "inference_ms": 18.092
+          "inference_ms": 29.4
         },
         {
           "sample_id": "syn2-poly-normal-g11-a01",
@@ -14535,7 +14543,7 @@
           "d90_relative_error": 0.0807,
           "bsd_wasserstein": 0.726,
           "bsd_w": 0.726,
-          "inference_ms": 20.146
+          "inference_ms": 26.953
         },
         {
           "sample_id": "syn2-fine-froth-g10-a00",
@@ -14588,7 +14596,7 @@
           "d90_relative_error": 0.6278,
           "bsd_wasserstein": 2.794,
           "bsd_w": 2.794,
-          "inference_ms": 16.134
+          "inference_ms": 23.995
         },
         {
           "sample_id": "syn2-fine-froth-g10-a01",
@@ -14641,7 +14649,7 @@
           "d90_relative_error": 0.9791,
           "bsd_wasserstein": 4.137,
           "bsd_w": 4.137,
-          "inference_ms": 17.302
+          "inference_ms": 24.356
         },
         {
           "sample_id": "syn2-fine-froth-g11-a00",
@@ -14694,7 +14702,7 @@
           "d90_relative_error": 0.2701,
           "bsd_wasserstein": 0.965,
           "bsd_w": 0.965,
-          "inference_ms": 19.728
+          "inference_ms": 28.003
         },
         {
           "sample_id": "syn2-fine-froth-g11-a01",
@@ -14747,7 +14755,7 @@
           "d90_relative_error": 0.1761,
           "bsd_wasserstein": 0.87,
           "bsd_w": 0.87,
-          "inference_ms": 19.116
+          "inference_ms": 30.044
         },
         {
           "sample_id": "syn2-coarse-froth-g10-a00",
@@ -14800,7 +14808,7 @@
           "d90_relative_error": 0.2485,
           "bsd_wasserstein": 4.27,
           "bsd_w": 4.27,
-          "inference_ms": 19.85
+          "inference_ms": 26.439
         },
         {
           "sample_id": "syn2-coarse-froth-g10-a01",
@@ -14853,7 +14861,7 @@
           "d90_relative_error": 0.4418,
           "bsd_wasserstein": 6.411,
           "bsd_w": 6.411,
-          "inference_ms": 19.47
+          "inference_ms": 27.381
         },
         {
           "sample_id": "syn2-coarse-froth-g11-a00",
@@ -14906,7 +14914,7 @@
           "d90_relative_error": 0.1826,
           "bsd_wasserstein": 3.947,
           "bsd_w": 3.947,
-          "inference_ms": 21.149
+          "inference_ms": 27.577
         },
         {
           "sample_id": "syn2-coarse-froth-g11-a01",
@@ -14959,7 +14967,7 @@
           "d90_relative_error": 0.1127,
           "bsd_wasserstein": 3.181,
           "bsd_w": 3.181,
-          "inference_ms": 26.125
+          "inference_ms": 27.181
         },
         {
           "sample_id": "syn2-glare-storm-g10-a00",
@@ -15012,7 +15020,7 @@
           "d90_relative_error": 7.7963,
           "bsd_wasserstein": 97.117,
           "bsd_w": 97.117,
-          "inference_ms": 21.374
+          "inference_ms": 27.811
         },
         {
           "sample_id": "syn2-glare-storm-g10-a01",
@@ -15065,7 +15073,7 @@
           "d90_relative_error": 8.0993,
           "bsd_wasserstein": 93.885,
           "bsd_w": 93.885,
-          "inference_ms": 22.978
+          "inference_ms": 28.029
         },
         {
           "sample_id": "syn2-glare-storm-g11-a00",
@@ -15118,7 +15126,7 @@
           "d90_relative_error": 7.2659,
           "bsd_wasserstein": 82.838,
           "bsd_w": 82.838,
-          "inference_ms": 20.102
+          "inference_ms": 26.923
         },
         {
           "sample_id": "syn2-glare-storm-g11-a01",
@@ -15171,7 +15179,7 @@
           "d90_relative_error": 8.5547,
           "bsd_wasserstein": 165.147,
           "bsd_w": 165.147,
-          "inference_ms": 19.082
+          "inference_ms": 29.348
         },
         {
           "sample_id": "syn2-watery-g10-a00",
@@ -15224,7 +15232,7 @@
           "d90_relative_error": 1.2724,
           "bsd_wasserstein": 11.084,
           "bsd_w": 11.084,
-          "inference_ms": 20.746
+          "inference_ms": 25.92
         },
         {
           "sample_id": "syn2-watery-g10-a01",
@@ -15277,7 +15285,7 @@
           "d90_relative_error": 1.0767,
           "bsd_wasserstein": 11.547,
           "bsd_w": 11.547,
-          "inference_ms": 19.062
+          "inference_ms": 29.232
         },
         {
           "sample_id": "syn2-watery-g11-a00",
@@ -15330,7 +15338,7 @@
           "d90_relative_error": 1.0473,
           "bsd_wasserstein": 12.943,
           "bsd_w": 12.943,
-          "inference_ms": 18.461
+          "inference_ms": 25.837
         },
         {
           "sample_id": "syn2-watery-g11-a01",
@@ -15383,7 +15391,7 @@
           "d90_relative_error": 1.1569,
           "bsd_wasserstein": 12.677,
           "bsd_w": 12.677,
-          "inference_ms": 18.827
+          "inference_ms": 27.126
         },
         {
           "sample_id": "syn2-motion-fast-g10-a00",
@@ -15436,7 +15444,7 @@
           "d90_relative_error": 0.9226,
           "bsd_wasserstein": 10.381,
           "bsd_w": 10.381,
-          "inference_ms": 21.467
+          "inference_ms": 28.757
         },
         {
           "sample_id": "syn2-motion-fast-g10-a01",
@@ -15489,7 +15497,7 @@
           "d90_relative_error": 0.9663,
           "bsd_wasserstein": 10.409,
           "bsd_w": 10.409,
-          "inference_ms": 19.434
+          "inference_ms": 28.213
         },
         {
           "sample_id": "syn2-motion-fast-g11-a00",
@@ -15542,7 +15550,7 @@
           "d90_relative_error": 1.1341,
           "bsd_wasserstein": 11.263,
           "bsd_w": 11.263,
-          "inference_ms": 17.626
+          "inference_ms": 25.547
         },
         {
           "sample_id": "syn2-motion-fast-g11-a01",
@@ -15595,7 +15603,7 @@
           "d90_relative_error": 1.101,
           "bsd_wasserstein": 9.855,
           "bsd_w": 9.855,
-          "inference_ms": 18.96
+          "inference_ms": 24.044
         },
         {
           "sample_id": "syn2-defocus-g10-a00",
@@ -15648,7 +15656,7 @@
           "d90_relative_error": 1.0993,
           "bsd_wasserstein": 11.902,
           "bsd_w": 11.902,
-          "inference_ms": 16.379
+          "inference_ms": 25.898
         },
         {
           "sample_id": "syn2-defocus-g10-a01",
@@ -15701,7 +15709,7 @@
           "d90_relative_error": 1.1206,
           "bsd_wasserstein": 12.646,
           "bsd_w": 12.646,
-          "inference_ms": 16.938
+          "inference_ms": 23.89
         },
         {
           "sample_id": "syn2-defocus-g11-a00",
@@ -15754,7 +15762,7 @@
           "d90_relative_error": 1.5545,
           "bsd_wasserstein": 18.682,
           "bsd_w": 18.682,
-          "inference_ms": 23.273
+          "inference_ms": 30.125
         },
         {
           "sample_id": "syn2-defocus-g11-a01",
@@ -15807,7 +15815,7 @@
           "d90_relative_error": 1.9283,
           "bsd_wasserstein": 21.458,
           "bsd_w": 21.458,
-          "inference_ms": 23.29
+          "inference_ms": 36.101
         },
         {
           "sample_id": "syn2-high-load-g10-a00",
@@ -15860,7 +15868,7 @@
           "d90_relative_error": 0.086,
           "bsd_wasserstein": 1.168,
           "bsd_w": 1.168,
-          "inference_ms": 19.925
+          "inference_ms": 26.924
         },
         {
           "sample_id": "syn2-high-load-g10-a01",
@@ -15913,7 +15921,7 @@
           "d90_relative_error": 0.0612,
           "bsd_wasserstein": 1.018,
           "bsd_w": 1.018,
-          "inference_ms": 15.471
+          "inference_ms": 24.263
         },
         {
           "sample_id": "syn2-high-load-g11-a00",
@@ -15966,7 +15974,7 @@
           "d90_relative_error": 0.1201,
           "bsd_wasserstein": 0.962,
           "bsd_w": 0.962,
-          "inference_ms": 14.782
+          "inference_ms": 24.718
         },
         {
           "sample_id": "syn2-high-load-g11-a01",
@@ -16019,7 +16027,7 @@
           "d90_relative_error": 0.1152,
           "bsd_wasserstein": 0.849,
           "bsd_w": 0.849,
-          "inference_ms": 14.906
+          "inference_ms": 25.649
         },
         {
           "sample_id": "syn2-low-light-noise-g10-a00",
@@ -16072,7 +16080,7 @@
           "d90_relative_error": 0.408,
           "bsd_wasserstein": 3.036,
           "bsd_w": 3.036,
-          "inference_ms": 16.996
+          "inference_ms": 28.104
         },
         {
           "sample_id": "syn2-low-light-noise-g10-a01",
@@ -16125,7 +16133,7 @@
           "d90_relative_error": 0.3598,
           "bsd_wasserstein": 2.656,
           "bsd_w": 2.656,
-          "inference_ms": 15.583
+          "inference_ms": 27.825
         },
         {
           "sample_id": "syn2-low-light-noise-g11-a00",
@@ -16178,7 +16186,7 @@
           "d90_relative_error": 0.3603,
           "bsd_wasserstein": 3.722,
           "bsd_w": 3.722,
-          "inference_ms": 16.037
+          "inference_ms": 28.352
         },
         {
           "sample_id": "syn2-low-light-noise-g11-a01",
@@ -16231,7 +16239,7 @@
           "d90_relative_error": 0.2095,
           "bsd_wasserstein": 2.679,
           "bsd_w": 2.679,
-          "inference_ms": 17.07
+          "inference_ms": 27.052
         },
         {
           "sample_id": "syn2-bursting-g10-a00",
@@ -16284,7 +16292,7 @@
           "d90_relative_error": 0.141,
           "bsd_wasserstein": 1.713,
           "bsd_w": 1.713,
-          "inference_ms": 15.67
+          "inference_ms": 26.705
         },
         {
           "sample_id": "syn2-bursting-g10-a01",
@@ -16337,7 +16345,7 @@
           "d90_relative_error": 0.1175,
           "bsd_wasserstein": 1.919,
           "bsd_w": 1.919,
-          "inference_ms": 16.378
+          "inference_ms": 26.364
         },
         {
           "sample_id": "syn2-bursting-g11-a00",
@@ -16390,7 +16398,7 @@
           "d90_relative_error": 0.1544,
           "bsd_wasserstein": 1.602,
           "bsd_w": 1.602,
-          "inference_ms": 17.596
+          "inference_ms": 25.498
         },
         {
           "sample_id": "syn2-bursting-g11-a01",
@@ -16443,7 +16451,7 @@
           "d90_relative_error": 0.2193,
           "bsd_wasserstein": 2.181,
           "bsd_w": 2.181,
-          "inference_ms": 20.387
+          "inference_ms": 27.192
         },
         {
           "sample_id": "syn2-edge-framing-g10-a00",
@@ -16496,7 +16504,7 @@
           "d90_relative_error": 0.4625,
           "bsd_wasserstein": 4.931,
           "bsd_w": 4.931,
-          "inference_ms": 22.603
+          "inference_ms": 31.935
         },
         {
           "sample_id": "syn2-edge-framing-g10-a01",
@@ -16549,7 +16557,7 @@
           "d90_relative_error": 0.5588,
           "bsd_wasserstein": 7.323,
           "bsd_w": 7.323,
-          "inference_ms": 20.611
+          "inference_ms": 29.879
         },
         {
           "sample_id": "syn2-edge-framing-g11-a00",
@@ -16602,7 +16610,7 @@
           "d90_relative_error": 0.6287,
           "bsd_wasserstein": 6.92,
           "bsd_w": 6.92,
-          "inference_ms": 21.363
+          "inference_ms": 34.075
         },
         {
           "sample_id": "syn2-edge-framing-g11-a01",
@@ -16655,7 +16663,7 @@
           "d90_relative_error": 0.6876,
           "bsd_wasserstein": 6.972,
           "bsd_w": 6.972,
-          "inference_ms": 21.044
+          "inference_ms": 31.144
         },
         {
           "sample_id": "syn2-microbubble-cloud-g10-a00",
@@ -16708,7 +16716,7 @@
           "d90_relative_error": 1.3192,
           "bsd_wasserstein": 4.364,
           "bsd_w": 4.364,
-          "inference_ms": 18.89
+          "inference_ms": 28.311
         },
         {
           "sample_id": "syn2-microbubble-cloud-g10-a01",
@@ -16761,7 +16769,7 @@
           "d90_relative_error": 1.3774,
           "bsd_wasserstein": 5.424,
           "bsd_w": 5.424,
-          "inference_ms": 18.299
+          "inference_ms": 27.425
         },
         {
           "sample_id": "syn2-microbubble-cloud-g11-a00",
@@ -16814,7 +16822,7 @@
           "d90_relative_error": 1.0748,
           "bsd_wasserstein": 2.801,
           "bsd_w": 2.801,
-          "inference_ms": 20.056
+          "inference_ms": 31.265
         },
         {
           "sample_id": "syn2-microbubble-cloud-g11-a01",
@@ -16867,7 +16875,7 @@
           "d90_relative_error": 0.9572,
           "bsd_wasserstein": 2.624,
           "bsd_w": 2.624,
-          "inference_ms": 17.669
+          "inference_ms": 27.837
         },
         {
           "sample_id": "syn2-wide-bimodal-proxy-g10-a00",
@@ -16920,7 +16928,7 @@
           "d90_relative_error": 0.2349,
           "bsd_wasserstein": 1.564,
           "bsd_w": 1.564,
-          "inference_ms": 14.109
+          "inference_ms": 23.515
         },
         {
           "sample_id": "syn2-wide-bimodal-proxy-g10-a01",
@@ -16973,7 +16981,7 @@
           "d90_relative_error": 0.2377,
           "bsd_wasserstein": 1.495,
           "bsd_w": 1.495,
-          "inference_ms": 13.727
+          "inference_ms": 21.155
         },
         {
           "sample_id": "syn2-wide-bimodal-proxy-g11-a00",
@@ -17026,7 +17034,7 @@
           "d90_relative_error": 0.0797,
           "bsd_wasserstein": 1.423,
           "bsd_w": 1.423,
-          "inference_ms": 14.982
+          "inference_ms": 22.843
         },
         {
           "sample_id": "syn2-wide-bimodal-proxy-g11-a01",
@@ -17079,7 +17087,7 @@
           "d90_relative_error": 0.1098,
           "bsd_wasserstein": 1.401,
           "bsd_w": 1.401,
-          "inference_ms": 14.384
+          "inference_ms": 27.847
         },
         {
           "sample_id": "syn2-glare-motion-compound-g10-a00",
@@ -17132,7 +17140,7 @@
           "d90_relative_error": 7.2239,
           "bsd_wasserstein": 89.63,
           "bsd_w": 89.63,
-          "inference_ms": 19.309
+          "inference_ms": 33.554
         },
         {
           "sample_id": "syn2-glare-motion-compound-g10-a01",
@@ -17185,7 +17193,7 @@
           "d90_relative_error": 3.9017,
           "bsd_wasserstein": 34.19,
           "bsd_w": 34.19,
-          "inference_ms": 18.258
+          "inference_ms": 31.049
         },
         {
           "sample_id": "syn2-glare-motion-compound-g11-a00",
@@ -17238,7 +17246,7 @@
           "d90_relative_error": 8.0838,
           "bsd_wasserstein": 100.282,
           "bsd_w": 100.282,
-          "inference_ms": 20.323
+          "inference_ms": 32.618
         },
         {
           "sample_id": "syn2-glare-motion-compound-g11-a01",
@@ -17291,7 +17299,7 @@
           "d90_relative_error": 7.521,
           "bsd_wasserstein": 87.102,
           "bsd_w": 87.102,
-          "inference_ms": 20.017
+          "inference_ms": 30.918
         },
         {
           "sample_id": "syn2-dark-defocus-compound-g10-a00",
@@ -17344,7 +17352,7 @@
           "d90_relative_error": 1.3582,
           "bsd_wasserstein": 13.789,
           "bsd_w": 13.789,
-          "inference_ms": 19.259
+          "inference_ms": 30.929
         },
         {
           "sample_id": "syn2-dark-defocus-compound-g10-a01",
@@ -17397,7 +17405,7 @@
           "d90_relative_error": 0.9794,
           "bsd_wasserstein": 13.657,
           "bsd_w": 13.657,
-          "inference_ms": 20.966
+          "inference_ms": 28.647
         },
         {
           "sample_id": "syn2-dark-defocus-compound-g11-a00",
@@ -17450,7 +17458,7 @@
           "d90_relative_error": 0.7864,
           "bsd_wasserstein": 5.446,
           "bsd_w": 5.446,
-          "inference_ms": 21.93
+          "inference_ms": 30.544
         },
         {
           "sample_id": "syn2-dark-defocus-compound-g11-a01",
@@ -17503,15 +17511,17 @@
           "d90_relative_error": 1.4312,
           "bsd_wasserstein": 11.942,
           "bsd_w": 11.942,
-          "inference_ms": 19.279
+          "inference_ms": 25.285
         }
       ],
       "method": "watershed_hmin",
       "engine": "scikit-image/SciPy",
       "device": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
-      "duration_seconds": 2.733,
-      "mean_inference_ms": 18.67025,
-      "p95_inference_ms": 22.92175
+      "duration_seconds": 4.148,
+      "mean_inference_ms": 27.47828125,
+      "p95_inference_ms": 32.51555,
+      "peak_traced_memory_mib": 4.946,
+      "peak_memory_metric": "python-tracemalloc"
     },
     {
       "split": "test",
@@ -17666,7 +17676,7 @@
           "d90_relative_error": 0.4672,
           "bsd_wasserstein": 15.695,
           "bsd_w": 15.695,
-          "inference_ms": 1033.574
+          "inference_ms": 1239.95
         },
         {
           "sample_id": "syn2-mono-clean-g10-a01",
@@ -17719,7 +17729,7 @@
           "d90_relative_error": 0.4603,
           "bsd_wasserstein": 15.713,
           "bsd_w": 15.713,
-          "inference_ms": 359.859
+          "inference_ms": 512.778
         },
         {
           "sample_id": "syn2-mono-clean-g11-a00",
@@ -17772,7 +17782,7 @@
           "d90_relative_error": 0.4653,
           "bsd_wasserstein": 15.3,
           "bsd_w": 15.3,
-          "inference_ms": 368.32
+          "inference_ms": 529.732
         },
         {
           "sample_id": "syn2-mono-clean-g11-a01",
@@ -17825,7 +17835,7 @@
           "d90_relative_error": 0.4997,
           "bsd_wasserstein": 15.661,
           "bsd_w": 15.661,
-          "inference_ms": 352.493
+          "inference_ms": 487.399
         },
         {
           "sample_id": "syn2-poly-normal-g10-a00",
@@ -17878,7 +17888,7 @@
           "d90_relative_error": 0.4069,
           "bsd_wasserstein": 8.27,
           "bsd_w": 8.27,
-          "inference_ms": 346.695
+          "inference_ms": 471.304
         },
         {
           "sample_id": "syn2-poly-normal-g10-a01",
@@ -17931,7 +17941,7 @@
           "d90_relative_error": 0.3719,
           "bsd_wasserstein": 8.356,
           "bsd_w": 8.356,
-          "inference_ms": 368.371
+          "inference_ms": 515.21
         },
         {
           "sample_id": "syn2-poly-normal-g11-a00",
@@ -17984,7 +17994,7 @@
           "d90_relative_error": 0.3935,
           "bsd_wasserstein": 8.303,
           "bsd_w": 8.303,
-          "inference_ms": 368.47
+          "inference_ms": 498.732
         },
         {
           "sample_id": "syn2-poly-normal-g11-a01",
@@ -18037,7 +18047,7 @@
           "d90_relative_error": 0.3862,
           "bsd_wasserstein": 8.202,
           "bsd_w": 8.202,
-          "inference_ms": 388.541
+          "inference_ms": 604.6
         },
         {
           "sample_id": "syn2-fine-froth-g10-a00",
@@ -18090,7 +18100,7 @@
           "d90_relative_error": 0.1052,
           "bsd_wasserstein": 4.579,
           "bsd_w": 4.579,
-          "inference_ms": 417.194
+          "inference_ms": 729.907
         },
         {
           "sample_id": "syn2-fine-froth-g10-a01",
@@ -18143,7 +18153,7 @@
           "d90_relative_error": 0.1523,
           "bsd_wasserstein": 4.592,
           "bsd_w": 4.592,
-          "inference_ms": 351.034
+          "inference_ms": 545.952
         },
         {
           "sample_id": "syn2-fine-froth-g11-a00",
@@ -18196,7 +18206,7 @@
           "d90_relative_error": 0.1912,
           "bsd_wasserstein": 4.435,
           "bsd_w": 4.435,
-          "inference_ms": 339.192
+          "inference_ms": 567.475
         },
         {
           "sample_id": "syn2-fine-froth-g11-a01",
@@ -18249,7 +18259,7 @@
           "d90_relative_error": 0.1572,
           "bsd_wasserstein": 4.206,
           "bsd_w": 4.206,
-          "inference_ms": 334.75
+          "inference_ms": 675.098
         },
         {
           "sample_id": "syn2-coarse-froth-g10-a00",
@@ -18302,7 +18312,7 @@
           "d90_relative_error": 0.5546,
           "bsd_wasserstein": 17.994,
           "bsd_w": 17.994,
-          "inference_ms": 355.767
+          "inference_ms": 652.052
         },
         {
           "sample_id": "syn2-coarse-froth-g10-a01",
@@ -18355,7 +18365,7 @@
           "d90_relative_error": 0.5905,
           "bsd_wasserstein": 17.872,
           "bsd_w": 17.872,
-          "inference_ms": 370.268
+          "inference_ms": 550.129
         },
         {
           "sample_id": "syn2-coarse-froth-g11-a00",
@@ -18408,7 +18418,7 @@
           "d90_relative_error": 0.5973,
           "bsd_wasserstein": 18.278,
           "bsd_w": 18.278,
-          "inference_ms": 370.77
+          "inference_ms": 555.423
         },
         {
           "sample_id": "syn2-coarse-froth-g11-a01",
@@ -18461,7 +18471,7 @@
           "d90_relative_error": 0.6082,
           "bsd_wasserstein": 18.113,
           "bsd_w": 18.113,
-          "inference_ms": 320.793
+          "inference_ms": 592.021
         },
         {
           "sample_id": "syn2-glare-storm-g10-a00",
@@ -18514,7 +18524,7 @@
           "d90_relative_error": 0.295,
           "bsd_wasserstein": 7.85,
           "bsd_w": 7.85,
-          "inference_ms": 319.835
+          "inference_ms": 531.817
         },
         {
           "sample_id": "syn2-glare-storm-g10-a01",
@@ -18567,7 +18577,7 @@
           "d90_relative_error": 0.2424,
           "bsd_wasserstein": 7.501,
           "bsd_w": 7.501,
-          "inference_ms": 337.577
+          "inference_ms": 550.299
         },
         {
           "sample_id": "syn2-glare-storm-g11-a00",
@@ -18620,7 +18630,7 @@
           "d90_relative_error": 0.3485,
           "bsd_wasserstein": 7.873,
           "bsd_w": 7.873,
-          "inference_ms": 316.645
+          "inference_ms": 609.213
         },
         {
           "sample_id": "syn2-glare-storm-g11-a01",
@@ -18673,7 +18683,7 @@
           "d90_relative_error": 0.3255,
           "bsd_wasserstein": 7.928,
           "bsd_w": 7.928,
-          "inference_ms": 323.019
+          "inference_ms": 564.928
         },
         {
           "sample_id": "syn2-watery-g10-a00",
@@ -18726,7 +18736,7 @@
           "d90_relative_error": 0.4788,
           "bsd_wasserstein": 8.569,
           "bsd_w": 8.569,
-          "inference_ms": 325.814
+          "inference_ms": 518.241
         },
         {
           "sample_id": "syn2-watery-g10-a01",
@@ -18779,7 +18789,7 @@
           "d90_relative_error": 0.5134,
           "bsd_wasserstein": 8.778,
           "bsd_w": 8.778,
-          "inference_ms": 317.661
+          "inference_ms": 582.601
         },
         {
           "sample_id": "syn2-watery-g11-a00",
@@ -18832,7 +18842,7 @@
           "d90_relative_error": 0.5153,
           "bsd_wasserstein": 8.831,
           "bsd_w": 8.831,
-          "inference_ms": 317.284
+          "inference_ms": 585.245
         },
         {
           "sample_id": "syn2-watery-g11-a01",
@@ -18885,7 +18895,7 @@
           "d90_relative_error": 0.564,
           "bsd_wasserstein": 8.989,
           "bsd_w": 8.989,
-          "inference_ms": 324.836
+          "inference_ms": 552.063
         },
         {
           "sample_id": "syn2-motion-fast-g10-a00",
@@ -18938,7 +18948,7 @@
           "d90_relative_error": 0.3727,
           "bsd_wasserstein": 8.269,
           "bsd_w": 8.269,
-          "inference_ms": 343.733
+          "inference_ms": 655.839
         },
         {
           "sample_id": "syn2-motion-fast-g10-a01",
@@ -18991,7 +19001,7 @@
           "d90_relative_error": 0.3989,
           "bsd_wasserstein": 8.384,
           "bsd_w": 8.384,
-          "inference_ms": 341.43
+          "inference_ms": 746.122
         },
         {
           "sample_id": "syn2-motion-fast-g11-a00",
@@ -19044,7 +19054,7 @@
           "d90_relative_error": 0.3724,
           "bsd_wasserstein": 8.65,
           "bsd_w": 8.65,
-          "inference_ms": 351.52
+          "inference_ms": 535.346
         },
         {
           "sample_id": "syn2-motion-fast-g11-a01",
@@ -19097,7 +19107,7 @@
           "d90_relative_error": 0.4057,
           "bsd_wasserstein": 8.737,
           "bsd_w": 8.737,
-          "inference_ms": 338.356
+          "inference_ms": 571.778
         },
         {
           "sample_id": "syn2-defocus-g10-a00",
@@ -19150,7 +19160,7 @@
           "d90_relative_error": 0.4588,
           "bsd_wasserstein": 9.623,
           "bsd_w": 9.623,
-          "inference_ms": 346.853
+          "inference_ms": 561.173
         },
         {
           "sample_id": "syn2-defocus-g10-a01",
@@ -19203,7 +19213,7 @@
           "d90_relative_error": 0.4658,
           "bsd_wasserstein": 9.535,
           "bsd_w": 9.535,
-          "inference_ms": 369.063
+          "inference_ms": 578.603
         },
         {
           "sample_id": "syn2-defocus-g11-a00",
@@ -19256,7 +19266,7 @@
           "d90_relative_error": 0.4162,
           "bsd_wasserstein": 8.903,
           "bsd_w": 8.903,
-          "inference_ms": 333.189
+          "inference_ms": 468.403
         },
         {
           "sample_id": "syn2-defocus-g11-a01",
@@ -19309,7 +19319,7 @@
           "d90_relative_error": 0.437,
           "bsd_wasserstein": 9.5,
           "bsd_w": 9.5,
-          "inference_ms": 339.315
+          "inference_ms": 475.871
         },
         {
           "sample_id": "syn2-high-load-g10-a00",
@@ -19362,7 +19372,7 @@
           "d90_relative_error": 0.4456,
           "bsd_wasserstein": 8.218,
           "bsd_w": 8.218,
-          "inference_ms": 350.335
+          "inference_ms": 459.834
         },
         {
           "sample_id": "syn2-high-load-g10-a01",
@@ -19415,7 +19425,7 @@
           "d90_relative_error": 0.4182,
           "bsd_wasserstein": 7.975,
           "bsd_w": 7.975,
-          "inference_ms": 339.307
+          "inference_ms": 545.831
         },
         {
           "sample_id": "syn2-high-load-g11-a00",
@@ -19468,7 +19478,7 @@
           "d90_relative_error": 0.419,
           "bsd_wasserstein": 7.822,
           "bsd_w": 7.822,
-          "inference_ms": 316.967
+          "inference_ms": 489.005
         },
         {
           "sample_id": "syn2-high-load-g11-a01",
@@ -19521,7 +19531,7 @@
           "d90_relative_error": 0.4009,
           "bsd_wasserstein": 7.597,
           "bsd_w": 7.597,
-          "inference_ms": 338.501
+          "inference_ms": 453.828
         },
         {
           "sample_id": "syn2-low-light-noise-g10-a00",
@@ -19574,7 +19584,7 @@
           "d90_relative_error": 0.4649,
           "bsd_wasserstein": 8.818,
           "bsd_w": 8.818,
-          "inference_ms": 334.963
+          "inference_ms": 461.736
         },
         {
           "sample_id": "syn2-low-light-noise-g10-a01",
@@ -19627,7 +19637,7 @@
           "d90_relative_error": 0.4623,
           "bsd_wasserstein": 8.675,
           "bsd_w": 8.675,
-          "inference_ms": 342.593
+          "inference_ms": 473.379
         },
         {
           "sample_id": "syn2-low-light-noise-g11-a00",
@@ -19680,7 +19690,7 @@
           "d90_relative_error": 0.4939,
           "bsd_wasserstein": 9.376,
           "bsd_w": 9.376,
-          "inference_ms": 342.53
+          "inference_ms": 446.991
         },
         {
           "sample_id": "syn2-low-light-noise-g11-a01",
@@ -19733,7 +19743,7 @@
           "d90_relative_error": 0.4777,
           "bsd_wasserstein": 9.329,
           "bsd_w": 9.329,
-          "inference_ms": 339.79
+          "inference_ms": 451.487
         },
         {
           "sample_id": "syn2-bursting-g10-a00",
@@ -19786,7 +19796,7 @@
           "d90_relative_error": 0.4531,
           "bsd_wasserstein": 8.819,
           "bsd_w": 8.819,
-          "inference_ms": 315.817
+          "inference_ms": 435.424
         },
         {
           "sample_id": "syn2-bursting-g10-a01",
@@ -19839,7 +19849,7 @@
           "d90_relative_error": 0.4888,
           "bsd_wasserstein": 8.817,
           "bsd_w": 8.817,
-          "inference_ms": 339.51
+          "inference_ms": 461.77
         },
         {
           "sample_id": "syn2-bursting-g11-a00",
@@ -19892,7 +19902,7 @@
           "d90_relative_error": 0.4349,
           "bsd_wasserstein": 8.628,
           "bsd_w": 8.628,
-          "inference_ms": 354.315
+          "inference_ms": 455.043
         },
         {
           "sample_id": "syn2-bursting-g11-a01",
@@ -19945,7 +19955,7 @@
           "d90_relative_error": 0.4445,
           "bsd_wasserstein": 9.185,
           "bsd_w": 9.185,
-          "inference_ms": 342.732
+          "inference_ms": 453.877
         },
         {
           "sample_id": "syn2-edge-framing-g10-a00",
@@ -19998,7 +20008,7 @@
           "d90_relative_error": 0.3155,
           "bsd_wasserstein": 5.764,
           "bsd_w": 5.764,
-          "inference_ms": 320.227
+          "inference_ms": 457.032
         },
         {
           "sample_id": "syn2-edge-framing-g10-a01",
@@ -20051,7 +20061,7 @@
           "d90_relative_error": 0.2987,
           "bsd_wasserstein": 5.587,
           "bsd_w": 5.587,
-          "inference_ms": 329.582
+          "inference_ms": 456.228
         },
         {
           "sample_id": "syn2-edge-framing-g11-a00",
@@ -20104,7 +20114,7 @@
           "d90_relative_error": 0.2779,
           "bsd_wasserstein": 5.848,
           "bsd_w": 5.848,
-          "inference_ms": 325.134
+          "inference_ms": 472.977
         },
         {
           "sample_id": "syn2-edge-framing-g11-a01",
@@ -20157,7 +20167,7 @@
           "d90_relative_error": 0.3154,
           "bsd_wasserstein": 5.907,
           "bsd_w": 5.907,
-          "inference_ms": 317.016
+          "inference_ms": 468.807
         },
         {
           "sample_id": "syn2-microbubble-cloud-g10-a00",
@@ -20210,7 +20220,7 @@
           "d90_relative_error": 0.0964,
           "bsd_wasserstein": 3.224,
           "bsd_w": 3.224,
-          "inference_ms": 332.944
+          "inference_ms": 452.965
         },
         {
           "sample_id": "syn2-microbubble-cloud-g10-a01",
@@ -20263,7 +20273,7 @@
           "d90_relative_error": 0.0257,
           "bsd_wasserstein": 3.055,
           "bsd_w": 3.055,
-          "inference_ms": 313.232
+          "inference_ms": 480.4
         },
         {
           "sample_id": "syn2-microbubble-cloud-g11-a00",
@@ -20316,7 +20326,7 @@
           "d90_relative_error": 0.002,
           "bsd_wasserstein": 3.197,
           "bsd_w": 3.197,
-          "inference_ms": 308.428
+          "inference_ms": 460.572
         },
         {
           "sample_id": "syn2-microbubble-cloud-g11-a01",
@@ -20369,7 +20379,7 @@
           "d90_relative_error": 0.302,
           "bsd_wasserstein": 3.378,
           "bsd_w": 3.378,
-          "inference_ms": 323.105
+          "inference_ms": 468.155
         },
         {
           "sample_id": "syn2-wide-bimodal-proxy-g10-a00",
@@ -20422,7 +20432,7 @@
           "d90_relative_error": 0.3002,
           "bsd_wasserstein": 3.012,
           "bsd_w": 3.012,
-          "inference_ms": 307.463
+          "inference_ms": 505.29
         },
         {
           "sample_id": "syn2-wide-bimodal-proxy-g10-a01",
@@ -20475,7 +20485,7 @@
           "d90_relative_error": 0.2699,
           "bsd_wasserstein": 2.955,
           "bsd_w": 2.955,
-          "inference_ms": 321.96
+          "inference_ms": 465.024
         },
         {
           "sample_id": "syn2-wide-bimodal-proxy-g11-a00",
@@ -20528,7 +20538,7 @@
           "d90_relative_error": 0.1929,
           "bsd_wasserstein": 2.675,
           "bsd_w": 2.675,
-          "inference_ms": 307.317
+          "inference_ms": 488.461
         },
         {
           "sample_id": "syn2-wide-bimodal-proxy-g11-a01",
@@ -20581,7 +20591,7 @@
           "d90_relative_error": 0.1849,
           "bsd_wasserstein": 2.66,
           "bsd_w": 2.66,
-          "inference_ms": 303.489
+          "inference_ms": 459.549
         },
         {
           "sample_id": "syn2-glare-motion-compound-g10-a00",
@@ -20634,7 +20644,7 @@
           "d90_relative_error": 0.3291,
           "bsd_wasserstein": 6.402,
           "bsd_w": 6.402,
-          "inference_ms": 325.208
+          "inference_ms": 509.579
         },
         {
           "sample_id": "syn2-glare-motion-compound-g10-a01",
@@ -20687,7 +20697,7 @@
           "d90_relative_error": 0.3705,
           "bsd_wasserstein": 6.963,
           "bsd_w": 6.963,
-          "inference_ms": 332.185
+          "inference_ms": 531.873
         },
         {
           "sample_id": "syn2-glare-motion-compound-g11-a00",
@@ -20740,7 +20750,7 @@
           "d90_relative_error": 0.1659,
           "bsd_wasserstein": 6.68,
           "bsd_w": 6.68,
-          "inference_ms": 342.667
+          "inference_ms": 493.559
         },
         {
           "sample_id": "syn2-glare-motion-compound-g11-a01",
@@ -20793,7 +20803,7 @@
           "d90_relative_error": 0.308,
           "bsd_wasserstein": 7.263,
           "bsd_w": 7.263,
-          "inference_ms": 343.493
+          "inference_ms": 538.451
         },
         {
           "sample_id": "syn2-dark-defocus-compound-g10-a00",
@@ -20846,7 +20856,7 @@
           "d90_relative_error": 0.4649,
           "bsd_wasserstein": 9.077,
           "bsd_w": 9.077,
-          "inference_ms": 350.865
+          "inference_ms": 545.541
         },
         {
           "sample_id": "syn2-dark-defocus-compound-g10-a01",
@@ -20899,7 +20909,7 @@
           "d90_relative_error": 0.4556,
           "bsd_wasserstein": 9.098,
           "bsd_w": 9.098,
-          "inference_ms": 339.917
+          "inference_ms": 554.67
         },
         {
           "sample_id": "syn2-dark-defocus-compound-g11-a00",
@@ -20952,7 +20962,7 @@
           "d90_relative_error": 0.486,
           "bsd_wasserstein": 8.704,
           "bsd_w": 8.704,
-          "inference_ms": 332.464
+          "inference_ms": 522.516
         },
         {
           "sample_id": "syn2-dark-defocus-compound-g11-a01",
@@ -21005,15 +21015,17 @@
           "d90_relative_error": 0.4699,
           "bsd_wasserstein": 8.29,
           "bsd_w": 8.29,
-          "inference_ms": 359.953
+          "inference_ms": 569.241
         }
       ],
       "method": "slic_merge",
       "engine": "scikit-image/SciPy",
       "device": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
-      "duration_seconds": 24.932,
-      "mean_inference_ms": 349.78484375,
-      "p95_inference_ms": 370.69469999999995
+      "duration_seconds": 38.759,
+      "mean_inference_ms": 536.006234375,
+      "p95_inference_ms": 672.2091499999999,
+      "peak_traced_memory_mib": 14.582,
+      "peak_memory_metric": "python-tracemalloc"
     },
     {
       "split": "test",
@@ -21168,7 +21180,7 @@
           "d90_relative_error": 0.3044,
           "bsd_wasserstein": 2.452,
           "bsd_w": 2.452,
-          "inference_ms": 7.657
+          "inference_ms": 9.752
         },
         {
           "sample_id": "syn2-mono-clean-g10-a01",
@@ -21221,7 +21233,7 @@
           "d90_relative_error": 0.2865,
           "bsd_wasserstein": 2.175,
           "bsd_w": 2.175,
-          "inference_ms": 8.422
+          "inference_ms": 9.621
         },
         {
           "sample_id": "syn2-mono-clean-g11-a00",
@@ -21274,7 +21286,7 @@
           "d90_relative_error": 0.1657,
           "bsd_wasserstein": 1.62,
           "bsd_w": 1.62,
-          "inference_ms": 8.434
+          "inference_ms": 10.239
         },
         {
           "sample_id": "syn2-mono-clean-g11-a01",
@@ -21327,7 +21339,7 @@
           "d90_relative_error": 0.1295,
           "bsd_wasserstein": 1.66,
           "bsd_w": 1.66,
-          "inference_ms": 7.669
+          "inference_ms": 9.186
         },
         {
           "sample_id": "syn2-poly-normal-g10-a00",
@@ -21380,7 +21392,7 @@
           "d90_relative_error": 0.0562,
           "bsd_wasserstein": 1.325,
           "bsd_w": 1.325,
-          "inference_ms": 7.362
+          "inference_ms": 9.675
         },
         {
           "sample_id": "syn2-poly-normal-g10-a01",
@@ -21433,7 +21445,7 @@
           "d90_relative_error": 0.0642,
           "bsd_wasserstein": 1.559,
           "bsd_w": 1.559,
-          "inference_ms": 7.725
+          "inference_ms": 9.972
         },
         {
           "sample_id": "syn2-poly-normal-g11-a00",
@@ -21486,7 +21498,7 @@
           "d90_relative_error": 0.017,
           "bsd_wasserstein": 1.087,
           "bsd_w": 1.087,
-          "inference_ms": 8.009
+          "inference_ms": 9.202
         },
         {
           "sample_id": "syn2-poly-normal-g11-a01",
@@ -21539,7 +21551,7 @@
           "d90_relative_error": 0.0102,
           "bsd_wasserstein": 1.109,
           "bsd_w": 1.109,
-          "inference_ms": 7.039
+          "inference_ms": 9.378
         },
         {
           "sample_id": "syn2-fine-froth-g10-a00",
@@ -21592,7 +21604,7 @@
           "d90_relative_error": 0.0472,
           "bsd_wasserstein": 0.881,
           "bsd_w": 0.881,
-          "inference_ms": 7.052
+          "inference_ms": 8.943
         },
         {
           "sample_id": "syn2-fine-froth-g10-a01",
@@ -21645,7 +21657,7 @@
           "d90_relative_error": 0.0055,
           "bsd_wasserstein": 0.704,
           "bsd_w": 0.704,
-          "inference_ms": 7.593
+          "inference_ms": 10.497
         },
         {
           "sample_id": "syn2-fine-froth-g11-a00",
@@ -21698,7 +21710,7 @@
           "d90_relative_error": 0.0019,
           "bsd_wasserstein": 0.667,
           "bsd_w": 0.667,
-          "inference_ms": 10.107
+          "inference_ms": 9.683
         },
         {
           "sample_id": "syn2-fine-froth-g11-a01",
@@ -21751,7 +21763,7 @@
           "d90_relative_error": 0.0,
           "bsd_wasserstein": 0.705,
           "bsd_w": 0.705,
-          "inference_ms": 7.717
+          "inference_ms": 8.582
         },
         {
           "sample_id": "syn2-coarse-froth-g10-a00",
@@ -21804,7 +21816,7 @@
           "d90_relative_error": 0.0448,
           "bsd_wasserstein": 1.664,
           "bsd_w": 1.664,
-          "inference_ms": 7.496
+          "inference_ms": 9.216
         },
         {
           "sample_id": "syn2-coarse-froth-g10-a01",
@@ -21857,7 +21869,7 @@
           "d90_relative_error": 0.0883,
           "bsd_wasserstein": 1.924,
           "bsd_w": 1.924,
-          "inference_ms": 7.465
+          "inference_ms": 8.375
         },
         {
           "sample_id": "syn2-coarse-froth-g11-a00",
@@ -21910,7 +21922,7 @@
           "d90_relative_error": 0.0092,
           "bsd_wasserstein": 2.11,
           "bsd_w": 2.11,
-          "inference_ms": 7.897
+          "inference_ms": 8.25
         },
         {
           "sample_id": "syn2-coarse-froth-g11-a01",
@@ -21963,7 +21975,7 @@
           "d90_relative_error": 0.0198,
           "bsd_wasserstein": 2.546,
           "bsd_w": 2.546,
-          "inference_ms": 7.685
+          "inference_ms": 8.234
         },
         {
           "sample_id": "syn2-glare-storm-g10-a00",
@@ -22016,7 +22028,7 @@
           "d90_relative_error": 0.0773,
           "bsd_wasserstein": 2.783,
           "bsd_w": 2.783,
-          "inference_ms": 7.422
+          "inference_ms": 8.797
         },
         {
           "sample_id": "syn2-glare-storm-g10-a01",
@@ -22069,7 +22081,7 @@
           "d90_relative_error": 0.1855,
           "bsd_wasserstein": 2.466,
           "bsd_w": 2.466,
-          "inference_ms": 7.625
+          "inference_ms": 9.202
         },
         {
           "sample_id": "syn2-glare-storm-g11-a00",
@@ -22122,7 +22134,7 @@
           "d90_relative_error": 0.0088,
           "bsd_wasserstein": 2.769,
           "bsd_w": 2.769,
-          "inference_ms": 7.149
+          "inference_ms": 9.236
         },
         {
           "sample_id": "syn2-glare-storm-g11-a01",
@@ -22175,7 +22187,7 @@
           "d90_relative_error": 0.0068,
           "bsd_wasserstein": 3.436,
           "bsd_w": 3.436,
-          "inference_ms": 7.904
+          "inference_ms": 9.926
         },
         {
           "sample_id": "syn2-watery-g10-a00",
@@ -22228,7 +22240,7 @@
           "d90_relative_error": 0.2655,
           "bsd_wasserstein": 13.615,
           "bsd_w": 13.615,
-          "inference_ms": 7.139
+          "inference_ms": 10.734
         },
         {
           "sample_id": "syn2-watery-g10-a01",
@@ -22281,7 +22293,7 @@
           "d90_relative_error": 0.262,
           "bsd_wasserstein": 14.242,
           "bsd_w": 14.242,
-          "inference_ms": 7.048
+          "inference_ms": 9.307
         },
         {
           "sample_id": "syn2-watery-g11-a00",
@@ -22334,7 +22346,7 @@
           "d90_relative_error": 5.7432,
           "bsd_wasserstein": 36.822,
           "bsd_w": 36.822,
-          "inference_ms": 6.515
+          "inference_ms": 10.118
         },
         {
           "sample_id": "syn2-watery-g11-a01",
@@ -22387,7 +22399,7 @@
           "d90_relative_error": 1.968,
           "bsd_wasserstein": 22.523,
           "bsd_w": 22.523,
-          "inference_ms": 6.932
+          "inference_ms": 10.492
         },
         {
           "sample_id": "syn2-motion-fast-g10-a00",
@@ -22440,7 +22452,7 @@
           "d90_relative_error": 0.8097,
           "bsd_wasserstein": 5.679,
           "bsd_w": 5.679,
-          "inference_ms": 7.742
+          "inference_ms": 9.138
         },
         {
           "sample_id": "syn2-motion-fast-g10-a01",
@@ -22493,7 +22505,7 @@
           "d90_relative_error": 1.0602,
           "bsd_wasserstein": 7.98,
           "bsd_w": 7.98,
-          "inference_ms": 7.277
+          "inference_ms": 10.122
         },
         {
           "sample_id": "syn2-motion-fast-g11-a00",
@@ -22546,7 +22558,7 @@
           "d90_relative_error": 1.0285,
           "bsd_wasserstein": 6.736,
           "bsd_w": 6.736,
-          "inference_ms": 7.104
+          "inference_ms": 9.451
         },
         {
           "sample_id": "syn2-motion-fast-g11-a01",
@@ -22599,7 +22611,7 @@
           "d90_relative_error": 1.1966,
           "bsd_wasserstein": 7.546,
           "bsd_w": 7.546,
-          "inference_ms": 6.703
+          "inference_ms": 8.17
         },
         {
           "sample_id": "syn2-defocus-g10-a00",
@@ -22652,7 +22664,7 @@
           "d90_relative_error": 0.1037,
           "bsd_wasserstein": 2.302,
           "bsd_w": 2.302,
-          "inference_ms": 6.309
+          "inference_ms": 8.515
         },
         {
           "sample_id": "syn2-defocus-g10-a01",
@@ -22705,7 +22717,7 @@
           "d90_relative_error": 0.0929,
           "bsd_wasserstein": 1.71,
           "bsd_w": 1.71,
-          "inference_ms": 6.71
+          "inference_ms": 8.596
         },
         {
           "sample_id": "syn2-defocus-g11-a00",
@@ -22758,7 +22770,7 @@
           "d90_relative_error": 0.115,
           "bsd_wasserstein": 2.712,
           "bsd_w": 2.712,
-          "inference_ms": 6.404
+          "inference_ms": 8.559
         },
         {
           "sample_id": "syn2-defocus-g11-a01",
@@ -22811,7 +22823,7 @@
           "d90_relative_error": 0.2375,
           "bsd_wasserstein": 3.001,
           "bsd_w": 3.001,
-          "inference_ms": 6.793
+          "inference_ms": 8.784
         },
         {
           "sample_id": "syn2-high-load-g10-a00",
@@ -22864,7 +22876,7 @@
           "d90_relative_error": 0.0577,
           "bsd_wasserstein": 1.487,
           "bsd_w": 1.487,
-          "inference_ms": 6.82
+          "inference_ms": 8.53
         },
         {
           "sample_id": "syn2-high-load-g10-a01",
@@ -22917,7 +22929,7 @@
           "d90_relative_error": 0.0308,
           "bsd_wasserstein": 1.373,
           "bsd_w": 1.373,
-          "inference_ms": 7.772
+          "inference_ms": 8.437
         },
         {
           "sample_id": "syn2-high-load-g11-a00",
@@ -22970,7 +22982,7 @@
           "d90_relative_error": 0.0661,
           "bsd_wasserstein": 1.483,
           "bsd_w": 1.483,
-          "inference_ms": 6.641
+          "inference_ms": 9.545
         },
         {
           "sample_id": "syn2-high-load-g11-a01",
@@ -23023,7 +23035,7 @@
           "d90_relative_error": 0.0871,
           "bsd_wasserstein": 1.592,
           "bsd_w": 1.592,
-          "inference_ms": 7.443
+          "inference_ms": 9.41
         },
         {
           "sample_id": "syn2-low-light-noise-g10-a00",
@@ -23076,7 +23088,7 @@
           "d90_relative_error": 0.0823,
           "bsd_wasserstein": 2.903,
           "bsd_w": 2.903,
-          "inference_ms": 7.074
+          "inference_ms": 9.546
         },
         {
           "sample_id": "syn2-low-light-noise-g10-a01",
@@ -23129,7 +23141,7 @@
           "d90_relative_error": 0.1832,
           "bsd_wasserstein": 3.408,
           "bsd_w": 3.408,
-          "inference_ms": 7.269
+          "inference_ms": 9.479
         },
         {
           "sample_id": "syn2-low-light-noise-g11-a00",
@@ -23182,7 +23194,7 @@
           "d90_relative_error": 0.1763,
           "bsd_wasserstein": 3.147,
           "bsd_w": 3.147,
-          "inference_ms": 6.834
+          "inference_ms": 8.965
         },
         {
           "sample_id": "syn2-low-light-noise-g11-a01",
@@ -23235,7 +23247,7 @@
           "d90_relative_error": 0.1581,
           "bsd_wasserstein": 3.055,
           "bsd_w": 3.055,
-          "inference_ms": 7.897
+          "inference_ms": 9.539
         },
         {
           "sample_id": "syn2-bursting-g10-a00",
@@ -23288,7 +23300,7 @@
           "d90_relative_error": 0.0735,
           "bsd_wasserstein": 2.017,
           "bsd_w": 2.017,
-          "inference_ms": 6.684
+          "inference_ms": 8.702
         },
         {
           "sample_id": "syn2-bursting-g10-a01",
@@ -23341,7 +23353,7 @@
           "d90_relative_error": 0.022,
           "bsd_wasserstein": 2.14,
           "bsd_w": 2.14,
-          "inference_ms": 7.123
+          "inference_ms": 8.489
         },
         {
           "sample_id": "syn2-bursting-g11-a00",
@@ -23394,7 +23406,7 @@
           "d90_relative_error": 0.0192,
           "bsd_wasserstein": 1.229,
           "bsd_w": 1.229,
-          "inference_ms": 6.654
+          "inference_ms": 8.601
         },
         {
           "sample_id": "syn2-bursting-g11-a01",
@@ -23447,7 +23459,7 @@
           "d90_relative_error": 0.0042,
           "bsd_wasserstein": 1.66,
           "bsd_w": 1.66,
-          "inference_ms": 5.997
+          "inference_ms": 8.302
         },
         {
           "sample_id": "syn2-edge-framing-g10-a00",
@@ -23500,7 +23512,7 @@
           "d90_relative_error": 0.0359,
           "bsd_wasserstein": 1.485,
           "bsd_w": 1.485,
-          "inference_ms": 5.976
+          "inference_ms": 9.054
         },
         {
           "sample_id": "syn2-edge-framing-g10-a01",
@@ -23553,7 +23565,7 @@
           "d90_relative_error": 0.0314,
           "bsd_wasserstein": 1.26,
           "bsd_w": 1.26,
-          "inference_ms": 5.984
+          "inference_ms": 9.464
         },
         {
           "sample_id": "syn2-edge-framing-g11-a00",
@@ -23606,7 +23618,7 @@
           "d90_relative_error": 0.1041,
           "bsd_wasserstein": 1.748,
           "bsd_w": 1.748,
-          "inference_ms": 6.426
+          "inference_ms": 8.789
         },
         {
           "sample_id": "syn2-edge-framing-g11-a01",
@@ -23659,7 +23671,7 @@
           "d90_relative_error": 0.0596,
           "bsd_wasserstein": 1.362,
           "bsd_w": 1.362,
-          "inference_ms": 7.192
+          "inference_ms": 9.145
         },
         {
           "sample_id": "syn2-microbubble-cloud-g10-a00",
@@ -23712,7 +23724,7 @@
           "d90_relative_error": 0.2247,
           "bsd_wasserstein": 0.75,
           "bsd_w": 0.75,
-          "inference_ms": 7.035
+          "inference_ms": 10.836
         },
         {
           "sample_id": "syn2-microbubble-cloud-g10-a01",
@@ -23765,7 +23777,7 @@
           "d90_relative_error": 0.161,
           "bsd_wasserstein": 0.734,
           "bsd_w": 0.734,
-          "inference_ms": 7.969
+          "inference_ms": 12.141
         },
         {
           "sample_id": "syn2-microbubble-cloud-g11-a00",
@@ -23818,7 +23830,7 @@
           "d90_relative_error": 0.1991,
           "bsd_wasserstein": 0.639,
           "bsd_w": 0.639,
-          "inference_ms": 7.316
+          "inference_ms": 11.81
         },
         {
           "sample_id": "syn2-microbubble-cloud-g11-a01",
@@ -23871,7 +23883,7 @@
           "d90_relative_error": 0.1792,
           "bsd_wasserstein": 0.625,
           "bsd_w": 0.625,
-          "inference_ms": 7.14
+          "inference_ms": 11.109
         },
         {
           "sample_id": "syn2-wide-bimodal-proxy-g10-a00",
@@ -23924,7 +23936,7 @@
           "d90_relative_error": 0.2451,
           "bsd_wasserstein": 1.372,
           "bsd_w": 1.372,
-          "inference_ms": 6.778
+          "inference_ms": 10.007
         },
         {
           "sample_id": "syn2-wide-bimodal-proxy-g10-a01",
@@ -23977,7 +23989,7 @@
           "d90_relative_error": 0.2363,
           "bsd_wasserstein": 1.316,
           "bsd_w": 1.316,
-          "inference_ms": 6.933
+          "inference_ms": 10.04
         },
         {
           "sample_id": "syn2-wide-bimodal-proxy-g11-a00",
@@ -24030,7 +24042,7 @@
           "d90_relative_error": 0.2293,
           "bsd_wasserstein": 1.566,
           "bsd_w": 1.566,
-          "inference_ms": 7.03
+          "inference_ms": 10.073
         },
         {
           "sample_id": "syn2-wide-bimodal-proxy-g11-a01",
@@ -24083,7 +24095,7 @@
           "d90_relative_error": 0.248,
           "bsd_wasserstein": 1.61,
           "bsd_w": 1.61,
-          "inference_ms": 6.481
+          "inference_ms": 10.463
         },
         {
           "sample_id": "syn2-glare-motion-compound-g10-a00",
@@ -24136,7 +24148,7 @@
           "d90_relative_error": 0.0657,
           "bsd_wasserstein": 3.345,
           "bsd_w": 3.345,
-          "inference_ms": 6.312
+          "inference_ms": 10.189
         },
         {
           "sample_id": "syn2-glare-motion-compound-g10-a01",
@@ -24189,7 +24201,7 @@
           "d90_relative_error": 0.0215,
           "bsd_wasserstein": 2.618,
           "bsd_w": 2.618,
-          "inference_ms": 6.517
+          "inference_ms": 10.595
         },
         {
           "sample_id": "syn2-glare-motion-compound-g11-a00",
@@ -24242,7 +24254,7 @@
           "d90_relative_error": 0.0224,
           "bsd_wasserstein": 3.427,
           "bsd_w": 3.427,
-          "inference_ms": 6.597
+          "inference_ms": 11.353
         },
         {
           "sample_id": "syn2-glare-motion-compound-g11-a01",
@@ -24295,7 +24307,7 @@
           "d90_relative_error": 0.0871,
           "bsd_wasserstein": 3.417,
           "bsd_w": 3.417,
-          "inference_ms": 6.291
+          "inference_ms": 10.609
         },
         {
           "sample_id": "syn2-dark-defocus-compound-g10-a00",
@@ -24348,7 +24360,7 @@
           "d90_relative_error": 0.1356,
           "bsd_wasserstein": 4.28,
           "bsd_w": 4.28,
-          "inference_ms": 6.848
+          "inference_ms": 10.158
         },
         {
           "sample_id": "syn2-dark-defocus-compound-g10-a01",
@@ -24401,7 +24413,7 @@
           "d90_relative_error": 0.1049,
           "bsd_wasserstein": 2.974,
           "bsd_w": 2.974,
-          "inference_ms": 7.459
+          "inference_ms": 11.987
         },
         {
           "sample_id": "syn2-dark-defocus-compound-g11-a00",
@@ -24454,7 +24466,7 @@
           "d90_relative_error": 0.0274,
           "bsd_wasserstein": 3.591,
           "bsd_w": 3.591,
-          "inference_ms": 7.581
+          "inference_ms": 10.947
         },
         {
           "sample_id": "syn2-dark-defocus-compound-g11-a01",
@@ -24507,15 +24519,17 @@
           "d90_relative_error": 0.1001,
           "bsd_wasserstein": 3.984,
           "bsd_w": 3.984,
-          "inference_ms": 6.838
+          "inference_ms": 10.199
         }
       ],
       "method": "valley_edge",
       "engine": "scikit-image/SciPy",
       "device": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
-      "duration_seconds": 2.302,
-      "mean_inference_ms": 7.172124999999999,
-      "p95_inference_ms": 8.003
+      "duration_seconds": 3.364,
+      "mean_inference_ms": 9.601015624999999,
+      "p95_inference_ms": 11.316399999999998,
+      "peak_traced_memory_mib": 1.379,
+      "peak_memory_metric": "python-tracemalloc"
     }
   ]
 }

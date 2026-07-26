@@ -131,7 +131,11 @@
 .fs-temporal-showcase { border: 1px solid var(--color-border); border-radius: 18px; padding: .85rem; background: var(--color-surface); }
 .fs-temporal-stage { position: relative; aspect-ratio: 16 / 8.6; overflow: hidden; border-radius: 12px; background: #06141b; }
 .fs-temporal-stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.fs-temporal-overlay { opacity: .52; mix-blend-mode: screen; }
+.fs-temporal-overlay { clip-path: inset(0 0 0 50%); }
+.fs-temporal-divider { position: absolute; inset: 0 auto 0 50%; width: 2px; background: rgba(255,255,255,.86); box-shadow: 0 0 18px rgba(0,0,0,.8); }
+.fs-temporal-side { position: absolute; bottom: .8rem; padding: .25rem .45rem; border-radius: 4px; color: #e6fffc; background: rgba(2,14,20,.72); font: .62rem var(--font-mono); text-transform: uppercase; letter-spacing: .06em; }
+.fs-temporal-side.raw { left: .8rem; }
+.fs-temporal-side.labels { right: .8rem; }
 .fs-temporal-stamp { position: absolute; inset: 1rem 1rem auto; display: flex; justify-content: space-between; gap: 1rem; color: #e6fffc; font: .76rem var(--font-mono); text-shadow: 0 1px 5px #000; }
 .fs-temporal-stamp span { text-transform: uppercase; letter-spacing: .08em; }
 .fs-temporal-controls { display: grid; grid-template-columns: auto 1fr minmax(180px, 260px); gap: .8rem; align-items: center; padding: .85rem .15rem .55rem; }

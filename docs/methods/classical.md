@@ -1,8 +1,9 @@
 # Classical segmentation tier (C1..C7)
 
 The classical ladder is the honest, no-training floor that the learned tier must beat. Every method runs offline
-in `data-pipeline/fslab/science/segment.py` (the pre-validated Benchmark references) and has a JS/WASM twin in the
-live App. Froth is hard for a specific reason: the boundaries between bubbles are dark, low-gradient valleys
+in `data-pipeline/fslab/science/segment.py` (the pre-validated Benchmark references). C1, C3, and C4 also have
+validated TypeScript twins in the live App; C2, C5, C6, and C7 remain offline and appear on the web as committed
+replay. Froth is hard for a specific reason: the boundaries between bubbles are dark, low-gradient valleys
 (Plateau borders), while each bubble carries a bright specular highlight with high gradient, so gradient/edge and
 threshold methods lock onto the highlight rings and over-segment. The ladder is designed to show this, term by
 term.
@@ -47,16 +48,18 @@ valley-edge detector is the strongest classical method, narrowly ahead of the di
 are the references the learned tier (StarDist, U-Net+watershed, Deep-Watershed, and the novel LamellaStar) must
 beat; see [../../plans/frothseg](the redesign plan) and the learned-tier docs.
 
-## The live twins (App multi-model lane, v0.03.000)
+## Validated live twins and offline replay
 
-Every C1..C7 method also runs live in the browser (`frontend/src/classical/`): pure-TypeScript implementations of
-the same cited standards (Otsu with argmax-plateau midpoint; exact Felzenszwalb-Huttenlocher EDT; priority-flood
-marker-controlled watershed; morphological-reconstruction h-extrema; black top-hat; SLIC k-means), selected from
-the App's method control and executed on the chosen frame in milliseconds with no model download, with the live
-mask AP scored against the exact synthetic ground truth. Honesty: the twins share each method's semantics, not
-bit-exact numerics with scikit-image, so live numbers can differ from the baked references (live C4 AP 0.240 vs
-offline 0.402 on poly-normal); the offline bake remains the pre-validated benchmark and cross-method comparison
-stays offline-vs-offline.
+C1/C3/C4 run in the browser (`frontend/src/classical/`) with no model download.
+Their cross-language gate uses the first untouched-test sample from each of all
+16 conditions and requires mean AP delta <= 0.03, browser-vs-offline AP >= 0.50,
+boundary F >= 0.95, and mean instance-count ratio in [0.75, 1.25]. The
+committed `verification/classical-live-parity.json` accepts all three.
+
+C2/C5/C6/C7 do not run in the browser. Their complete Python implementations,
+64-sample evidence, and canonical case replay are still available through the
+offline pipeline and benchmark. This separation prevents a simplified web
+approximation from being presented as the scientific implementation.
 
 **What this tier is and is not:** it is a set of pre/post fixes bolted onto watershed or valley-tracing to survive
 highlights and low-gradient valleys; it has no learned prior for the faint lamellae, so its quality is bounded by

@@ -11,7 +11,7 @@ import numpy as np
 from .unet_watershed import load_npz_weights
 
 
-def run(model_dir: Path) -> dict:
+def run(model_dir: Path, output_dir: Path | None = None) -> dict:
     import onnxruntime as ort
     import torch
 
@@ -21,7 +21,9 @@ def run(model_dir: Path) -> dict:
     model.eval()
     size = int(manifest["config"]["image_size"])
     example = torch.linspace(0, 1, size * size, dtype=torch.float32).reshape(1, 1, size, size)
-    onnx_path = model_dir / "model.onnx"
+    destination = output_dir or model_dir
+    destination.mkdir(parents=True, exist_ok=True)
+    onnx_path = destination / "model.onnx"
     torch.onnx.export(
         model,
         example,
@@ -54,7 +56,10 @@ def run(model_dir: Path) -> dict:
         },
         "providers": session.get_providers(),
     }
-    (model_dir / "onnx-parity.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
+    (destination / "onnx-parity.json").write_text(
+        json.dumps(report, indent=2),
+        encoding="utf-8",
+    )
     if not report["passed"]:
         raise RuntimeError(f"ONNX parity failed: {max_abs_error}")
     return report
@@ -63,8 +68,13 @@ def run(model_dir: Path) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", type=Path, required=True)
+    parser.add_argument(
+        "--output",
+        type=Path,
+        help="export root; defaults to the model directory for a canonical bake",
+    )
     args = parser.parse_args()
-    print(json.dumps(run(args.model), indent=2))
+    print(json.dumps(run(args.model, args.output), indent=2))
 
 
 if __name__ == "__main__":

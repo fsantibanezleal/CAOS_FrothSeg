@@ -1,0 +1,621 @@
+{
+  "schema": "frothseg.classical-live-parity/v1",
+  "dataset": "frothseg.learned-dataset/v2",
+  "selection": "first untouched-test sample from each of 16 conditions",
+  "acceptance": {
+    "max_mean_absolute_ap_delta": 0.03,
+    "min_mean_browser_vs_offline_ap": 0.5,
+    "min_mean_browser_vs_offline_boundary_fscore": 0.95,
+    "min_mean_instance_count_ratio": 0.75,
+    "max_mean_instance_count_ratio": 1.25
+  },
+  "implementations": {
+    "browser": {
+      "path": "frontend/src/classical/methods.ts",
+      "sha256": "ea945fc62cd061e88c2b03e5cce217cf94ea15f36456cf44929d6567d4d82dd3"
+    },
+    "offline": {
+      "path": "data-pipeline/fslab/science/segment.py",
+      "sha256": "83337322c328dec8147b4c615a4a73ebca375ec57116eeec4d7f5b4d4ff65929"
+    }
+  },
+  "accepted_methods": [
+    "otsu_cc",
+    "watershed_hmax",
+    "watershed_dt"
+  ],
+  "complete": true,
+  "methods": [
+    {
+      "method": "otsu_cc",
+      "n_conditions": 16,
+      "mean_browser_ap": 0.0704375,
+      "mean_offline_ap": 0.0665625,
+      "mean_absolute_ap_delta": 0.00575,
+      "mean_browser_vs_offline_ap": 0.8345625000000001,
+      "mean_browser_vs_offline_boundary_fscore": 0.98674375,
+      "mean_browser_instance_count": 62.875,
+      "mean_offline_instance_count": 60.25,
+      "mean_instance_count_ratio": 1.0435684647302905,
+      "checks": {
+        "mean_absolute_ap_delta": true,
+        "browser_vs_offline_ap": true,
+        "browser_vs_offline_boundary_fscore": true,
+        "instance_count_ratio": true
+      },
+      "accepted": true,
+      "cases": [
+        {
+          "sample_id": "syn2-mono-clean-g10-a00",
+          "condition_id": "mono-clean",
+          "browser_ap": 0.075,
+          "offline_ap": 0.055,
+          "ap_delta": 0.019999999999999997,
+          "browser_vs_offline_ap": 0.805,
+          "browser_vs_offline_boundary_fscore": 0.9917,
+          "browser_count": 25,
+          "offline_count": 21
+        },
+        {
+          "sample_id": "syn2-poly-normal-g10-a00",
+          "condition_id": "poly-normal",
+          "browser_ap": 0.142,
+          "offline_ap": 0.149,
+          "ap_delta": -0.007000000000000006,
+          "browser_vs_offline_ap": 0.881,
+          "browser_vs_offline_boundary_fscore": 0.9898,
+          "browser_count": 89,
+          "offline_count": 87
+        },
+        {
+          "sample_id": "syn2-fine-froth-g10-a00",
+          "condition_id": "fine-froth",
+          "browser_ap": 0.039,
+          "offline_ap": 0.034,
+          "ap_delta": 0.0049999999999999975,
+          "browser_vs_offline_ap": 0.879,
+          "browser_vs_offline_boundary_fscore": 0.9892,
+          "browser_count": 104,
+          "offline_count": 94
+        },
+        {
+          "sample_id": "syn2-coarse-froth-g10-a00",
+          "condition_id": "coarse-froth",
+          "browser_ap": 0.087,
+          "offline_ap": 0.051,
+          "ap_delta": 0.036,
+          "browser_vs_offline_ap": 0.779,
+          "browser_vs_offline_boundary_fscore": 0.9952,
+          "browser_count": 16,
+          "offline_count": 14
+        },
+        {
+          "sample_id": "syn2-glare-storm-g10-a00",
+          "condition_id": "glare-storm",
+          "browser_ap": 0.029,
+          "offline_ap": 0.031,
+          "ap_delta": -0.0019999999999999983,
+          "browser_vs_offline_ap": 0.823,
+          "browser_vs_offline_boundary_fscore": 0.9827,
+          "browser_count": 38,
+          "offline_count": 36
+        },
+        {
+          "sample_id": "syn2-watery-g10-a00",
+          "condition_id": "watery",
+          "browser_ap": 0.03,
+          "offline_ap": 0.034,
+          "ap_delta": -0.0040000000000000036,
+          "browser_vs_offline_ap": 0.63,
+          "browser_vs_offline_boundary_fscore": 0.9885,
+          "browser_count": 16,
+          "offline_count": 13
+        },
+        {
+          "sample_id": "syn2-motion-fast-g10-a00",
+          "condition_id": "motion-fast",
+          "browser_ap": 0.01,
+          "offline_ap": 0.006,
+          "ap_delta": 0.004,
+          "browser_vs_offline_ap": 0.79,
+          "browser_vs_offline_boundary_fscore": 0.9908,
+          "browser_count": 11,
+          "offline_count": 9
+        },
+        {
+          "sample_id": "syn2-defocus-g10-a00",
+          "condition_id": "defocus",
+          "browser_ap": 0.008,
+          "offline_ap": 0.007,
+          "ap_delta": 0.001,
+          "browser_vs_offline_ap": 0.839,
+          "browser_vs_offline_boundary_fscore": 0.9952,
+          "browser_count": 10,
+          "offline_count": 9
+        },
+        {
+          "sample_id": "syn2-high-load-g10-a00",
+          "condition_id": "high-load",
+          "browser_ap": 0.133,
+          "offline_ap": 0.134,
+          "ap_delta": -0.0010000000000000009,
+          "browser_vs_offline_ap": 0.957,
+          "browser_vs_offline_boundary_fscore": 0.9931,
+          "browser_count": 105,
+          "offline_count": 102
+        },
+        {
+          "sample_id": "syn2-low-light-noise-g10-a00",
+          "condition_id": "low-light-noise",
+          "browser_ap": 0.043,
+          "offline_ap": 0.038,
+          "ap_delta": 0.0049999999999999975,
+          "browser_vs_offline_ap": 0.876,
+          "browser_vs_offline_boundary_fscore": 0.9807,
+          "browser_count": 54,
+          "offline_count": 49
+        },
+        {
+          "sample_id": "syn2-bursting-g10-a00",
+          "condition_id": "bursting",
+          "browser_ap": 0.171,
+          "offline_ap": 0.171,
+          "ap_delta": 0.0,
+          "browser_vs_offline_ap": 0.929,
+          "browser_vs_offline_boundary_fscore": 0.9898,
+          "browser_count": 89,
+          "offline_count": 89
+        },
+        {
+          "sample_id": "syn2-edge-framing-g10-a00",
+          "condition_id": "edge-framing",
+          "browser_ap": 0.127,
+          "offline_ap": 0.123,
+          "ap_delta": 0.0040000000000000036,
+          "browser_vs_offline_ap": 0.95,
+          "browser_vs_offline_boundary_fscore": 0.9874,
+          "browser_count": 107,
+          "offline_count": 102
+        },
+        {
+          "sample_id": "syn2-microbubble-cloud-g10-a00",
+          "condition_id": "microbubble-cloud",
+          "browser_ap": 0.012,
+          "offline_ap": 0.01,
+          "ap_delta": 0.002,
+          "browser_vs_offline_ap": 0.481,
+          "browser_vs_offline_boundary_fscore": 0.9659,
+          "browser_count": 96,
+          "offline_count": 101
+        },
+        {
+          "sample_id": "syn2-wide-bimodal-proxy-g10-a00",
+          "condition_id": "wide-bimodal-proxy",
+          "browser_ap": 0.189,
+          "offline_ap": 0.189,
+          "ap_delta": 0.0,
+          "browser_vs_offline_ap": 0.92,
+          "browser_vs_offline_boundary_fscore": 0.975,
+          "browser_count": 191,
+          "offline_count": 184
+        },
+        {
+          "sample_id": "syn2-glare-motion-compound-g10-a00",
+          "condition_id": "glare-motion-compound",
+          "browser_ap": 0.024,
+          "offline_ap": 0.025,
+          "ap_delta": -0.0010000000000000009,
+          "browser_vs_offline_ap": 0.9,
+          "browser_vs_offline_boundary_fscore": 0.9852,
+          "browser_count": 35,
+          "offline_count": 34
+        },
+        {
+          "sample_id": "syn2-dark-defocus-compound-g10-a00",
+          "condition_id": "dark-defocus-compound",
+          "browser_ap": 0.008,
+          "offline_ap": 0.008,
+          "ap_delta": 0.0,
+          "browser_vs_offline_ap": 0.914,
+          "browser_vs_offline_boundary_fscore": 0.9877,
+          "browser_count": 20,
+          "offline_count": 20
+        }
+      ]
+    },
+    {
+      "method": "watershed_hmax",
+      "n_conditions": 16,
+      "mean_browser_ap": 0.09062500000000001,
+      "mean_offline_ap": 0.1039375,
+      "mean_absolute_ap_delta": 0.019312499999999996,
+      "mean_browser_vs_offline_ap": 0.5225625,
+      "mean_browser_vs_offline_boundary_fscore": 0.97855625,
+      "mean_browser_instance_count": 566.875,
+      "mean_offline_instance_count": 456.4375,
+      "mean_instance_count_ratio": 1.2419553608106257,
+      "checks": {
+        "mean_absolute_ap_delta": true,
+        "browser_vs_offline_ap": true,
+        "browser_vs_offline_boundary_fscore": true,
+        "instance_count_ratio": true
+      },
+      "accepted": true,
+      "cases": [
+        {
+          "sample_id": "syn2-mono-clean-g10-a00",
+          "condition_id": "mono-clean",
+          "browser_ap": 0.177,
+          "offline_ap": 0.144,
+          "ap_delta": 0.033,
+          "browser_vs_offline_ap": 0.611,
+          "browser_vs_offline_boundary_fscore": 0.9754,
+          "browser_count": 184,
+          "offline_count": 180
+        },
+        {
+          "sample_id": "syn2-poly-normal-g10-a00",
+          "condition_id": "poly-normal",
+          "browser_ap": 0.197,
+          "offline_ap": 0.239,
+          "ap_delta": -0.04199999999999998,
+          "browser_vs_offline_ap": 0.593,
+          "browser_vs_offline_boundary_fscore": 0.9792,
+          "browser_count": 313,
+          "offline_count": 241
+        },
+        {
+          "sample_id": "syn2-fine-froth-g10-a00",
+          "condition_id": "fine-froth",
+          "browser_ap": 0.127,
+          "offline_ap": 0.122,
+          "ap_delta": 0.0050000000000000044,
+          "browser_vs_offline_ap": 0.632,
+          "browser_vs_offline_boundary_fscore": 0.9846,
+          "browser_count": 643,
+          "offline_count": 604
+        },
+        {
+          "sample_id": "syn2-coarse-froth-g10-a00",
+          "condition_id": "coarse-froth",
+          "browser_ap": 0.116,
+          "offline_ap": 0.112,
+          "ap_delta": 0.0040000000000000036,
+          "browser_vs_offline_ap": 0.632,
+          "browser_vs_offline_boundary_fscore": 0.9857,
+          "browser_count": 188,
+          "offline_count": 172
+        },
+        {
+          "sample_id": "syn2-glare-storm-g10-a00",
+          "condition_id": "glare-storm",
+          "browser_ap": 0.038,
+          "offline_ap": 0.039,
+          "ap_delta": -0.0010000000000000009,
+          "browser_vs_offline_ap": 0.602,
+          "browser_vs_offline_boundary_fscore": 0.9881,
+          "browser_count": 423,
+          "offline_count": 399
+        },
+        {
+          "sample_id": "syn2-watery-g10-a00",
+          "condition_id": "watery",
+          "browser_ap": 0.055,
+          "offline_ap": 0.058,
+          "ap_delta": -0.0030000000000000027,
+          "browser_vs_offline_ap": 0.558,
+          "browser_vs_offline_boundary_fscore": 0.9891,
+          "browser_count": 317,
+          "offline_count": 295
+        },
+        {
+          "sample_id": "syn2-motion-fast-g10-a00",
+          "condition_id": "motion-fast",
+          "browser_ap": 0.039,
+          "offline_ap": 0.033,
+          "ap_delta": 0.005999999999999998,
+          "browser_vs_offline_ap": 0.646,
+          "browser_vs_offline_boundary_fscore": 0.9802,
+          "browser_count": 235,
+          "offline_count": 209
+        },
+        {
+          "sample_id": "syn2-defocus-g10-a00",
+          "condition_id": "defocus",
+          "browser_ap": 0.038,
+          "offline_ap": 0.043,
+          "ap_delta": -0.0049999999999999975,
+          "browser_vs_offline_ap": 0.446,
+          "browser_vs_offline_boundary_fscore": 0.9696,
+          "browser_count": 199,
+          "offline_count": 166
+        },
+        {
+          "sample_id": "syn2-high-load-g10-a00",
+          "condition_id": "high-load",
+          "browser_ap": 0.195,
+          "offline_ap": 0.217,
+          "ap_delta": -0.021999999999999992,
+          "browser_vs_offline_ap": 0.589,
+          "browser_vs_offline_boundary_fscore": 0.9828,
+          "browser_count": 330,
+          "offline_count": 261
+        },
+        {
+          "sample_id": "syn2-low-light-noise-g10-a00",
+          "condition_id": "low-light-noise",
+          "browser_ap": 0.015,
+          "offline_ap": 0.015,
+          "ap_delta": 0.0,
+          "browser_vs_offline_ap": 0.42,
+          "browser_vs_offline_boundary_fscore": 0.9769,
+          "browser_count": 1639,
+          "offline_count": 1170
+        },
+        {
+          "sample_id": "syn2-bursting-g10-a00",
+          "condition_id": "bursting",
+          "browser_ap": 0.143,
+          "offline_ap": 0.204,
+          "ap_delta": -0.061,
+          "browser_vs_offline_ap": 0.469,
+          "browser_vs_offline_boundary_fscore": 0.9768,
+          "browser_count": 311,
+          "offline_count": 198
+        },
+        {
+          "sample_id": "syn2-edge-framing-g10-a00",
+          "condition_id": "edge-framing",
+          "browser_ap": 0.134,
+          "offline_ap": 0.144,
+          "ap_delta": -0.009999999999999981,
+          "browser_vs_offline_ap": 0.516,
+          "browser_vs_offline_boundary_fscore": 0.9754,
+          "browser_count": 403,
+          "offline_count": 320
+        },
+        {
+          "sample_id": "syn2-microbubble-cloud-g10-a00",
+          "condition_id": "microbubble-cloud",
+          "browser_ap": 0.036,
+          "offline_ap": 0.037,
+          "ap_delta": -0.0010000000000000009,
+          "browser_vs_offline_ap": 0.357,
+          "browser_vs_offline_boundary_fscore": 0.9813,
+          "browser_count": 1486,
+          "offline_count": 1398
+        },
+        {
+          "sample_id": "syn2-wide-bimodal-proxy-g10-a00",
+          "condition_id": "wide-bimodal-proxy",
+          "browser_ap": 0.125,
+          "offline_ap": 0.238,
+          "ap_delta": -0.11299999999999999,
+          "browser_vs_offline_ap": 0.423,
+          "browser_vs_offline_boundary_fscore": 0.9572,
+          "browser_count": 362,
+          "offline_count": 164
+        },
+        {
+          "sample_id": "syn2-glare-motion-compound-g10-a00",
+          "condition_id": "glare-motion-compound",
+          "browser_ap": 0.009,
+          "offline_ap": 0.011,
+          "ap_delta": -0.002,
+          "browser_vs_offline_ap": 0.466,
+          "browser_vs_offline_boundary_fscore": 0.9789,
+          "browser_count": 741,
+          "offline_count": 611
+        },
+        {
+          "sample_id": "syn2-dark-defocus-compound-g10-a00",
+          "condition_id": "dark-defocus-compound",
+          "browser_ap": 0.006,
+          "offline_ap": 0.007,
+          "ap_delta": -0.001,
+          "browser_vs_offline_ap": 0.401,
+          "browser_vs_offline_boundary_fscore": 0.9757,
+          "browser_count": 1296,
+          "offline_count": 915
+        }
+      ]
+    },
+    {
+      "method": "watershed_dt",
+      "n_conditions": 16,
+      "mean_browser_ap": 0.171375,
+      "mean_offline_ap": 0.1969375,
+      "mean_absolute_ap_delta": 0.025562500000000005,
+      "mean_browser_vs_offline_ap": 0.6625000000000001,
+      "mean_browser_vs_offline_boundary_fscore": 0.95245,
+      "mean_browser_instance_count": 126.4375,
+      "mean_offline_instance_count": 144.0625,
+      "mean_instance_count_ratio": 0.8776572668112799,
+      "checks": {
+        "mean_absolute_ap_delta": true,
+        "browser_vs_offline_ap": true,
+        "browser_vs_offline_boundary_fscore": true,
+        "instance_count_ratio": true
+      },
+      "accepted": true,
+      "cases": [
+        {
+          "sample_id": "syn2-mono-clean-g10-a00",
+          "condition_id": "mono-clean",
+          "browser_ap": 0.371,
+          "offline_ap": 0.463,
+          "ap_delta": -0.09200000000000003,
+          "browser_vs_offline_ap": 0.534,
+          "browser_vs_offline_boundary_fscore": 0.9566,
+          "browser_count": 79,
+          "offline_count": 110
+        },
+        {
+          "sample_id": "syn2-poly-normal-g10-a00",
+          "condition_id": "poly-normal",
+          "browser_ap": 0.301,
+          "offline_ap": 0.359,
+          "ap_delta": -0.057999999999999996,
+          "browser_vs_offline_ap": 0.756,
+          "browser_vs_offline_boundary_fscore": 0.9654,
+          "browser_count": 143,
+          "offline_count": 158
+        },
+        {
+          "sample_id": "syn2-fine-froth-g10-a00",
+          "condition_id": "fine-froth",
+          "browser_ap": 0.124,
+          "offline_ap": 0.127,
+          "ap_delta": -0.0030000000000000027,
+          "browser_vs_offline_ap": 0.793,
+          "browser_vs_offline_boundary_fscore": 0.9779,
+          "browser_count": 271,
+          "offline_count": 288
+        },
+        {
+          "sample_id": "syn2-coarse-froth-g10-a00",
+          "condition_id": "coarse-froth",
+          "browser_ap": 0.289,
+          "offline_ap": 0.368,
+          "ap_delta": -0.07900000000000001,
+          "browser_vs_offline_ap": 0.647,
+          "browser_vs_offline_boundary_fscore": 0.9549,
+          "browser_count": 57,
+          "offline_count": 72
+        },
+        {
+          "sample_id": "syn2-glare-storm-g10-a00",
+          "condition_id": "glare-storm",
+          "browser_ap": 0.073,
+          "offline_ap": 0.082,
+          "ap_delta": -0.009000000000000008,
+          "browser_vs_offline_ap": 0.634,
+          "browser_vs_offline_boundary_fscore": 0.8848,
+          "browser_count": 48,
+          "offline_count": 60
+        },
+        {
+          "sample_id": "syn2-watery-g10-a00",
+          "condition_id": "watery",
+          "browser_ap": 0.109,
+          "offline_ap": 0.135,
+          "ap_delta": -0.02600000000000001,
+          "browser_vs_offline_ap": 0.519,
+          "browser_vs_offline_boundary_fscore": 0.9517,
+          "browser_count": 76,
+          "offline_count": 99
+        },
+        {
+          "sample_id": "syn2-motion-fast-g10-a00",
+          "condition_id": "motion-fast",
+          "browser_ap": 0.1,
+          "offline_ap": 0.117,
+          "ap_delta": -0.017,
+          "browser_vs_offline_ap": 0.573,
+          "browser_vs_offline_boundary_fscore": 0.9469,
+          "browser_count": 90,
+          "offline_count": 109
+        },
+        {
+          "sample_id": "syn2-defocus-g10-a00",
+          "condition_id": "defocus",
+          "browser_ap": 0.092,
+          "offline_ap": 0.109,
+          "ap_delta": -0.017,
+          "browser_vs_offline_ap": 0.523,
+          "browser_vs_offline_boundary_fscore": 0.9421,
+          "browser_count": 60,
+          "offline_count": 83
+        },
+        {
+          "sample_id": "syn2-high-load-g10-a00",
+          "condition_id": "high-load",
+          "browser_ap": 0.31,
+          "offline_ap": 0.348,
+          "ap_delta": -0.03799999999999998,
+          "browser_vs_offline_ap": 0.814,
+          "browser_vs_offline_boundary_fscore": 0.9677,
+          "browser_count": 163,
+          "offline_count": 182
+        },
+        {
+          "sample_id": "syn2-low-light-noise-g10-a00",
+          "condition_id": "low-light-noise",
+          "browser_ap": 0.171,
+          "offline_ap": 0.173,
+          "ap_delta": -0.001999999999999974,
+          "browser_vs_offline_ap": 0.7,
+          "browser_vs_offline_boundary_fscore": 0.9553,
+          "browser_count": 133,
+          "offline_count": 144
+        },
+        {
+          "sample_id": "syn2-bursting-g10-a00",
+          "condition_id": "bursting",
+          "browser_ap": 0.307,
+          "offline_ap": 0.329,
+          "ap_delta": -0.02200000000000002,
+          "browser_vs_offline_ap": 0.758,
+          "browser_vs_offline_boundary_fscore": 0.9591,
+          "browser_count": 131,
+          "offline_count": 142
+        },
+        {
+          "sample_id": "syn2-edge-framing-g10-a00",
+          "condition_id": "edge-framing",
+          "browser_ap": 0.207,
+          "offline_ap": 0.217,
+          "ap_delta": -0.010000000000000009,
+          "browser_vs_offline_ap": 0.802,
+          "browser_vs_offline_boundary_fscore": 0.9506,
+          "browser_count": 138,
+          "offline_count": 158
+        },
+        {
+          "sample_id": "syn2-microbubble-cloud-g10-a00",
+          "condition_id": "microbubble-cloud",
+          "browser_ap": 0.025,
+          "offline_ap": 0.03,
+          "ap_delta": -0.0049999999999999975,
+          "browser_vs_offline_ap": 0.468,
+          "browser_vs_offline_boundary_fscore": 0.9595,
+          "browser_count": 310,
+          "offline_count": 354
+        },
+        {
+          "sample_id": "syn2-wide-bimodal-proxy-g10-a00",
+          "condition_id": "wide-bimodal-proxy",
+          "browser_ap": 0.15,
+          "offline_ap": 0.161,
+          "ap_delta": -0.01100000000000001,
+          "browser_vs_offline_ap": 0.677,
+          "browser_vs_offline_boundary_fscore": 0.9507,
+          "browser_count": 203,
+          "offline_count": 205
+        },
+        {
+          "sample_id": "syn2-glare-motion-compound-g10-a00",
+          "condition_id": "glare-motion-compound",
+          "browser_ap": 0.044,
+          "offline_ap": 0.055,
+          "ap_delta": -0.011000000000000003,
+          "browser_vs_offline_ap": 0.733,
+          "browser_vs_offline_boundary_fscore": 0.9589,
+          "browser_count": 51,
+          "offline_count": 60
+        },
+        {
+          "sample_id": "syn2-dark-defocus-compound-g10-a00",
+          "condition_id": "dark-defocus-compound",
+          "browser_ap": 0.069,
+          "offline_ap": 0.078,
+          "ap_delta": -0.008999999999999994,
+          "browser_vs_offline_ap": 0.669,
+          "browser_vs_offline_boundary_fscore": 0.9571,
+          "browser_count": 70,
+          "offline_count": 81
+        }
+      ]
+    }
+  ]
+}

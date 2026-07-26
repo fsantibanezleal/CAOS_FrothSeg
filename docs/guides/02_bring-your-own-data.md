@@ -9,8 +9,9 @@ bounded qualitative path. The door is **CONTRACT 1**, the image gate.
 
 ## What this is, and what it is not
 
-- It **is** a bounded exploratory path: upload a froth image, select any C1-C7
-  TypeScript method or legacy SlimSAM, and inspect masks and BSD client-side.
+- It **is** a bounded exploratory path: upload a froth image, select C1, C3, C4,
+  or legacy SlimSAM, and inspect masks and BSD client-side. These are the four
+  upload methods with accepted browser evidence.
 - It is **not** a place to obtain a mask-AP number for your image. AP requires per-bubble ground truth, which a
   real froth photo does not have. The AP read-out only exists for the synthetic samples, where the exact GT is
   known (`frontend/src/sam/score.ts`, mirrored to `fslab.science.segment.mask_ap`).
@@ -90,10 +91,14 @@ offers both methods and lets you compare.
 
 | capability | on a real upload | on a synthetic sample |
 |---|---|---|
-| SAM instance segmentation (masks, count) | yes, live in-browser | yes, live in-browser |
+| C1/C3/C4 or SlimSAM instance segmentation (masks, count) | yes, live in-browser | yes, live in-browser |
 | BSD (d10 / d50 / d90 / d32, % fines) | yes | yes |
 | froth-state read-out (class + health gauge) | yes, a labelled heuristic proxy | yes |
 | mask AP / BSD Wasserstein vs GT | no (no ground truth exists) | yes (exact GT known) |
+
+C2, C5, C6, C7, and L1-L7/N1 do not run on an uploaded frame in the static
+website. Export the prepared command from the workbench to run those methods
+through the offline pipeline.
 
 The froth-state read-out (`frontend/src/sam/frothState.ts`) is a heuristic proxy grounded in the froth-vision
 literature (Aldrich et al. 2010: BSD + froth class as soft sensors), not a calibrated plant setpoint. It is

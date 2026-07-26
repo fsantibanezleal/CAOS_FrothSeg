@@ -52,9 +52,29 @@ supported GPU path.
 Large upstream checkpoints remain in their official caches. Their identifiers,
 sizes, hashes, parameters, versions, and device evidence are committed.
 
+## Showcase pipeline
+
+After every method has produced canonical labels,
+`python -m fslab.pipeline showcase` runs `fslab.showcase`. It converts each
+registered method's labels into a compact run-length label raster and a
+boundary-overlay preview for every canonical case. The manifest records exactly
+15 methods, 13 cases, and 195 method-case artifact pairs, with SHA-256 for each
+analysis raster and preview. This stage is the explicit bridge from
+authoritative offline inference to the ten-view companion workbench.
+
+The showcase stage performs no model inference. It fails when a learned result
+is missing, and it never replaces the originating labels in the method-specific
+inference directory.
+
 ## Evaluation and release
 
-`build_method_benchmark.py` joins all 15 implementations into one browser and
-release contract. `build_release_report.py` inventories every run and temporal
-report. `check_product_completeness.py --profile release` fails if a registered
-method, documentation card, unified result, or temporal artifact is missing.
+`build_method_benchmark.py` joins all 15 implementations into the
+`frothseg.method-benchmark/v2` browser/release contract. It retains every one
+of the 15 x 64 = 960 held-out method-case cells, macro and micro aggregates,
+runtime, peak-memory measurement, hardware lane, model size/hash, and run
+provenance. `build_release_report.py` inventories those cells, every model run,
+browser parity, temporal report, and showcase coverage.
+`check_product_completeness.py
+--profile development` rejects incomplete matrices or compute evidence;
+`--profile release` additionally enforces the governed real-data and version
+gates.

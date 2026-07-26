@@ -18,7 +18,7 @@
   },
   "method_benchmark": {
     "path": "data/derived/method-benchmark.json",
-    "sha256": "a35c067c8880ff933b655f67265a7f5c2cb6d2a19b05173494a4eea9b45fc256",
+    "sha256": "ce2a6299ae4eaa414353323c47b8e25b280db978afaef5fa27bfc9d274ba4feb",
     "method_count": 15,
     "implemented_count": 15,
     "leader": {
@@ -26,7 +26,16 @@
       "slug": "cellpose_sam",
       "mean_ap": 0.5098906249999999
     },
-    "beyond_sota_claim": false
+    "beyond_sota_claim": false,
+    "coverage": {
+      "expected_methods": 15,
+      "expected_test_samples": 64,
+      "expected_cells": 960,
+      "observed_cells": 960,
+      "condition_count": 16,
+      "complete": true,
+      "errors": []
+    }
   },
   "methods": [
     {
@@ -38,6 +47,32 @@
       "test_mean_ap": 0.06521875,
       "test_mean_boundary_fscore": 0.81125,
       "test_mean_bsd_wasserstein": 10.164109375,
+      "test_cell_count": 64,
+      "test_micro": {
+        "association_iou": 0.5,
+        "nGt": 17846,
+        "nPred": 3922,
+        "tp": 2512,
+        "fp": 1410,
+        "fn": 15334,
+        "merges": 1250,
+        "splits": 16,
+        "instance_precision": 0.6404895461499235,
+        "instance_recall": 0.14075983413650117,
+        "instance_f1": 0.23079750091877987
+      },
+      "compute": {
+        "hardware_lane": "cpu",
+        "device": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+        "mean_inference_ms": 3.4386875000000003,
+        "p95_inference_ms": 4.731949999999998,
+        "peak_memory_mib": 1.201,
+        "peak_memory_metric": "python-tracemalloc",
+        "model_artifact_bytes": 0,
+        "model_artifact_sha256": null,
+        "model_artifact_committed": true,
+        "training_duration_seconds": 0.0
+      },
       "canonical_mean_ap": 0.08424999999999999,
       "run": null,
       "docs_path": "docs/methods/classical.md"
@@ -51,6 +86,32 @@
       "test_mean_ap": 0.017265625,
       "test_mean_boundary_fscore": 0.7423500000000001,
       "test_mean_bsd_wasserstein": 7.3928125,
+      "test_cell_count": 64,
+      "test_micro": {
+        "association_iou": 0.5,
+        "nGt": 17846,
+        "nPred": 71918,
+        "tp": 4564,
+        "fp": 67354,
+        "fn": 13282,
+        "merges": 2024,
+        "splits": 5507,
+        "instance_precision": 0.0634611641035624,
+        "instance_recall": 0.2557435839964138,
+        "instance_f1": 0.10168887304487323
+      },
+      "compute": {
+        "hardware_lane": "cpu",
+        "device": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+        "mean_inference_ms": 80.79739062499999,
+        "p95_inference_ms": 183.83454999999972,
+        "peak_memory_mib": 3.566,
+        "peak_memory_metric": "python-tracemalloc",
+        "model_artifact_bytes": 0,
+        "model_artifact_sha256": null,
+        "model_artifact_committed": true,
+        "training_duration_seconds": 0.0
+      },
       "canonical_mean_ap": 0.005583333333333333,
       "run": null,
       "docs_path": "docs/methods/classical.md"
@@ -64,6 +125,32 @@
       "test_mean_ap": 0.103109375,
       "test_mean_boundary_fscore": 0.832290625,
       "test_mean_bsd_wasserstein": 6.032187499999999,
+      "test_cell_count": 64,
+      "test_micro": {
+        "association_iou": 0.5,
+        "nGt": 17846,
+        "nPred": 29248,
+        "tp": 6848,
+        "fp": 22400,
+        "fn": 10998,
+        "merges": 3009,
+        "splits": 2666,
+        "instance_precision": 0.23413566739606126,
+        "instance_recall": 0.38372744592625796,
+        "instance_f1": 0.290822610098951
+      },
+      "compute": {
+        "hardware_lane": "cpu",
+        "device": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+        "mean_inference_ms": 27.8529375,
+        "p95_inference_ms": 33.321,
+        "peak_memory_mib": 2.907,
+        "peak_memory_metric": "python-tracemalloc",
+        "model_artifact_bytes": 0,
+        "model_artifact_sha256": null,
+        "model_artifact_committed": true,
+        "training_duration_seconds": 0.0
+      },
       "canonical_mean_ap": 0.10275000000000001,
       "run": null,
       "docs_path": "docs/methods/classical.md"
@@ -77,6 +164,32 @@
       "test_mean_ap": 0.19768750000000002,
       "test_mean_boundary_fscore": 0.834403125,
       "test_mean_bsd_wasserstein": 2.5898125,
+      "test_cell_count": 64,
+      "test_micro": {
+        "association_iou": 0.5,
+        "nGt": 17846,
+        "nPred": 9188,
+        "tp": 6508,
+        "fp": 2680,
+        "fn": 11338,
+        "merges": 3110,
+        "splits": 1009,
+        "instance_precision": 0.7083151937309534,
+        "instance_recall": 0.3646755575479099,
+        "instance_f1": 0.48146778131242135
+      },
+      "compute": {
+        "hardware_lane": "cpu",
+        "device": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+        "mean_inference_ms": 22.0941875,
+        "p95_inference_ms": 29.286349999999995,
+        "peak_memory_mib": 1.368,
+        "peak_memory_metric": "python-tracemalloc",
+        "model_artifact_bytes": 0,
+        "model_artifact_sha256": null,
+        "model_artifact_committed": true,
+        "training_duration_seconds": 0.0
+      },
       "canonical_mean_ap": 0.26199999999999996,
       "run": null,
       "docs_path": "docs/methods/classical.md"
@@ -90,6 +203,32 @@
       "test_mean_ap": 0.132984375,
       "test_mean_boundary_fscore": 0.7967640624999999,
       "test_mean_bsd_wasserstein": 16.5679375,
+      "test_cell_count": 64,
+      "test_micro": {
+        "association_iou": 0.5,
+        "nGt": 17846,
+        "nPred": 6809,
+        "tp": 4483,
+        "fp": 2326,
+        "fn": 13363,
+        "merges": 2677,
+        "splits": 744,
+        "instance_precision": 0.6583933029813482,
+        "instance_recall": 0.25120475176510143,
+        "instance_f1": 0.3636584871222876
+      },
+      "compute": {
+        "hardware_lane": "cpu",
+        "device": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+        "mean_inference_ms": 27.47828125,
+        "p95_inference_ms": 32.51555,
+        "peak_memory_mib": 4.946,
+        "peak_memory_metric": "python-tracemalloc",
+        "model_artifact_bytes": 0,
+        "model_artifact_sha256": null,
+        "model_artifact_committed": true,
+        "training_duration_seconds": 0.0
+      },
       "canonical_mean_ap": 0.14641666666666664,
       "run": null,
       "docs_path": "docs/methods/classical.md"
@@ -103,6 +242,32 @@
       "test_mean_ap": 0.01859375,
       "test_mean_boundary_fscore": 0.78645,
       "test_mean_bsd_wasserstein": 8.382609375000001,
+      "test_cell_count": 64,
+      "test_micro": {
+        "association_iou": 0.5,
+        "nGt": 17846,
+        "nPred": 39904,
+        "tp": 3285,
+        "fp": 36619,
+        "fn": 14561,
+        "merges": 2644,
+        "splits": 3247,
+        "instance_precision": 0.08232257417802727,
+        "instance_recall": 0.18407486271433374,
+        "instance_f1": 0.11376623376623377
+      },
+      "compute": {
+        "hardware_lane": "cpu",
+        "device": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+        "mean_inference_ms": 536.006234375,
+        "p95_inference_ms": 672.2091499999999,
+        "peak_memory_mib": 14.582,
+        "peak_memory_metric": "python-tracemalloc",
+        "model_artifact_bytes": 0,
+        "model_artifact_sha256": null,
+        "model_artifact_committed": true,
+        "training_duration_seconds": 0.0
+      },
       "canonical_mean_ap": 0.021083333333333332,
       "run": null,
       "docs_path": "docs/methods/classical.md"
@@ -116,6 +281,32 @@
       "test_mean_ap": 0.1673125,
       "test_mean_boundary_fscore": 0.86284375,
       "test_mean_bsd_wasserstein": 3.564171875,
+      "test_cell_count": 64,
+      "test_micro": {
+        "association_iou": 0.5,
+        "nGt": 17846,
+        "nPred": 10809,
+        "tp": 7105,
+        "fp": 3704,
+        "fn": 10741,
+        "merges": 2059,
+        "splits": 51,
+        "instance_precision": 0.6573226015357573,
+        "instance_recall": 0.3981284321416564,
+        "instance_f1": 0.4958994939801082
+      },
+      "compute": {
+        "hardware_lane": "cpu",
+        "device": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+        "mean_inference_ms": 9.601015624999999,
+        "p95_inference_ms": 11.316399999999998,
+        "peak_memory_mib": 1.379,
+        "peak_memory_metric": "python-tracemalloc",
+        "model_artifact_bytes": 0,
+        "model_artifact_sha256": null,
+        "model_artifact_committed": true,
+        "training_duration_seconds": 0.0
+      },
       "canonical_mean_ap": 0.21783333333333332,
       "run": null,
       "docs_path": "docs/methods/classical.md"
@@ -129,6 +320,33 @@
       "test_mean_ap": 0.41528125,
       "test_mean_boundary_fscore": 0.9590359374999999,
       "test_mean_bsd_wasserstein": 1.6162343750000001,
+      "test_cell_count": 64,
+      "test_micro": {
+        "association_iou": 0.5,
+        "nGt": 17846,
+        "nPred": 17392,
+        "tp": 13993,
+        "fp": 3399,
+        "fn": 3853,
+        "merges": 2145,
+        "splits": 1322,
+        "instance_precision": 0.8045653173873045,
+        "instance_recall": 0.7840972767006612,
+        "instance_f1": 0.7941994437822806
+      },
+      "compute": {
+        "hardware_lane": "gpu",
+        "device": "NVIDIA GeForce RTX 4070 Laptop GPU",
+        "mean_inference_ms": 57.16615384615383,
+        "p95_inference_ms": 164.3389999999996,
+        "peak_memory_mib": 24.4,
+        "peak_memory_metric": "cuda-peak-allocated",
+        "model_artifact_bytes": 997257,
+        "model_artifact_sha256": "1d702990dabf933c899b40228fcb4e95c342425cb4c7c44e78090466f67c5d91",
+        "model_artifact_committed": true,
+        "training_duration_seconds": 178.953,
+        "run_manifest": "models/unet-watershed-v2/run.json"
+      },
       "canonical_mean_ap": 0.45649999999999996,
       "run": {
         "path": "models/unet-watershed-v2/run.json",
@@ -145,6 +363,33 @@
       "test_mean_ap": 0.324703125,
       "test_mean_boundary_fscore": 0.9453015625000001,
       "test_mean_bsd_wasserstein": 1.91696875,
+      "test_cell_count": 64,
+      "test_micro": {
+        "association_iou": 0.5,
+        "nGt": 17846,
+        "nPred": 16027,
+        "tp": 11538,
+        "fp": 4489,
+        "fn": 6308,
+        "merges": 2755,
+        "splits": 1374,
+        "instance_precision": 0.7199101516191427,
+        "instance_recall": 0.6465314356158243,
+        "instance_f1": 0.6812505535382164
+      },
+      "compute": {
+        "hardware_lane": "gpu",
+        "device": "NVIDIA GeForce RTX 4070 Laptop GPU",
+        "mean_inference_ms": 47.910999999999994,
+        "p95_inference_ms": 129.9993999999997,
+        "peak_memory_mib": 155.4,
+        "peak_memory_metric": "cuda-peak-allocated",
+        "model_artifact_bytes": 450598,
+        "model_artifact_sha256": "8fc7de07511716d9d7dd26b15d3e440e323a076a261f393959ebb79ec73c2b40",
+        "model_artifact_committed": true,
+        "training_duration_seconds": 21.44,
+        "run_manifest": "models/deep-marker-watershed-v1/run.json"
+      },
       "canonical_mean_ap": 0.37691666666666673,
       "run": {
         "path": "models/deep-marker-watershed-v1/run.json",
@@ -161,6 +406,33 @@
       "test_mean_ap": 0.319046875,
       "test_mean_boundary_fscore": 0.9355734375,
       "test_mean_bsd_wasserstein": 1.8501875,
+      "test_cell_count": 64,
+      "test_micro": {
+        "association_iou": 0.5,
+        "nGt": 17846,
+        "nPred": 16276,
+        "tp": 11334,
+        "fp": 4942,
+        "fn": 6512,
+        "merges": 2918,
+        "splits": 1376,
+        "instance_precision": 0.6963627426886213,
+        "instance_recall": 0.6351003025888154,
+        "instance_f1": 0.6643221382099526
+      },
+      "compute": {
+        "hardware_lane": "gpu",
+        "device": "NVIDIA GeForce RTX 4070 Laptop GPU",
+        "mean_inference_ms": 52.25523076923077,
+        "p95_inference_ms": 145.16799999999964,
+        "peak_memory_mib": 156.3,
+        "peak_memory_metric": "cuda-peak-allocated",
+        "model_artifact_bytes": 738101,
+        "model_artifact_sha256": "dae5b7d02493e19766aeec47daa174a7cab6137f8d3d63abeb38ea16e4799345",
+        "model_artifact_committed": true,
+        "training_duration_seconds": 22.634,
+        "run_manifest": "models/gc-fsegnet-v1/run.json"
+      },
       "canonical_mean_ap": 0.37616666666666676,
       "run": {
         "path": "models/gc-fsegnet-v1/run.json",
@@ -177,10 +449,37 @@
       "test_mean_ap": 0.111890625,
       "test_mean_boundary_fscore": 0.7104421875,
       "test_mean_bsd_wasserstein": 2.820765625,
+      "test_cell_count": 64,
+      "test_micro": {
+        "association_iou": 0.5,
+        "nGt": 17846,
+        "nPred": 12037,
+        "tp": 6755,
+        "fp": 5282,
+        "fn": 11091,
+        "merges": 4462,
+        "splits": 3592,
+        "instance_precision": 0.5611863421118218,
+        "instance_recall": 0.3785161941051216,
+        "instance_f1": 0.4520965097212462
+      },
+      "compute": {
+        "hardware_lane": "cpu",
+        "device": "CPU",
+        "mean_inference_ms": 546.9745156249999,
+        "p95_inference_ms": 626.69415,
+        "peak_memory_mib": 5.362,
+        "peak_memory_metric": "python-tracemalloc",
+        "model_artifact_bytes": 975304,
+        "model_artifact_sha256": "9d89a72bf6126e9806e07efac5b162232b1df9c8b43577b4677117935697883e",
+        "model_artifact_committed": true,
+        "training_duration_seconds": 94.458,
+        "run_manifest": "models/stardist-froth-v1/run.json"
+      },
       "canonical_mean_ap": 0.12041666666666667,
       "run": {
         "path": "models/stardist-froth-v1/run.json",
-        "sha256": "048da3deec87278d23e2d2b34aeddc81974553ce9a501dd7def636679bc712b0"
+        "sha256": "2f06b278efd236f34cc5af32fc58a32b631c9715949be1078bf6d03fbfce96d1"
       },
       "docs_path": "docs/frameworks/10_stardist/README.md"
     },
@@ -193,6 +492,33 @@
       "test_mean_ap": 0.5098906249999999,
       "test_mean_boundary_fscore": 0.9674859375,
       "test_mean_bsd_wasserstein": 0.5828125,
+      "test_cell_count": 64,
+      "test_micro": {
+        "association_iou": 0.5,
+        "nGt": 17846,
+        "nPred": 13015,
+        "tp": 12591,
+        "fp": 424,
+        "fn": 5255,
+        "merges": 1690,
+        "splits": 513,
+        "instance_precision": 0.9674222051479062,
+        "instance_recall": 0.7055362546228847,
+        "instance_f1": 0.8159813356663751
+      },
+      "compute": {
+        "hardware_lane": "gpu",
+        "device": "NVIDIA GeForce RTX 4070 Laptop GPU",
+        "mean_inference_ms": 324.53125,
+        "p95_inference_ms": null,
+        "peak_memory_mib": 8128.8,
+        "peak_memory_metric": "cuda-peak-allocated",
+        "model_artifact_bytes": 1218643819,
+        "model_artifact_sha256": "615db30eb90a9dee3e97ca251d84d8405e756dc6f0e2561ace01497956fa1552",
+        "model_artifact_committed": false,
+        "training_duration_seconds": 598.952,
+        "run_manifest": "models/cellpose-sam-cpsam-v2/run.json"
+      },
       "canonical_mean_ap": 0.6471666666666667,
       "run": {
         "path": "models/cellpose-sam-cpsam-v2/run.json",
@@ -209,6 +535,33 @@
       "test_mean_ap": 0.293015625,
       "test_mean_boundary_fscore": 0.90205,
       "test_mean_bsd_wasserstein": 1.464203125,
+      "test_cell_count": 64,
+      "test_micro": {
+        "association_iou": 0.5,
+        "nGt": 17846,
+        "nPred": 10002,
+        "tp": 8245,
+        "fp": 1757,
+        "fn": 9601,
+        "merges": 2693,
+        "splits": 727,
+        "instance_precision": 0.8243351329734053,
+        "instance_recall": 0.4620082931749412,
+        "instance_f1": 0.5921430623384085
+      },
+      "compute": {
+        "hardware_lane": "gpu",
+        "device": "NVIDIA GeForce RTX 4070 Laptop GPU",
+        "mean_inference_ms": 300.90625,
+        "p95_inference_ms": null,
+        "peak_memory_mib": 623.3,
+        "peak_memory_metric": "cuda-peak-allocated",
+        "model_artifact_bytes": 5950820,
+        "model_artifact_sha256": "3bfe46f34e4f386dfc6711469ca0d90e973bc39f633b850549ba279221e78725",
+        "model_artifact_committed": true,
+        "training_duration_seconds": 19.258,
+        "run_manifest": "models/yolo-froth-seg-v1/run.json"
+      },
       "canonical_mean_ap": 0.40599999999999997,
       "run": {
         "path": "models/yolo-froth-seg-v1/run.json",
@@ -225,10 +578,37 @@
       "test_mean_ap": 0.135171875,
       "test_mean_boundary_fscore": 0.5492890625,
       "test_mean_bsd_wasserstein": 27.150078125,
+      "test_cell_count": 64,
+      "test_micro": {
+        "association_iou": 0.5,
+        "nGt": 17846,
+        "nPred": 2365,
+        "tp": 1991,
+        "fp": 374,
+        "fn": 15855,
+        "merges": 289,
+        "splits": 175,
+        "instance_precision": 0.8418604651162791,
+        "instance_recall": 0.11156561694497366,
+        "instance_f1": 0.1970214239770422
+      },
+      "compute": {
+        "hardware_lane": "gpu",
+        "device": "NVIDIA GeForce RTX 4070 Laptop GPU",
+        "mean_inference_ms": 972.421875,
+        "p95_inference_ms": null,
+        "peak_memory_mib": 2090.2,
+        "peak_memory_metric": "cuda-peak-allocated",
+        "model_artifact_bytes": 156008466,
+        "model_artifact_sha256": "7402e0d864fa82708a20fbd15bc84245c2f26dff0eb43a4b5b93452deb34be69",
+        "model_artifact_committed": false,
+        "training_duration_seconds": 62.235,
+        "run_manifest": "models/sam2-1-hiera-tiny/run.json"
+      },
       "canonical_mean_ap": 0.17416666666666666,
       "run": {
         "path": "models/sam2-1-hiera-tiny/run.json",
-        "sha256": "c825d5bd9e527cb3355b7316b8bb086b8199ce19aab9c4eb85a77249039b57d4"
+        "sha256": "1daf6218ea98ffea6db799435beed48d65cd940d390e37d55cb96e967bff8c9b"
       },
       "docs_path": "docs/frameworks/13_sam2/README.md"
     },
@@ -241,6 +621,33 @@
       "test_mean_ap": 0.21454687500000003,
       "test_mean_boundary_fscore": 0.9062281249999999,
       "test_mean_bsd_wasserstein": 4.601296875,
+      "test_cell_count": 64,
+      "test_micro": {
+        "association_iou": 0.5,
+        "nGt": 17846,
+        "nPred": 8960,
+        "tp": 6293,
+        "fp": 2667,
+        "fn": 11553,
+        "merges": 4123,
+        "splits": 654,
+        "instance_precision": 0.70234375,
+        "instance_recall": 0.3526280398968957,
+        "instance_f1": 0.46952174886219505
+      },
+      "compute": {
+        "hardware_lane": "gpu",
+        "device": "NVIDIA GeForce RTX 4070 Laptop GPU",
+        "mean_inference_ms": 47.775230769230774,
+        "p95_inference_ms": 133.69479999999965,
+        "peak_memory_mib": 210.4,
+        "peak_memory_metric": "cuda-peak-allocated",
+        "model_artifact_bytes": 739634,
+        "model_artifact_sha256": "a444ebb7d7508a6b5395eee86de7b716d5cbca6286bed27f8eba9f82f76b1546",
+        "model_artifact_committed": true,
+        "training_duration_seconds": 18.003,
+        "run_manifest": "models/lamellastar-v1/run.json"
+      },
       "canonical_mean_ap": 0.2215,
       "run": {
         "path": "models/lamellastar-v1/run.json",
@@ -277,16 +684,45 @@
       }
     }
   ],
+  "classical_live_parity": {
+    "path": "verification/classical-live-parity.json",
+    "sha256": "c7df6d804b6f0b015a31c0fe04ed3079b41b3eedf7e6b2bc2bb3274ef3826c6d",
+    "accepted_methods": [
+      "otsu_cc",
+      "watershed_dt",
+      "watershed_hmax"
+    ],
+    "selection": "first untouched-test sample from each of 16 conditions",
+    "acceptance": {
+      "max_mean_absolute_ap_delta": 0.03,
+      "min_mean_browser_vs_offline_ap": 0.5,
+      "min_mean_browser_vs_offline_boundary_fscore": 0.95,
+      "min_mean_instance_count_ratio": 0.75,
+      "max_mean_instance_count_ratio": 1.25
+    }
+  },
   "release_contract": {
     "required_test_metrics": [
+      "cases",
       "mean_ap",
       "mean_ap50",
+      "mean_ap75",
       "mean_boundary_fscore",
+      "mean_boundary_precision",
+      "mean_boundary_recall",
       "mean_bsd_wasserstein",
+      "mean_count_absolute_error",
       "mean_count_relative_error",
+      "mean_d10_relative_error",
       "mean_d32_relative_error",
+      "mean_d50_relative_error",
+      "mean_d90_relative_error",
       "mean_inference_ms",
       "mean_pq",
+      "mean_rq",
+      "mean_sq",
+      "micro",
+      "p95_inference_ms",
       "robustness_by_condition"
     ],
     "required_temporal_metrics": [
@@ -306,6 +742,7 @@
       "methods",
       "metrics",
       "problem-types",
+      "security",
       "temporal",
       "use-cases"
     ],

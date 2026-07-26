@@ -10,8 +10,8 @@ precomputed comparisons, and lightweight interactive evaluation.
   seeds, checksums, and reproducible artifacts.
 - [03 · compute gate](architecture/03_the-gate.md): what is valid live and what
   must be precomputed.
-- [04 · bounded browser lane](architecture/04_live-lane-pyodide.md): seven
-  TypeScript classical methods and legacy lightweight SlimSAM.
+- [04 · bounded browser lane](architecture/04_live-lane-pyodide.md): four
+  upload-only methods, C1, C3, C4, and legacy lightweight SlimSAM.
 - [05 · offline pipelines](architecture/05_precompute-pipeline.md): generation,
   caching, training, calibration, inference, evaluation, and export.
 - [06 · model evaluation](architecture/06_model-evaluation.md): split policy,
@@ -20,6 +20,6 @@ precomputed comparisons, and lightweight interactive evaluation.
 - [08 · data contracts](architecture/08_data-contracts.md): ingestion and
   artifact schemas.
 
-Binding decisions are maintained in the CAOS management repository. This
-implementation follows the product-repo archetype while treating the offline
-science stack, not the website, as the primary product.
+The offline science stack is authoritative. The website is a read-only replay
+surface for the complete method set plus a deliberately smaller exploratory
+upload lane.

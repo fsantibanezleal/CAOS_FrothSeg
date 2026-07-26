@@ -1,4 +1,5 @@
-// The live classical tier C1..C7, the in-browser twins of the offline Python floor
+// The classical tier C1..C7. C1/C3/C4 have validated in-browser twins; C2/C5/C6/C7 are canonical
+// offline implementations whose committed replay is presented by the web.
 // (data-pipeline/fslab/science/segment.py). Same method semantics, same provenance, running client-side in pure
 // TypeScript so the App is a genuine multi-model workbench: pick a method, run it live on the selected frame, and
 // compare against the pre-validated offline references. Provenance per method:
@@ -21,15 +22,24 @@ export type ClassicalMethod =
   | 'otsu_cc' | 'watershed_immersion' | 'watershed_hmax' | 'watershed_dt'
   | 'watershed_hmin' | 'slic_merge' | 'valley_edge';
 
-export const CLASSICAL_METHODS: Array<{ id: ClassicalMethod; label: string; note: string }> = [
-  { id: 'otsu_cc', label: 'C1 Otsu + CC', note: 'under-segments touching bubbles (baseline)' },
-  { id: 'watershed_immersion', label: 'C2 Immersion watershed', note: 'over-segments on highlights (exhibit)' },
-  { id: 'watershed_hmax', label: 'C3 Highlight-seeded watershed', note: 'the classic industrial froth trick' },
-  { id: 'watershed_dt', label: 'C4 Distance-transform watershed', note: 'the generic classical floor' },
-  { id: 'watershed_hmin', label: 'C5 H-minima watershed', note: 'suppresses shallow spurious basins' },
-  { id: 'slic_merge', label: 'C6 SLIC superpixels', note: 'non-watershed over-segmentation primitive' },
-  { id: 'valley_edge', label: 'C7 Valley-edge (Wang)', note: 'dark-seam froth method, strongest classical' },
+export const CLASSICAL_METHODS: Array<{
+  id: ClassicalMethod;
+  label: string;
+  note: string;
+  lane: 'validated-live' | 'offline-replay';
+}> = [
+  { id: 'otsu_cc', label: 'C1 Otsu + CC', note: 'under-segments touching bubbles (baseline)', lane: 'validated-live' },
+  { id: 'watershed_immersion', label: 'C2 Immersion watershed', note: 'over-segments on highlights (exhibit)', lane: 'offline-replay' },
+  { id: 'watershed_hmax', label: 'C3 Highlight-seeded watershed', note: 'the classic industrial froth trick', lane: 'validated-live' },
+  { id: 'watershed_dt', label: 'C4 Distance-transform watershed', note: 'the generic classical floor', lane: 'validated-live' },
+  { id: 'watershed_hmin', label: 'C5 H-minima watershed', note: 'suppresses shallow spurious basins', lane: 'offline-replay' },
+  { id: 'slic_merge', label: 'C6 SLIC superpixels', note: 'non-watershed over-segmentation primitive', lane: 'offline-replay' },
+  { id: 'valley_edge', label: 'C7 Valley-edge (Wang)', note: 'dark-seam froth method, strongest classical', lane: 'offline-replay' },
 ];
+
+export const LIVE_CLASSICAL_METHODS = CLASSICAL_METHODS.filter(
+  (method) => method.lane === 'validated-live',
+);
 
 /** Froth foreground: bright bubble caps vs dark Plateau borders, Otsu-relative threshold + cleanup (mirrors
  *  the offline `_foreground`). */

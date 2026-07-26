@@ -1,8 +1,10 @@
-import { StrictMode } from 'react';
+import { StrictMode, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { CircleDot } from 'lucide-react';
-import { AppShell, applyTheme, readTheme, CitationsProvider, type ShellConfig } from '@fasl-work/caos-app-shell';
+import {
+  AppShell, applyTheme, readTheme, CitationsProvider, useShellLang, type ShellConfig,
+} from '@fasl-work/caos-app-shell';
 import '@fasl-work/caos-app-shell/styles.css';
 import './frothseg.css';
 import 'katex/dist/katex.min.css';
@@ -17,6 +19,19 @@ import Experiments from './pages/Experiments';
 import Benchmark from './pages/Benchmark';
 
 applyTheme(readTheme());
+
+// Vite fingerprints lazy chunks. If a deployment replaces the bundle while a
+// tab is open, reload the new index once instead of surfacing a stale-chunk
+// import error to the segmentation workbench.
+const PRELOAD_RECOVERY_KEY = 'frothseg:preload-recovery';
+window.setTimeout(() => sessionStorage.removeItem(PRELOAD_RECOVERY_KEY), 10_000);
+window.addEventListener('vite:preloadError', (event) => {
+  event.preventDefault();
+  if (sessionStorage.getItem(PRELOAD_RECOVERY_KEY) !== location.pathname) {
+    sessionStorage.setItem(PRELOAD_RECOVERY_KEY, location.pathname);
+    location.reload();
+  }
+});
 
 const config: ShellConfig = {
   product: { name: 'FrothSeg', mark: <CircleDot size={18} aria-hidden="true" /> },
@@ -43,6 +58,21 @@ const config: ShellConfig = {
   },
 };
 
+function ShellLicenseCorrection() {
+  const lang = useShellLang();
+  useEffect(() => {
+    const node = document.querySelector(
+      '.footer-meta a[href*="github"] + span + .faint',
+    );
+    if (node) {
+      node.textContent = lang === 'es'
+        ? 'Licencia Apache-2.0 · código abierto'
+        : 'Apache-2.0 licensed · open source';
+    }
+  }, [lang]);
+  return null;
+}
+
 const el = document.getElementById('root');
 if (el) {
   createRoot(el).render(
@@ -50,6 +80,7 @@ if (el) {
       <BrowserRouter>
         <CitationsProvider items={CITATIONS}>
           <AppShell config={config}>
+            <ShellLicenseCorrection />
             <Routes>
               <Route path="/" element={<Tool />} />
               <Route path="/introduction" element={<Introduction />} />

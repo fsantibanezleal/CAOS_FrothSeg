@@ -24,9 +24,24 @@
   "app_panels": {
     "count": 10,
     "all_rendered": true,
+    "canonical_cases": 13,
+    "precomputed_methods": 15,
+    "method_case_artifacts": 195,
     "error_boundaries": 0,
     "horizontal_overflow": 0
   },
+  "responsive_cells": [
+    {
+      "route": "/",
+      "viewport_css_px": "390x844",
+      "horizontal_overflow": 0
+    },
+    {
+      "route": "/benchmark",
+      "viewport_css_px": "390x844",
+      "horizontal_overflow": 0
+    }
+  ],
   "methodology_tabs": {
     "count": 6,
     "all_rendered": true
@@ -37,10 +52,19 @@
     "inline_svg_per_tab": true
   },
   "interaction_checks": {
-    "classical_segmentation": "passed",
+    "all_15_methods_on_selected_case": "passed",
+    "all_13_cases_on_selected_method": "passed",
+    "all_10_analysis_views": "passed",
+    "decoded_label_overlay": "passed",
     "synthetic_ground_truth_ap": "passed",
-    "seven_method_selected_frame_comparison": "passed",
-    "temporal_replay": "passed"
+    "upload_four_method_restriction": "passed",
+    "temporal_metrics": "passed"
+  },
+  "lazy_runtime_checks": {
+    "slimsam_not_selected": true,
+    "transformers_runtime_requests": 0,
+    "onnx_wasm_requests": 0,
+    "model_weight_requests": 0
   },
   "browser_console_errors": 0,
   "result": "passed"

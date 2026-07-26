@@ -19,19 +19,22 @@ capacity that a static browser cannot guarantee.
 
 ## Valid live workloads
 
-- seven TypeScript classical twins for exploratory single-frame inference;
-- legacy SlimSAM via transformers.js with WebGPU and WASM fallback;
+- C1, C3, and C4 TypeScript twins for exploratory single-frame inference;
+- legacy SlimSAM via transformers.js with WebGPU and WASM fallback, giving
+  exactly four upload-only interactive methods;
 - image validation, lightweight deglare, morphometry, BSD reduction, and plots.
 
-The TypeScript methods share semantics with the authoritative Python methods but
-are not claimed bit-identical. SlimSAM is bounded interaction, not the strongest
-method and not the offline benchmark.
+The three exposed TypeScript methods passed the 16-condition browser and
+offline parity checks. SlimSAM is bounded interaction, not the strongest method
+and not the offline benchmark. C2, C5, C6, C7, and all learned or foundation
+methods remain authoritative offline implementations.
 
 ## Replay
 
 The web copies `data/derived` during build and reads those artifacts without
-recomputing them. It exposes selected cases, the full method matrix, held-out
-and canonical results, provenance, and honest negative findings even when no
+recomputing them. The showcase manifest covers 15 methods by 13 canonical cases,
+or 195 precomputed method-case pairs. The workbench exposes those results,
+held-out metrics, provenance, and honest negative findings even when no
 accelerator or model hub is available.
 
 `core/gate.py` retains the archetype's measured Pyodide classification for

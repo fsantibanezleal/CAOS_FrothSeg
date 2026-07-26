@@ -4,7 +4,7 @@
 import { describe, expect, it } from 'vitest';
 import { edt, labelCC, otsuThreshold } from './gray';
 import { watershed } from './watershed';
-import { CLASSICAL_METHODS, runClassical } from './methods';
+import { CLASSICAL_METHODS, LIVE_CLASSICAL_METHODS, runClassical } from './methods';
 
 /** Deterministic synthetic froth-ish frame: a 4x4 grid of bright circular caps (r=13) separated by faint dark
  *  seams on a dark background, one specular highlight per cap, mild deterministic noise. 16 true bubbles. */
@@ -74,7 +74,7 @@ describe('gray toolbox', () => {
   });
 });
 
-describe('live classical tier C1..C7 (same signs as the offline Python tier)', () => {
+describe('classical TypeScript library and validated live subset', () => {
   const { gray, w, h, nTrue } = frothFrame();
 
   it('every method runs and returns a label map', () => {
@@ -82,6 +82,14 @@ describe('live classical tier C1..C7 (same signs as the offline Python tier)', (
       const lab = runClassical(m.id, gray, w, h);
       expect(lab.length).toBe(w * h);
     }
+  });
+
+  it('exposes exactly C1/C3/C4 to the live product lane', () => {
+    expect(LIVE_CLASSICAL_METHODS.map((method) => method.id)).toEqual([
+      'otsu_cc', 'watershed_hmax', 'watershed_dt',
+    ]);
+    expect(CLASSICAL_METHODS.filter((method) => method.lane === 'offline-replay').map((method) => method.id))
+      .toEqual(['watershed_immersion', 'watershed_hmin', 'slic_merge', 'valley_edge']);
   });
 
   it('C1 otsu_cc UNDER-segments (touching caps merge across the faint seams)', () => {

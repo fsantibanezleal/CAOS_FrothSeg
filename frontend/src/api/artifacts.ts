@@ -1,5 +1,5 @@
 // Fetch the committed CONTRACT-2 artifacts (copied into public/data by copy-data.mjs). The web loads these for
-// the baked benchmark + the synthetic samples the App runs the live segmenter on; live inference itself is
+// the baked benchmark + the synthetic samples the App runs bounded live tools on; live inference itself is
 // in-browser (src/sam), no backend.
 import type { BenchmarkDoc, CaseCard, CaseIndex, CaseManifest, LearnedBenchmarkDoc, MasksDoc, MethodBenchmarkDoc, SamBenchmarkDoc, TemporalBenchmarkDoc } from '../lib/contract.types';
 

@@ -1,18 +1,21 @@
-# Guide, verify the live SAM core offline
+# Guide, verify the bounded legacy SlimSAM interaction offline
 
-This is how the product's value is measured, not asserted. The live segmenter is a SAM-class foundation model
-(`frontend/src/sam/`). This harness runs the same module in Node over synthetic froth with exact ground truth,
+SlimSAM is one optional light browser interaction, not the authoritative
+product method or benchmark. This legacy harness runs the same module in Node
+over synthetic froth with exact ground truth,
 scores it with the same metrics the classical floor is scored with, and bakes the result into a committed
 artifact the web reads. Because the segmenter code is identical in the browser and in Node, the number you verify
 here is the number the App produces.
 
 ## What this is, and what it is not
 
-- It **is** an honest, reproducible measurement: the live core runs against exact GT and is compared to the tuned
+- It **is** an honest, reproducible diagnostic: the browser core runs against exact GT and is compared to the tuned
   classical floor on identical metrics (mask AP, BSD Wasserstein).
 - It is **not** real-plant accuracy. It scores against synthetic ground truth (labelled synthetic everywhere).
   The negative controls (`glare-storm`, `motion-fast`, `defocus`) are exactly where methods are supposed to fail.
-- It is **not** a CONTRACT-2 artifact. The SAM run is model-dependent (weights, backend), so the baked benchmark
+- It is **not** the complete 15-method held-out comparison. That is
+  `data/derived/method-benchmark.json`.
+- It is **not** a CONTRACT-2 artifact. The SlimSAM run is model-dependent (weights, backend), so the baked benchmark
   is a recorded experiment result, written once and committed, not a sha256-checked regenerate-and-compare
   artifact like the pipeline's `frame.png`.
 
@@ -21,7 +24,7 @@ here is the number the App produces.
 The loop is: generate the exact GT (the pipeline), run the live core over it in Node, score it against the
 floor, then bake the summary.
 
-### 1. Run the live segmenter in Node
+### 1. Run the bounded browser segmenter in Node
 
 `frontend/scripts/verify_sam.ts` imports `FrothSegmenter` from `frontend/src/sam/autoMask.ts`, the exact module
 the browser uses, and runs it on onnxruntime-node over the committed synthetic frames. It dumps the predicted
@@ -50,8 +53,9 @@ PYTHONPATH=data-pipeline .venv-pipeline/bin/python        scripts/score_sam.py  
 
 ### 3. Bake the committed benchmark
 
-`scripts/bake_sam_benchmark.py` writes `data/derived/sam_benchmark.json` (schema `frothseg.sam_benchmark/v1`),
-the artifact the web Experiments + Benchmark pages load.
+`scripts/bake_sam_benchmark.py --output <path>` writes a
+`frothseg.sam_benchmark/v1` artifact. Omitting `--output` intentionally targets
+`data/derived/sam_benchmark.json`, the historical diagnostic the web can read.
 
 ```bash
 PYTHONPATH=data-pipeline .venv-pipeline/Scripts/python.exe scripts/bake_sam_benchmark.py
@@ -96,6 +100,10 @@ The story the numbers tell:
   and SAM's confident-mask count drops (25 and 37 masks against ~170-200 true bubbles). This is honest: the App
   offers both methods for exactly this reason.
 - `empty-control` yields 0 bubbles and a `null` AP for both, the correct behaviour on a no-froth frame.
+
+These canonical results do not establish SOTA or plant readiness. The release
+comparison uses the common untouched test split, where fine-tuned Cellpose-SAM
+is the current leader.
 
 Timing: the encoder runs once (~1 s on Node CPU) and the full 1024-prompt sweep is ~24 to 31 s per case on CPU;
 the browser WebGPU path is far faster (SAM2 / MobileSAM WebGPU demos run interactively).

@@ -7,6 +7,7 @@ import json
 import platform
 import sys
 import time
+import tracemalloc
 from pathlib import Path
 
 import numpy as np
@@ -44,14 +45,26 @@ def run(cache_path: Path, output: Path, selected_methods: list[str] | None = Non
                 **full_instance_metrics(labels, cache["labels"][index]),
                 "inference_ms": round(inference_ms, 3),
             })
+        duration_seconds = time.perf_counter() - started_method
+        # Profiling allocations changes timings substantially, especially for
+        # SLIC. Run a separate pass so runtime and peak memory remain two honest
+        # measurements instead of one profiler-distorted number.
+        tracemalloc.start()
+        tracemalloc.reset_peak()
+        for image in cache["images"]:
+            engine(image.astype(np.float32) / 255.0)
         report = summarize_metric_rows(rows, split="test")
+        _, peak_traced_bytes = tracemalloc.get_traced_memory()
+        tracemalloc.stop()
         report.update({
             "method": method_name,
             "engine": "scikit-image/SciPy",
             "device": platform.processor() or platform.machine(),
-            "duration_seconds": round(time.perf_counter() - started_method, 3),
+            "duration_seconds": round(duration_seconds, 3),
             "mean_inference_ms": float(np.mean([row["inference_ms"] for row in rows])),
             "p95_inference_ms": float(np.quantile([row["inference_ms"] for row in rows], 0.95)),
+            "peak_traced_memory_mib": round(peak_traced_bytes / 1024**2, 3),
+            "peak_memory_metric": "python-tracemalloc",
         })
         method_reports.append(report)
         print(

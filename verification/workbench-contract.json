@@ -2,7 +2,9 @@
   "schema": "frothseg.workbench-verification/v1",
   "verified_on": "2026-07-26",
   "route": "/",
-  "selected_case_rule": true,
+  "canonical_case_count": 13,
+  "precomputed_method_count": 15,
+  "precomputed_method_case_artifacts": 195,
   "view_count": 10,
   "views": [
     "segmentation",
@@ -16,21 +18,23 @@
     "export",
     "method-comparison"
   ],
-  "live_methods": [
+  "upload_interactive_methods": [
     "C1",
-    "C2",
     "C3",
     "C4",
-    "C5",
-    "C6",
-    "C7",
     "SlimSAM"
   ],
+  "canonical_precomputed_methods": [
+    "C1", "C2", "C3", "C4", "C5", "C6", "C7",
+    "L1", "L2", "L3", "L4", "L5", "L6", "L7", "N1"
+  ],
   "browser_checks": {
-    "classical_selected_case_run": "passed",
-    "ground_truth_ap": "passed",
-    "seven_method_live_comparison": "passed",
-    "temporal_replay": "passed",
+    "all_15_methods_switch_on_watery": "passed",
+    "all_13_cases_switch_on_cellpose_sam": "passed",
+    "all_10_views_use_decoded_labels": "passed",
+    "canonical_ground_truth_ap": "passed",
+    "upload_restricted_to_four_interactive_methods": "passed",
+    "temporal_metrics": "passed",
     "six_routes_render": "passed",
     "console_errors": 0
   }

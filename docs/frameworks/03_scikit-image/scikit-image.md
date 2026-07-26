@@ -5,7 +5,7 @@ cited classical tier used in the complete comparison, plus the `regionprops` des
 layer (BSD, froth-state) consumes. It is a precompute-lane library: it runs in the `.venv-pipeline` locally and
 in CI, never in the browser.
 
-Code of record: `data-pipeline/fslab/science/segment.py` (the three floor methods + morphometry) and
+Code of record: `data-pipeline/fslab/science/segment.py` (all seven classical methods + morphometry) and
 `data-pipeline/fslab/io/froth_io.py` (`regionprops` rows in `bsd.csv`).
 
 ## What and why
@@ -32,12 +32,12 @@ numpy for things these libraries do correctly.
 
 ## What it is not
 
-- It is one production method tier, not merely a browser foil. scikit-image is the
-  baseline it is compared against. On the synthetic harness the foundation model beats this floor on average
-  (mean mask AP 0.365 vs 0.262 over the 13 cases in the committed `data/derived/sam_benchmark.json`), and by a wide
-  margin under glare (0.407 vs 0.081), while the floor stays complementary on heavy motion blur and defocus.
-- It does not run in the browser. There is no scikit-image build for the web; these methods are precompute only.
-  The browser has its own light front-end (`frontend/src/preprocess/deglare.ts`) and the live segmenter.
+- It is one production method tier, not merely a browser foil. All C1-C7
+  implementations participate in the same 64-sample untouched comparison as
+  the learned and foundation methods.
+- It does not run in the browser. There is no scikit-image build for the web.
+  C1/C3/C4 have separately validated TypeScript twins; C2/C5/C6/C7 remain
+  offline-only and appear on the web through canonical replay.
 - It is not trained on froth. Every method here is unsupervised classical CV, which is exactly why it is a fair,
   label-free baseline for a domain where labelled data is scarce.
 
@@ -125,8 +125,9 @@ channel_axis=-1, start_label=1)` followed by a `scipy.ndimage.mean` region-inten
 
 ## Applying it here
 
-- **Stage**: `benchmark` (`data-pipeline/fslab/stages/benchmark.py`) runs `methods = {watershed_dt, watershed_hmax,
-  slic_merge}` on each synthetic scene, then scores the labels with `mask_ap` and `bsd_wasserstein`.
+- **Stage**: `benchmark` (`data-pipeline/fslab/stages/benchmark.py`) runs
+  C1-C7 on each synthetic scene, then scores the labels with the full common
+  instance metric bundle.
 - **Stage**: `generate` / IO. `froth_io.py` uses `measure.regionprops` to write the per-instance rows of `bsd.csv`
   (id, area_px, d_eq_px, ecc, solidity) for the exact ground-truth masks.
 - **Inputs**: a grayscale float image in [0, 1] (H, W). **Outputs**: an int32 instance-label map (0 = background),

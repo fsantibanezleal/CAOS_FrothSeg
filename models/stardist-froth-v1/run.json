@@ -24,9 +24,11 @@
     "tensorflow": "2.21.0",
     "stardist": "0.9.2",
     "device": "CPU",
+    "peak_traced_memory_mib": 5.362,
+    "peak_memory_metric": "python-tracemalloc",
     "limitation": "Official TensorFlow >=2.11 has no native-Windows CUDA support; use Linux/WSL2 for GPU execution."
   },
-  "duration_seconds": 47.705,
+  "duration_seconds": 94.458,
   "history": {
     "source": "tensorboard-event-logs",
     "files": [
@@ -278,7 +280,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 1264.247
       },
       {
         "sample_id": "syn2-mono-clean-g10-a01",
@@ -408,7 +411,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 591.009
       },
       {
         "sample_id": "syn2-mono-clean-g11-a00",
@@ -538,7 +542,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 626.865
       },
       {
         "sample_id": "syn2-mono-clean-g11-a01",
@@ -668,7 +673,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 681.07
       },
       {
         "sample_id": "syn2-poly-normal-g10-a00",
@@ -798,7 +804,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 595.284
       },
       {
         "sample_id": "syn2-poly-normal-g10-a01",
@@ -928,7 +935,8 @@
               "accuracy": null
             }
           ]
-        }
+        },
+        "inference_ms": 622.156
       },
       {
         "sample_id": "syn2-poly-normal-g11-a00",
@@ -1058,7 +1066,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 517.419
       },
       {
         "sample_id": "syn2-poly-normal-g11-a01",
@@ -1188,7 +1197,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 508.866
       },
       {
         "sample_id": "syn2-fine-froth-g10-a00",
@@ -1318,7 +1328,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 498.683
       },
       {
         "sample_id": "syn2-fine-froth-g10-a01",
@@ -1448,7 +1459,8 @@
               "accuracy": null
             }
           ]
-        }
+        },
+        "inference_ms": 599.812
       },
       {
         "sample_id": "syn2-fine-froth-g11-a00",
@@ -1578,7 +1590,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 551.501
       },
       {
         "sample_id": "syn2-fine-froth-g11-a01",
@@ -1708,7 +1721,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 505.759
       },
       {
         "sample_id": "syn2-coarse-froth-g10-a00",
@@ -1838,7 +1852,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 554.236
       },
       {
         "sample_id": "syn2-coarse-froth-g10-a01",
@@ -1968,7 +1983,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 579.743
       },
       {
         "sample_id": "syn2-coarse-froth-g11-a00",
@@ -2098,7 +2114,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 567.538
       },
       {
         "sample_id": "syn2-coarse-froth-g11-a01",
@@ -2228,7 +2245,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 651.712
       },
       {
         "sample_id": "syn2-glare-storm-g10-a00",
@@ -2358,7 +2376,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 556.718
       },
       {
         "sample_id": "syn2-glare-storm-g10-a01",
@@ -2488,7 +2507,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 542.159
       },
       {
         "sample_id": "syn2-glare-storm-g11-a00",
@@ -2618,7 +2638,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 571.233
       },
       {
         "sample_id": "syn2-glare-storm-g11-a01",
@@ -2748,7 +2769,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 510.303
       },
       {
         "sample_id": "syn2-watery-g10-a00",
@@ -2878,7 +2900,8 @@
               "accuracy": null
             }
           ]
-        }
+        },
+        "inference_ms": 577.235
       },
       {
         "sample_id": "syn2-watery-g10-a01",
@@ -3008,7 +3031,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 590.771
       },
       {
         "sample_id": "syn2-watery-g11-a00",
@@ -3138,7 +3162,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 619.535
       },
       {
         "sample_id": "syn2-watery-g11-a01",
@@ -3268,7 +3293,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 596.174
       },
       {
         "sample_id": "syn2-motion-fast-g10-a00",
@@ -3398,7 +3424,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 498.553
       },
       {
         "sample_id": "syn2-motion-fast-g10-a01",
@@ -3528,7 +3555,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 533.013
       },
       {
         "sample_id": "syn2-motion-fast-g11-a00",
@@ -3658,7 +3686,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 484.971
       },
       {
         "sample_id": "syn2-motion-fast-g11-a01",
@@ -3788,7 +3817,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 491.36
       },
       {
         "sample_id": "syn2-defocus-g10-a00",
@@ -3918,7 +3948,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 469.336
       },
       {
         "sample_id": "syn2-defocus-g10-a01",
@@ -4048,7 +4079,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 519.382
       },
       {
         "sample_id": "syn2-defocus-g11-a00",
@@ -4178,7 +4210,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 486.843
       },
       {
         "sample_id": "syn2-defocus-g11-a01",
@@ -4308,7 +4341,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 514.479
       },
       {
         "sample_id": "syn2-high-load-g10-a00",
@@ -4438,7 +4472,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 500.732
       },
       {
         "sample_id": "syn2-high-load-g10-a01",
@@ -4568,7 +4603,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 494.554
       },
       {
         "sample_id": "syn2-high-load-g11-a00",
@@ -4698,7 +4734,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 450.037
       },
       {
         "sample_id": "syn2-high-load-g11-a01",
@@ -4828,7 +4865,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 473.75
       },
       {
         "sample_id": "syn2-low-light-noise-g10-a00",
@@ -4958,7 +4996,8 @@
               "accuracy": null
             }
           ]
-        }
+        },
+        "inference_ms": 492.451
       },
       {
         "sample_id": "syn2-low-light-noise-g10-a01",
@@ -5088,7 +5127,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 542.975
       },
       {
         "sample_id": "syn2-low-light-noise-g11-a00",
@@ -5218,7 +5258,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 609.749
       },
       {
         "sample_id": "syn2-low-light-noise-g11-a01",
@@ -5348,7 +5389,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 572.076
       },
       {
         "sample_id": "syn2-bursting-g10-a00",
@@ -5478,7 +5520,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 478.928
       },
       {
         "sample_id": "syn2-bursting-g10-a01",
@@ -5608,7 +5651,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 625.726
       },
       {
         "sample_id": "syn2-bursting-g11-a00",
@@ -5738,7 +5782,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 587.894
       },
       {
         "sample_id": "syn2-bursting-g11-a01",
@@ -5868,7 +5913,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 600.312
       },
       {
         "sample_id": "syn2-edge-framing-g10-a00",
@@ -5998,7 +6044,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 522.527
       },
       {
         "sample_id": "syn2-edge-framing-g10-a01",
@@ -6128,7 +6175,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 500.968
       },
       {
         "sample_id": "syn2-edge-framing-g11-a00",
@@ -6258,7 +6306,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 494.956
       },
       {
         "sample_id": "syn2-edge-framing-g11-a01",
@@ -6388,7 +6437,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 534.231
       },
       {
         "sample_id": "syn2-microbubble-cloud-g10-a00",
@@ -6518,7 +6568,8 @@
               "accuracy": null
             }
           ]
-        }
+        },
+        "inference_ms": 615.304
       },
       {
         "sample_id": "syn2-microbubble-cloud-g10-a01",
@@ -6648,7 +6699,8 @@
               "accuracy": null
             }
           ]
-        }
+        },
+        "inference_ms": 617.178
       },
       {
         "sample_id": "syn2-microbubble-cloud-g11-a00",
@@ -6778,7 +6830,8 @@
               "accuracy": null
             }
           ]
-        }
+        },
+        "inference_ms": 540.938
       },
       {
         "sample_id": "syn2-microbubble-cloud-g11-a01",
@@ -6908,7 +6961,8 @@
               "accuracy": null
             }
           ]
-        }
+        },
+        "inference_ms": 483.272
       },
       {
         "sample_id": "syn2-wide-bimodal-proxy-g10-a00",
@@ -7038,7 +7092,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 437.629
       },
       {
         "sample_id": "syn2-wide-bimodal-proxy-g10-a01",
@@ -7168,7 +7223,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 395.587
       },
       {
         "sample_id": "syn2-wide-bimodal-proxy-g11-a00",
@@ -7298,7 +7354,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 383.155
       },
       {
         "sample_id": "syn2-wide-bimodal-proxy-g11-a01",
@@ -7428,7 +7485,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 444.548
       },
       {
         "sample_id": "syn2-glare-motion-compound-g10-a00",
@@ -7558,7 +7616,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 476.81
       },
       {
         "sample_id": "syn2-glare-motion-compound-g10-a01",
@@ -7688,7 +7747,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 456.2
       },
       {
         "sample_id": "syn2-glare-motion-compound-g11-a00",
@@ -7818,7 +7878,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 481.238
       },
       {
         "sample_id": "syn2-glare-motion-compound-g11-a01",
@@ -7948,7 +8009,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 565.133
       },
       {
         "sample_id": "syn2-dark-defocus-compound-g10-a00",
@@ -8078,7 +8140,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 501.593
       },
       {
         "sample_id": "syn2-dark-defocus-compound-g10-a01",
@@ -8208,7 +8271,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 582.263
       },
       {
         "sample_id": "syn2-dark-defocus-compound-g11-a00",
@@ -8338,7 +8402,8 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 580.564
       },
       {
         "sample_id": "syn2-dark-defocus-compound-g11-a01",
@@ -8468,11 +8533,14 @@
               "accuracy": 1.0
             }
           ]
-        }
+        },
+        "inference_ms": 485.126
       }
     ],
     "mean_brier": 0.210680203125,
-    "mean_ece": 0.339387234375
+    "mean_ece": 0.339387234375,
+    "mean_inference_ms": 546.9745156249999,
+    "p95_inference_ms": 626.69415
   },
   "canonical_diagnostic": {
     "mean_ap": 0.12041666666666667,

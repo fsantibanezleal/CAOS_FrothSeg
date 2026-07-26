@@ -1,10 +1,11 @@
 # Frameworks
 
 One card per research-chosen engine/library, **the deep research, made binding**. Every engine FrothSeg uses
-gets a card here and an exact pin in the matching `requirements-*.txt` (Python offline stack) or
-`frontend/package.json` (the live segmenter). No hand-rolled toy substitute for a SOTA engine the research
-prescribed: the classical floor is scikit-image, the foam geometry is scipy, the masks are pycocotools, the
-segmenter is a real SAM-family model via transformers.js.
+gets a card here and an exact pin in the matching `requirements-*.txt` (Python
+offline stack) or `frontend/package.json` (bounded web tools). No hand-rolled
+toy substitute for a research engine: the classical floor is scikit-image,
+the foam geometry is scipy, masks are pycocotools, learned methods train in
+their official frameworks, and foundation integrations use official runtimes.
 
 - [01, `@huggingface/transformers` (+ onnxruntime-web)](frameworks/01_transformers-js/transformers-js.md), the browser runtime that carries the live SAM model (WebGPU, WASM fallback); pinned in `frontend/package.json`, and the same runtime in Node for the offline verification.
 - [02, the legacy browser SAM automatic mask generator](frameworks/02_sam-method/sam-method.md), the bounded interaction method built on that runtime: encode once, dense point grid, best-of-3 by predicted IoU, stability/area filter, greedy IoU NMS, BSD reduction.
@@ -19,9 +20,9 @@ segmenter is a real SAM-family model via transformers.js.
 - [11, Cellpose-SAM](frameworks/11_cellpose-sam/README.md), official `cpsam_v2` CUDA inference and checkpoint provenance.
 - [12, YOLO segmentation](frameworks/12_yolo-seg/README.md), official Ultralytics training from exact polygon exports and its license gate.
 - [13, SAM 2.1](frameworks/13_sam2/README.md), official Meta image/video integration and acceptance evidence.
-- [14, LamellaStar](frameworks/14_lamellastar/README.md), the four-head frontier hypothesis and its negative v1 result.
+- [14, LamellaStar](frameworks/14_lamellastar/README.md), the four-head experimental hypothesis and its negative v1 result.
 - [00, card TEMPLATE](frameworks/00_TEMPLATE.md), copy per engine to `frameworks/<NN>_<tool>/<tool>.md`.
 
-*(The live segmenter is a frontend npm engine, so its binding pin lives in `frontend/package.json`. The Python
+*(The optional SlimSAM interaction is a frontend npm engine, so its binding pin lives in `frontend/package.json`. The Python
 offline stack, scikit-image / scipy / OpenCV / onnxruntime / pycocotools, is pinned in the
 `data-pipeline/requirements-*.txt` files.)*

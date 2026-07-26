@@ -7,9 +7,9 @@ offline command-line lanes and do not listen on a network port.
 
 The browser ONNX/WASM stack is code-split. It is neither transferred nor
 initialized during normal browsing and is fetched only after the user
-explicitly selects and runs the legacy SlimSAM interaction. Classical C1-C7
-need no model download; all authoritative learned/foundation benchmarks remain
-offline artifacts.
+explicitly selects and runs the legacy SlimSAM interaction. Validated live
+classical twins C1/C3/C4 need no model download; C2/C5/C6/C7 and all
+authoritative learned/foundation benchmarks remain offline artifacts.
 
 ## Frontend dependency gate
 

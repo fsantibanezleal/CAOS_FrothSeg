@@ -147,7 +147,9 @@ def run(cache_path: Path, output: Path, canonical_output: Path) -> dict:
         "upstream_commit": UPSTREAM_COMMIT,
         "model": {
             "id": MODEL_ID,
-            "checkpoint_local_cache": str(checkpoint),
+            "checkpoint_cache_locator": (
+                f"huggingface-cache://{MODEL_ID}/sam2.1_hiera_tiny.pt"
+            ),
             "bytes": checkpoint.stat().st_size,
             "sha256": hashlib.sha256(checkpoint.read_bytes()).hexdigest(),
             "committed": False,

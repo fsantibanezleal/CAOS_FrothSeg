@@ -1,94 +1,79 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 470" width="900" class="arch-svg" role="img" aria-label="The design: two data contracts and the lane gate">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 460" width="900" class="arch-svg" role="img" aria-label="FrothSeg source dataset model artifact and release contracts">
   <style>
     .arch-svg text { font-family: var(--font-sans, Inter, "Segoe UI", system-ui, sans-serif); }
     .arch-svg .mono { font-family: var(--font-mono, ui-monospace, Consolas, monospace); }
     .arch-svg .bx { fill: var(--color-surface-2); stroke: var(--color-border); stroke-width: 1.2; }
-    .arch-svg .bx-in { stroke: var(--color-accent); }
-    .arch-svg .bx-out { stroke: var(--color-good); }
-    .arch-svg .bx-gate { stroke: var(--color-warn); }
-    .arch-svg .grp { fill: none; stroke: var(--color-border); stroke-dasharray: 5 4; }
+    .arch-svg .hi { stroke: var(--color-accent); }
+    .arch-svg .good { stroke: var(--color-good); }
+    .arch-svg .warn { stroke: var(--color-warn); }
     .arch-svg .ttl { fill: var(--color-fg); font-size: 13px; font-weight: 700; }
-    .arch-svg .sub { fill: var(--color-fg-subtle); font-size: 10px; }
-    .arch-svg .it { fill: var(--color-fg); font-size: 10.5px; }
-    .arch-svg .cd { fill: var(--color-accent); font-size: 9.5px; }
-    .arch-svg .key { fill: var(--color-good); font-size: 9.5px; }
-    .arch-svg .mu { fill: var(--color-fg-subtle); font-size: 10px; }
+    .arch-svg .it { fill: var(--color-fg); font-size: 10.5px; font-weight: 600; }
+    .arch-svg .mu { fill: var(--color-fg-subtle); font-size: 9.8px; }
+    .arch-svg .cd { fill: var(--color-accent); font-size: 9.2px; }
     .arch-svg .flow { fill: none; stroke: var(--color-fg-faint); stroke-width: 1.5; }
-    .arch-svg .lbl { fill: var(--color-fg-subtle); font-size: 9.5px; }
   </style>
   <defs>
-    <marker id="dc-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <marker id="c-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto">
       <path d="M0,0 L8,4 L0,8 z" fill="var(--color-fg-faint)"/>
     </marker>
   </defs>
 
-  <text class="ttl" x="22" y="30">The design · two data contracts + the lane gate</text>
-  <text class="sub" x="22" y="47">a contract is a validated schema; everything in and out of the pipeline passes one, so the app is bring-your-own-data</text>
+  <text class="ttl" x="22" y="30">Contracts prevent silent scientific and web drift</text>
+  <text class="mu" x="22" y="48">Each transition has a validated schema, provenance, and failure condition.</text>
 
-  <!-- Contract 1: ingestion -->
-  <rect class="bx bx-in" x="14" y="68" width="252" height="220" rx="11"/>
-  <text class="it" x="30" y="92" style="font-weight:700">Contract 1 · Ingestion</text>
-  <text class="cd mono" x="30" y="108">io/schema.py · io/contract.py</text>
-  <text class="mu" x="30" y="128">what a valid INPUT case looks like:</text>
-  <rect class="bx" x="30" y="138" width="220" height="40" rx="6"/>
-  <text class="it" x="42" y="156">field names + dtypes + units</text>
-  <text class="mu" x="42" y="170">domain quantities, not pixels</text>
-  <rect class="bx" x="30" y="184" width="220" height="40" rx="6"/>
-  <text class="it" x="42" y="202">range / NaN / outlier guards</text>
-  <text class="mu" x="42" y="216">rejects malformed cases early</text>
-  <rect class="bx" x="30" y="230" width="220" height="44" rx="6"/>
-  <text class="it" x="42" y="248">accepts built-in OR your data</text>
-  <text class="key mono" x="42" y="264">data/examples/*.csv</text>
+  <rect class="bx hi" x="18" y="76" width="196" height="250" rx="10"/>
+  <text class="it" x="34" y="100">1. Source + ingestion</text>
+  <text class="mu" x="34" y="126">source id, URL, license</text>
+  <text class="mu" x="34" y="146">image and annotation format</text>
+  <text class="mu" x="34" y="166">geometry group id</text>
+  <text class="mu" x="34" y="186">mm_per_px calibration</text>
+  <text class="mu" x="34" y="206">reviewer and review state</text>
+  <text class="mu" x="34" y="226">archive/content SHA-256</text>
+  <text class="cd mono" x="34" y="258">source-registry.json</text>
+  <text class="cd mono" x="34" y="278">real-dataset-manifest.json</text>
+  <text class="mu" x="34" y="306">Reject missing license or leakage.</text>
 
-  <!-- Pipeline + gate -->
-  <rect class="bx bx-gate" x="324" y="68" width="252" height="220" rx="11"/>
-  <text class="it" x="340" y="92" style="font-weight:700">Pipeline + lane gate</text>
-  <text class="cd mono" x="340" y="108">core/gate.py · pipeline.py</text>
-  <rect class="bx" x="340" y="124" width="220" height="42" rx="6"/>
-  <text class="it" x="352" y="142">staged, deterministic</text>
-  <text class="cd mono" x="352" y="158">stages/*.py · core/trace.py</text>
-  <rect class="bx" x="340" y="172" width="220" height="42" rx="6"/>
-  <text class="it" x="352" y="190">lane gate: default vs retrain</text>
-  <text class="mu" x="352" y="206">numpy-light unless --retrain</text>
-  <rect class="bx" x="340" y="220" width="220" height="54" rx="6"/>
-  <text class="it" x="352" y="238">manifest = provenance</text>
-  <text class="cd mono" x="352" y="254">core/manifest.py</text>
-  <text class="mu" x="352" y="268">seeds, inputs, hashes · reproducible</text>
+  <rect class="bx" x="238" y="76" width="196" height="250" rx="10"/>
+  <text class="it" x="254" y="100">2. Dataset + split</text>
+  <text class="mu" x="254" y="126">sample id and condition</text>
+  <text class="mu" x="254" y="146">latent geometry group</text>
+  <text class="mu" x="254" y="166">train/validation/calibration/test</text>
+  <text class="mu" x="254" y="186">exact masks, scale, seeds</text>
+  <text class="mu" x="254" y="206">cache and manifest hashes</text>
+  <text class="cd mono" x="254" y="244">learned-dataset-v2.json</text>
+  <text class="cd mono" x="254" y="264">learned-v2-192.npz</text>
+  <text class="mu" x="254" y="306">Group overlap is a hard failure.</text>
 
-  <!-- Contract 2: artifact -->
-  <rect class="bx bx-out" x="634" y="68" width="252" height="220" rx="11"/>
-  <text class="it" x="650" y="92" style="font-weight:700">Contract 2 · Artifact</text>
-  <text class="cd mono" x="650" y="108">data/derived/ · manifests</text>
-  <text class="mu" x="650" y="128">what a valid OUTPUT looks like:</text>
-  <rect class="bx" x="650" y="138" width="220" height="40" rx="6"/>
-  <text class="it" x="662" y="156">per-case results + metrics</text>
-  <text class="key mono" x="662" y="170">case-results.json</text>
-  <rect class="bx" x="650" y="184" width="220" height="40" rx="6"/>
-  <text class="it" x="662" y="202">model index (onnx + meta)</text>
-  <text class="key mono" x="662" y="216">manifests/index.json</text>
-  <rect class="bx" x="650" y="230" width="220" height="44" rx="6"/>
-  <text class="it" x="662" y="248">the SAME shape the web reads</text>
-  <text class="key mono" x="662" y="264">contract.types.ts (mirror)</text>
+  <rect class="bx good" x="458" y="76" width="196" height="250" rx="10"/>
+  <text class="it" x="474" y="100">3. Model + evidence</text>
+  <text class="mu" x="474" y="126">method id and engine version</text>
+  <text class="mu" x="474" y="146">source/upstream revisions</text>
+  <text class="mu" x="474" y="166">config, seed, device, duration</text>
+  <text class="mu" x="474" y="186">checkpoint size and SHA-256</text>
+  <text class="mu" x="474" y="206">calibration and 64 case cells</text>
+  <text class="mu" x="474" y="226">runtime and peak memory</text>
+  <text class="cd mono" x="474" y="258">models/*/run.json</text>
+  <text class="cd mono" x="474" y="278">method-benchmark/v2</text>
+  <text class="mu" x="474" y="306">Missing cells invalidate comparison.</text>
 
-  <path class="flow" d="M266,178 H322" marker-end="url(#dc-arrow)"/>
-  <path class="flow" d="M576,178 H632" marker-end="url(#dc-arrow)"/>
-  <text class="lbl" x="272" y="170">validate</text>
-  <text class="lbl" x="582" y="170">emit + validate</text>
+  <rect class="bx warn" x="678" y="76" width="204" height="250" rx="10"/>
+  <text class="it" x="694" y="100">4. Release + web</text>
+  <text class="mu" x="694" y="126">all 15 offline method records</text>
+  <text class="mu" x="694" y="146">parity and visual QA reports</text>
+  <text class="mu" x="694" y="166">temporal evidence</text>
+  <text class="mu" x="694" y="186">real held-out thresholds</text>
+  <text class="mu" x="694" y="206">version and tag synchronization</text>
+  <text class="mu" x="694" y="226">typed frontend mirror</text>
+  <text class="cd mono" x="694" y="258">release-report.json</text>
+  <text class="cd mono" x="694" y="278">contract.types.ts</text>
+  <text class="mu" x="694" y="306">Real held-out evidence is still absent.</text>
 
-  <!-- cases by category + mirror -->
-  <rect class="grp" x="14" y="312" width="430" height="142" rx="10"/>
-  <text class="it" x="30" y="334" style="font-weight:700">Cases by category</text>
-  <text class="cd mono" x="30" y="350">cases/&lt;domain&gt;_cases.py · registry.py</text>
-  <text class="mu" x="30" y="372">• control / degenerate · sanity anchors</text>
-  <text class="mu" x="30" y="392">• canonical regimes · the science range</text>
-  <text class="mu" x="30" y="412">• real-data · sourced, labelled honestly</text>
-  <text class="mu" x="30" y="438">each case carries its own units + provenance</text>
+  <path class="flow" d="M214,200 H236" marker-end="url(#c-arrow)"/>
+  <path class="flow" d="M434,200 H456" marker-end="url(#c-arrow)"/>
+  <path class="flow" d="M654,200 H676" marker-end="url(#c-arrow)"/>
 
-  <rect class="grp" x="460" y="312" width="426" height="142" rx="10"/>
-  <text class="it" x="476" y="334" style="font-weight:700">The mirror that gates the build</text>
-  <text class="mu" x="476" y="356">the TS type mirrors Contract 2 exactly;</text>
-  <text class="mu" x="476" y="374">if the pipeline changes the artifact shape</text>
-  <text class="mu" x="476" y="392">and the mirror is not updated, tsc fails.</text>
-  <text class="cd mono" x="476" y="414">frontend/src/lib/contract.types.ts</text>
-  <text class="mu" x="476" y="438">→ web and pipeline can never silently drift</text>
+  <rect class="bx good" x="18" y="354" width="864" height="80" rx="10"/>
+  <text class="it" x="34" y="380">Deployment rule</text>
+  <text class="mu" x="34" y="402">The web build copies only validated committed artifacts. It never trains, performs canonical inference, or rewrites results.</text>
+  <text class="cd mono" x="34" y="422">check_product_completeness.py + check_artifacts.py + tsc + visual QA</text>
 </svg>

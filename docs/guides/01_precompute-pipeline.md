@@ -6,14 +6,16 @@ This offline pipeline bakes the **synthetic froth benchmark harness**: for each 
 flavoured froth image whose per-bubble instance masks are known exactly (by construction), scores the classical
 floor against that exact ground truth, and commits the artifacts + a sha256 manifest.
 
-- It **is** the only source of per-bubble ground truth in this product, so it is the harness that measures mask
-  quality with real metrics (mask AP, BSD Wasserstein).
-- It is **not** the product's live method. The product's live segmenter is a SAM-class foundation model that runs
-  in the browser (`frontend/src/sam/`, onnxruntime-web + WebGPU); it is measured by a separate harness, see
-  [03_verify-sam.md](03_verify-sam.md).
-- It is **not** real-plant data. Public per-bubble froth masks are legally request-only
-  (`research-tools-and-data-2026-07-09`), so every case here is labelled synthetic and its AP is never reported as
-  real-plant accuracy. The real-froth capability is the upload lane, see [02_bring-your-own-data.md](02_bring-your-own-data.md).
+- It **is** the exact synthetic ground-truth source used by the canonical
+  diagnostic suite and the expanded 384-sample grouped dataset. The unified
+  benchmark measures all 15 methods on the 64-sample untouched split.
+- It is one stage of the complete offline product. The companion browser has
+  bounded C1/C3/C4 and legacy SlimSAM interactions, but it never substitutes
+  for offline training, official model inference, or the 960-cell benchmark.
+- It is **not** real-plant data. Every case here is labelled synthetic and its
+  AP is never reported as real-plant accuracy. The governed real-data lane uses
+  the source registry, licensed fetch/import tooling, physical calibration,
+  grouped splits, and independent annotation review.
 
 The engine lives under `data-pipeline/fslab/`: geometry + appearance in `science/froth_gen.py`, the classical
 floor + scoring in `science/segment.py`, the artifact encoders in `io/froth_io.py`, and the staged orchestrator
@@ -53,6 +55,8 @@ PYTHONPATH=data-pipeline .venv-pipeline/bin/python        -m fslab.pipeline poly
 ```
 
 The positional argument is a case id or `all` (default); `--check` re-verifies the committed sha256s and exits.
+For every non-canonical run, supply `--output <root>` so experiments and CI
+cannot overwrite committed artifacts.
 There is no run-level seed flag: each synthetic frame is a pure function of the case's fixed `FrothSpec.seed`
 (101 to 113), so it is byte-identical on every run and the manifest records that generation seed. After the
 editable install, `PYTHONPATH=data-pipeline` is redundant but harmless; keep it if you run the module without

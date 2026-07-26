@@ -13,11 +13,15 @@ Metrics:
 - AP50 for accessible localization quality;
 - panoptic quality (PQ), with segmentation and recognition components;
 - merge, split, false-positive, and false-negative counts per sample;
-- BSD Wasserstein-1 on the canonical diagnostic cases.
+- BSD Wasserstein-1 and D32/count error on every held-out cell;
+- macro means, pooled micro TP/FP/FN/precision/recall/F1, runtime, peak memory,
+  model size, and hardware lane.
 
 The separate 13-case suite is a diagnostic visualization surface. Classical
-methods only have canonical scores and are not ranked as if those were
-untouched-test results.
+methods retain those canonical scores and are also evaluated on the same
+untouched 64-image test split as every learned/foundation method. The committed
+matrix therefore contains exactly 960 comparable held-out cells. Canonical
+scores remain a separate diagnostic and are never mixed into the test ranking.
 
 ## Held-out results
 
@@ -32,8 +36,8 @@ untouched-test results.
 | L7 | SAM2.1 automatic masks | 0.1352 | 0.1821 | 0.2391 | below |
 | L4 | StarDist 2D | 0.1119 | 0.3473 | 0.3242 | below |
 
-The current internal bar is test AP 0.30. It is a release-comparison threshold,
-not a claim of plant readiness.
+The predeclared comparison threshold is test AP 0.30. It is a controlled
+synthetic-benchmark threshold, not a claim of plant readiness.
 
 ## Temporal evidence
 

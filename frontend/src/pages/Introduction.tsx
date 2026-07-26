@@ -284,6 +284,9 @@ function TemporalShowcase({ es }: { es: boolean }) {
       <div className="fs-temporal-stage">
         <img src={artifactUrl(frame.source_path)} alt={es ? `Cuadro ${frameIndex + 1} de ${sequence.label}` : `Frame ${frameIndex + 1} of ${sequence.label}`} />
         <img className="fs-temporal-overlay" src={artifactUrl(frame.overlay_path)} alt="" aria-hidden="true" />
+        <div className="fs-temporal-divider" aria-hidden="true" />
+        <span className="fs-temporal-side raw">{es ? 'Cuadro' : 'Frame'}</span>
+        <span className="fs-temporal-side labels">{es ? 'Instancias exactas' : 'Exact instances'}</span>
         <div className="fs-temporal-stamp"><span>{sequence.label}</span><strong>{frameLabel}</strong></div>
       </div>
       <div className="fs-temporal-controls">

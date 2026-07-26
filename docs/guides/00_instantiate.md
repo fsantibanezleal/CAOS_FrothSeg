@@ -20,11 +20,15 @@ frozen base was specialised into the froth product, so the mapping is legible; i
    drift fails `tsc`); the visualisations live in `frontend/src/viz/` and `frontend/src/pages/`.
 7. **Lanes.** The mandatory offline lane owns training, official-model
    inference, evaluation, export, and release evidence. The browser provides
-   C1-C7 TypeScript twins, legacy SlimSAM, BSD reduction, and replay.
-8. **Architecture modal (ADR-0058).** `frontend/src/architecture.ts` supplies the modal config; two hand-authored
-   themed SVGs (`public/svg/tech/01-the-app.svg`, `04-the-science.svg`) are passed to the `AppShell` config in
-   `main.tsx`. See [guide 05](05_architecture-modal.md).
-9. **Verify + version.** `scripts/setup`, `scripts/precompute`, `pytest`, then `cd frontend && npm run build`;
+   four upload-only methods, C1, C3, C4, and legacy SlimSAM, plus replay of all
+   15 offline methods across the 13 canonical cases.
+8. **Showcase.** `python -m fslab.pipeline showcase` converts the 15-by-13
+   canonical result matrix into 195 compact label/preview pairs consumed by all
+   ten workbench views.
+9. **Architecture modal.** `frontend/src/architecture.ts` supplies the modal
+   config; five hand-authored themed SVGs under `public/svg/tech/` are passed to
+   the `AppShell` config in `main.tsx`. See [guide 05](05_architecture-modal.md).
+10. **Verify + version.** `scripts/setup`, `scripts/precompute`, `pytest`, then `cd frontend && npm run build`;
    `CHANGELOG.md` (`X.XX.XXX`, `0.x` while the froth-state layer uses proxy labels) with a tag per release.
 
 The base is frozen; only the core (engine, stages, visualisations, cases, content) is specialised. Editing the

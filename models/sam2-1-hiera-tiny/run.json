@@ -5,7 +5,7 @@
   "upstream_commit": "2b90b9f5ceec907a1c18123530e92e794ad901a4",
   "model": {
     "id": "facebook/sam2.1-hiera-tiny",
-    "checkpoint_local_cache": "E:\\Foundation_Models\\cache\\hf\\hub\\models--facebook--sam2.1-hiera-tiny\\snapshots\\de431c4043854a71d8101e17995dfe596bf101a5\\sam2.1_hiera_tiny.pt",
+    "checkpoint_cache_locator": "huggingface-cache://facebook/sam2.1-hiera-tiny/sam2.1_hiera_tiny.pt",
     "bytes": 156008466,
     "sha256": "7402e0d864fa82708a20fbd15bc84245c2f26dff0eb43a4b5b93452deb34be69",
     "committed": false

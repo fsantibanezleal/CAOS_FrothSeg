@@ -1,86 +1,67 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 460" width="900" class="arch-svg" role="img" aria-label="The algorithm: SAM automatic mask generation for froth, and the classical floor it is scored against">
-  <!-- Hand-authored, themed via shell CSS variables. Mirrors the Methodology page maths. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 460" width="900" class="arch-svg" role="img" aria-label="FrothSeg complete fifteen-method ladder">
   <style>
     .arch-svg text { font-family: var(--font-sans, Inter, "Segoe UI", system-ui, sans-serif); }
     .arch-svg .mono { font-family: var(--font-mono, ui-monospace, Consolas, monospace); }
     .arch-svg .bx { fill: var(--color-surface-2); stroke: var(--color-border); stroke-width: 1.2; }
-    .arch-svg .bx-hi { stroke: var(--color-accent); }
-    .arch-svg .bx-good { stroke: var(--color-good); }
+    .arch-svg .hi { stroke: var(--color-accent); }
+    .arch-svg .good { stroke: var(--color-good); }
+    .arch-svg .warn { stroke: var(--color-warn); }
     .arch-svg .ttl { fill: var(--color-fg); font-size: 13px; font-weight: 700; }
     .arch-svg .it { fill: var(--color-fg); font-size: 10.5px; font-weight: 600; }
-    .arch-svg .mu { fill: var(--color-fg-subtle); font-size: 9.5px; }
-    .arch-svg .cd { fill: var(--color-accent); font-size: 9px; }
-    .arch-svg .eq { fill: var(--color-fg); font-size: 12px; font-style: italic; }
-    .arch-svg .flow { fill: none; stroke: var(--color-fg-faint); stroke-width: 1.6; }
+    .arch-svg .mu { fill: var(--color-fg-subtle); font-size: 9.7px; }
+    .arch-svg .cd { fill: var(--color-accent); font-size: 9.2px; }
   </style>
-  <defs>
-    <marker id="sc-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M0,0 L8,4 L0,8 z" fill="var(--color-fg-faint)"/>
-    </marker>
-  </defs>
 
-  <text class="ttl" x="22" y="30">Automatic mask generation with a SAM-class model</text>
+  <text class="ttl" x="22" y="30">Complete method ladder: implementation and quality are separate</text>
+  <text class="mu" x="22" y="48">All 15 methods run offline. Predictive claims follow the predeclared AP 0.30 comparison threshold.</text>
 
-  <!-- 5-stage pipeline -->
-  <rect class="bx bx-hi" x="20" y="52" width="150" height="96" rx="10"/>
-  <text class="it" x="32" y="76">1. Encode once</text>
-  <text class="mu" x="32" y="94">SAM image encoder</text>
-  <text class="mu" x="32" y="110">-&gt; image embedding</text>
-  <text class="cd mono" x="32" y="134">get_image_embeddings</text>
+  <rect class="bx hi" x="18" y="76" width="204" height="236" rx="10"/>
+  <text class="it" x="34" y="100">C1-C7: classical</text>
+  <text class="mu" x="34" y="124">C1 Otsu + connected components</text>
+  <text class="mu" x="34" y="144">C2 immersion watershed</text>
+  <text class="mu" x="34" y="164">C3 highlight H-max watershed</text>
+  <text class="mu" x="34" y="184">C4 distance-transform watershed</text>
+  <text class="mu" x="34" y="204">C5 H-minima watershed</text>
+  <text class="mu" x="34" y="224">C6 SLIC + RAG merge</text>
+  <text class="mu" x="34" y="244">C7 lamella valley edge</text>
+  <text class="cd mono" x="34" y="276">offline: all seven</text>
+  <text class="cd mono" x="34" y="294">interactive: C1/C3/C4</text>
 
-  <rect class="bx bx-hi" x="190" y="52" width="150" height="96" rx="10"/>
-  <text class="it" x="202" y="76">2. Point grid</text>
-  <text class="mu" x="202" y="94">32x32 foreground</text>
-  <text class="mu" x="202" y="110">prompts, batched</text>
-  <text class="cd mono" x="202" y="134">gridPoints()</text>
+  <rect class="bx" x="238" y="76" width="204" height="236" rx="10"/>
+  <text class="it" x="254" y="100">L1-L4: domain learned</text>
+  <text class="mu" x="254" y="128">L1 boundary U-Net + watershed</text>
+  <text class="mu" x="254" y="152">L2 deep-marker watershed</text>
+  <text class="mu" x="254" y="176">L3 GC-FSegNet</text>
+  <text class="mu" x="254" y="200">L4 StarDist 2D</text>
+  <text class="mu" x="254" y="232">Train/resume/infer/export</text>
+  <text class="mu" x="254" y="252">checkpoints and calibration</text>
+  <text class="cd mono" x="254" y="276">official framework graphs</text>
+  <text class="cd mono" x="254" y="294">untouched-test evidence</text>
 
-  <rect class="bx bx-hi" x="360" y="52" width="160" height="96" rx="10"/>
-  <text class="it" x="372" y="76">3. Decode 3 masks</text>
-  <text class="mu" x="372" y="94">per point + predicted</text>
-  <text class="mu" x="372" y="110">IoU; take best of 3</text>
-  <text class="cd mono" x="372" y="134">mask decoder</text>
+  <rect class="bx good" x="458" y="76" width="204" height="236" rx="10"/>
+  <text class="it" x="474" y="100">L5-L7: foundation/detector</text>
+  <text class="mu" x="474" y="128">L5 Cellpose-SAM, fine-tuned</text>
+  <text class="mu" x="474" y="152">L6 YOLO froth segmentation</text>
+  <text class="mu" x="474" y="176">L7 SAM2.1 image + video</text>
+  <text class="mu" x="474" y="208">Official upstream implementations</text>
+  <text class="mu" x="474" y="228">and pinned checkpoint lineage</text>
+  <text class="cd mono" x="474" y="260">L5 test AP 0.5099</text>
+  <text class="cd mono" x="474" y="280">current controlled leader</text>
+  <text class="mu" x="474" y="298">No plant-readiness claim.</text>
 
-  <rect class="bx bx-hi" x="540" y="52" width="150" height="96" rx="10"/>
-  <text class="it" x="552" y="76">4. Filter</text>
-  <text class="mu" x="552" y="94">predIoU &#8805; 0.86,</text>
-  <text class="mu" x="552" y="110">stability &#8805; 0.90, area</text>
-  <text class="cd mono" x="552" y="134">stability score</text>
+  <rect class="bx warn" x="678" y="76" width="204" height="236" rx="10"/>
+  <text class="it" x="694" y="100">N1: experimental model</text>
+  <text class="mu" x="694" y="128">LamellaStar</text>
+  <text class="mu" x="694" y="152">center + boundary + distance heads</text>
+  <text class="mu" x="694" y="176">checkpoint, inference, ablation, export</text>
+  <text class="cd mono" x="694" y="212">test AP 0.2145</text>
+  <text class="mu" x="694" y="236">below the AP 0.30 threshold</text>
+  <text class="mu" x="694" y="260">measured below the reference</text>
+  <text class="mu" x="694" y="284">not presented as an improvement</text>
 
-  <rect class="bx bx-good" x="710" y="52" width="150" height="96" rx="10"/>
-  <text class="it" x="722" y="76">5. NMS -&gt; instances</text>
-  <text class="mu" x="722" y="94">greedy IoU dedupe</text>
-  <text class="mu" x="722" y="110">-&gt; label map + BSD</text>
-  <text class="cd mono" x="722" y="134">nms(), morphometry</text>
-
-  <path class="flow" d="M170,100 H188" marker-end="url(#sc-arrow)"/>
-  <path class="flow" d="M340,100 H358" marker-end="url(#sc-arrow)"/>
-  <path class="flow" d="M520,100 H538" marker-end="url(#sc-arrow)"/>
-  <path class="flow" d="M690,100 H708" marker-end="url(#sc-arrow)"/>
-
-  <!-- equation band -->
-  <rect class="bx" x="20" y="168" width="840" height="80" rx="10"/>
-  <text class="it" x="34" y="190">Stability + the bubble-size distribution</text>
-  <text class="eq" x="34" y="216">stability = |{ logit &gt; +&#948; }| / |{ logit &gt; &#8722;&#948; }|        d_eq = 2&#8730;(A/&#960;)        d32 = &#931; d&#179; / &#931; d&#178;</text>
-  <text class="mu" x="34" y="238">stability is the IoU of the mask thresholded at &#177;&#948;; d32 is the surface-weighted (Sauter) mean bubble diameter.</text>
-
-  <!-- classical floor + scoring -->
-  <rect class="bx" x="20" y="268" width="410" height="176" rx="10"/>
-  <text class="it" x="34" y="292" style="font-weight:700">Classical floor (the cited baseline)</text>
-  <text class="mu" x="34" y="314">Otsu foreground -&gt; exact distance transform</text>
-  <text class="mu" x="34" y="332">markers -&gt; marker-controlled watershed (Meyer);</text>
-  <text class="mu" x="34" y="350">a highlight-seeded variant; SLIC + region merge.</text>
-  <text class="mu" x="34" y="372">Transparent, deterministic, scikit-image. It is the</text>
-  <text class="mu" x="34" y="390">honest reference the foundation model must beat,</text>
-  <text class="mu" x="34" y="408">and it stays complementary under heavy blur.</text>
-  <text class="cd mono" x="34" y="432">data-pipeline/fslab/science/segment.py</text>
-
-  <rect class="bx bx-good" x="450" y="268" width="410" height="176" rx="10"/>
-  <text class="it" x="464" y="292" style="font-weight:700">How both are scored (honestly)</text>
-  <text class="mu" x="464" y="314">On synthetic froth with EXACT masks: instance</text>
-  <text class="mu" x="464" y="332">mask AP@[.5:.95] (greedy IoU matching) + the</text>
-  <text class="mu" x="464" y="350">BSD Wasserstein-1 distance vs the true diameters.</text>
-  <text class="mu" x="464" y="372">The SAME metric scores SAM and the floor, so the</text>
-  <text class="mu" x="464" y="390">comparison is fair. Synthetic AP is a controlled</text>
-  <text class="mu" x="464" y="408">benchmark, never reported as real-plant accuracy.</text>
-  <text class="cd mono" x="464" y="432">mask_ap + bsd_wasserstein</text>
+  <rect class="bx good" x="18" y="338" width="864" height="96" rx="10"/>
+  <text class="it" x="34" y="364">One comparison contract for every row</text>
+  <text class="mu" x="34" y="386">64 untouched cases x 15 methods = 960 cells, 16 conditions, macro means, pooled micro TP/FP/FN, robustness, calibration, and compute.</text>
+  <text class="mu" x="34" y="406">Canonical cases remain a separate failure-analysis surface. Real held-out acceptance remains mandatory for release.</text>
+  <text class="cd mono" x="34" y="424">data/derived/method-benchmark.json</text>
 </svg>
