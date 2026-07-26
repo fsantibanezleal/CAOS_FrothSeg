@@ -1,0 +1,483 @@
+{
+  "artifact_count": 120,
+  "complete": true,
+  "frames_per_sequence": 8,
+  "generated_by": "python -m fslab.pipeline showcase",
+  "label_kind": "ground_truth",
+  "prediction_method": null,
+  "schema": "frothseg.temporal-showcase/v1",
+  "sequence_count": 5,
+  "sequences": [
+    {
+      "case_id": "poly-normal",
+      "frames": [
+        {
+          "frame_index": 0,
+          "overlay_path": "showcase/temporal/poly-normal/000/overlay.png",
+          "overlay_sha256": "46fb8e90469fe7a80ef42ae16f1ae6de181dae35b1c1f30eedde91a16bb07252",
+          "prediction_path": null,
+          "prediction_sha256": null,
+          "source_path": "showcase/temporal/poly-normal/000/source.png",
+          "source_sha256": "e7d7c997536141501d96995b5bc4f39cd488767207ff92a096a1115e530394b7",
+          "truth_path": "showcase/temporal/poly-normal/000/truth.rle",
+          "truth_sha256": "bc571247e3d51a24ea1f689f60768142de7033866f3c2b86193115cefa165000"
+        },
+        {
+          "frame_index": 1,
+          "overlay_path": "showcase/temporal/poly-normal/001/overlay.png",
+          "overlay_sha256": "b71716d87e6aafe17ab058dd5032fa86c258c56ae6225a0c33662fb94084f6f6",
+          "prediction_path": null,
+          "prediction_sha256": null,
+          "source_path": "showcase/temporal/poly-normal/001/source.png",
+          "source_sha256": "abeefc294815eab0e67760528fd367b8c02de9ba77ced712063e5c9f2ece56c8",
+          "truth_path": "showcase/temporal/poly-normal/001/truth.rle",
+          "truth_sha256": "d8a15c488a89b82cb6d436cc302aabaa02e51c8bc4d26ba3225b8d3701acff43"
+        },
+        {
+          "frame_index": 2,
+          "overlay_path": "showcase/temporal/poly-normal/002/overlay.png",
+          "overlay_sha256": "517f2f9cf786bc027b1db63d4b34dfade87b991d4eaa0a532fafc2223e829a67",
+          "prediction_path": null,
+          "prediction_sha256": null,
+          "source_path": "showcase/temporal/poly-normal/002/source.png",
+          "source_sha256": "65a19ce829c5ed82e143e7b4b1bb52cf4c550712936f44c808e95d465f60290c",
+          "truth_path": "showcase/temporal/poly-normal/002/truth.rle",
+          "truth_sha256": "f6b1f6bcceab4772fc39126519c988a41b53e12e1829b02fb540e86fcb400607"
+        },
+        {
+          "frame_index": 3,
+          "overlay_path": "showcase/temporal/poly-normal/003/overlay.png",
+          "overlay_sha256": "74e0a420b592181a119c5d3460ab96522acff115390a604c13e53b70f55c98f9",
+          "prediction_path": null,
+          "prediction_sha256": null,
+          "source_path": "showcase/temporal/poly-normal/003/source.png",
+          "source_sha256": "acb9db9e917a2aaa5fde0128bf8ed27816a4519d732ba8f169cd02b60e9b79cb",
+          "truth_path": "showcase/temporal/poly-normal/003/truth.rle",
+          "truth_sha256": "0cb25489b0e1d967094c83a8d6701f9d1d0496c36ff821fc49340f5991c004e1"
+        },
+        {
+          "frame_index": 4,
+          "overlay_path": "showcase/temporal/poly-normal/004/overlay.png",
+          "overlay_sha256": "ef2a31a4cdee3111f81dc19e302cff2fd33a95720ec6422328efc09f2155eb35",
+          "prediction_path": null,
+          "prediction_sha256": null,
+          "source_path": "showcase/temporal/poly-normal/004/source.png",
+          "source_sha256": "214ab1254d5696f2300828bc4a4023903720640aa55c6ceb0f0270983a3295ea",
+          "truth_path": "showcase/temporal/poly-normal/004/truth.rle",
+          "truth_sha256": "f31164ac78514b605ed76b53d3fca99243fa3a7d13d16dba7ab8881868a017c2"
+        },
+        {
+          "frame_index": 5,
+          "overlay_path": "showcase/temporal/poly-normal/005/overlay.png",
+          "overlay_sha256": "d729bba0da9b66bfec22d7177a9f6c521a5b6ee31ef962dabf604fb1fd471a5c",
+          "prediction_path": null,
+          "prediction_sha256": null,
+          "source_path": "showcase/temporal/poly-normal/005/source.png",
+          "source_sha256": "8b97a28ec86260cd9b8775922ba461fded3ab6b49c1fbb0d45eb83869b2f6f10",
+          "truth_path": "showcase/temporal/poly-normal/005/truth.rle",
+          "truth_sha256": "169ca9437981793e514bcec2980bae27190088462f24349d4f17795f0b9ce2ae"
+        },
+        {
+          "frame_index": 6,
+          "overlay_path": "showcase/temporal/poly-normal/006/overlay.png",
+          "overlay_sha256": "f2cb265a2480c7f6da40e2d55bdee74a45413296eea14f5d6da0603d8081f172",
+          "prediction_path": null,
+          "prediction_sha256": null,
+          "source_path": "showcase/temporal/poly-normal/006/source.png",
+          "source_sha256": "2d99ae06b093d31c6171b858cadfd71e7acfbfb8156fad7216c838a468d66f2e",
+          "truth_path": "showcase/temporal/poly-normal/006/truth.rle",
+          "truth_sha256": "1267816fc16e1c454f657730f39a5254c57563bfb7ba06e3ef99bfbc26f8de1b"
+        },
+        {
+          "frame_index": 7,
+          "overlay_path": "showcase/temporal/poly-normal/007/overlay.png",
+          "overlay_sha256": "8c7cd149d7d67a4754f0d6ea02a3c1b5ef3fbad05038e0363ec3290e3cb05f21",
+          "prediction_path": null,
+          "prediction_sha256": null,
+          "source_path": "showcase/temporal/poly-normal/007/source.png",
+          "source_sha256": "a277a05c7bffb4a1f69b26223fbd822d39a68eeb6ddeb563b5e8c118f0bc60cf",
+          "truth_path": "showcase/temporal/poly-normal/007/truth.rle",
+          "truth_sha256": "68cdecaaab883f3d5536b7bc80d4cd33b329057469578fde2653166418a258b2"
+        }
+      ],
+      "label": "Poly Normal generated source and exact truth"
+    },
+    {
+      "case_id": "fine-froth",
+      "frames": [
+        {
+          "frame_index": 0,
+          "overlay_path": "showcase/temporal/fine-froth/000/overlay.png",
+          "overlay_sha256": "d25669a1d4920e3cfe0b5d3be9b32558f73e1917296e31844addd1b3dc7f75da",
+          "prediction_path": null,
+          "prediction_sha256": null,
+          "source_path": "showcase/temporal/fine-froth/000/source.png",
+          "source_sha256": "a70e25b563fd2fd99578bc65f5cef15fe43d4144d93b9cbff44a1ef3f61b2ba2",
+          "truth_path": "showcase/temporal/fine-froth/000/truth.rle",
+          "truth_sha256": "83ffdf950f32e48d9cbd711ad8cf63c68287ce7214f7cba5b22208764f6a3a3e"
+        },
+        {
+          "frame_index": 1,
+          "overlay_path": "showcase/temporal/fine-froth/001/overlay.png",
+          "overlay_sha256": "d244ca9401a2baac72227a3a9606d17bebc5d4b1d2d30874271d654733926818",
+          "prediction_path": null,
+          "prediction_sha256": null,
+          "source_path": "showcase/temporal/fine-froth/001/source.png",
+          "source_sha256": "4c771404606be79e871f9e8df80de908e27899460a024f039f35d0d45c8dfd5f",
+          "truth_path": "showcase/temporal/fine-froth/001/truth.rle",
+          "truth_sha256": "163c37e91a5a278c08e604de75d254d387c35e27068256df6b2dca3bff382869"
+        },
+        {
+          "frame_index": 2,
+          "overlay_path": "showcase/temporal/fine-froth/002/overlay.png",
+          "overlay_sha256": "6925fefee80bb7e1746eed4096a6dfbba52f92cee9be4509ea848eafaef4d1de",
+          "prediction_path": null,
+          "prediction_sha256": null,
+          "source_path": "showcase/temporal/fine-froth/002/source.png",
+          "source_sha256": "80f9c5bbc5265c0f629d14dd8f15c48ac59b37a49b33a38bf208fd636ed74f2d",
+          "truth_path": "showcase/temporal/fine-froth/002/truth.rle",
+          "truth_sha256": "38a1b275e90a5abe0a77e61a4f5f33b075505444c99d21df167d6d0b697d96b5"
+        },
+        {
+          "frame_index": 3,
+          "overlay_path": "showcase/temporal/fine-froth/003/overlay.png",
+          "overlay_sha256": "7c48b2038322b8704479d22b888159c1cb112e7f2a852a96110eaff5e70537cb",
+          "prediction_path": null,
+          "prediction_sha256": null,
+          "source_path": "showcase/temporal/fine-froth/003/source.png",
+          "source_sha256": "f6209f8b6606c635d0b453dbdd222e6bd389b472388468ba653bcccfd67b05f1",
+          "truth_path": "showcase/temporal/fine-froth/003/truth.rle",
+          "truth_sha256": "1203872c4a8aae1331e7dae52ed13fc6f0e2c83fd670ae795eaff274559af7ee"
+        },
+        {
+          "frame_index": 4,
+          "overlay_path": "showcase/temporal/fine-froth/004/overlay.png",
+          "overlay_sha256": "04cc119c8caeac54f42ba1b913dcfde5b104ab2d96a4913bb345b192d9dc9ad9",
+          "prediction_path": null,
+          "prediction_sha256": null,
+          "source_path": "showcase/temporal/fine-froth/004/source.png",
+          "source_sha256": "a4382a1eea5fac357ba9a084f225e2c7270cdaf593bf8d16e8dc2aebf0d0af6c",
+          "truth_path": "showcase/temporal/fine-froth/004/truth.rle",
+          "truth_sha256": "85bf77605239da99b71f291ebdf476d897318a45c1a0d3aac4f49d472808523a"
+        },
+        {
+          "frame_index": 5,
+          "overlay_path": "showcase/temporal/fine-froth/005/overlay.png",
+          "overlay_sha256": "b0797024c8c068ae8b8d1913f10ac6403468028f857bd3c0d047569c16e7330b",
+          "prediction_path": null,
+          "prediction_sha256": null,
+          "source_path": "showcase/temporal/fine-froth/005/source.png",
+          "source_sha256": "f0f435881b837bd6043c90fe4ed0c4616cdc12b1969bcb6e53b15ea754aa03d5",
+          "truth_path": "showcase/temporal/fine-froth/005/truth.rle",
+          "truth_sha256": "ec5b4d2814b0186232731759d7089ace0ad191050baf6f12bd541fde61d57622"
+        },
+        {
+          "frame_index": 6,
+          "overlay_path": "showcase/temporal/fine-froth/006/overlay.png",
+          "overlay_sha256": "3f3c27e0fc68caf76b06ced49ccb4207a2670bec7130317177cce62b989616cc",
+          "prediction_path": null,
+          "prediction_sha256": null,
+          "source_path": "showcase/temporal/fine-froth/006/source.png",
+          "source_sha256": "637b53dcba99ae795b22919be3953034af6cf381596f4d1d00bca11c4fc7ce0e",
+          "truth_path": "showcase/temporal/fine-froth/006/truth.rle",
+          "truth_sha256": "c4057a3e094044975b43845258608e7b48ed759d7cbbda8da340657676920109"
+        },
+        {
+          "frame_index": 7,
+          "overlay_path": "showcase/temporal/fine-froth/007/overlay.png",
+          "overlay_sha256": "fc6d544979a95635295ee8d794d1bf5c44b7af52d210db2dcec710dd4cce15c1",
+          "prediction_path": null,
+          "prediction_sha256": null,
+          "source_path": "showcase/temporal/fine-froth/007/source.png",
+          "source_sha256": "927911511b044346358db5bb4addf1f656b4c39c835c776b5772aab25d33aad3",
+          "truth_path": "showcase/temporal/fine-froth/007/truth.rle",
+          "truth_sha256": "fd7226d63dbeb9e62777a920cbf02fdb253ffe29730aa97c9296bd99fd1c0828"
+        }
+      ],
+      "label": "Fine Froth generated source and exact truth"
+    },
+    {
+      "case_id": "glare-storm",
+      "frames": [
+        {
+          "frame_index": 0,
+          "overlay_path": "showcase/temporal/glare-storm/000/overlay.png",
+          "overlay_sha256": "76842eb2aa6ec1bdff2feb9bf31fbfe69ce7b5095b78531a0589c1ab8a62fe9b",
+          "prediction_path": null,
+          "prediction_sha256": null,
+          "source_path": "showcase/temporal/glare-storm/000/source.png",
+          "source_sha256": "9a36468ef167d002dd522c9a8046681295ae614a1c49f245ef68e026634af13e",
+          "truth_path": "showcase/temporal/glare-storm/000/truth.rle",
+          "truth_sha256": "7d11c850ff7fea74d14d0a47316b84122aef6e1af29226991c982c9208b002fa"
+        },
+        {
+          "frame_index": 1,
+          "overlay_path": "showcase/temporal/glare-storm/001/overlay.png",
+          "overlay_sha256": "a14306049c977b107c0acb81246546420688d39a9301ee7bdd7c0e9f617792be",
+          "prediction_path": null,
+          "prediction_sha256": null,
+          "source_path": "showcase/temporal/glare-storm/001/source.png",
+          "source_sha256": "71d2d6f1ce44dc5385e7095b08d7bfcd3efe0358768abb643a86c3d90e5d7f64",
+          "truth_path": "showcase/temporal/glare-storm/001/truth.rle",
+          "truth_sha256": "bdf3b6988b5832ca57f36c4686a2ed61c146e6c522bb0042f928caeb2a054cee"
+        },
+        {
+          "frame_index": 2,
+          "overlay_path": "showcase/temporal/glare-storm/002/overlay.png",
+          "overlay_sha256": "80487149feb72153b8d484baa2d74ff4ebb231c8de0c6101e1b5a59ff6bb3c5a",
+          "prediction_path": null,
+          "prediction_sha256": null,
+          "source_path": "showcase/temporal/glare-storm/002/source.png",
+          "source_sha256": "f028316c6ce74ca1e66a519dafd9566da58d46521059404c05dbc9034aea8712",
+          "truth_path": "showcase/temporal/glare-storm/002/truth.rle",
+          "truth_sha256": "dc945b7f57af73d6f977b528c021f397c39c2da96f1683c98d8c96b014ab7d91"
+        },
+        {
+          "frame_index": 3,
+          "overlay_path": "showcase/temporal/glare-storm/003/overlay.png",
+          "overlay_sha256": "fbac4238f070924948bf1956fcdb209f4494aff413e257437b4f744feb31a588",
+          "prediction_path": null,
+          "prediction_sha256": null,
+          "source_path": "showcase/temporal/glare-storm/003/source.png",
+          "source_sha256": "fe8570795e1634e60e437b059eaf13f46b7b0d12b73dffd3d95d4ad7020a9197",
+          "truth_path": "showcase/temporal/glare-storm/003/truth.rle",
+          "truth_sha256": "7d250bc61d8b7e6709b06a5fd84cc5944180a020f90736752d755ae559ba798a"
+        },
+        {
+          "frame_index": 4,
+          "overlay_path": "showcase/temporal/glare-storm/004/overlay.png",
+          "overlay_sha256": "b7a60a36adc734a45748b8de15feb4d20d3b9a9bcd0c7090f2060728082d26ee",
+          "prediction_path": null,
+          "prediction_sha256": null,
+          "source_path": "showcase/temporal/glare-storm/004/source.png",
+          "source_sha256": "0154c73bd87bfe9d75a76c105d8399c26a0014dcb5d91fe129de80eef8f41215",
+          "truth_path": "showcase/temporal/glare-storm/004/truth.rle",
+          "truth_sha256": "248d0662d03bf0ff902b7436500211d930258e9c36218452f1980596d7643fe0"
+        },
+        {
+          "frame_index": 5,
+          "overlay_path": "showcase/temporal/glare-storm/005/overlay.png",
+          "overlay_sha256": "cb9fc4145f308af3b2ca28032b6496779fc884003c74c6e1bd17743addf30b8e",
+          "prediction_path": null,
+          "prediction_sha256": null,
+          "source_path": "showcase/temporal/glare-storm/005/source.png",
+          "source_sha256": "7569dbbf9bed0a09518d63928b82bbc0810a7d280f7195865409157634680d58",
+          "truth_path": "showcase/temporal/glare-storm/005/truth.rle",
+          "truth_sha256": "c1292c373a27cdcaae175aba2ea034a5b99dfa8350f2aaa4daf5c3d1ab5e5f05"
+        },
+        {
+          "frame_index": 6,
+          "overlay_path": "showcase/temporal/glare-storm/006/overlay.png",
+          "overlay_sha256": "20b2b15daeb0fb00206fedb612b23054cad6e124007372eec532a753037d13a0",
+          "prediction_path": null,
+          "prediction_sha256": null,
+          "source_path": "showcase/temporal/glare-storm/006/source.png",
+          "source_sha256": "637dbcbade5bac6f557084863e3037c0fb7ec9dc162e1d5048be16632210c0c3",
+          "truth_path": "showcase/temporal/glare-storm/006/truth.rle",
+          "truth_sha256": "46f1d06fccb04f034874aa200eb6565c91aac99c9be617c3dc43f6f0fe610a12"
+        },
+        {
+          "frame_index": 7,
+          "overlay_path": "showcase/temporal/glare-storm/007/overlay.png",
+          "overlay_sha256": "360938777f2ce54aff3d23c669a243b25290e6adfb2ff3afe1b03ae56983fd10",
+          "prediction_path": null,
+          "prediction_sha256": null,
+          "source_path": "showcase/temporal/glare-storm/007/source.png",
+          "source_sha256": "de66fc5decbbe7b30c8578bf02bfd82e547241b0e7a18c3dc7607a6faaa8e1f1",
+          "truth_path": "showcase/temporal/glare-storm/007/truth.rle",
+          "truth_sha256": "b1a4a7f26cd7dbc115d8a16c723f40bc35495021c813e12fda3b81a0732a1b65"
+        }
+      ],
+      "label": "Glare Storm generated source and exact truth"
+    },
+    {
+      "case_id": "motion-fast",
+      "frames": [
+        {
+          "frame_index": 0,
+          "overlay_path": "showcase/temporal/motion-fast/000/overlay.png",
+          "overlay_sha256": "59a9abba03c7c2fa849ed6907434d9e3d6b3d8e418bd30a73a1f9d5ea2aa2768",
+          "prediction_path": null,
+          "prediction_sha256": null,
+          "source_path": "showcase/temporal/motion-fast/000/source.png",
+          "source_sha256": "d13fa9d2d381d22feedbed09d90bca2a168a9a1cf8f788bba3134aca43a9c1f8",
+          "truth_path": "showcase/temporal/motion-fast/000/truth.rle",
+          "truth_sha256": "bd0887d283ead1abf3bae60e9cfa48f2f477f1a91257e5f4ef7a64ad7680bd5a"
+        },
+        {
+          "frame_index": 1,
+          "overlay_path": "showcase/temporal/motion-fast/001/overlay.png",
+          "overlay_sha256": "fc8b46f2cf6eea1feffbf5b42899d787698a13321124900cf03bdbdb93650c65",
+          "prediction_path": null,
+          "prediction_sha256": null,
+          "source_path": "showcase/temporal/motion-fast/001/source.png",
+          "source_sha256": "2d9f935fc7fcafa94efbbec36216f28327313df8e27dd840208e5fe29aeb7e9f",
+          "truth_path": "showcase/temporal/motion-fast/001/truth.rle",
+          "truth_sha256": "42ae2e471f2a4e18e75f6baecf0a6ecaf3a68621cc7ddc0d3920b20c2bd67086"
+        },
+        {
+          "frame_index": 2,
+          "overlay_path": "showcase/temporal/motion-fast/002/overlay.png",
+          "overlay_sha256": "939316cad4d685d58781d74a5228dcbabc93e06a7cf664418b2754c30a01baad",
+          "prediction_path": null,
+          "prediction_sha256": null,
+          "source_path": "showcase/temporal/motion-fast/002/source.png",
+          "source_sha256": "7808725478cd9b52d7effffe62f1a43484d3e1f8f8667b54ea48c413dd7c852a",
+          "truth_path": "showcase/temporal/motion-fast/002/truth.rle",
+          "truth_sha256": "c675f18a9bad181de96a2a676985c22715e798f1eae45ecfb137e638059cf2d3"
+        },
+        {
+          "frame_index": 3,
+          "overlay_path": "showcase/temporal/motion-fast/003/overlay.png",
+          "overlay_sha256": "385a8e787910a62e110870e146ef65ddf3b80a6292943237cf85d05f02e5ee71",
+          "prediction_path": null,
+          "prediction_sha256": null,
+          "source_path": "showcase/temporal/motion-fast/003/source.png",
+          "source_sha256": "3f91c93511c02d971298fbc8662002e1ac43f3c6a5f41f041befee6bd258f1c8",
+          "truth_path": "showcase/temporal/motion-fast/003/truth.rle",
+          "truth_sha256": "6d2877ee88aac0042db580d02d3d8f6339a28dfe53a0f0c389cb606a86218000"
+        },
+        {
+          "frame_index": 4,
+          "overlay_path": "showcase/temporal/motion-fast/004/overlay.png",
+          "overlay_sha256": "96c7a04b8524c8508293942b8bcaada585fc7631a8a5bfa4e2331dabc7c57987",
+          "prediction_path": null,
+          "prediction_sha256": null,
+          "source_path": "showcase/temporal/motion-fast/004/source.png",
+          "source_sha256": "8f9109292393b74d8b2a206c68dd3972d99d9389e15092c431ec657cec419d28",
+          "truth_path": "showcase/temporal/motion-fast/004/truth.rle",
+          "truth_sha256": "c6152a4e9d17c04e50fa2a0e7f4707a47b1c98a711263a71106419cd821cbc33"
+        },
+        {
+          "frame_index": 5,
+          "overlay_path": "showcase/temporal/motion-fast/005/overlay.png",
+          "overlay_sha256": "acfb4b0c0d8d16aa18b4f34215950b7993fbbe5bdec86d8d20d57dcf74bc8402",
+          "prediction_path": null,
+          "prediction_sha256": null,
+          "source_path": "showcase/temporal/motion-fast/005/source.png",
+          "source_sha256": "7c9dcfc8c1c5049f65a9b705d177fc2acc079f7f68cd5e7463eccbd3287dfa24",
+          "truth_path": "showcase/temporal/motion-fast/005/truth.rle",
+          "truth_sha256": "6a8c6b20376c411443c3c7c860cd87524bdd6ce19f43efc26c1d5fcb894cea39"
+        },
+        {
+          "frame_index": 6,
+          "overlay_path": "showcase/temporal/motion-fast/006/overlay.png",
+          "overlay_sha256": "46ecbc504cbb4d979b9b1109dd05b0394d7f24a2ac605517b0c3761ba09dc38a",
+          "prediction_path": null,
+          "prediction_sha256": null,
+          "source_path": "showcase/temporal/motion-fast/006/source.png",
+          "source_sha256": "9b1f0c2a58e7dad51ff11cd010107d425dc07e5da74952f1da0b71f427011e9c",
+          "truth_path": "showcase/temporal/motion-fast/006/truth.rle",
+          "truth_sha256": "8ebda6546006faacf7e5b29ce4a699f9ff64fc035fab4022515ff0f193169590"
+        },
+        {
+          "frame_index": 7,
+          "overlay_path": "showcase/temporal/motion-fast/007/overlay.png",
+          "overlay_sha256": "c4ee6c0a2cf5bfaf20b4a54254a766f437175b54dbb0fe3c333ed66261ec0471",
+          "prediction_path": null,
+          "prediction_sha256": null,
+          "source_path": "showcase/temporal/motion-fast/007/source.png",
+          "source_sha256": "af327ab6398546bf3e0b1dc1147018c1140536288257e587d561bdf68c005c69",
+          "truth_path": "showcase/temporal/motion-fast/007/truth.rle",
+          "truth_sha256": "46cdd0002bc742cf5b834a8a96974cc435c662ce1f86bf8c613f3dcc52043047"
+        }
+      ],
+      "label": "Motion Fast generated source and exact truth"
+    },
+    {
+      "case_id": "bursting",
+      "frames": [
+        {
+          "frame_index": 0,
+          "overlay_path": "showcase/temporal/bursting/000/overlay.png",
+          "overlay_sha256": "6e0b7d42dba5f243357e3ebab89953ad1da04917ffc737dcffaae6319f2a9a1c",
+          "prediction_path": null,
+          "prediction_sha256": null,
+          "source_path": "showcase/temporal/bursting/000/source.png",
+          "source_sha256": "62b7107d1221a4db83cc60fc7e100f9964ebc712695a69a1be830f5fc8be6309",
+          "truth_path": "showcase/temporal/bursting/000/truth.rle",
+          "truth_sha256": "eddd774b0d460187a4a6123d0df8d900224f08ff7e3cd0848330a15a122a558f"
+        },
+        {
+          "frame_index": 1,
+          "overlay_path": "showcase/temporal/bursting/001/overlay.png",
+          "overlay_sha256": "47f6695e9190c931d689872ecb59be6e7527d3eacca57aa47a2f529fa27927ad",
+          "prediction_path": null,
+          "prediction_sha256": null,
+          "source_path": "showcase/temporal/bursting/001/source.png",
+          "source_sha256": "fcfad7b0e3de62d33916f92f16f8ca2f466464dcc70356962939904668606861",
+          "truth_path": "showcase/temporal/bursting/001/truth.rle",
+          "truth_sha256": "cddde693c00425ce281ae7a38984c13eaa7237aa1a9994819dce50ee694ce699"
+        },
+        {
+          "frame_index": 2,
+          "overlay_path": "showcase/temporal/bursting/002/overlay.png",
+          "overlay_sha256": "0b7c359fd120a33bcc5ac604f655244daa7df4e15d2c7d1c9b5d964ccf22c84e",
+          "prediction_path": null,
+          "prediction_sha256": null,
+          "source_path": "showcase/temporal/bursting/002/source.png",
+          "source_sha256": "c91d0a2bbb671dde8b3aea354650ac9097e511815abff2e342679ba0e4ddb322",
+          "truth_path": "showcase/temporal/bursting/002/truth.rle",
+          "truth_sha256": "397d6de8fd382fa5dce103413ea25b5de0a2bf096eae84c5b1c31d394effdd71"
+        },
+        {
+          "frame_index": 3,
+          "overlay_path": "showcase/temporal/bursting/003/overlay.png",
+          "overlay_sha256": "8dc29757dfb73a500602591876e20db865104db7c5291f9eb5f791028184c77d",
+          "prediction_path": null,
+          "prediction_sha256": null,
+          "source_path": "showcase/temporal/bursting/003/source.png",
+          "source_sha256": "9d505e723a486f5011e69868a2118fd8d03b3c0cd02b29b2fa9b8092afbbd293",
+          "truth_path": "showcase/temporal/bursting/003/truth.rle",
+          "truth_sha256": "11fc45d6e8029d278a0abb5034b121c0eab8859a842a1574d158b31251c04569"
+        },
+        {
+          "frame_index": 4,
+          "overlay_path": "showcase/temporal/bursting/004/overlay.png",
+          "overlay_sha256": "a03eadfc44be9fed79875c80ef80128e56f86135f92d3c005d950500551c74c7",
+          "prediction_path": null,
+          "prediction_sha256": null,
+          "source_path": "showcase/temporal/bursting/004/source.png",
+          "source_sha256": "c3b0fc32149747812c25282af1d1e2665d92f71c636123ca70fb349bf67218af",
+          "truth_path": "showcase/temporal/bursting/004/truth.rle",
+          "truth_sha256": "a9e8aa17c1de82f042df3546c3d4487d54bc901034f2605c75db482eedeeacbf"
+        },
+        {
+          "frame_index": 5,
+          "overlay_path": "showcase/temporal/bursting/005/overlay.png",
+          "overlay_sha256": "d8f887051539f7d79f92698dcfcb24216e20624b97b9c9ca73f4c62c666ccdef",
+          "prediction_path": null,
+          "prediction_sha256": null,
+          "source_path": "showcase/temporal/bursting/005/source.png",
+          "source_sha256": "5dbbb04523df5788e2285a4fce4e045294c05c3a29646c23bd56a7713f67faaf",
+          "truth_path": "showcase/temporal/bursting/005/truth.rle",
+          "truth_sha256": "d15fa4da2a13f7f8f377ea399d39fa8af3de9d0664f27b3d03cb39f877155063"
+        },
+        {
+          "frame_index": 6,
+          "overlay_path": "showcase/temporal/bursting/006/overlay.png",
+          "overlay_sha256": "92d2f26c6d65192a89138f836cd5a9562eb852ce8b0d53a8a993a512d2b293ec",
+          "prediction_path": null,
+          "prediction_sha256": null,
+          "source_path": "showcase/temporal/bursting/006/source.png",
+          "source_sha256": "6998cbb299f03882e40dbf3dcf86eb339efd6ecbc1a7960069277e255b51b9ed",
+          "truth_path": "showcase/temporal/bursting/006/truth.rle",
+          "truth_sha256": "43554e469f0c0a3634723d497c45a6f985ad78239d7eec51cdf9f8bd8bfcd8c4"
+        },
+        {
+          "frame_index": 7,
+          "overlay_path": "showcase/temporal/bursting/007/overlay.png",
+          "overlay_sha256": "562190db180716f7aa2e51ff6bafdf7917615d8fb1a7cfcce7e126320c4d61e3",
+          "prediction_path": null,
+          "prediction_sha256": null,
+          "source_path": "showcase/temporal/bursting/007/source.png",
+          "source_sha256": "e1fc6dc944248a6adb83292123afc5a025a15e6afee57666a19f7f14e5d293b7",
+          "truth_path": "showcase/temporal/bursting/007/truth.rle",
+          "truth_sha256": "524801f246f8ea639b86d0cc8277f7e2d21cd64309c452451f6b45dcee53f8af"
+        }
+      ],
+      "label": "Bursting generated source and exact truth"
+    }
+  ],
+  "source_kind": "deterministic_generated"
+}

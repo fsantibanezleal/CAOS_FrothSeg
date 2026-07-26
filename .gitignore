@@ -71,6 +71,7 @@ Thumbs.db
 # Large per-run SAM dumps stay local; compact acceptance manifests are versioned.
 /verification/*
 !/verification/workbench-contract.json
+!/verification/classical-live-parity.json
 !/verification/visual-qa/
 /verification/visual-qa/*
 !/verification/visual-qa/manifest.json
