@@ -147,6 +147,25 @@ export interface SamBenchmarkDoc {
   cases: SamCaseScore[];
 }
 
+export interface LearnedCaseScore extends FloorScore {
+  case_id: string;
+  pq: number | null;
+  inference_ms: number;
+  mask_path: string;
+}
+
+export interface LearnedBenchmarkDoc {
+  schema: string;
+  method: string;
+  checkpoint_sha256: string;
+  split: string;
+  n_cases: number;
+  mean_ap: number;
+  mean_ap50: number;
+  mean_pq: number;
+  cases: LearnedCaseScore[];
+}
+
 export interface CaseIndexEntry {
   case_id: string;
   category: string;

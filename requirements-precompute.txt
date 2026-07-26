@@ -1,0 +1,2 @@
+# Canonical CPU/offline scientific lane.
+-r data-pipeline/requirements.txt

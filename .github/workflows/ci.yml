@@ -16,7 +16,7 @@ jobs:
           python-version: "3.12"
           cache: pip
       - name: Install (offline lane + dev + editable pkg)
-        run: pip install -r data-pipeline/requirements.txt -r requirements-dev.txt -e .
+        run: pip install -r requirements-precompute.txt -r requirements-dev.txt -e .
       - name: Lint
         run: ruff check data-pipeline tests
       - name: Tests

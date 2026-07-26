@@ -14,7 +14,7 @@ Write-Host "[setup] .venv-pipeline (offline lane)..."
 if (-not (Test-Path ".venv-pipeline")) { & $py -m venv .venv-pipeline }
 $vp = Get-VenvPy ".venv-pipeline"
 & $vp -m pip install --upgrade pip -q
-& $vp -m pip install -q -r data-pipeline/requirements.txt -r requirements-dev.txt
+& $vp -m pip install -q -r requirements-precompute.txt -r requirements-dev.txt
 & $vp -m pip install -q -e .
 Write-Host "[setup] .venv-pipeline ready."
 

@@ -194,20 +194,9 @@ def bsd_wasserstein(pred: np.ndarray, gt: np.ndarray) -> float | None:
 def mask_ap(pred: np.ndarray, gt: np.ndarray, thresholds=np.arange(0.5, 1.0, 0.05)) -> dict:
     """Per-image instance mask AP: greedy IoU matching of predicted vs GT instances, averaged over IoU
     thresholds .5:.05:.95 (the COCO-style summary). Returns AP, AP50, AP75, over/under-seg counts."""
-    gt_ids = [i for i in np.unique(gt) if i > 0]
-    pr_ids = [i for i in np.unique(pred) if i > 0]
+    iou, _, pr_ids, gt_ids = _iou_matrix(pred, gt)
     if not gt_ids:
         return dict(ap=None, ap50=None, ap75=None, nGt=0, nPred=len(pr_ids))
-    gt_masks = {i: gt == i for i in gt_ids}
-    pr_masks = {i: pred == i for i in pr_ids}
-    iou = np.zeros((len(pr_ids), len(gt_ids)))
-    for a, pi in enumerate(pr_ids):
-        pm = pr_masks[pi]
-        pa = pm.sum()
-        for b, gj in enumerate(gt_ids):
-            inter = np.logical_and(pm, gt_masks[gj]).sum()
-            if inter:
-                iou[a, b] = inter / (pa + gt_masks[gj].sum() - inter)
     aps = {}
     for t in thresholds:
         matched_g, matched_p, tp = set(), set(), 0
@@ -230,20 +219,27 @@ def mask_ap(pred: np.ndarray, gt: np.ndarray, thresholds=np.arange(0.5, 1.0, 0.0
 
 
 def _iou_matrix(pred: np.ndarray, gt: np.ndarray):
-    gt_ids = [i for i in np.unique(gt) if i > 0]
-    pr_ids = [i for i in np.unique(pred) if i > 0]
-    gm = {i: gt == i for i in gt_ids}
-    pm = {i: pred == i for i in pr_ids}
-    iou = np.zeros((len(pr_ids), len(gt_ids)))
-    cov = np.zeros((len(pr_ids), len(gt_ids)))   # intersection / gt-area (for merge/split accounting)
-    for a, pi in enumerate(pr_ids):
-        pa = pm[pi].sum()
-        for b, gj in enumerate(gt_ids):
-            inter = np.logical_and(pm[pi], gm[gj]).sum()
-            if inter:
-                ga = gm[gj].sum()
-                iou[a, b] = inter / (pa + ga - inter)
-                cov[a, b] = inter / ga
+    """Vectorized contingency-table overlap, O(pixels + labels²), not O(labels² × pixels)."""
+    pr_values, pr_inverse = np.unique(pred, return_inverse=True)
+    gt_values, gt_inverse = np.unique(gt, return_inverse=True)
+    shape = (len(pr_values), len(gt_values))
+    joint = np.bincount(
+        pr_inverse.ravel() * shape[1] + gt_inverse.ravel(),
+        minlength=shape[0] * shape[1],
+    ).reshape(shape)
+    pr_keep = np.flatnonzero(pr_values > 0)
+    gt_keep = np.flatnonzero(gt_values > 0)
+    pr_ids = pr_values[pr_keep].astype(int).tolist()
+    gt_ids = gt_values[gt_keep].astype(int).tolist()
+    if not pr_ids or not gt_ids:
+        empty = np.zeros((len(pr_ids), len(gt_ids)), dtype=np.float64)
+        return empty, empty.copy(), pr_ids, gt_ids
+    inter = joint[np.ix_(pr_keep, gt_keep)].astype(np.float64)
+    pr_area = joint[pr_keep, :].sum(axis=1)[:, None]
+    gt_area = joint[:, gt_keep].sum(axis=0)[None, :]
+    union = pr_area + gt_area - inter
+    iou = np.divide(inter, union, out=np.zeros_like(inter), where=union > 0)
+    cov = np.divide(inter, gt_area, out=np.zeros_like(inter), where=gt_area > 0)
     return iou, cov, pr_ids, gt_ids
 
 

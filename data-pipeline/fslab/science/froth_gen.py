@@ -99,6 +99,8 @@ def render(spec: FrothSpec, sites: np.ndarray, lab: np.ndarray) -> np.ndarray:
     """Grey froth [0,1] (H,W): base + Plateau-border darkening (EXACT EDT) + specular highlights + stressors."""
     rng = np.random.default_rng(spec.seed + 1)
     h, w = spec.h, spec.w
+    if spec.empty:
+        return np.zeros((h, w), dtype=np.float64)
     img = np.full((h, w), 0.62 - 0.18 * spec.load, dtype=np.float64)
     if len(sites):
         # distance to the nearest cell boundary via the exact Euclidean distance transform of the interiors

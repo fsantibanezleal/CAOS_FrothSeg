@@ -44,6 +44,8 @@ data/raw/
 # large trained models stay local/LFS; commit small ONNX explicitly with `git add -f` if needed
 models/*.pt
 models/*.pth
+models/**/*.pt
+models/**/*.pth
 *.dll
 *.so
 *.dylib

@@ -18,6 +18,7 @@ from pathlib import Path
 from . import registry
 from .core.manifest import build_index
 from .io.formats import write_json
+from .model_registry import registry_document
 from .stages import benchmark, export, generate
 
 # data-pipeline/fslab/pipeline.py -> parents[2] = repo root (works under `pip install -e .` too)
@@ -76,6 +77,7 @@ def run_all(*, output_root: str | Path | None = None) -> list[dict]:
         precompute(c.id, output_root=paths.root)
         entries.append({"case_id": c.id, "category": c.category, "manifest_path": f"manifests/{c.id}.json"})
     write_json(paths.manifests / "index.json", build_index(entries))
+    write_json(paths.root / "method-registry.json", registry_document())
     return entries
 
 

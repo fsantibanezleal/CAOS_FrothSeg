@@ -20,14 +20,27 @@
 .fs-tab:hover { color: var(--color-fg); }
 .fs-tab.on { color: var(--color-fg); border-bottom-color: var(--color-accent); font-weight: 600; }
 
-/* two-column workbench */
-.fs-layout { display: grid; grid-template-columns: 300px 1fr; gap: 1.4rem; align-items: start; }
+/* method portfolio + two-column workbench */
+.fs-method-portfolio { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.75rem; margin: 0 0 1.25rem; }
+.fs-method-card { display: grid; grid-template-columns: auto 1fr; gap: 0.25rem 0.7rem; align-items: start; padding: 0.8rem; border: 1px solid var(--color-border); border-radius: 12px; background: var(--color-surface); }
+.fs-method-card.muted { opacity: 0.72; }
+.fs-method-count { grid-row: 1 / 3; font: 700 1.65rem/1 var(--font-mono); color: var(--color-accent); }
+.fs-method-card p { margin: 0.22rem 0 0; font-size: 0.75rem; line-height: 1.35; color: var(--color-fg-subtle); }
+.fs-lane { grid-column: 2; justify-self: start; border-radius: 999px; padding: 0.12rem 0.45rem; font-size: 0.68rem; border: 1px solid var(--color-border); }
+.fs-lane.live { color: var(--color-good); border-color: var(--color-good); }
+.fs-lane.offline { color: var(--color-accent); border-color: var(--color-accent); }
+.fs-lane.blocked { color: var(--color-warn); border-color: var(--color-warn); }
+@media (max-width: 980px) { .fs-method-portfolio { grid-template-columns: 1fr; } }
+
+.fs-layout { display: grid; grid-template-columns: minmax(330px, 380px) minmax(0, 1fr); gap: 1.4rem; align-items: start; }
 @media (max-width: 900px) { .fs-layout { grid-template-columns: 1fr; } }
 .fs-controls { display: flex; flex-direction: column; gap: 0.9rem; position: sticky; top: 0.5rem; }
 .fs-ctl { display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.82rem; color: var(--color-fg-subtle); }
 .fs-ctl input[type="range"] { width: 100%; }
 .fs-sel { background: var(--color-surface); color: var(--color-fg); border: 1px solid var(--color-border); border-radius: 6px; padding: 0.25rem 0.4rem; font-size: 0.82rem; width: 100%; }
 .fs-main { display: flex; flex-direction: column; gap: 0.8rem; min-width: 0; }
+.fs-frame-preview { width: 100%; min-height: 420px; max-height: 680px; object-fit: contain; border-radius: 8px; display: block; background: var(--color-bg); }
+@media (max-width: 900px) { .fs-frame-preview { min-height: 280px; } }
 
 .fs-panel { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; padding: 0.7rem 0.85rem; }
 .fs-panel-t { font-size: 0.82rem; color: var(--color-fg-subtle); margin-bottom: 0.4rem; font-weight: 600; }

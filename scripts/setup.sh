@@ -14,7 +14,7 @@ echo "[setup] .venv-pipeline (offline lane)…"
 mkvenv .venv-pipeline
 VP="$(venvpy .venv-pipeline)"
 "$VP" -m pip install --upgrade pip -q
-"$VP" -m pip install -q -r data-pipeline/requirements.txt -r requirements-dev.txt
+"$VP" -m pip install -q -r requirements-precompute.txt -r requirements-dev.txt
 "$VP" -m pip install -q -e .
 echo "[setup] .venv-pipeline ready."
 

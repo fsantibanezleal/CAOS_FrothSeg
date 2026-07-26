@@ -28,6 +28,19 @@ def main() -> int:
         return 1
     index = json.loads(idx_path.read_text(encoding="utf-8"))
     errs: list[str] = []
+    registry_path = DERIVED / "method-registry.json"
+    expected_benchmark_methods: set[str] = set()
+    if not registry_path.exists():
+        errs.append("missing method-registry.json")
+    else:
+        method_registry = json.loads(registry_path.read_text(encoding="utf-8"))
+        expected_benchmark_methods = {
+            method["slug"]
+            for method in method_registry.get("methods", [])
+            if method.get("tier") == "classical" and method.get("state") in {"partial", "accepted"}
+        }
+        if len(method_registry.get("methods", [])) < 10:
+            errs.append("method registry below product-depth floor")
     for entry in index.get("cases", []):
         mp = DERIVED / entry["manifest_path"]
         if not mp.exists():
@@ -48,6 +61,14 @@ def main() -> int:
                 errs.append(f"sha256 drift {ap}")
         if m.get("gate", {}).get("lane") != m.get("lane"):
             errs.append(f"lane/gate mismatch: {entry['case_id']}")
+        actual_methods = {row.get("method") for row in m.get("benchmark", [])}
+        if expected_benchmark_methods and actual_methods != expected_benchmark_methods:
+            missing = sorted(expected_benchmark_methods - actual_methods)
+            extra = sorted(actual_methods - expected_benchmark_methods)
+            errs.append(
+                f"benchmark method matrix incomplete: {entry['case_id']} "
+                f"missing={missing} extra={extra}"
+            )
         # masks instance count must agree with the encoded masks file
         masks = m.get("artifacts", {}).get("masks")
         if masks and (DERIVED / masks["path"]).exists():

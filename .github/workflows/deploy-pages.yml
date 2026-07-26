@@ -24,7 +24,7 @@ jobs:
           python-version: "3.12"
       - name: Verify the committed scientific artifacts
         run: |
-          pip install -r data-pipeline/requirements.txt -e .
+          pip install -r requirements-precompute.txt -e .
           python -m fslab.pipeline --check
           python scripts/check_artifacts.py
           python scripts/check_product_completeness.py --profile release

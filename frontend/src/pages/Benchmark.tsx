@@ -1,15 +1,16 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Refs, useShellLang } from '@fasl-work/caos-app-shell';
-import { loadBenchmark, loadIndex, loadSamBenchmark } from '../api/artifacts';
-import type { BenchmarkDoc, SamBenchmarkDoc } from '../lib/contract.types';
+import { loadBenchmark, loadIndex, loadLearnedBenchmark, loadSamBenchmark } from '../api/artifacts';
+import type { BenchmarkDoc, LearnedBenchmarkDoc, SamBenchmarkDoc } from '../lib/contract.types';
 import { BarChart, type BarDatum } from '../viz/BarChart';
 import { PanelBoundary } from '../viz/PanelBoundary';
 
-const FLOOR_METHODS = ['watershed_dt', 'watershed_hmax', 'slic_merge'];
+const FLOOR_METHODS = ['otsu_cc', 'watershed_immersion', 'watershed_hmax', 'watershed_dt', 'watershed_hmin', 'slic_merge', 'valley_edge'];
 
 export default function Benchmark() {
   const es = useShellLang() === 'es';
   const [sam, setSam] = useState<SamBenchmarkDoc | null>(null);
+  const [learned, setLearned] = useState<LearnedBenchmarkDoc | null>(null);
   const [floors, setFloors] = useState<Record<string, BenchmarkDoc>>({});
   const [order, setOrder] = useState<string[]>([]);
   const [err, setErr] = useState('');
@@ -17,8 +18,13 @@ export default function Benchmark() {
   useEffect(() => {
     (async () => {
       try {
-        const [ix, sb] = await Promise.all([loadIndex(), loadSamBenchmark().catch(() => null)]);
+        const [ix, sb, lb] = await Promise.all([
+          loadIndex(),
+          loadSamBenchmark().catch(() => null),
+          loadLearnedBenchmark().catch(() => null),
+        ]);
         setSam(sb);
+        setLearned(lb);
         const ids = ix.cases.map((c) => c.case_id);
         setOrder(ids);
         const docs = await Promise.all(ids.map((id) => loadBenchmark(id).catch(() => null)));
@@ -51,15 +57,16 @@ export default function Benchmark() {
       if (vals.length) rows.push({ key: method, label: method, value: vals.reduce((a, b) => a + b, 0) / vals.length });
     }
     if (sam?.summary.mean_sam_ap != null) rows.unshift({ key: 'sam', label: 'SAM (live)', value: sam.summary.mean_sam_ap, color: 'var(--color-good)', mark: '★' });
+    if (learned) rows.unshift({ key: 'unet', label: 'L1 U-Net (offline)', value: learned.mean_ap, color: 'var(--color-accent)' });
     return rows;
-  }, [order, floors, sam]);
+  }, [order, floors, sam, learned]);
 
   return (
     <div className="page-body prose">
       <div className="page-head">
         <h1>Benchmark</h1>
         <p className="lede">
-          {es ? 'El barrido offline completo sobre todos los casos sintéticos: cada método del piso clásico y el segmentador SAM en vivo, con AP de máscara de instancia contra verdad de terreno exacta. Estos son los artefactos versionados (vía de precómputo).' : 'The full offline sweep across all synthetic cases: every classical-floor method and the live SAM segmenter, with instance mask AP against exact ground truth. These are the committed artifacts (precompute lane).'}
+          {es ? 'Artefactos fuera de línea sobre todos los casos sintéticos: siete métodos clásicos, el primer U-Net entrenado y el resultado SlimSAM histórico. Ninguno alcanza todavía el umbral del producto.' : 'Offline artifacts across every synthetic case: seven classical methods, the first trained U-Net, and the historical SlimSAM result. None currently meets the product acceptance threshold.'}
         </p>
       </div>
 
@@ -83,23 +90,24 @@ export default function Benchmark() {
                 <thead>
                   <tr>
                     <th>{es ? 'caso' : 'case'}</th>
-                    <th className="num">SAM ★</th>
-                    <th className="num">watershed_dt</th>
-                    <th className="num">watershed_hmax</th>
-                    <th className="num">slic_merge</th>
+                    <th className="num">SlimSAM ({es ? 'hist.' : 'hist.'})</th>
+                    <th className="num">L1 U-Net</th>
+                    {FLOOR_METHODS.map((method) => <th key={method} className="num">{method}</th>)}
                     <th className="num">{es ? 'burbujas (verdad)' : 'bubbles (truth)'}</th>
                   </tr>
                 </thead>
                 <tbody>
                   {order.map((c) => {
                     const samAp = samByCase[c];
+                    const learnedAp = learned?.cases.find((row) => row.case_id === c)?.ap ?? null;
                     const floorAps = FLOOR_METHODS.map((m) => apFor(c, m));
-                    const bestFloor = Math.max(...floorAps.filter((v): v is number => v != null), -1);
+                    const bestFloor = Math.max(...floorAps.filter((v): v is number => v != null), learnedAp ?? -1, -1);
                     const nGt = floors[c]?.methods[0]?.n_gt ?? '-';
                     return (
                       <tr key={c}>
                         <td>{c}</td>
                         <td className={`num ${samAp != null && samAp >= bestFloor ? 'win' : ''}`}>{fmt(samAp)}</td>
+                        <td className={`num ${learnedAp != null && learnedAp === bestFloor ? 'win' : ''}`}>{fmt(learnedAp)}</td>
                         {floorAps.map((v, i) => <td key={i} className={`num ${v != null && v === bestFloor && !(samAp != null && samAp >= bestFloor) ? 'win' : ''}`}>{fmt(v)}</td>)}
                         <td className="num">{nGt}</td>
                       </tr>
@@ -108,7 +116,7 @@ export default function Benchmark() {
                 </tbody>
               </table>
             </div>
-            <p className="fs-hint small">{es ? 'Verde = mejor método en ese caso. SAM en vivo se ejecuta en el navegador; los pisos se precalculan offline con scikit-image.' : 'Green = best method for that case. SAM live runs in the browser; the floors are baked offline with scikit-image.'}</p>
+            <p className="fs-hint small">{es ? 'Verde = mejor resultado disponible por caso. SlimSAM es un artefacto histórico; L1 y C1-C7 se ejecutan desde el repositorio. Sintético no equivale a planta.' : 'Green = best available result per case. SlimSAM is historical evidence; L1 and C1-C7 execute from the repository. Synthetic is not plant accuracy.'}</p>
           </section>
 
           {sam && (

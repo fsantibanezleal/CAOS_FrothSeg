@@ -55,7 +55,7 @@ METHODS: tuple[MethodSpec, ...] = (
     MethodSpec("L1", "unet_watershed", "Boundary/distance U-Net + watershed", "domain-sota",
                "offline+live-candidate", "PyTorch/ONNX Runtime",
                "Ronneberger et al. 2015, DOI 10.1007/978-3-319-24574-4_28", "BSD-3-Clause/MIT",
-               True, True, "planned", "docs/frameworks/07_unet-watershed/README.md"),
+               True, True, "partial", "docs/frameworks/07_unet-watershed/README.md"),
     MethodSpec("L2", "deep_marker_watershed", "Deep-marker watershed", "domain-sota", "offline",
                "PyTorch", "Chemical Engineering Research and Design 2024, DOI 10.1016/j.cherd.2024.07.041",
                "implementation license to verify", True, True, "planned",

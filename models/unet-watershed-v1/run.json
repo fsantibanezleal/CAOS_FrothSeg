@@ -1,0 +1,280 @@
+{
+  "schema": "frothseg.training-run/v1",
+  "method": "unet_watershed",
+  "config": {
+    "seed": 20260725,
+    "epochs": 12,
+    "learning_rate": 0.001,
+    "train_variants_per_family": 4,
+    "validation_variants_per_family": 1,
+    "test_variants_per_family": 1,
+    "image_size": 96,
+    "base_channels": 8
+  },
+  "resume_checkpoint_local": "checkpoint.pt",
+  "inference_weights": {
+    "path": "weights.npz",
+    "format": "numpy-npz/pytorch-state-dict",
+    "bytes": 127186,
+    "sha256": "d06b4a7b72a91d755aeabab332c93043d8365ababbd9256944e97d83c4c4a09d"
+  },
+  "n_train": 48,
+  "history": [
+    {
+      "epoch": 0,
+      "loss": 1.4942904884616535
+    },
+    {
+      "epoch": 1,
+      "loss": 1.2672900979717572
+    },
+    {
+      "epoch": 2,
+      "loss": 1.1444214458266895
+    },
+    {
+      "epoch": 3,
+      "loss": 1.037123154848814
+    },
+    {
+      "epoch": 4,
+      "loss": 0.9353691004216671
+    },
+    {
+      "epoch": 5,
+      "loss": 0.8628199361264706
+    },
+    {
+      "epoch": 6,
+      "loss": 0.800202896197637
+    },
+    {
+      "epoch": 7,
+      "loss": 0.7468303591012955
+    },
+    {
+      "epoch": 8,
+      "loss": 0.7077701557427645
+    },
+    {
+      "epoch": 9,
+      "loss": 0.6645544717709223
+    },
+    {
+      "epoch": 10,
+      "loss": 0.6396049087246259
+    },
+    {
+      "epoch": 11,
+      "loss": 0.616249963020285
+    }
+  ],
+  "calibration": {
+    "mean_ap": 0.22983333333333333,
+    "foreground_threshold": 0.55,
+    "boundary_threshold": 0.5,
+    "min_distance": 2,
+    "n": 12
+  },
+  "evaluation": {
+    "split": "test",
+    "n": 12,
+    "mean_ap": 0.22125000000000003,
+    "mean_ap50": 0.5401666666666667,
+    "mean_pq": 0.47225000000000006,
+    "cases": [
+      {
+        "case_id": "mono-clean-test-v00",
+        "ap": 0.375,
+        "ap50": 0.678,
+        "ap75": 0.409,
+        "nGt": 117,
+        "nPred": 138,
+        "pq": 0.625,
+        "sq": 0.781,
+        "rq": 0.8,
+        "tp": 102,
+        "fp": 36,
+        "fn": 15,
+        "merges": 2,
+        "splits": 18
+      },
+      {
+        "case_id": "poly-normal-test-v00",
+        "ap": 0.327,
+        "ap50": 0.733,
+        "ap75": 0.264,
+        "nGt": 197,
+        "nPred": 186,
+        "pq": 0.601,
+        "sq": 0.748,
+        "rq": 0.804,
+        "tp": 154,
+        "fp": 32,
+        "fn": 43,
+        "merges": 17,
+        "splits": 8
+      },
+      {
+        "case_id": "fine-froth-test-v00",
+        "ap": 0.114,
+        "ap50": 0.405,
+        "ap75": 0.031,
+        "nGt": 521,
+        "nPred": 349,
+        "pq": 0.337,
+        "sq": 0.643,
+        "rq": 0.524,
+        "tp": 228,
+        "fp": 121,
+        "fn": 293,
+        "merges": 148,
+        "splits": 56
+      },
+      {
+        "case_id": "coarse-froth-test-v00",
+        "ap": 0.281,
+        "ap50": 0.548,
+        "ap75": 0.258,
+        "nGt": 68,
+        "nPred": 93,
+        "pq": 0.53,
+        "sq": 0.776,
+        "rq": 0.683,
+        "tp": 55,
+        "fp": 38,
+        "fn": 13,
+        "merges": 0,
+        "splits": 10
+      },
+      {
+        "case_id": "glare-storm-test-v00",
+        "ap": 0.057,
+        "ap50": 0.213,
+        "ap75": 0.015,
+        "nGt": 197,
+        "nPred": 270,
+        "pq": 0.205,
+        "sq": 0.621,
+        "rq": 0.33,
+        "tp": 77,
+        "fp": 193,
+        "fn": 120,
+        "merges": 32,
+        "splits": 34
+      },
+      {
+        "case_id": "watery-test-v00",
+        "ap": 0.174,
+        "ap50": 0.469,
+        "ap75": 0.108,
+        "nGt": 230,
+        "nPred": 190,
+        "pq": 0.426,
+        "sq": 0.689,
+        "rq": 0.619,
+        "tp": 130,
+        "fp": 60,
+        "fn": 100,
+        "merges": 52,
+        "splits": 24
+      },
+      {
+        "case_id": "motion-fast-test-v00",
+        "ap": 0.159,
+        "ap50": 0.488,
+        "ap75": 0.091,
+        "nGt": 197,
+        "nPred": 175,
+        "pq": 0.418,
+        "sq": 0.67,
+        "rq": 0.624,
+        "tp": 116,
+        "fp": 59,
+        "fn": 81,
+        "merges": 21,
+        "splits": 4
+      },
+      {
+        "case_id": "defocus-test-v00",
+        "ap": 0.154,
+        "ap50": 0.382,
+        "ap75": 0.085,
+        "nGt": 170,
+        "nPred": 123,
+        "pq": 0.38,
+        "sq": 0.704,
+        "rq": 0.539,
+        "tp": 79,
+        "fp": 44,
+        "fn": 91,
+        "merges": 13,
+        "splits": 1
+      },
+      {
+        "case_id": "high-load-test-v00",
+        "ap": 0.189,
+        "ap50": 0.579,
+        "ap75": 0.076,
+        "nGt": 231,
+        "nPred": 208,
+        "pq": 0.475,
+        "sq": 0.668,
+        "rq": 0.711,
+        "tp": 156,
+        "fp": 52,
+        "fn": 75,
+        "merges": 21,
+        "splits": 3
+      },
+      {
+        "case_id": "low-light-noise-test-v00",
+        "ap": 0.193,
+        "ap50": 0.54,
+        "ap75": 0.104,
+        "nGt": 197,
+        "nPred": 228,
+        "pq": 0.468,
+        "sq": 0.686,
+        "rq": 0.682,
+        "tp": 145,
+        "fp": 83,
+        "fn": 52,
+        "merges": 16,
+        "splits": 14
+      },
+      {
+        "case_id": "bursting-test-v00",
+        "ap": 0.366,
+        "ap50": 0.759,
+        "ap75": 0.313,
+        "nGt": 148,
+        "nPred": 137,
+        "pq": 0.647,
+        "sq": 0.755,
+        "rq": 0.856,
+        "tp": 122,
+        "fp": 15,
+        "fn": 26,
+        "merges": 15,
+        "splits": 4
+      },
+      {
+        "case_id": "edge-framing-test-v00",
+        "ap": 0.266,
+        "ap50": 0.688,
+        "ap75": 0.196,
+        "nGt": 274,
+        "nPred": 256,
+        "pq": 0.555,
+        "sq": 0.714,
+        "rq": 0.777,
+        "tp": 206,
+        "fp": 50,
+        "fn": 68,
+        "merges": 30,
+        "splits": 12
+      }
+    ]
+  }
+}

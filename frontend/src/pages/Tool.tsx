@@ -178,11 +178,13 @@ export default function Tool() {
   return (
     <div className="page-body">
       <div className="page-head">
-        <h1>{es ? 'App, segmentador de espuma en vivo' : 'App, live froth segmenter'}</h1>
+        <h1>{es ? 'App, banco de trabajo de segmentación' : 'App, segmentation workbench'}</h1>
         <p className="lede">
-          {es ? 'Seleccionar una muestra sintética (con verdad de terreno) o subir una foto de espuma real; el modelo SAM segmenta las burbujas en el navegador y reporta la distribución de tamaño y el estado de la espuma.' : 'Pick a synthetic sample (with ground truth) or upload a real froth photo; the SAM model segments the bubbles in the browser and reports the size distribution and froth state.'}
+          {es ? 'Explorar un caso canónico o evaluar una imagen local con los motores ligeros. El benchmark y los modelos aprendidos se calculan fuera de línea; esta página nunca sustituye el pipeline científico.' : 'Explore one canonical case or evaluate a local image with the light engines. The benchmark and trained models are computed offline; this page never replaces the scientific pipeline.'}
         </p>
       </div>
+
+      <MethodPortfolio es={es} />
 
       <div className="fs-layout">
         {/* ---- controls ---- */}
@@ -213,10 +215,10 @@ export default function Tool() {
           </div>
 
           <div className="fs-panel">
-            <div className="fs-panel-t">{es ? 'Controles del segmentador' : 'Segmenter controls'}</div>
+            <div className="fs-panel-t">{es ? 'Motor ligero en vivo' : 'Light live engine'}</div>
             <label className="fs-ctl">{es ? 'método' : 'method'}
               <select className="fs-sel" value={method} onChange={(e) => setMethod(e.target.value as 'sam' | ClassicalMethod)}>
-                <option value="sam">{es ? 'SAM (SlimSAM, aprendido, GPU/WASM)' : 'SAM (SlimSAM, learned, GPU/WASM)'}</option>
+                <option value="sam">{es ? 'SlimSAM cero-shot (legado, GPU/WASM)' : 'SlimSAM zero-shot (legacy, GPU/WASM)'}</option>
                 {CLASSICAL_METHODS.map((m) => <option key={m.id} value={m.id}>{m.label}</option>)}
               </select>
             </label>
@@ -266,10 +268,10 @@ export default function Tool() {
 
           {!result && status !== 'running' && status !== 'loading-model' && (
             <div className="fs-panel">
-              {frameUrl && tab === 'segment' && <img src={frameUrl} alt={es ? 'cuadro de espuma' : 'froth frame'} style={{ maxWidth: '100%', borderRadius: 8, display: 'block' }} />}
+              {frameUrl && tab === 'segment' && <img className="fs-frame-preview" src={frameUrl} alt={es ? 'cuadro de espuma' : 'froth frame'} />}
               <p className="fs-hint" style={{ marginTop: frameUrl && tab === 'segment' ? '0.6rem' : 0 }}>{frameUrl
-                ? (es ? 'Cuadro de espuma seleccionado. Pulsar Segmentar para ejecutar el modelo SAM en vivo sobre este cuadro.' : 'Selected froth frame. Press Segment to run the SAM model live on this frame.')
-                : (es ? 'Seleccionar una fuente y pulsar Segmentar. El modelo se descarga una vez (unos MB) y luego se ejecuta en la GPU.' : 'Pick a source and press Segment. The model downloads once (a few MB) and then runs on the GPU.')}</p>
+                ? (es ? 'Cuadro seleccionado. Elegir un motor ligero y ejecutar; los resultados canónicos de los modelos pesados se consultan en Benchmark.' : 'Selected frame. Choose a light engine and run it; canonical heavy-model results belong in Benchmark.')
+                : (es ? 'Seleccionar una fuente y un motor ligero.' : 'Select a source and a light engine.')}</p>
             </div>
           )}
           {(status === 'running' || status === 'loading-model') && (
@@ -332,7 +334,7 @@ export default function Tool() {
               <div className="fs-panel">
                 <div className="fs-panel-t">{es ? 'SAM en vivo vs el piso clásico' : 'Live SAM vs the classical floor'}</div>
                 {source === 'sample' ? (
-                  <p className="fs-hint">{es ? 'El piso clásico (watershed/SLIC, scikit-image) se ejecuta offline; su AP para este caso está en Benchmark. Aquí se muestra el AP en vivo de SAM contra la misma verdad de terreno. En el conjunto completo SAM gana en 10 de 13 casos.' : 'The classical floor (watershed/SLIC, scikit-image) runs offline; its AP for this case is on Benchmark. The live SAM AP against the same ground truth is shown here. Over the full set SAM wins 10 of 13 cases.'}</p>
+                  <p className="fs-hint">{es ? 'El benchmark fuera de línea ejecuta los siete métodos clásicos y el U-Net entrenado sobre los mismos casos. Esta vista muestra solo el resultado ligero actual; no lo presenta como verdad canónica ni como SOTA.' : 'The offline benchmark executes all seven classical methods and the trained U-Net on the same cases. This view shows only the current light result; it is not presented as canonical truth or SOTA.'}</p>
                 ) : (
                   <p className="fs-hint">{es ? 'El piso clásico usa scikit-image (Python) y se ejecuta offline, no en el navegador; para la imagen subida solo el segmentador SAM se ejecuta en vivo. Comparar ambos métodos en la página Benchmark sobre los casos sintéticos.' : 'The classical floor uses scikit-image (Python) and runs offline, not in the browser; for the uploaded image only the SAM segmenter runs live. Compare both methods on the Benchmark page over the synthetic cases.'}</p>
                 )}
@@ -351,6 +353,31 @@ export default function Tool() {
         </div>
       </div>
     </div>
+  );
+}
+
+function MethodPortfolio({ es }: { es: boolean }) {
+  return (
+    <section className="fs-method-portfolio" aria-label={es ? 'estado de métodos' : 'method status'}>
+      <div className="fs-method-card">
+        <span className="fs-method-count">7</span>
+        <div><strong>{es ? 'Clásicos ejecutables' : 'Executable classical'}</strong>
+          <p>{es ? 'C1-C7, pipeline fuera de línea completo; subconjunto ligero en vivo.' : 'C1-C7, complete offline bake; selected light twins live.'}</p></div>
+        <span className="fs-lane live">{es ? 'fuera de línea + vivo' : 'offline + live'}</span>
+      </div>
+      <div className="fs-method-card">
+        <span className="fs-method-count">1</span>
+        <div><strong>{es ? 'Aprendido y entrenado' : 'Trained learned model'}</strong>
+          <p>{es ? 'L1 U-Net de borde + watershed; checkpoint, prueba retenida y ONNX con paridad. Calidad aún bajo el umbral.' : 'L1 boundary U-Net + watershed; checkpoint, held-out test, and parity-checked ONNX. Quality still below acceptance.'}</p></div>
+        <span className="fs-lane offline">{es ? 'fuera de línea' : 'offline'}</span>
+      </div>
+      <div className="fs-method-card muted">
+        <span className="fs-method-count">7</span>
+        <div><strong>{es ? 'No implementados todavía' : 'Not implemented yet'}</strong>
+          <p>{es ? 'Deep-marker, GC-FSegNet, StarDist, Cellpose-SAM, YOLO-seg, SAM 2.1 y LamellaStar. No aparecen como herramientas falsas.' : 'Deep-marker, GC-FSegNet, StarDist, Cellpose-SAM, YOLO-seg, SAM 2.1, and LamellaStar. They are not exposed as fake tools.'}</p></div>
+        <span className="fs-lane blocked">{es ? 'bloqueado' : 'blocked'}</span>
+      </div>
+    </section>
   );
 }
 
