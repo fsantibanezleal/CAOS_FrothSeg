@@ -64,7 +64,7 @@ function Learned({ es }: { es: boolean }) {
   return (
     <>
       <p>{es ? 'L1-L3 aprenden foreground, borde y distancia antes del watershed. StarDist predice polígonos radiales. YOLO aprende instancias desde polígonos exactos. Cellpose-SAM y SAM2 usan implementaciones y checkpoints oficiales. LamellaStar agrega evidencia de centro, pero su primera hipótesis falló.' : 'L1-L3 learn foreground, boundary, and distance before watershed. StarDist predicts radial polygons. YOLO learns instances from exact polygons. Cellpose-SAM and SAM2 use official implementations and checkpoints. LamellaStar adds center evidence, but its first hypothesis failed.'}</p>
-      <p className="fs-note">{es ? 'Cellpose-SAM lidera el test con AP 0.4336. No existe afirmación beyond SOTA.' : 'Cellpose-SAM leads the test at AP 0.4336. There is no beyond-SOTA claim.'}</p>
+      <p className="fs-note">{es ? 'Cellpose-SAM ajustado lidera el test con AP 0.5099. No existe afirmación beyond SOTA.' : 'Fine-tuned Cellpose-SAM leads the test at AP 0.5099. There is no beyond-SOTA claim.'}</p>
       <Refs ids={['kirillov2023']} label="Refs" />
     </>
   );

@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@fasl-work/caos-app-shell": "^0.3.0",
-    "@huggingface/transformers": "^3.8.1",
+    "@huggingface/transformers": "^4.2.0",
     "katex": "^0.16.47",
     "lucide-react": "^0.469.0",
     "react": "^19.0.0",
@@ -29,6 +29,11 @@
     "tsx": "^4.23.0",
     "typescript": "^5.7.2",
     "vite": "^6.0.7",
-    "vitest": "^2.1.8"
+    "vitest": "^4.1.10"
+  },
+  "overrides": {
+    "adm-zip": "0.6.0",
+    "postcss": "8.5.23",
+    "sharp": "0.35.3"
   }
 }

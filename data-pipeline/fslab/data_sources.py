@@ -44,6 +44,7 @@ def import_coco_records(
     image_root: Path,
     source: DataSource,
     *,
+    metadata_path: Path | None = None,
     split_seed: int = 20260725,
 ) -> list[SplitRecord]:
     """Import COCO instance records without copying restricted source data.
@@ -54,19 +55,38 @@ def import_coco_records(
     downstream loaders.
     """
     document = json.loads(annotation_path.read_text(encoding="utf-8"))
+    metadata_by_file: dict[str, dict] = {}
+    if metadata_path is not None:
+        metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+        if metadata.get("schema") != "frothseg.real-metadata/v1":
+            raise ValueError("real metadata schema mismatch")
+        if metadata.get("source_id") != source.source_id:
+            raise ValueError("real metadata source_id mismatch")
+        for row in metadata.get("images", []):
+            file_name = str(row.get("file_name", ""))
+            if not file_name:
+                raise ValueError("real metadata row lacks file_name")
+            if file_name in metadata_by_file:
+                raise ValueError(f"duplicate real metadata file_name: {file_name}")
+            metadata_by_file[file_name] = row
     annotations_by_image: dict[int, list[dict]] = {}
     for annotation in document.get("annotations", []):
         annotations_by_image.setdefault(int(annotation["image_id"]), []).append(annotation)
     samples: list[SampleRecord] = []
     for image in document.get("images", []):
         image_id = int(image["id"])
-        group_value = image.get("group_id", image.get("video_id", image.get("site_id")))
+        file_name = str(image["file_name"])
+        overlay = metadata_by_file.get(file_name, {})
+        group_value = overlay.get(
+            "group_id",
+            image.get("group_id", image.get("video_id", image.get("site_id"))),
+        )
         if group_value is None:
             raise ValueError(f"image {image_id} lacks group_id/video_id/site_id")
-        mm_per_px = image.get("mm_per_px")
+        mm_per_px = overlay.get("mm_per_px", image.get("mm_per_px"))
         if source.calibration_required and (mm_per_px is None or float(mm_per_px) <= 0):
             raise ValueError(f"image {image_id} lacks positive mm_per_px calibration")
-        image_path = (image_root / image["file_name"]).resolve()
+        image_path = (image_root / file_name).resolve()
         if not image_path.is_file():
             raise FileNotFoundError(image_path)
         has_instances = bool(annotations_by_image.get(image_id))

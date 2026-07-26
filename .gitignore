@@ -55,6 +55,9 @@ models/**/*.pth
 models/unet-watershed-v1/checkpoint.pt
 models/*/logs/
 models/stardist-froth-v1/weights_last.h5
+# Cellpose writes an extensionless ~1.2 GB fine-tuned checkpoint; its SHA-256
+# and full lineage are committed in run.json, while the binary remains local.
+/models/cellpose-sam-cpsam-v2/weights/
 yolo*.pt
 *.dll
 *.so

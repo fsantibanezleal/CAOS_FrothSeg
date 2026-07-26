@@ -6,7 +6,7 @@ import { decodeLabels } from '../lib/rle';
 import { validateImage } from '../lib/imageGate';
 import { loadImage, grayToRawImage } from '../lib/imageLoad';
 import { preprocess } from '../preprocess/deglare';
-import { FrothSegmenter, DEFAULT_MODEL } from '../sam/autoMask';
+import type { FrothSegmenter } from '../sam/autoMask';
 import type { SegResult } from '../sam/types';
 import { classifyFroth } from '../sam/frothState';
 import { maskAp, type MaskApResult } from '../sam/score';
@@ -125,6 +125,7 @@ export default function Tool() {
         // 4b) model
         if (!segRef.current) {
           setStatus('loading-model');
+          const { FrothSegmenter, DEFAULT_MODEL } = await import('../sam/autoMask');
           const seg = new FrothSegmenter(DEFAULT_MODEL);
           await seg.load('auto');
           segRef.current = seg;
@@ -134,7 +135,7 @@ export default function Tool() {
         //    once, so a GPU that loads the model but cannot run it still produces a result instead of a dead panel.
         setStatus('running');
         setProgress(0);
-        const raw = grayToRawImage(gray, img.width, img.height);
+        const raw = await grayToRawImage(gray, img.width, img.height);
         const segOpts = {
           gridSize: grid,
           predIouThresh: predIou,
@@ -145,6 +146,7 @@ export default function Tool() {
           r = await segRef.current!.segment(raw, segOpts);
         } catch (segErr) {
           if (segRef.current && segRef.current.device !== 'wasm') {
+            const { FrothSegmenter, DEFAULT_MODEL } = await import('../sam/autoMask');
             const seg = new FrothSegmenter(DEFAULT_MODEL);
             await seg.load('wasm');
             segRef.current = seg;

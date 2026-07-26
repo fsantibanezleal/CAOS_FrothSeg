@@ -34,6 +34,8 @@ per-bubble industrial froth ground truth is not publicly available.
 - **[benchmark/](benchmark/benchmark.md)**, the complete held-out matrix and acceptance boundaries.
 - **[problem-types/](problem-types/problem-types.md)**, domain failure modes and method assumptions.
 - **[use-cases/](use-cases/use-cases.md)**, operational uses, non-goals, and deployment boundaries.
+- **[security/](security/security.md)**, static-surface threat boundary, dependency audit decisions,
+  raw-data handling, and release behavior.
 
 ## Honesty + data policy
 
@@ -45,11 +47,14 @@ from the data reality of this domain (see `research-tools-and-data`, `sam-verifi
   controlled harness, clearly labelled synthetic; it is never reported as concentrator accuracy. The
   glare / motion-blur / defocus cases are deliberate negative controls where methods are supposed to fail,
   and SAM is run at its standard auto-generator defaults (it is not tuned to the synthetic set).
-- **Real froth is user-supplied, because it is request-only.** Industrial froth photographs are legally not
-  publicly redistributable (data-protection constraints; the field's known blocker is the scarcity of
-  labelled froth data). FrothSeg therefore ships no real froth dataset with
-  masks. User uploads provide bounded qualitative evaluation; quantitative
-  claims require a separately governed real labelled dataset.
+- **Real froth is governed separately.** FrothSeg ships no real images in git.
+  The source registry includes the public, CC-BY-NC-SA-4.0 Roboflow Froth
+  instance dataset as a fetchable candidate. Its export requires a Roboflow API
+  key, and its annotations do not establish physical scale, acquisition groups,
+  or independent review. The release lane therefore requires a local fetch,
+  traceable `mm_per_px`, leakage-safe grouping, and accepted annotation review
+  before any real held-out claim. User uploads remain qualitative unless they
+  enter that governed lane.
 
 **What is committed vs fetched vs kept out of git:**
 

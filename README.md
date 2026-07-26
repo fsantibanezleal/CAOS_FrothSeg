@@ -27,10 +27,11 @@ Version 0.04.000 implements all 15 registered methods:
 | Frontier | N1 | LamellaStar four-head research model |
 
 The primary comparison uses 64 untouched test images whose latent geometry
-groups are isolated from training, validation, and calibration. Cellpose-SAM is
-the current leader at mask AP 0.4336, AP50 0.7462, and PQ 0.6553. Boundary U-Net
-is second at AP 0.4153. LamellaStar did not beat the accepted leader, so there is
-no beyond-SOTA claim. The repository preserves that negative result.
+groups are isolated from training, validation, and calibration. Cellpose-SAM,
+fine-tuned for two complete passes over all 192 training images, is the current
+leader at mask AP 0.5099, AP50 0.8238, and PQ 0.7227. Boundary U-Net is second
+at AP 0.4153. LamellaStar did not beat the accepted leader, so there is no
+beyond-SOTA claim. The repository preserves that negative result.
 
 All numbers are synthetic controlled-benchmark results, not plant accuracy.
 See `data/derived/method-benchmark.json` and
@@ -85,8 +86,11 @@ of record remains in the CAOS management repository.
 
 ## Honest limits
 
-- No public, redistributable, per-bubble real-froth ground truth is included.
-  Exact metrics therefore use a controlled synthetic harness.
+- No third-party real images are committed. The source registry contains a
+  licensed public 88-image instance candidate, but real release claims remain
+  blocked until it is fetched, independently reviewed, physically calibrated,
+  grouped without leakage, and evaluated through the governed offline lane.
+  Current exact metrics therefore use the controlled synthetic harness.
 - Cellpose-SAM and SAM2 checkpoints are checksum-recorded external model assets;
   their very large upstream weights are not duplicated in git.
 - Native Windows TensorFlow does not expose CUDA for StarDist. Its official

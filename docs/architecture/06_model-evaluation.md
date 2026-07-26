@@ -23,7 +23,7 @@ untouched-test results.
 
 | ID | Method | AP | AP50 | PQ | Current bar |
 |---|---|---:|---:|---:|---|
-| L5 | Cellpose-SAM `cpsam_v2` | 0.4336 | 0.7462 | 0.6553 | pass |
+| L5 | Cellpose-SAM, fine-tuned from `cpsam_v2` | 0.5099 | 0.8238 | 0.7227 | pass |
 | L1 | Boundary U-Net + watershed | 0.4153 | 0.6987 | 0.6559 | pass |
 | L2 | Deep-marker watershed | 0.3247 | 0.5990 | 0.5694 | pass |
 | L3 | GC-FSegNet | 0.3190 | 0.5958 | 0.5582 | pass |
@@ -50,7 +50,7 @@ automatic object discovery.
 ## Claim policy
 
 Implementation completeness does not imply quality success. All 15 methods are
-implemented, but only three learned/foundation methods clear the present AP
+implemented, but only four learned/foundation methods clear the present AP
 bar. Cellpose-SAM is the leader. LamellaStar v1 is a falsified frontier
 hypothesis and there is no beyond-SOTA claim.
 

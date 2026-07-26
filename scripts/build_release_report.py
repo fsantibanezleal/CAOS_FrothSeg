@@ -152,13 +152,42 @@ def build() -> dict:
         errors.append("missing source registry")
     else:
         source_registry = _load("manifests/source-registry.json")
-        accepted_real_sources = [
-            source for source in source_registry.get("sources", [])
-            if str(source.get("kind", "")).startswith("real")
-            and source.get("acceptance_state") == "accepted"
-            and int(source.get("sample_count", 0)) > 0
-        ]
-        if not accepted_real_sources:
+        sources_by_id = {
+            source["source_id"]: source
+            for source in source_registry.get("sources", [])
+        }
+        real_manifest_path = ROOT / "data/derived/real-dataset-manifest.json"
+        if real_manifest_path.exists():
+            real_manifest = _load("data/derived/real-dataset-manifest.json")
+            source = sources_by_id.get(real_manifest.get("source_id"))
+            review = real_manifest.get("annotation_review", {})
+            if real_manifest.get("schema") != "frothseg.real-dataset/v1":
+                errors.append("real held-out manifest schema mismatch")
+            elif source is None or not str(source.get("kind", "")).startswith("real"):
+                errors.append("real held-out manifest source is absent from the registry")
+            elif source.get("license") != real_manifest.get("license"):
+                errors.append("real held-out manifest license does not match the source registry")
+            elif review.get("state") != "accepted" or not review.get("reviewer"):
+                errors.append("real held-out annotations lack accepted independent review")
+            elif int(real_manifest.get("sample_count", 0)) <= 0:
+                errors.append("real held-out manifest contains no samples")
+            elif int(real_manifest.get("scoreable_sample_count", 0)) <= 0:
+                errors.append("real held-out manifest contains no scoreable samples")
+            elif int(real_manifest.get("splits", {}).get("test", 0)) <= 0:
+                errors.append("real held-out manifest contains no untouched test samples")
+            else:
+                accepted_real_sources.append({
+                    **source,
+                    "sample_count": real_manifest["sample_count"],
+                    "calibrated_sample_count": real_manifest.get(
+                        "calibrated_sample_count", 0
+                    ),
+                    "manifest": "data/derived/real-dataset-manifest.json",
+                    "sha256": _sha(real_manifest_path),
+                })
+        if not accepted_real_sources and not any(
+            error.startswith("real held-out") for error in errors
+        ):
             errors.append(
                 "no accepted licensed real held-out source with imported samples and calibration"
             )
@@ -218,6 +247,16 @@ def build() -> dict:
             "split_unit": "latent geometry group",
             "accepted_real_sources": [
                 source["source_id"] for source in accepted_real_sources
+            ],
+            "real_evidence": [
+                {
+                    "source_id": source["source_id"],
+                    "manifest": source["manifest"],
+                    "sha256": source["sha256"],
+                    "sample_count": source["sample_count"],
+                    "calibrated_sample_count": source["calibrated_sample_count"],
+                }
+                for source in accepted_real_sources
             ],
         },
         "method_benchmark": {

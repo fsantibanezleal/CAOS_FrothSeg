@@ -4,7 +4,6 @@
   "complete": false,
   "errors": [
     "no accepted licensed real held-out source with imported samples and calibration",
-    "L5: Cellpose-SAM is evaluated pretrained but has not been fine-tuned",
     "version/tag mismatch: expected v0.04.000, latest is v0.03.000"
   ],
   "branch_policy": "existing develop branch; no worktree",
@@ -14,17 +13,18 @@
     "test_samples": 64,
     "calibration_samples": 64,
     "split_unit": "latent geometry group",
-    "accepted_real_sources": []
+    "accepted_real_sources": [],
+    "real_evidence": []
   },
   "method_benchmark": {
     "path": "data/derived/method-benchmark.json",
-    "sha256": "6b1d4fdeef9db0ff6f526049d31595aa5267eaf341cc9168522f619051741e9c",
+    "sha256": "a35c067c8880ff933b655f67265a7f5c2cb6d2a19b05173494a4eea9b45fc256",
     "method_count": 15,
     "implemented_count": 15,
     "leader": {
       "id": "L5",
       "slug": "cellpose_sam",
-      "mean_ap": 0.43359375
+      "mean_ap": 0.5098906249999999
     },
     "beyond_sota_claim": false
   },
@@ -190,13 +190,13 @@
       "tier": "foundation",
       "implementation_state": "implemented",
       "quality_status": "passes-current-bar",
-      "test_mean_ap": 0.43359375,
-      "test_mean_boundary_fscore": 0.932234375,
-      "test_mean_bsd_wasserstein": 0.7500156250000001,
-      "canonical_mean_ap": 0.5826666666666667,
+      "test_mean_ap": 0.5098906249999999,
+      "test_mean_boundary_fscore": 0.9674859375,
+      "test_mean_bsd_wasserstein": 0.5828125,
+      "canonical_mean_ap": 0.6471666666666667,
       "run": {
         "path": "models/cellpose-sam-cpsam-v2/run.json",
-        "sha256": "7d45347ec4466a56015d249bd35c82c39dc9548431ba9757b15eefaff4e41964"
+        "sha256": "a5212d24fd4957da49c38d04e16dc361c685cbf0440bf27b615211b5907d30bc"
       },
       "docs_path": "docs/frameworks/11_cellpose-sam/README.md"
     },
