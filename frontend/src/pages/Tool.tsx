@@ -78,7 +78,7 @@ export default function Tool() {
   // just switching cases) left the panel blank / showed the previous case's masks.
   useEffect(() => {
     let cancelled = false;
-    setResult(null); setAp(null); setGt(null); setErrMsg(''); setGateFlags([]); setStatus('idle');
+    setResult(null); setAp(null); setGt(null); setErrMsg(''); setGateFlags([]); setStatus('idle'); setDevice('');
     const src = source === 'sample' ? artifactUrl(`synth/${sampleId}/frame.png`) : uploadUrl;
     if (!src) { setFrameUrl(''); return; }
     loadImage(src)
