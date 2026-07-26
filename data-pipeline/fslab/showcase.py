@@ -201,10 +201,7 @@ def bake(derived_root: Path, output_root: Path) -> dict:
             "complete": temporal["complete"],
         },
     }
-    (output_root / "manifest.json").write_text(
-        json.dumps(manifest, indent=2, sort_keys=True) + "\n",
-        encoding="utf-8",
-    )
+    _write_json(output_root / "manifest.json", manifest)
     return manifest
 
 
@@ -266,11 +263,14 @@ def bake_temporal(output_root: Path) -> dict:
         ),
         "sequences": sequences,
     }
-    (temporal_root / "manifest.json").write_text(
-        json.dumps(manifest, indent=2, sort_keys=True) + "\n",
-        encoding="utf-8",
-    )
+    _write_json(temporal_root / "manifest.json", manifest)
     return manifest
+
+
+def _write_json(path: Path, payload: dict) -> None:
+    """Write canonical UTF-8/LF JSON so content hashes survive every checkout."""
+    with path.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(json.dumps(payload, indent=2, sort_keys=True) + "\n")
 
 
 def _record(

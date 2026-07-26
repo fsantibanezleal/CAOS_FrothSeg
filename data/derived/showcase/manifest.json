@@ -2191,7 +2191,7 @@
     "complete": true,
     "frames_per_sequence": 8,
     "manifest_path": "showcase/temporal/manifest.json",
-    "manifest_sha256": "4a08277d4777c00afd21971d5b512335a8de21596222ab044acbb063a148a6d0",
+    "manifest_sha256": "6c0477a6a1931603b2ffaea9e3b26caf48cd89d43a5ea9c95831ab35e99895d4",
     "sequence_count": 5
   }
 }
