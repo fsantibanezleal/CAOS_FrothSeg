@@ -1,7 +1,9 @@
 # Deploy
 
-Default deploy is GitHub Pages, static (ADR-0055 Pages-first): the SPA plus the committed artifacts are served
-statically, with no backend at request time. All inference is client-side. See
+Default deploy is GitHub Pages, static (ADR-0055 Pages-first): the companion SPA
+plus compact committed artifacts are served statically, with no backend at
+request time. Bounded live inference is client-side; full research inference is
+precomputed offline. See
 [`deploy/pages.md`](../../deploy/pages.md) for the one-time enablement.
 
 ## The deploy workflow
@@ -13,7 +15,8 @@ statically, with no backend at request time. All inference is client-side. See
    to be committed.
 2. Build the SPA: `cd frontend && npm ci && npm run build`. The `frontend/copy-data.mjs` prebuild overlays
    `data/derived` (the per-case `frame.png`, `masks.json`, `bsd.csv`, `benchmark.json`, `card.json`, the
-   `manifests/`, and the baked `sam_benchmark.json`) into `frontend/public/data` so the static site serves them.
+   `manifests/`, `method-benchmark.json`, and the baked model evidence) into
+   `frontend/public/data` so the static site serves them.
    The canonical copies live in `data/`; `public/data` is a git-ignored build-time overlay.
 3. Upload `frontend/dist` and deploy to Pages.
 
@@ -21,9 +24,9 @@ Custom domain: set it via the API, since the CNAME file alone does not set the d
 `gh api PUT repos/<owner>/<repo>/pages -f cname=<sub>.fasl-work.com` (cname-only, no `https_enforced`), then
 redeploy.
 
-## The model is fetched at runtime, not committed
+## The optional browser model is fetched at runtime
 
-The SAM-class weights are not in git (no multi-tens-of-MB blob; the base-integrity guards in
+The legacy browser SAM-class weights are not in git (no multi-tens-of-MB blob; the base-integrity guards in
 [`ci.yml`](../../.github/workflows/ci.yml) reject tracked `.pt`/`.pth` and native binaries). At load time
 `frontend/src/sam/autoMask.ts` fetches the default model (`Xenova/slimsam-77-uniform`) from the Hugging Face Hub
 via `@huggingface/transformers`, which caches it in the browser Cache API, so only the first visit pays the
@@ -42,7 +45,7 @@ probes for a real GPU adapter and only selects WebGPU when inference will actual
 single-threaded WASM otherwise. Encoder is roughly one second once, then the grid of prompts decodes; the browser
 WebGPU path is far faster than the Node CPU timing in the [benchmark](06_model-evaluation.md).
 
-## CI keeps the base honest
+## CI keeps the product honest
 
 `.github/workflows/ci.yml` runs on push and pull request: ruff lint, pytest, a pipeline smoke (regenerate one
 case), and `scripts/check_artifacts.py` (the CONTRACT-2 sha256 re-verification, see
@@ -51,6 +54,6 @@ tracked venv or native or heavy model binary, raw or heavy data files, or a leak
 
 ## The VPS path is dormant
 
-The systemd and nginx templates under `deploy/` (`fasl-slug.service`, `domain.nginx`) stay dormant. They are
-activated only if the `app/` backend is ever added (an ADR-0002 trigger), which FrothSeg does not need: it is a
-static SPA doing real client-side inference.
+The systemd and nginx templates under `deploy/` remain available when an API
+deployment is required. The default public surface is the static companion web;
+the offline product remains fully usable without it.

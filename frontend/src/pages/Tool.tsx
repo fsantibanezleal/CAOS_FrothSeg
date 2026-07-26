@@ -336,7 +336,7 @@ export default function Tool() {
                 {source === 'sample' ? (
                   <p className="fs-hint">{es ? 'El benchmark fuera de línea ejecuta los siete métodos clásicos y el U-Net entrenado sobre los mismos casos. Esta vista muestra solo el resultado ligero actual; no lo presenta como verdad canónica ni como SOTA.' : 'The offline benchmark executes all seven classical methods and the trained U-Net on the same cases. This view shows only the current light result; it is not presented as canonical truth or SOTA.'}</p>
                 ) : (
-                  <p className="fs-hint">{es ? 'El piso clásico usa scikit-image (Python) y se ejecuta offline, no en el navegador; para la imagen subida solo el segmentador SAM se ejecuta en vivo. Comparar ambos métodos en la página Benchmark sobre los casos sintéticos.' : 'The classical floor uses scikit-image (Python) and runs offline, not in the browser; for the uploaded image only the SAM segmenter runs live. Compare both methods on the Benchmark page over the synthetic cases.'}</p>
+                  <p className="fs-hint">{es ? 'La imagen subida puede usar los siete gemelos clásicos TypeScript o SlimSAM legado. La comparación autoritativa usa los motores offline y aparece en Benchmark.' : 'An upload can use the seven TypeScript classical twins or legacy SlimSAM. The authoritative comparison uses the offline engines and appears on Benchmark.'}</p>
                 )}
                 {ap?.ap != null && (
                   <table className="fs-table" style={{ marginTop: '0.5rem' }}>
@@ -362,20 +362,20 @@ function MethodPortfolio({ es }: { es: boolean }) {
       <div className="fs-method-card">
         <span className="fs-method-count">7</span>
         <div><strong>{es ? 'Clásicos ejecutables' : 'Executable classical'}</strong>
-          <p>{es ? 'C1-C7, pipeline fuera de línea completo; subconjunto ligero en vivo.' : 'C1-C7, complete offline bake; selected light twins live.'}</p></div>
+          <p>{es ? 'C1-C7, benchmark offline completo; los siete gemelos están disponibles en vivo.' : 'C1-C7, complete offline benchmark; all seven twins are available live.'}</p></div>
         <span className="fs-lane live">{es ? 'fuera de línea + vivo' : 'offline + live'}</span>
       </div>
       <div className="fs-method-card">
-        <span className="fs-method-count">1</span>
-        <div><strong>{es ? 'Aprendido y entrenado' : 'Trained learned model'}</strong>
-          <p>{es ? 'L1 U-Net de borde + watershed; checkpoint, prueba retenida y ONNX con paridad. Calidad aún bajo el umbral.' : 'L1 boundary U-Net + watershed; checkpoint, held-out test, and parity-checked ONNX. Quality still below acceptance.'}</p></div>
+        <span className="fs-method-count">7</span>
+        <div><strong>{es ? 'Aprendidos y fundacionales' : 'Learned and foundation'}</strong>
+          <p>{es ? 'L1-L7: entrenamiento e inferencia offline, checkpoints y evidencia retenida. Cellpose-SAM lidera; aquí solo aparecen motores livianos válidos.' : 'L1-L7: offline training/inference, checkpoints, and held-out evidence. Cellpose-SAM leads; only valid light engines appear here.'}</p></div>
         <span className="fs-lane offline">{es ? 'fuera de línea' : 'offline'}</span>
       </div>
-      <div className="fs-method-card muted">
-        <span className="fs-method-count">7</span>
-        <div><strong>{es ? 'No implementados todavía' : 'Not implemented yet'}</strong>
-          <p>{es ? 'Deep-marker, GC-FSegNet, StarDist, Cellpose-SAM, YOLO-seg, SAM 2.1 y LamellaStar. No aparecen como herramientas falsas.' : 'Deep-marker, GC-FSegNet, StarDist, Cellpose-SAM, YOLO-seg, SAM 2.1, and LamellaStar. They are not exposed as fake tools.'}</p></div>
-        <span className="fs-lane blocked">{es ? 'bloqueado' : 'blocked'}</span>
+      <div className="fs-method-card">
+        <span className="fs-method-count">1</span>
+        <div><strong>{es ? 'Frontera evaluada' : 'Evaluated frontier'}</strong>
+          <p>{es ? 'N1 LamellaStar está implementado, pero v1 falló la barra. Se publica como resultado negativo, no como “beyond SOTA”.' : 'N1 LamellaStar is implemented, but v1 failed the bar. It is published as a negative result, not “beyond SOTA”.'}</p></div>
+        <span className="fs-lane offline">{es ? 'fuera de línea' : 'offline'}</span>
       </div>
     </section>
   );

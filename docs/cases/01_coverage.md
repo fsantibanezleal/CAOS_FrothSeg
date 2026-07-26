@@ -13,9 +13,9 @@ AP, scored on the exact synthetic ground truth.
 - It **is not** real-plant accuracy. A synthetic AP measures a method against a known, controllable target; it
   does not measure how the method does on a real concentrator's froth camera. Never quote a number on this page
   as a plant AP.
-- The product's real capability is **live SAM-class segmentation of real (uploaded) froth**, which has no ground
-  truth, so it reports the BSD and froth-state read-out, not an AP. This harness is how you would validate a new
-  segmenter (or a re-tuned one) before trusting it on real froth; see "Applying this to other data" below.
+- Real uploaded froth has no ground truth, so the browser reports masks and BSD
+  without AP. The complete product additionally provides governed offline
+  training, foundation inference, evaluation, export, and temporal tooling.
 
 ## The matrix
 
@@ -86,9 +86,9 @@ distance between the predicted and GT bubble-diameter distributions (0 = identic
 - **Transient.** `bursting` (missing highlights, irregular cells) is handled well (0.449), because SAM does not
   rely on a highlight-per-bubble cue the way highlight-seeded watershed does.
 
-The measured story is therefore honest and specific: a robust zero-shot foundation model that beats the tuned
-classical floor on average (0.365 vs 0.262) and especially under glare, with the floor kept as a complementary,
-cited baseline on the blur cases where SAM's mask count drops.
+This table is retained as the historical SlimSAM experiment. It does not replace
+the v2 untouched-test comparison in `data/derived/method-benchmark.json`, where
+all 15 implementations are compared under the current contracts.
 
 Refs for the live SAM core and the floor: Kirillov et al. 2023 (Segment Anything, [doi:10.1109/ICCV51070.2023.00371](https://doi.org/10.1109/ICCV51070.2023.00371));
 Chen et al. 2023 (SlimSAM, arXiv 2312.05284); Meyer 1994 (watershed, [doi:10.1016/0165-1684(94](https://doi.org/10.1016/0165-1684(94))90060-4);

@@ -1,0 +1,53 @@
+{
+  "schema": "frothseg.temporal-benchmark/v1",
+  "method": "unet_watershed",
+  "checkpoint_sha256": "1d702990dabf933c899b40228fcb4e95c342425cb4c7c44e78090466f67c5d91",
+  "device": "cuda",
+  "sequence_count": 5,
+  "frames_per_sequence": 8,
+  "mean_id_switch_rate": 0.009315437331141676,
+  "mean_frame_coverage": 0.90762975556609,
+  "duration_seconds": 35.116,
+  "sequences": [
+    {
+      "condition_id": "poly-normal",
+      "frames": 8,
+      "matched_gt_instances": 1513,
+      "id_switches": 10,
+      "id_switch_rate": 0.006609385327164574,
+      "mean_frame_coverage": 0.9606339997928105
+    },
+    {
+      "condition_id": "fine-froth",
+      "frames": 8,
+      "matched_gt_instances": 4067,
+      "id_switches": 58,
+      "id_switch_rate": 0.014261126137201869,
+      "mean_frame_coverage": 0.8574743060936147
+    },
+    {
+      "condition_id": "glare-storm",
+      "frames": 8,
+      "matched_gt_instances": 1386,
+      "id_switches": 10,
+      "id_switch_rate": 0.007215007215007215,
+      "mean_frame_coverage": 0.8794416243654822
+    },
+    {
+      "condition_id": "motion-fast",
+      "frames": 8,
+      "matched_gt_instances": 1394,
+      "id_switches": 11,
+      "id_switch_rate": 0.007890961262553802,
+      "mean_frame_coverage": 0.8845177664974619
+    },
+    {
+      "condition_id": "bursting",
+      "frames": 8,
+      "matched_gt_instances": 1132,
+      "id_switches": 12,
+      "id_switch_rate": 0.01060070671378092,
+      "mean_frame_coverage": 0.956081081081081
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # Framework card, `@huggingface/transformers` (+ onnxruntime-web)
 
-The browser runtime that carries the live product method. It loads a SAM-family foundation model, runs its
+The browser runtime that carries the bounded legacy SlimSAM interaction. It loads a SAM-family model, runs its
 encoder and prompt decoder on the client, and gives back raw logit masks that the auto-mask generator
 ([`02_sam-method`](../02_sam-method/sam-method.md)) turns into froth-bubble instances. This card documents the
 runtime; the method built on top of it is the next card.

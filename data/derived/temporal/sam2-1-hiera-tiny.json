@@ -1,0 +1,70 @@
+{
+  "schema": "frothseg.sam2-video-benchmark/v1",
+  "method": "sam2_1",
+  "protocol": "first-frame ground-truth mask prompts; forward propagation",
+  "condition_id": "motion-fast",
+  "model_id": "facebook/sam2.1-hiera-tiny",
+  "upstream_commit": "2b90b9f5ceec907a1c18123530e92e794ad901a4",
+  "device": "NVIDIA GeForce RTX 4070 Laptop GPU",
+  "frames": 8,
+  "prompted_objects": 12,
+  "prompted_instance_ids": [
+    53,
+    174,
+    162,
+    117,
+    58,
+    192,
+    93,
+    65,
+    41,
+    163,
+    84,
+    59
+  ],
+  "mean_identity_iou": 0.8014424925778493,
+  "identity_recall_at_0_5": 0.9583333333333334,
+  "duration_seconds": 126.778,
+  "frame_metrics": [
+    {
+      "frame": 0,
+      "mean_identity_iou": 0.9987562189054726,
+      "identity_recall_at_0_5": 1.0
+    },
+    {
+      "frame": 1,
+      "mean_identity_iou": 0.7870598887806604,
+      "identity_recall_at_0_5": 1.0
+    },
+    {
+      "frame": 2,
+      "mean_identity_iou": 0.7651068044491631,
+      "identity_recall_at_0_5": 1.0
+    },
+    {
+      "frame": 3,
+      "mean_identity_iou": 0.7833048657962168,
+      "identity_recall_at_0_5": 0.9166666666666666
+    },
+    {
+      "frame": 4,
+      "mean_identity_iou": 0.7722999030512495,
+      "identity_recall_at_0_5": 0.9166666666666666
+    },
+    {
+      "frame": 5,
+      "mean_identity_iou": 0.751437305899373,
+      "identity_recall_at_0_5": 0.9166666666666666
+    },
+    {
+      "frame": 6,
+      "mean_identity_iou": 0.7714120675384701,
+      "identity_recall_at_0_5": 0.9166666666666666
+    },
+    {
+      "frame": 7,
+      "mean_identity_iou": 0.7821628862021885,
+      "identity_recall_at_0_5": 1.0
+    }
+  ]
+}

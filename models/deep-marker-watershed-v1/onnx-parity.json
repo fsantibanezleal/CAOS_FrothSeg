@@ -1,0 +1,22 @@
+{
+  "schema": "frothseg.onnx-parity/v1",
+  "method": "deep_marker_watershed",
+  "opset": 18,
+  "input": [
+    1,
+    1,
+    192,
+    192
+  ],
+  "max_abs_error": 9.592622518539429e-06,
+  "absolute_tolerance": 3e-05,
+  "passed": true,
+  "onnx": {
+    "path": "model.onnx",
+    "bytes": 472854,
+    "sha256": "3d57a5406e8ce54c882d87bb6a1babde53a8461209adeec4ce8f003f0ca51a8f"
+  },
+  "providers": [
+    "CPUExecutionProvider"
+  ]
+}

@@ -8,7 +8,8 @@ never a cross-case dashboard).
 Every case here is **synthetic**, and that is on purpose: public per-bubble froth masks are legally request-only
 (`research-tools-and-data-2026-07-09`), so a synthetic Laguerre-foam renderer is the only source of exact
 per-bubble ground truth. These cases are the **mask-metric harness**, not real plant froth. The product's real
-capability is live SAM-class segmentation of real (uploaded) froth; see [`../../data/README.md`](../../data/README.md)
+real-froth data enters through governed offline ingestion or bounded upload; see
+[`../../data/README.md`](../../data/README.md)
 and plan section 0.
 
 ## Where they live

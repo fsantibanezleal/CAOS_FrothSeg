@@ -1,7 +1,7 @@
 # Framework card, `scikit-image`
 
 The classical segmentation floor and all per-bubble morphometry run on scikit-image. This is the transparent,
-cited baseline the live SAM-class foundation model must beat, plus the `regionprops` descriptors every downstream
+cited classical tier used in the complete comparison, plus the `regionprops` descriptors every downstream
 layer (BSD, froth-state) consumes. It is a precompute-lane library: it runs in the `.venv-pipeline` locally and
 in CI, never in the browser.
 
@@ -32,7 +32,7 @@ numpy for things these libraries do correctly.
 
 ## What it is not
 
-- It is not the product method. The live core is a SAM-family foundation model in the browser; scikit-image is the
+- It is one production method tier, not merely a browser foil. scikit-image is the
   baseline it is compared against. On the synthetic harness the foundation model beats this floor on average
   (mean mask AP 0.365 vs 0.262 over the 13 cases in the committed `data/derived/sam_benchmark.json`), and by a wide
   margin under glare (0.407 vs 0.081), while the floor stays complementary on heavy motion blur and defocus.

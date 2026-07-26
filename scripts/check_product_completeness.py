@@ -44,6 +44,23 @@ def check_release() -> list[str]:
             errors.append("release report schema mismatch")
         if report.get("complete") is not True:
             errors.append("release report is not complete")
+        if len(report.get("methods", [])) != len(METHODS):
+            errors.append("release report does not cover the complete registry")
+    benchmark_path = ROOT / "data" / "derived" / "method-benchmark.json"
+    if not benchmark_path.exists():
+        errors.append("missing data/derived/method-benchmark.json")
+    else:
+        benchmark = json.loads(benchmark_path.read_text(encoding="utf-8"))
+        if benchmark.get("implemented_count") != len(METHODS):
+            errors.append("unified benchmark has missing method implementations")
+        if benchmark.get("missing_count") != 0:
+            errors.append("unified benchmark reports missing methods")
+    for rel in (
+        "data/derived/temporal/unet-watershed-v2.json",
+        "data/derived/temporal/sam2-1-hiera-tiny.json",
+    ):
+        if not (ROOT / rel).exists():
+            errors.append(f"missing temporal evidence: {rel}")
     return errors
 
 

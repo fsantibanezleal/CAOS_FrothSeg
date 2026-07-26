@@ -19,7 +19,7 @@ Determinism: a case is a pure function of (spec, seed); all randomness from a se
 """
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace as dataclass_replace
 
 import cv2
 import numpy as np
@@ -31,6 +31,7 @@ class FrothSpec:
     """One synthetic froth case, a coverage-axis point with a fixed seed (plan section 3e)."""
     name: str
     seed: int
+    appearance_seed: int | None = None
     h: int = 256
     w: int = 256
     d32_px: float = 26.0
@@ -97,7 +98,7 @@ def laguerre_labels(spec: FrothSpec, sites: np.ndarray) -> np.ndarray:
 
 def render(spec: FrothSpec, sites: np.ndarray, lab: np.ndarray) -> np.ndarray:
     """Grey froth [0,1] (H,W): base + Plateau-border darkening (EXACT EDT) + specular highlights + stressors."""
-    rng = np.random.default_rng(spec.seed + 1)
+    rng = np.random.default_rng(spec.appearance_seed if spec.appearance_seed is not None else spec.seed + 1)
     h, w = spec.h, spec.w
     if spec.empty:
         return np.zeros((h, w), dtype=np.float64)
@@ -156,6 +157,48 @@ def generate(spec: FrothSpec) -> dict:
     lab = laguerre_labels(spec, sites)
     img = render(spec, sites, lab)
     return dict(spec=spec, sites=sites, labels=lab, image=img, bsd=bsd(lab))
+
+
+def generate_sequence(
+    spec: FrothSpec,
+    *,
+    frames: int = 8,
+    displacement_px: float = 3.0,
+) -> list[dict]:
+    """Generate a deterministic short sequence with persistent instance ids.
+
+    Geometry is sampled once. Each frame applies a smooth sub-bubble displacement
+    and a distinct appearance seed, so tracking is evaluated against exact,
+    persistent ids rather than frame-wise rematched synthetic masks.
+    """
+    if frames < 2:
+        raise ValueError("a temporal sequence requires at least two frames")
+    sites = pack_bubbles(spec)
+    out: list[dict] = []
+    for frame_index in range(frames):
+        phase = 2.0 * np.pi * frame_index / frames
+        moved = sites.copy()
+        if len(moved):
+            moved[:, 0] += displacement_px * np.sin(phase)
+            moved[:, 1] += displacement_px * 0.55 * np.cos(phase)
+        frame_spec = dataclass_replace(
+            spec,
+            name=f"{spec.name}-f{frame_index:03d}",
+            appearance_seed=spec.seed + 500_000 + frame_index,
+        )
+        labels = laguerre_labels(frame_spec, moved)
+        image = render(frame_spec, moved, labels)
+        out.append(
+            {
+                "spec": frame_spec,
+                "frame_index": frame_index,
+                "sites": moved,
+                "labels": labels,
+                "image": image,
+                "bsd": bsd(labels),
+            }
+        )
+    return out
 
 
 CASES: tuple[FrothSpec, ...] = (

@@ -49,9 +49,10 @@ export default function Experiments() {
   return (
     <div className="page-body prose">
       <div className="page-head">
-        <h1>{es ? 'Experimentos' : 'Experiments'}</h1>
+        <span className="eyebrow">{es ? 'Análisis legado separado' : 'Separate legacy analysis'}</span>
+        <h1>{es ? 'Experimento SlimSAM' : 'SlimSAM experiment'}</h1>
         <p className="lede">
-          {es ? 'El segmentador SAM en vivo contra el piso clásico, caso por caso, con las mismas métricas de máscara sobre verdad de terreno exacta. Dónde gana el modelo fundacional y dónde el piso es complementario.' : 'The live SAM segmenter against the classical floor, case by case, with the same mask metrics on exact ground truth. Where the foundation model wins and where the floor is complementary.'}
+          {es ? 'Resultado histórico del SlimSAM liviano contra el piso clásico. No es la comparación primaria ni el método líder; la matriz vigente está en Benchmark.' : 'Historical lightweight SlimSAM result against the classical floor. This is not the primary comparison or the leading method; the current matrix is on Benchmark.'}
         </p>
       </div>
 
@@ -111,7 +112,7 @@ export default function Experiments() {
           </section>
 
           <p className="fs-note good">
-            {es ? 'El AP sintético mide el método contra verdad conocida; no es exactitud de planta real. La capacidad real es sobre la espuma que carga el usuario en la App.' : 'Synthetic AP measures the method against known truth; it is not real-plant accuracy. The real capability is on the froth the user uploads in the App.'}
+            {es ? 'Este artefacto se conserva por trazabilidad. El AP sintético no es exactitud de planta; use Benchmark para los 15 métodos implementados.' : 'This artifact is retained for traceability. Synthetic AP is not plant accuracy; use Benchmark for all 15 implemented methods.'}
           </p>
           <Refs ids={['kirillov2023', 'lin2014coco', 'aldrich2010']} label="Refs" />
         </>

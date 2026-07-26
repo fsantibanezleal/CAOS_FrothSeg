@@ -1,0 +1,229 @@
+{
+  "schema": "frothseg.release/v1",
+  "version": "0.4.0",
+  "complete": true,
+  "errors": [],
+  "branch_policy": "existing develop branch; no worktree",
+  "dataset": {
+    "manifest": "manifests/learned-dataset-v2.json",
+    "schema": "frothseg.learned-dataset/v2",
+    "test_samples": 64,
+    "calibration_samples": 64,
+    "split_unit": "latent geometry group"
+  },
+  "method_benchmark": {
+    "path": "data/derived/method-benchmark.json",
+    "sha256": "af659ab7c14bfb7da66e8401b3a3477f67e21de91d4699d6d9c4981f94930302",
+    "method_count": 15,
+    "implemented_count": 15,
+    "leader": {
+      "id": "L5",
+      "slug": "cellpose_sam",
+      "mean_ap": 0.43359375
+    },
+    "beyond_sota_claim": false
+  },
+  "methods": [
+    {
+      "id": "C1",
+      "slug": "otsu_cc",
+      "tier": "classical",
+      "implementation_state": "implemented",
+      "quality_status": "below-current-bar",
+      "test_mean_ap": null,
+      "canonical_mean_ap": 0.08424999999999999,
+      "run": null,
+      "docs_path": "docs/methods/classical.md"
+    },
+    {
+      "id": "C2",
+      "slug": "watershed_immersion",
+      "tier": "classical",
+      "implementation_state": "implemented",
+      "quality_status": "below-current-bar",
+      "test_mean_ap": null,
+      "canonical_mean_ap": 0.005583333333333333,
+      "run": null,
+      "docs_path": "docs/methods/classical.md"
+    },
+    {
+      "id": "C3",
+      "slug": "watershed_hmax",
+      "tier": "classical",
+      "implementation_state": "implemented",
+      "quality_status": "below-current-bar",
+      "test_mean_ap": null,
+      "canonical_mean_ap": 0.10275000000000001,
+      "run": null,
+      "docs_path": "docs/methods/classical.md"
+    },
+    {
+      "id": "C4",
+      "slug": "watershed_dt",
+      "tier": "classical",
+      "implementation_state": "implemented",
+      "quality_status": "below-current-bar",
+      "test_mean_ap": null,
+      "canonical_mean_ap": 0.26199999999999996,
+      "run": null,
+      "docs_path": "docs/methods/classical.md"
+    },
+    {
+      "id": "C5",
+      "slug": "watershed_hmin",
+      "tier": "classical",
+      "implementation_state": "implemented",
+      "quality_status": "below-current-bar",
+      "test_mean_ap": null,
+      "canonical_mean_ap": 0.14641666666666664,
+      "run": null,
+      "docs_path": "docs/methods/classical.md"
+    },
+    {
+      "id": "C6",
+      "slug": "slic_merge",
+      "tier": "classical",
+      "implementation_state": "implemented",
+      "quality_status": "below-current-bar",
+      "test_mean_ap": null,
+      "canonical_mean_ap": 0.021083333333333332,
+      "run": null,
+      "docs_path": "docs/methods/classical.md"
+    },
+    {
+      "id": "C7",
+      "slug": "valley_edge",
+      "tier": "classical",
+      "implementation_state": "implemented",
+      "quality_status": "below-current-bar",
+      "test_mean_ap": null,
+      "canonical_mean_ap": 0.21783333333333332,
+      "run": null,
+      "docs_path": "docs/methods/classical.md"
+    },
+    {
+      "id": "L1",
+      "slug": "unet_watershed",
+      "tier": "domain-sota",
+      "implementation_state": "implemented",
+      "quality_status": "passes-current-bar",
+      "test_mean_ap": 0.41528125,
+      "canonical_mean_ap": 0.45649999999999996,
+      "run": {
+        "path": "models/unet-watershed-v2/run.json",
+        "sha256": "b22105d45942b266c0b594ec070dce6cd7bec3c5b39400ca774b5225ffc2bf25"
+      },
+      "docs_path": "docs/frameworks/07_unet-watershed/README.md"
+    },
+    {
+      "id": "L2",
+      "slug": "deep_marker_watershed",
+      "tier": "domain-sota",
+      "implementation_state": "implemented",
+      "quality_status": "passes-current-bar",
+      "test_mean_ap": 0.324703125,
+      "canonical_mean_ap": 0.37691666666666673,
+      "run": {
+        "path": "models/deep-marker-watershed-v1/run.json",
+        "sha256": "871649f87fee16f75062f4f5d9f64bba14bf0419d232de7738af17c6f4ada814"
+      },
+      "docs_path": "docs/frameworks/08_deep-marker-watershed/README.md"
+    },
+    {
+      "id": "L3",
+      "slug": "gc_fsegnet",
+      "tier": "domain-sota",
+      "implementation_state": "implemented",
+      "quality_status": "passes-current-bar",
+      "test_mean_ap": 0.319046875,
+      "canonical_mean_ap": 0.37616666666666676,
+      "run": {
+        "path": "models/gc-fsegnet-v1/run.json",
+        "sha256": "9d6acc4271e0b1a915a5b249569a9464cd85bbd6ba575c405b78c9a7a22a1df7"
+      },
+      "docs_path": "docs/frameworks/09_gc-fsegnet/README.md"
+    },
+    {
+      "id": "L4",
+      "slug": "stardist_2d",
+      "tier": "domain-sota",
+      "implementation_state": "implemented",
+      "quality_status": "below-current-bar",
+      "test_mean_ap": 0.111890625,
+      "canonical_mean_ap": 0.12041666666666667,
+      "run": {
+        "path": "models/stardist-froth-v1/run.json",
+        "sha256": "a3b197e8c510c73fd284b714fbe2b250a7dcf5105023929c7ea0e0944ecdf8d6"
+      },
+      "docs_path": "docs/frameworks/10_stardist/README.md"
+    },
+    {
+      "id": "L5",
+      "slug": "cellpose_sam",
+      "tier": "foundation",
+      "implementation_state": "implemented",
+      "quality_status": "passes-current-bar",
+      "test_mean_ap": 0.43359375,
+      "canonical_mean_ap": 0.5826666666666667,
+      "run": {
+        "path": "models/cellpose-sam-cpsam-v2/run.json",
+        "sha256": "ff826361c89497bf4658ad2007b6bbc634b4515676a209ec468f95f9297fd00b"
+      },
+      "docs_path": "docs/frameworks/11_cellpose-sam/README.md"
+    },
+    {
+      "id": "L6",
+      "slug": "yolo_froth_seg",
+      "tier": "domain-sota",
+      "implementation_state": "implemented",
+      "quality_status": "below-current-bar",
+      "test_mean_ap": 0.293015625,
+      "canonical_mean_ap": 0.40599999999999997,
+      "run": {
+        "path": "models/yolo-froth-seg-v1/run.json",
+        "sha256": "94a501c9a15a2e6067192215b2d5a8d570f9b4795a94d9918329361c8f15b4a9"
+      },
+      "docs_path": "docs/frameworks/12_yolo-seg/README.md"
+    },
+    {
+      "id": "L7",
+      "slug": "sam2_1",
+      "tier": "foundation",
+      "implementation_state": "implemented",
+      "quality_status": "below-current-bar",
+      "test_mean_ap": 0.135171875,
+      "canonical_mean_ap": 0.17416666666666666,
+      "run": {
+        "path": "models/sam2-1-hiera-tiny/run.json",
+        "sha256": "2d87a77753588853059b1f533e0023cf3e6a7c68b386566a43f9ccb43e25aebc"
+      },
+      "docs_path": "docs/frameworks/13_sam2/README.md"
+    },
+    {
+      "id": "N1",
+      "slug": "lamellastar",
+      "tier": "frontier",
+      "implementation_state": "implemented",
+      "quality_status": "below-current-bar",
+      "test_mean_ap": 0.21454687500000003,
+      "canonical_mean_ap": 0.2215,
+      "run": {
+        "path": "models/lamellastar-v1/run.json",
+        "sha256": "077ccbc78e2e5fc51bf6d178666e795efc0df0e232d907a4be3c2ecaba3b3b07"
+      },
+      "docs_path": "docs/frameworks/14_lamellastar/README.md"
+    }
+  ],
+  "temporal_evidence": [
+    {
+      "path": "data/derived/temporal/unet-watershed-v2.json",
+      "sha256": "350f26a221e6e9c12c9a4fe76457562f88ea144d4a088e95134f87dfd61d64e1",
+      "schema": "frothseg.temporal-benchmark/v1"
+    },
+    {
+      "path": "data/derived/temporal/sam2-1-hiera-tiny.json",
+      "sha256": "8c15e6dbe493bcf45a004f82d567086e66b66f7b95797a9d59e3b0c841ac22bc",
+      "schema": "frothseg.sam2-video-benchmark/v1"
+    }
+  ]
+}

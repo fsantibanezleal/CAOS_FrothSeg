@@ -259,7 +259,10 @@ def panoptic_quality(pred: np.ndarray, gt: np.ndarray, cov_thresh: float = 0.2) 
             break
         if a in matched_p or b in matched_g:
             continue
-        matched_p.add(a); matched_g.add(b); tp += 1; sum_iou += iou[a, b]
+        matched_p.add(a)
+        matched_g.add(b)
+        tp += 1
+        sum_iou += iou[a, b]
     fp = len(pr_ids) - tp
     fn = len(gt_ids) - tp
     sq = sum_iou / tp if tp else 0.0

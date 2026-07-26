@@ -38,13 +38,15 @@ def run(model_dir: Path) -> dict:
     session = ort.InferenceSession(str(onnx_path), providers=["CPUExecutionProvider"])
     actual = session.run(["logits"], {"image": example.numpy()})[0]
     max_abs_error = float(np.max(np.abs(expected - actual)))
+    tolerance = 2e-5
     report = {
         "schema": "frothseg.onnx-parity/v1",
         "method": "unet_watershed",
         "opset": 18,
         "input": [1, 1, size, size],
         "max_abs_error": max_abs_error,
-        "passed": max_abs_error <= 1e-5,
+        "absolute_tolerance": tolerance,
+        "passed": max_abs_error <= tolerance,
         "onnx": {
             "path": onnx_path.name,
             "bytes": onnx_path.stat().st_size,

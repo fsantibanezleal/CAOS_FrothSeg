@@ -5,51 +5,46 @@ export default function Introduction() {
   return (
     <div className="page-body prose">
       <div className="page-head">
-        <h1>{es ? 'Introducción' : 'Introduction'}</h1>
+        <span className="eyebrow">{es ? 'Producto científico offline-first' : 'Offline-first scientific product'}</span>
+        <h1>{es ? 'Segmentación de espuma, de datos a evidencia' : 'Froth segmentation, from data to evidence'}</h1>
         <p className="lede">
           {es
-            ? 'Por qué el tamaño de burbuja de la espuma importa en flotación, por qué segmentarla es difícil, y qué hace FrothSeg: un segmentador fundacional zero-shot que se ejecuta en el navegador sobre espuma real.'
-            : 'Why froth bubble size matters in flotation, why segmenting it is hard, and what FrothSeg does: a zero-shot foundation segmenter that runs in the browser on real froth.'}
+            ? 'FrothSeg contiene el ciclo completo de datos, entrenamiento, inferencia, evaluación y exportación. Esta web es su superficie complementaria para explorar casos y resultados.'
+            : 'FrothSeg contains the complete data, training, inference, evaluation, and export lifecycle. This website is its companion surface for exploring cases and results.'}
         </p>
       </div>
 
       <section>
-        <h2>{es ? 'La espuma es el sensor' : 'The froth is the sensor'}</h2>
+        <h2>{es ? 'La espuma como señal de proceso' : 'Froth as a process signal'}</h2>
         <p>
           {es
-            ? 'En una celda de flotación, las partículas de mineral valioso se adhieren a burbujas de aire y suben a una capa de espuma que rebalsa como concentrado. La apariencia de esa espuma, sobre todo la distribución de tamaño de burbuja (BSD), es un indicador operacional directo: espuma fina y estable suele significar buena recuperación; espuma gruesa que colapsa suele significar sobre-espumado o poco espumante. Los operadores llevan décadas leyendo la espuma a ojo; la visión por computador lo hace cuantitativo y continuo.'
-            : 'In a flotation cell, valuable mineral particles attach to air bubbles and rise into a froth layer that overflows as concentrate. The appearance of that froth, above all the bubble-size distribution (BSD), is a direct operational indicator: a fine, stable froth usually means good recovery; a coarse, collapsing froth usually means over-frothing or low frother. Operators have read the froth by eye for decades; machine vision makes it quantitative and continuous.'}
-        </p>
-        <p>
-          {es
-            ? 'La BSD (D10/D50/D90 y la media de Sauter d32) y la clase de espuma son sensores blandos bien establecidos para el estado de flotación.'
-            : 'The BSD (D10/D50/D90 and the Sauter mean d32) and the froth class are well-established soft sensors for the flotation state.'}
+            ? 'La distribución de tamaño de burbuja, la estabilidad y la textura de la espuma responden a aireación, reactivos, carga y estado metalúrgico. Convertir imágenes en máscaras por burbuja permite medir D10, D50, D90 y la media de Sauter d32 de forma continua.'
+            : 'Bubble-size distribution, stability, and froth texture respond to aeration, reagents, loading, and metallurgical state. Converting images into per-bubble masks enables continuous D10, D50, D90, and Sauter d32 measurement.'}
         </p>
         <Refs ids={['aldrich2010', 'wang2018', 'fu2019']} label="Refs" />
       </section>
 
       <section>
-        <h2>{es ? 'Por qué es difícil' : 'Why it is hard'}</h2>
+        <h2>{es ? 'Por qué la segmentación es difícil' : 'Why segmentation is difficult'}</h2>
         <ul>
-          <li>{es ? 'Las burbujas se tocan y se solapan; los bordes (bordes de Plateau) son delgados y de bajo contraste.' : 'Bubbles touch and overlap; the borders (Plateau borders) are thin and low-contrast.'}</li>
-          <li>{es ? 'El brillo especular de la iluminación satura los topes de las burbujas y engaña a los métodos sembrados por realce.' : 'Specular glare from the lighting saturates bubble tops and fools highlight-seeded methods.'}</li>
-          <li>{es ? 'El movimiento de la espuma y el desenfoque emborronan los bordes; la carga cambia el brillo global.' : 'Froth travel and defocus smear borders; the pull changes global brightness.'}</li>
-          <li>{es ? 'El mayor bloqueador del campo: casi no hay datos de espuma etiquetados y públicos. Las fotos de espuma industriales rara vez son redistribuibles.' : 'The field\'s biggest blocker: almost no public labelled froth data. Industrial froth photos are rarely redistributable.'}</li>
+          <li>{es ? 'Las burbujas se tocan y sus lamelas tienen bajo contraste.' : 'Bubbles touch and their lamellae have low contrast.'}</li>
+          <li>{es ? 'Brillo, movimiento, desenfoque y carga cambian la apariencia.' : 'Glare, motion, defocus, and loading change appearance.'}</li>
+          <li>{es ? 'Las escalas varían desde nubes de microburbujas hasta espuma gruesa.' : 'Scale ranges from microbubble clouds to coarse froth.'}</li>
+          <li>{es ? 'Los datos industriales con máscaras por burbuja casi nunca son redistribuibles.' : 'Industrial data with per-bubble masks is rarely redistributable.'}</li>
         </ul>
       </section>
 
       <section>
-        <h2>{es ? 'Qué hace FrothSeg' : 'What FrothSeg does'}</h2>
+        <h2>{es ? 'Qué implementa el repositorio' : 'What the repository implements'}</h2>
         <p>
           {es
-            ? 'FrothSeg segmenta cada burbuja con un modelo fundacional de la familia SAM (Segment Anything) ejecutado zero-shot, sin etiquetas de espuma, enteramente en el navegador vía WebGPU. Devuelve las máscaras por burbuja, la BSD y una lectura del estado de la espuma. Como la escasez de datos hace inviable enviar un dataset real etiquetado, la capacidad real es segmentar la espuma que carga el usuario; un generador de espuma sintética con máscaras exactas sirve solo como entorno de validación para medir el método con métricas de máscara reales.'
-            : 'FrothSeg segments every bubble with a SAM-family foundation model (Segment Anything) run zero-shot, with no froth labels, entirely in the browser via WebGPU. It returns per-bubble masks, the BSD and a froth-state read-out. Because data scarcity makes shipping a real labelled dataset infeasible, the real capability is segmenting the froth the user uploads; a synthetic froth generator with exact masks serves only as the benchmark harness to score the method with real mask metrics.'}
+            ? 'Siete métodos clásicos, siete métodos aprendidos o fundacionales y un experimento de frontera comparten contratos de datos y métricas. Los modelos entrenables tienen pipelines GPU, calibración separada, prueba intocable, inferencia por lotes y exportación. Cellpose-SAM lidera hoy; LamellaStar no superó la referencia y se conserva como resultado negativo.'
+            : 'Seven classical methods, seven learned or foundation methods, and one frontier experiment share data contracts and metrics. Trainable models have GPU pipelines, separate calibration, an untouched test, batch inference, and export. Cellpose-SAM currently leads; LamellaStar did not beat the reference and is retained as a negative result.'}
         </p>
-        <Refs ids={['kirillov2023', 'zhang2023mobilesam', 'chen2023slimsam']} label="Refs" />
         <p className="fs-note good">
           {es
-            ? 'Honestidad: el AP sintético es un benchmark controlado, nunca exactitud de planta real. El estado de espuma es un proxy heurístico de la literatura, no un setpoint calibrado.'
-            : 'Honesty: synthetic AP is a controlled benchmark, never real-plant accuracy. The froth state is a heuristic proxy from the literature, not a calibrated setpoint.'}
+            ? 'Los AP publicados son de un entorno sintético controlado con verdad exacta, no exactitud de planta. La web no vuelve a entrenar ni recalcula la comparación.'
+            : 'Published AP values come from a controlled synthetic harness with exact truth, not plant accuracy. The website does not retrain or recompute the comparison.'}
         </p>
       </section>
     </div>

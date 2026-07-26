@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.04.000] · 2026-07-25
+
+### Rebuilt
+
+- Replaced the browser-only product framing with a complete offline-first
+  processing, training, inference, calibration, evaluation, export, temporal,
+  visualization, and release-evidence pipeline.
+- Implemented and evaluated the full C1-C7, L1-L7, N1 method registry.
+- Added a leakage-resistant 384-sample v2 dataset with latent-group isolation,
+  appearance twins, validation, calibration, and untouched test splits.
+- Trained all trainable methods and ran foundation models on the available RTX
+  4070 CUDA device; added portable ONNX artifacts and parity reports where
+  applicable.
+- Added official Cellpose-SAM, StarDist, Ultralytics YOLO segmentation, and
+  Meta SAM2.1 image/video integrations with upstream provenance and checksums.
+- Added exact-ID temporal tracking and SAM2 video propagation evidence.
+- Added a unified method benchmark, release inventory, expanded framework wiki,
+  and companion-web comparison matrix. No beyond-SOTA claim is made.
+
 All notable changes to this product. Format: `X.XX.XXX` (display) · see `fslab.__version__`. Keep `0.x`
 while on mock/synthetic data. Tag every release.
 

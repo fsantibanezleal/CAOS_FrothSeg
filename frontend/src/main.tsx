@@ -33,12 +33,12 @@ const config: ShellConfig = {
   architecture,
   footer: {
     provenance: {
-      en: 'Live: SAM-class model (SlimSAM, Apache-2.0) via transformers.js + WebGPU. Benchmark: synthetic froth (Laguerre foam), exact masks.',
-      es: 'En vivo: modelo SAM (SlimSAM, Apache-2.0) vía transformers.js + WebGPU. Benchmark: espuma sintética (espuma de Laguerre), máscaras exactas.',
+      en: 'Offline product: C1-C7, L1-L7, N1 with trained checkpoints and release evidence. Companion web: bounded live evaluation.',
+      es: 'Producto offline: C1-C7, L1-L7, N1 con checkpoints entrenados y evidencia de release. Web: evaluación en vivo acotada.',
     },
     disclaimer: {
-      en: 'Static site; segmentation runs in your browser, no backend. Synthetic AP is a controlled benchmark, not real-plant accuracy.',
-      es: 'Sitio estático; la segmentación se ejecuta en el navegador, sin backend. El AP sintético es un benchmark controlado, no exactitud de planta real.',
+      en: 'The website replays precomputed evidence and offers light interaction. Synthetic AP is controlled evidence, not plant accuracy.',
+      es: 'La web reproduce evidencia precalculada y ofrece interacción liviana. El AP sintético es evidencia controlada, no exactitud de planta.',
     },
   },
 };

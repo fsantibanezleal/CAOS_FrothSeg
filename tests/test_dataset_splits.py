@@ -1,4 +1,10 @@
-from fslab.datasets import SampleRecord, grouped_split, validate_splits
+from fslab.datasets import (
+    SampleRecord,
+    grouped_split,
+    learned_dataset_matrix,
+    validate_learned_matrix,
+    validate_splits,
+)
 
 
 def _sample(sample_id: str, group_id: str) -> SampleRecord:
@@ -38,3 +44,22 @@ def test_split_validation_rejects_scoreable_sample_without_truth():
     bad = SampleRecord(**{**sample.__dict__, "mask_uri": None})
     rows = grouped_split([bad])
     assert any("lacks mask" in error for error in validate_splits(rows))
+
+
+def test_learned_matrix_is_stratified_and_keeps_appearance_variants_grouped():
+    samples = learned_dataset_matrix(image_size=128, appearance_variants=2)
+    assert validate_learned_matrix(samples) == []
+    assert len(samples) == 16 * 12 * 2
+    assert {sample.split for sample in samples} == {
+        "train", "validation", "calibration", "test",
+    }
+    groups: dict[str, set[str]] = {}
+    for sample in samples:
+        groups.setdefault(sample.record.group_id, set()).add(sample.split)
+    assert all(len(splits) == 1 for splits in groups.values())
+    first_group = [
+        sample for sample in samples
+        if sample.record.group_id == samples[0].record.group_id
+    ]
+    assert len({sample.spec.seed for sample in first_group}) == 1
+    assert len({sample.spec.appearance_seed for sample in first_group}) == 2

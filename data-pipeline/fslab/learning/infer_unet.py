@@ -16,7 +16,11 @@ from ..science.segment import bsd_wasserstein, mask_ap, panoptic_quality
 from .unet_watershed import load_npz_weights, predict_at_training_scale
 
 
-def run(model_dir: Path, output: Path) -> dict:
+def run(model_dir: Path, output: Path, *, device: str = "cuda") -> dict:
+    import torch
+
+    if device.startswith("cuda") and not torch.cuda.is_available():
+        raise RuntimeError("CUDA inference requested but unavailable; CPU fallback is forbidden")
     run_manifest = json.loads((model_dir / "run.json").read_text(encoding="utf-8"))
     config = run_manifest["config"]
     calibration = run_manifest["calibration"]
@@ -24,7 +28,7 @@ def run(model_dir: Path, output: Path) -> dict:
     actual_hash = hashlib.sha256(weights.read_bytes()).hexdigest()
     if actual_hash != run_manifest["inference_weights"]["sha256"]:
         raise ValueError("inference checkpoint checksum mismatch")
-    model = load_npz_weights(weights, base_channels=int(config["base_channels"]))
+    model = load_npz_weights(weights, base_channels=int(config["base_channels"])).to(device)
     rows = []
     for case in list_cases():
         scene = generate(case.spec)
@@ -33,6 +37,7 @@ def run(model_dir: Path, output: Path) -> dict:
             model,
             scene["image"],
             training_size=int(config["image_size"]),
+            device=device,
             foreground_threshold=calibration["foreground_threshold"],
             boundary_threshold=calibration["boundary_threshold"],
             min_distance=calibration["min_distance"],
@@ -58,6 +63,7 @@ def run(model_dir: Path, output: Path) -> dict:
         "method": "unet_watershed",
         "checkpoint_sha256": actual_hash,
         "split": "canonical-synthetic-diagnostic",
+        "device": device,
         "n_cases": len(rows),
         "mean_ap": float(np.mean([row["ap"] for row in scored])),
         "mean_ap50": float(np.mean([row["ap50"] for row in scored])),
@@ -73,8 +79,9 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--device", default="cuda")
     args = parser.parse_args()
-    print(json.dumps(run(args.model, args.output), indent=2))
+    print(json.dumps(run(args.model, args.output, device=args.device), indent=2))
 
 
 if __name__ == "__main__":

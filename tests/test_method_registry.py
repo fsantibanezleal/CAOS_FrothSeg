@@ -14,7 +14,7 @@ def test_full_method_ladder_is_explicit_and_valid():
     }
 
 
-def test_registry_never_conflates_planned_with_accepted():
+def test_registry_accepts_only_the_completed_method_ladder():
     doc = registry_document()
     accepted = [method for method in doc["methods"] if method["state"] == "accepted"]
-    assert accepted == [], "no method passes the complete release gate yet"
+    assert len(accepted) == 15

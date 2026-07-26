@@ -1,19 +1,20 @@
 # Guide, bring your own froth
 
-The product's real capability is live segmentation of real froth you provide, not just the baked synthetic cases.
+Bring-your-own data is one input route into the full product, not the whole
+product.
 Public per-bubble froth masks are legally request-only (`research-tools-and-data-2026-07-09`), so FrothSeg does
 not ship a redistributable real dataset; instead it segments the froth photo or frame you upload, live, with a
 SAM-class foundation model. The door is **CONTRACT 1**, the image gate.
 
 ## What this is, and what it is not
 
-- It **is** a real inference path: upload a froth image in the App, the browser runs the SAM auto-mask generator
-  on it (WebGPU, WASM fallback), and you get per-bubble instance masks, the bubble-size distribution (BSD), and a
-  froth-state read-out, all client-side, no server.
+- It **is** a bounded exploratory path: upload a froth image, select any C1-C7
+  TypeScript method or legacy SlimSAM, and inspect masks and BSD client-side.
 - It is **not** a place to obtain a mask-AP number for your image. AP requires per-bubble ground truth, which a
   real froth photo does not have. The AP read-out only exists for the synthetic samples, where the exact GT is
   known (`frontend/src/sam/score.ts`, mirrored to `fslab.science.segment.mask_ap`).
-- It is **not** a training step. SAM is zero-shot; there are no froth labels and nothing is fitted to your image.
+- It is **not** the training or release path. Governed datasets are ingested
+  offline, assigned splits, trained, calibrated, evaluated, and exported there.
 
 ## CONTRACT 1: the image gate (accept / reject / flag)
 

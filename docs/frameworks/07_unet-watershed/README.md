@@ -1,6 +1,6 @@
 # L1, boundary U-Net plus marker watershed
 
-Status: **implemented research vertical, not accepted as the flagship**.
+Status: **accepted learned vertical; Cellpose-SAM remains the measured leader**.
 
 ## What is implemented
 
@@ -19,29 +19,30 @@ Commands:
 
 ```powershell
 $env:PYTHONPATH = "data-pipeline"
-python -m fslab.learning.train_unet `
-  --output models/unet-watershed-v1 --epochs 12 --image-size 96 --base-channels 8
-python -m fslab.learning.infer_unet `
-  --model models/unet-watershed-v1 `
-  --output data/derived/learned/unet-watershed-v1
+./.venv-gpu/Scripts/python.exe -m fslab.learning.train_unet `
+  --output models/unet-watershed-v2 --epochs 24 --image-size 192 `
+  --base-channels 24 --batch-size 8 --device cuda
+./.venv-gpu/Scripts/python.exe -m fslab.learning.infer_unet `
+  --model models/unet-watershed-v2 `
+  --output data/derived/learned/unet-watershed-v2 --device cuda
 .venv-gpu/Scripts/python.exe -m fslab.learning.export_unet `
-  --model models/unet-watershed-v1
+  --model models/unet-watershed-v2
 ```
 
 ## Current evidence
 
-- held-out synthetic seed families: mean AP 0.2213, AP50 0.5402, PQ 0.4723;
-- canonical synthetic diagnostic cases: mean AP 0.2219, AP50 0.5143, PQ 0.4721;
-- ONNX maximum absolute logit error: 7.63e-6, parity passed;
-- checkpoint: `models/unet-watershed-v1/weights.npz`;
-- browser export: `models/unet-watershed-v1/model.onnx`.
+- 16 conditions, 192 latent groups, and 384 samples with group-safe
+  train/validation/calibration/test partitions;
+- untouched 64-sample test: mean AP 0.4153, AP50 0.6987, PQ 0.6559;
+- canonical synthetic diagnostic: mean AP 0.4565, AP50 0.7563, PQ 0.6978;
+- ONNX maximum absolute logit error: 1.046e-5 at a declared 2e-5 tolerance;
+- checkpoint: `models/unet-watershed-v2/weights.npz`;
+- browser export: `models/unet-watershed-v2/model.onnx`.
 
-These results are still below the best current classical diagnostic mean AP
-(0.262). L1 is therefore a real trained implementation but **not an accepted
-quality result**. It must not be promoted in the UI as SOTA or flagship. The main
-weaknesses are fine dense froth and glare. The next experiments increase native
-resolution/data diversity, use distance/ray targets, and add real corrected froth
-before any product claim.
+L1 now exceeds the best current classical diagnostic mean AP (0.262), but it
+does not exceed official Cellpose-SAM. It is accepted as the compact deployable
+learned model, not advertised as SOTA. Microbubble resolution and coarse-bubble
+over-segmentation remain visible failure modes.
 
 ## Reference
 

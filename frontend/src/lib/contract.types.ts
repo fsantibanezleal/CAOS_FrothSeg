@@ -166,6 +166,46 @@ export interface LearnedBenchmarkDoc {
   cases: LearnedCaseScore[];
 }
 
+export interface MethodMetricSummary {
+  split: string;
+  n?: number;
+  n_cases?: number;
+  mean_ap: number;
+  mean_ap50: number;
+  mean_pq: number | null;
+}
+
+export interface MethodBenchmarkRow {
+  id: string;
+  slug: string;
+  name: string;
+  tier: 'classical' | 'domain-sota' | 'foundation' | 'frontier';
+  lane: string;
+  engine: string;
+  state: 'implemented' | 'missing';
+  quality_status: 'passes-current-bar' | 'below-current-bar' | 'not-evaluated';
+  test: MethodMetricSummary | null;
+  canonical: MethodMetricSummary | null;
+  canonical_cases: Array<{ case_id: string; ap: number | null }>;
+  docs_path: string;
+}
+
+export interface MethodBenchmarkDoc {
+  schema: 'frothseg.method-benchmark/v1';
+  dataset_schema: string;
+  canonical_case_count: number;
+  method_count: number;
+  implemented_count: number;
+  missing_count: number;
+  current_bar: {
+    metric: string;
+    threshold: number;
+    leader: { id: string; slug: string; mean_ap: number } | null;
+    beyond_sota_claim: boolean;
+  };
+  methods: MethodBenchmarkRow[];
+}
+
 export interface CaseIndexEntry {
   case_id: string;
   category: string;

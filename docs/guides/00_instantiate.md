@@ -18,8 +18,9 @@ frozen base was specialised into the froth product, so the mapping is legible; i
    dependency (`@huggingface/transformers`), carded in `docs/frameworks/01_transformers-js/`.
 6. **Contract mirror.** `frontend/src/lib/contract.types.ts` mirrors the froth manifest/card/masks schemas (a
    drift fails `tsc`); the visualisations live in `frontend/src/viz/` and `frontend/src/pages/`.
-7. **Lanes.** The live compute is the browser SAM segmenter (`frontend/src/sam/`), not Pyodide; `fslab/live.py`
-   is a numpy-only BSD helper. The backend `app/` and the GPU precompute lane are dormant for FrothSeg.
+7. **Lanes.** The mandatory offline lane owns training, official-model
+   inference, evaluation, export, and release evidence. The browser provides
+   C1-C7 TypeScript twins, legacy SlimSAM, BSD reduction, and replay.
 8. **Architecture modal (ADR-0058).** `frontend/src/architecture.ts` supplies the modal config; two hand-authored
    themed SVGs (`public/svg/tech/01-the-app.svg`, `04-the-science.svg`) are passed to the `AppShell` config in
    `main.tsx`. See [guide 05](05_architecture-modal.md).

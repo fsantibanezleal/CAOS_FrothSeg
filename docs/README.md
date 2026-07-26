@@ -6,14 +6,15 @@ these docs are the primary product; the web app is a projection of a validated s
 
 ## What FrothSeg is (in one paragraph)
 
-FrothSeg segments every bubble in a flotation-froth image with a **SAM-family foundation model**
-(SlimSAM / MobileSAM) run **zero-shot**, with no froth training labels, entirely in the browser via
-`@huggingface/transformers` on `onnxruntime-web` (WebGPU, WASM fallback). Run as an automatic mask generator
-(a dense grid of point prompts, predicted-IoU and stability filtering, greedy-IoU NMS), it yields per-bubble
-instance masks, the **bubble-size distribution** (D10/D50/D90, the Sauter mean d32) and a **froth-state**
-read-out. A classical floor (scikit-image marker-controlled watershed and SLIC) is the honest cited baseline
-the foundation model must beat. A **synthetic Laguerre-foam generator with exact masks** is the only
-benchmark harness, because per-bubble froth ground truth does not exist publicly.
+FrothSeg is a complete offline scientific repository plus a companion web
+application. It implements seven classical methods, CUDA-trained learned
+segmenters, and official Cellpose-SAM/StarDist/YOLO/SAM-family integrations
+behind one instance-mask and bubble-size-distribution contract. The offline
+pipeline owns generation, split-safe training, calibration, inference,
+evaluation, export, and benchmark baking; the website reads those artifacts and
+offers only bounded live interaction. A synthetic Laguerre-foam generator with
+exact masks supplies the controlled benchmark because redistributable,
+per-bubble industrial froth ground truth is not publicly available.
 
 ## Map
 
@@ -23,8 +24,8 @@ benchmark harness, because per-bubble froth ground truth does not exist publicly
 - **[frameworks/](frameworks.md)**, one card per research-chosen engine (transformers.js, the SAM auto-mask
   method, scikit-image, scipy, OpenCV, pycocotools). The deep research, made binding; each is pinned in a
   `requirements-*.txt` or `package.json`, no hand-rolled toy substitute for a SOTA engine.
-- **[guides/](guides.md)**, runnable how-tos: segment your own froth (the real capability), run the offline
-  synthetic pipeline, bake and score the SAM verification, the WebGPU lane, the in-app Architecture modal.
+- **[guides/](guides.md)**, runnable how-tos for the complete offline data,
+  GPU, evaluation, export, and bounded browser lanes.
 - **[cases/](cases.md)**, the synthetic coverage matrix (one case per froth stressor axis) plus the
   positive / negative controls; the App shows one case, Experiments and Benchmark summarize across them.
 
@@ -38,11 +39,11 @@ from the data reality of this domain (see `research-tools-and-data`, `sam-verifi
   controlled harness, clearly labelled synthetic; it is never reported as concentrator accuracy. The
   glare / motion-blur / defocus cases are deliberate negative controls where methods are supposed to fail,
   and SAM is run at its standard auto-generator defaults (it is not tuned to the synthetic set).
-- **Real froth is upload-only, because it is request-only.** Industrial froth photographs are legally not
+- **Real froth is user-supplied, because it is request-only.** Industrial froth photographs are legally not
   publicly redistributable (data-protection constraints; the field's known blocker is the scarcity of
-  labelled froth data). So FrothSeg ships **no** real froth dataset with masks. The real capability is
-  live SAM segmentation of the froth the **user uploads**, helped by the OpenCV deglare / illumination
-  front-end; any individually permissively-licensed sample frames are attributed on the About page.
+  labelled froth data). FrothSeg therefore ships no real froth dataset with
+  masks. User uploads provide bounded qualitative evaluation; quantitative
+  claims require a separately governed real labelled dataset.
 
 **What is committed vs fetched vs kept out of git:**
 
@@ -50,7 +51,10 @@ from the data reality of this domain (see `research-tools-and-data`, `sam-verifi
   the exact instance masks as COCO-RLE (`masks.json`), a per-bubble morphometry `bsd.csv`, and a manifest
   recording params, seed, engine version and each file's sha256 (CONTRACT 2, CI-checked, byte-identical on
   re-run). Plus the baked SAM verification results.
-- **Fetched at runtime** (not committed): the SAM model weights, pulled from the Hugging Face Hub
-  (Apache-2.0) on first use and cached by the browser; no multi-megabyte model blob lives in git.
+- **Fetched for offline model execution** (not duplicated in git): large
+  official foundation checkpoints such as Cellpose `cpsam_v2` and SAM 2.1.
+  Their exact ids, sizes, hashes, licenses, devices, and parameters are captured
+  in run manifests. Compact in-repo checkpoints and ONNX exports are versioned
+  with their evaluation evidence.
 - **Kept out of git** (`data/raw/`, gitignored): any raw or uploaded froth frames. Uploaded froth is
   processed in-browser and never leaves the client.

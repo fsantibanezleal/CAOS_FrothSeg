@@ -1,18 +1,24 @@
-# Guide, run the API (dormant for FrothSeg)
+# Guide · run the read-only evidence API
 
-**FrothSeg has no backend API. The `app/` FastAPI backend stays dormant. There is nothing to run here.**
+The static companion web does not require a server, but the repository includes
+a complete read-only FastAPI surface for integrations and internal tooling.
 
-FrothSeg is a static SPA on GitHub Pages (ADR-0055), fully client-side:
+```powershell
+./.venv-gpu/Scripts/python.exe -m pip install -r requirements-api.txt
+$env:PYTHONPATH = "data-pipeline"
+./.venv-gpu/Scripts/python.exe -m uvicorn app.main:app --reload
+```
 
-- All inference runs in the browser: the SAM-class segmenter via onnxruntime-web + WebGPU (WASM-SIMD fallback).
-  There is no server-side compute to gate behind an API.
-- All heavy results are committed artifacts under `data/derived/` (the synthetic benchmark cases + the baked
-  `sam_benchmark.json`), served as static files, not generated on request.
-- The model weights are fetched at runtime from the Hugging Face Hub (CORS-ok, cached via the browser Cache API),
-  not served by us, so no blob is committed and no backend proxies them.
+Endpoints:
 
-The App's live capability is the browser SAM on real uploaded froth ([02_bring-your-own-data.md](02_bring-your-own-data.md)),
-which needs no server. So the ADR-0002 backend triggers (server-side processing of uploaded data, auth-gated
-private data, paid heavy compute) do not apply. If one ever does, activate `app/` then, per the template's
-dormant backend scaffolding, and have it serve the same committed `data/derived` artifacts read-only. Until then,
-ignore this lane.
+- `GET /health` and `/healthz`;
+- `GET /api/cases`;
+- `GET /api/cases/{case_id}/manifest`;
+- `GET /api/cases/{case_id}/artifacts/{benchmark|card|masks}`;
+- `GET /api/methods`;
+- `GET /api/release`;
+- `GET /api/temporal/{unet-watershed-v2|sam2-1-hiera-tiny}`.
+
+All endpoints are read-only and serve the same committed evidence the web
+consumes. Case ids and artifact names are allow-listed, and resolved paths must
+remain under `data/derived`.

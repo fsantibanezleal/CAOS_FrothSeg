@@ -21,8 +21,33 @@ def load_manifest(case_id: str) -> dict | None:
     return json.loads(p.read_text(encoding="utf-8")) if p.exists() else None
 
 
-def load_artifact(rel: str) -> dict | None:
-    p = (_derived() / rel).resolve()
-    if not str(p).startswith(str(_derived())):  # path-traversal guard
+def _load_json(path: Path) -> dict | None:
+    root = _derived()
+    resolved = path.resolve()
+    try:
+        resolved.relative_to(root)
+    except ValueError:
         return None
-    return json.loads(p.read_text(encoding="utf-8")) if p.exists() else None
+    return json.loads(resolved.read_text(encoding="utf-8")) if resolved.is_file() else None
+
+
+def load_case_json_artifact(case_id: str, artifact_name: str) -> dict | None:
+    allowed = {"benchmark", "card", "masks"}
+    if artifact_name not in allowed:
+        return None
+    return _load_json(_derived() / "synth" / case_id / f"{artifact_name}.json")
+
+
+def load_named_document(name: str) -> dict | None:
+    if name not in {"method-benchmark.json", "release-report.json", "sam_benchmark.json"}:
+        return None
+    return _load_json(_derived() / name)
+
+
+def load_temporal(method_id: str) -> dict | None:
+    names = {
+        "unet-watershed-v2": "unet-watershed-v2.json",
+        "sam2-1-hiera-tiny": "sam2-1-hiera-tiny.json",
+    }
+    name = names.get(method_id)
+    return _load_json(_derived() / "temporal" / name) if name else None
