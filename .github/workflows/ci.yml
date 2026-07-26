@@ -20,7 +20,7 @@ jobs:
       - name: Lint
         run: ruff check data-pipeline tests
       - name: Tests
-        run: pytest
+        run: python -m pytest
       - name: Pipeline smoke (sandboxed; canonical artifacts are read-only)
         run: python -m fslab.pipeline poly-normal --output "${{ runner.temp }}/frothseg-smoke"
       - name: CONTRACT 2 · manifests <-> artifacts consistent (no drift)
