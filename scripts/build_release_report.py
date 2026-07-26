@@ -166,8 +166,11 @@ def build() -> dict:
             errors.append("accepted real sources contain no physically calibrated samples")
 
     cellpose_run = _load(MODEL_RUNS["cellpose_sam"])
-    if cellpose_run.get("fine_tuning", {}).get("state") != "completed":
+    cellpose_fine_tuning = cellpose_run.get("fine_tuning", {})
+    if cellpose_fine_tuning.get("state") != "completed":
         errors.append("L5: Cellpose-SAM is evaluated pretrained but has not been fine-tuned")
+    elif int(cellpose_fine_tuning.get("epochs", 0)) < 2:
+        errors.append("L5: Cellpose-SAM fine-tuning must cover at least two full epochs")
 
     for method in METHODS:
         if not method.learned:
