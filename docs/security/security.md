@@ -44,3 +44,7 @@ fix and upgrade when a non-vulnerable current release exists.
 Develop deployments are allowed only as explicitly incomplete evidence
 deployments. A versioned release remains blocked until the scientific gate,
 including the real held-out lane and synchronized tag, passes.
+
+The production build materializes every declared BrowserRouter route as its own
+GitHub Pages `index.html`, so direct/deep links return HTTP 200 instead of
+relying on a status-404 SPA fallback.

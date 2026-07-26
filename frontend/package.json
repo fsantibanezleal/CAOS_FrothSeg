@@ -8,6 +8,7 @@
     "dev": "vite",
     "prebuild": "node copy-data.mjs",
     "build": "tsc --noEmit && vite build",
+    "postbuild": "node create-spa-routes.mjs",
     "preview": "vite preview",
     "test": "vitest run"
   },
