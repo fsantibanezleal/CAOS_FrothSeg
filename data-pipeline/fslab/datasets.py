@@ -176,7 +176,7 @@ def learned_dataset_matrix(
                         image_uri=f"generated://{sample_id}/image",
                         mask_uri=f"generated://{sample_id}/instances",
                         mm_per_px=None,
-                        license="MIT-generated",
+                        license="Apache-2.0-generated",
                         scoreable=True,
                         synthetic=True,
                     )

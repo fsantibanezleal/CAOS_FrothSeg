@@ -1,0 +1,47 @@
+{
+  "schema": "frothseg.visual-qa/v1",
+  "verified_on": "2026-07-26",
+  "base_url": "local production preview",
+  "themes": [
+    "light",
+    "dark"
+  ],
+  "routes": [
+    "/",
+    "/introduction",
+    "/methodology",
+    "/implementation",
+    "/experiments",
+    "/benchmark"
+  ],
+  "route_theme_cells": 12,
+  "checks_per_cell": [
+    "expected h1 rendered",
+    "no error boundary",
+    "no broken image",
+    "no document horizontal overflow"
+  ],
+  "app_panels": {
+    "count": 10,
+    "all_rendered": true,
+    "error_boundaries": 0,
+    "horizontal_overflow": 0
+  },
+  "methodology_tabs": {
+    "count": 6,
+    "all_rendered": true
+  },
+  "architecture_tabs": {
+    "count": 5,
+    "all_rendered": true,
+    "inline_svg_per_tab": true
+  },
+  "interaction_checks": {
+    "classical_segmentation": "passed",
+    "synthetic_ground_truth_ap": "passed",
+    "seven_method_selected_frame_comparison": "passed",
+    "temporal_replay": "passed"
+  },
+  "browser_console_errors": 0,
+  "result": "passed"
+}

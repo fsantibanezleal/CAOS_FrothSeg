@@ -19,5 +19,5 @@ diagnostic AP is 0.3762. The model, checkpoint manifest, ONNX export, parity
 report, calibration, and per-case masks are committed evidence. Glare and coarse
 froth remain failure modes.
 
-Reference: Minerals 2025, DOI 10.3390/min15121301. Engine code is MIT; the paper
+Reference: Minerals 2025, DOI 10.3390/min15121301. In-repo engine code is Apache-2.0; the paper
 is cited for architectural provenance, not for an unsupported reproduction claim.

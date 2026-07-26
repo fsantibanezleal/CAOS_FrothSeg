@@ -15,7 +15,11 @@ from PIL import Image
 from ..learning.data_cache import load_cache, select_split
 from ..registry import list_cases
 from ..science.froth_gen import generate
-from ..science.segment import bsd_wasserstein, mask_ap, panoptic_quality
+from ..science.segment import (
+    full_instance_metrics,
+    instance_confidence_calibration,
+    summarize_metric_rows,
+)
 
 
 def _polygon_lines(labels: np.ndarray) -> list[str]:
@@ -84,6 +88,16 @@ def _results_to_labels(result, shape: tuple[int, int]) -> np.ndarray:
             mask = cv2.resize(mask, (shape[1], shape[0]), interpolation=cv2.INTER_NEAREST)
         labels[mask >= 0.5] = instance_id
     return labels
+
+
+def _result_confidences(result) -> dict[int, float]:
+    if result.masks is None or len(result.masks.data) == 0:
+        return {}
+    confidences = result.boxes.conf.cpu().numpy()
+    return {
+        instance_id: float(confidences[index])
+        for instance_id, index in enumerate(np.argsort(confidences), start=1)
+    }
 
 
 def _summary(rows: list[dict], *, split: str) -> dict:
@@ -176,14 +190,23 @@ def train(
     test_rows = []
     for index, result in enumerate(predictions):
         labels = _results_to_labels(result, test["labels"][index].shape)
+        confidence_calibration = instance_confidence_calibration(
+            labels,
+            test["labels"][index],
+            _result_confidences(result),
+        )
         test_rows.append({
             "sample_id": str(test["sample_ids"][index]),
             "condition_id": str(test["conditions"][index]),
             "group_id": str(test["group_ids"][index]),
-            **mask_ap(labels, test["labels"][index]),
-            **panoptic_quality(labels, test["labels"][index]),
+            **full_instance_metrics(labels, test["labels"][index]),
+            "brier": confidence_calibration["brier"],
+            "ece": confidence_calibration["ece"],
+            "instance_calibration": confidence_calibration,
         })
-    evaluation = _summary(test_rows, split="test")
+    evaluation = summarize_metric_rows(test_rows, split="test")
+    evaluation["mean_brier"] = float(np.mean([row["brier"] for row in test_rows]))
+    evaluation["mean_ece"] = float(np.mean([row["ece"] for row in test_rows]))
 
     cases_and_scenes = [(case, generate(case.spec)) for case in list_cases()]
     canonical_images = [
@@ -208,9 +231,7 @@ def train(
         Image.fromarray(labels.astype(np.uint16)).save(mask_path, optimize=True)
         canonical_rows.append({
             "case_id": case.id,
-            **mask_ap(labels, scene["labels"]),
-            **panoptic_quality(labels, scene["labels"]),
-            "bsd_w": bsd_wasserstein(labels, scene["labels"]),
+            **full_instance_metrics(labels, scene["labels"]),
             "mask_path": str(mask_path.relative_to(canonical_output)).replace("\\", "/"),
         })
     canonical = {

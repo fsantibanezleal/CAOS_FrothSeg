@@ -10,6 +10,7 @@ import argparse
 import json
 import tempfile
 import time
+from dataclasses import asdict
 from pathlib import Path
 
 import numpy as np
@@ -17,6 +18,7 @@ from PIL import Image
 
 from fslab.foundation.sam2_1 import MODEL_ID, UPSTREAM_COMMIT
 from fslab.science.froth_gen import CASES, generate_sequence
+from fslab.temporal import temporal_metrics
 
 
 def _iou(left: np.ndarray, right: np.ndarray) -> float:
@@ -107,6 +109,13 @@ def main() -> None:
         })
 
     props = torch.cuda.get_device_properties(0)
+    prompted_truth = []
+    for frame in sequence:
+        labels = frame["labels"]
+        cohort = np.zeros_like(labels)
+        for object_id in prompted_ids:
+            cohort[labels == object_id] = object_id
+        prompted_truth.append(cohort)
     report = {
         "schema": "frothseg.sam2-video-benchmark/v1",
         "method": "sam2_1",
@@ -120,6 +129,10 @@ def main() -> None:
         "prompted_instance_ids": prompted_ids,
         "mean_identity_iou": float(np.mean(all_ious)),
         "identity_recall_at_0_5": float(np.mean(np.asarray(all_ious) >= 0.5)),
+        "temporal_metrics": asdict(temporal_metrics(
+            [predicted[index] for index in range(args.frames)],
+            prompted_truth,
+        )),
         "duration_seconds": round(time.perf_counter() - started, 3),
         "frame_metrics": frame_rows,
     }

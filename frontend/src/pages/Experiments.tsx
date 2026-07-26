@@ -49,12 +49,32 @@ export default function Experiments() {
   return (
     <div className="page-body prose">
       <div className="page-head">
-        <span className="eyebrow">{es ? 'Análisis legado separado' : 'Separate legacy analysis'}</span>
-        <h1>{es ? 'Experimento SlimSAM' : 'SlimSAM experiment'}</h1>
+        <span className="eyebrow">{es ? 'Diseño experimental y cobertura' : 'Experimental design and coverage'}</span>
+        <h1>{es ? 'Experimentos, splits y ablaciones' : 'Experiments, splits, and ablations'}</h1>
         <p className="lede">
-          {es ? 'Resultado histórico del SlimSAM liviano contra el piso clásico. No es la comparación primaria ni el método líder; la matriz vigente está en Benchmark.' : 'Historical lightweight SlimSAM result against the classical floor. This is not the primary comparison or the leading method; the current matrix is on Benchmark.'}
+          {es ? 'El protocolo separa geometría, apariencia, calibración y prueba; registra cobertura, fallas y resultados negativos. El análisis SlimSAM histórico permanece al final por trazabilidad.' : 'The protocol separates geometry, appearance, calibration, and test; it records coverage, failures, and negative results. The historical SlimSAM analysis remains below for traceability.'}
         </p>
       </div>
+
+      <section className="fs-cards">
+        <div className="fs-panel"><div className="fs-panel-t">{es ? 'Unidad de split' : 'Split unit'}</div><strong>{es ? 'Grupo geométrico latente' : 'Latent geometry group'}</strong><p className="fs-hint">{es ? 'Dos apariencias de una geometría nunca cruzan splits.' : 'Two appearances of one geometry never cross splits.'}</p></div>
+        <div className="fs-panel"><div className="fs-panel-t">{es ? 'Matriz controlada' : 'Controlled matrix'}</div><strong>16 × 24 = 384</strong><p className="fs-hint">{es ? 'Dieciséis condiciones, doce grupos y dos apariencias.' : 'Sixteen conditions, twelve groups, and two appearances.'}</p></div>
+        <div className="fs-panel"><div className="fs-panel-t">{es ? 'Prueba retenida' : 'Held-out test'}</div><strong>64 {es ? 'muestras' : 'samples'}</strong><p className="fs-hint">{es ? 'No se usa para umbrales ni selección.' : 'Never used for thresholds or selection.'}</p></div>
+        <div className="fs-panel"><div className="fs-panel-t">{es ? 'Carril real' : 'Real lane'}</div><strong>{es ? 'Bloqueado honestamente' : 'Honestly blocked'}</strong><p className="fs-hint">{es ? 'Falta una fuente aceptada con licencia y calibración física.' : 'An accepted licensed source with physical calibration is still missing.'}</p></div>
+      </section>
+
+      <section>
+        <h2>{es ? 'Experimentos registrados' : 'Registered experiments'}</h2>
+        <table className="fs-table"><thead><tr><th>{es ? 'Familia' : 'Family'}</th><th>{es ? 'Comparación' : 'Comparison'}</th><th>{es ? 'Evidencia' : 'Evidence'}</th></tr></thead><tbody>
+          <tr><td>C1-C7</td><td>{es ? 'Clásicos bajo un único protocolo' : 'Classical methods under one protocol'}</td><td>64 × 7 held-out cells</td></tr>
+          <tr><td>L1-L3</td><td>{es ? 'Targets y arquitecturas de watershed aprendido' : 'Learned-watershed targets and architectures'}</td><td>{es ? 'checkpoints, calibración, test' : 'checkpoints, calibration, test'}</td></tr>
+          <tr><td>L4-L7</td><td>{es ? 'Geométrico, detector y fundacionales oficiales' : 'Geometric, detector, and official foundation methods'}</td><td>{es ? 'proveniencia y evaluación' : 'provenance and evaluation'}</td></tr>
+          <tr><td>N1</td><td>{es ? 'LamellaStar contra el líder y sus componentes' : 'LamellaStar against the leader and its components'}</td><td>{es ? 'resultado negativo; ablación pendiente' : 'negative result; ablation pending'}</td></tr>
+          <tr><td>{es ? 'Temporal' : 'Temporal'}</td><td>IDF1, HOTA, {es ? 'fragmentación, eventos y flujo' : 'fragmentation, events, and flow'}</td><td>5 × 8 frames</td></tr>
+        </tbody></table>
+      </section>
+
+      <section><h2>{es ? 'Análisis legado SlimSAM' : 'Legacy SlimSAM analysis'}</h2><p className="fs-hint">{es ? 'Conservado como experimento secundario; Benchmark contiene la matriz autoritativa de 15 métodos.' : 'Retained as a secondary experiment; Benchmark contains the authoritative 15-method matrix.'}</p></section>
 
       {err && <p className="fs-note">error: {err}</p>}
       {!bench && !err && <p><span className="fs-spinner" /> {es ? 'cargando benchmark...' : 'loading benchmark...'}</p>}

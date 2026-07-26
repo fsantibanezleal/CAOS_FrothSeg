@@ -1,0 +1,38 @@
+{
+  "schema": "frothseg.source-registry/v1",
+  "sources": [
+    {
+      "source_id": "frothseg-synthetic-v2",
+      "title": "FrothSeg labelled synthetic generator v2",
+      "kind": "synthetic-instance",
+      "license": "Apache-2.0-generated",
+      "access": "bundled-generator",
+      "redistribution": "generated-derived-evidence",
+      "url": "https://github.com/fsantibanezleal/CAOS_FrothSeg",
+      "scoreable": true,
+      "calibration_required": false
+    },
+    {
+      "source_id": "roboflow-froth-rk6ka",
+      "title": "Froth instance segmentation dataset",
+      "kind": "real-instance",
+      "license": "CC-BY-NC-SA-4.0",
+      "access": "external-terms-and-fetch-required",
+      "redistribution": "link-only-until-license-review",
+      "url": "https://universe.roboflow.com/froth-tmvvu/froth-rk6ka",
+      "scoreable": true,
+      "calibration_required": true
+    },
+    {
+      "source_id": "kaggle-froth-bubbles",
+      "title": "Froth bubbles segmentation dataset",
+      "kind": "real-pseudo-labelled",
+      "license": "UNKNOWN",
+      "access": "blocked-license-unknown",
+      "redistribution": "forbidden",
+      "url": "https://www.kaggle.com/datasets/obobojk/froth-bubbles",
+      "scoreable": false,
+      "calibration_required": false
+    }
+  ]
+}

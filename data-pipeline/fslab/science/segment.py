@@ -191,6 +191,225 @@ def bsd_wasserstein(pred: np.ndarray, gt: np.ndarray) -> float | None:
     return round(float(wasserstein_distance(dp, dg)), 3)
 
 
+def diameter_summary(labels: np.ndarray, *, mm_per_px: float | None = None) -> dict:
+    """Number-weighted BSD summaries in pixels or calibrated millimetres."""
+    scale = 1.0 if mm_per_px is None else float(mm_per_px)
+    if scale <= 0:
+        raise ValueError("mm_per_px must be positive")
+    diameters = _diams(labels) * scale
+    unit = "px" if mm_per_px is None else "mm"
+    if not diameters.size:
+        return {
+            "unit": unit,
+            "count": 0,
+            "d10": None,
+            "d32": None,
+            "d50": None,
+            "d90": None,
+        }
+    d32 = np.sum(diameters**3) / np.sum(diameters**2)
+    return {
+        "unit": unit,
+        "count": int(diameters.size),
+        "d10": round(float(np.quantile(diameters, 0.10)), 4),
+        "d32": round(float(d32), 4),
+        "d50": round(float(np.quantile(diameters, 0.50)), 4),
+        "d90": round(float(np.quantile(diameters, 0.90)), 4),
+    }
+
+
+def boundary_fscore(
+    pred: np.ndarray,
+    gt: np.ndarray,
+    *,
+    tolerance_px: float = 2.0,
+) -> dict:
+    """Symmetric boundary precision/recall/F-score at an explicit tolerance."""
+    if tolerance_px <= 0:
+        raise ValueError("tolerance_px must be positive")
+    pred_boundary = segmentation.find_boundaries(pred, mode="inner")
+    gt_boundary = segmentation.find_boundaries(gt, mode="inner")
+    pred_count = int(pred_boundary.sum())
+    gt_count = int(gt_boundary.sum())
+    if pred_count == 0 and gt_count == 0:
+        return {
+            "boundary_precision": 1.0,
+            "boundary_recall": 1.0,
+            "boundary_fscore": 1.0,
+            "boundary_tolerance_px": float(tolerance_px),
+        }
+    if pred_count == 0 or gt_count == 0:
+        return {
+            "boundary_precision": 0.0,
+            "boundary_recall": 0.0,
+            "boundary_fscore": 0.0,
+            "boundary_tolerance_px": float(tolerance_px),
+        }
+    distance_to_gt = ndi.distance_transform_edt(~gt_boundary)
+    distance_to_pred = ndi.distance_transform_edt(~pred_boundary)
+    precision = float(np.mean(distance_to_gt[pred_boundary] <= tolerance_px))
+    recall = float(np.mean(distance_to_pred[gt_boundary] <= tolerance_px))
+    fscore = 2 * precision * recall / (precision + recall) if precision + recall else 0.0
+    return {
+        "boundary_precision": round(precision, 4),
+        "boundary_recall": round(recall, 4),
+        "boundary_fscore": round(fscore, 4),
+        "boundary_tolerance_px": float(tolerance_px),
+    }
+
+
+def morphometry_error(
+    pred: np.ndarray,
+    gt: np.ndarray,
+    *,
+    mm_per_px: float | None = None,
+) -> dict:
+    """Count and BSD-summary error using the same physical calibration."""
+    predicted = diameter_summary(pred, mm_per_px=mm_per_px)
+    truth = diameter_summary(gt, mm_per_px=mm_per_px)
+    count_error = predicted["count"] - truth["count"]
+    count_relative_error = (
+        abs(count_error) / truth["count"] if truth["count"] else (0.0 if not predicted["count"] else None)
+    )
+    errors = {}
+    for metric in ("d10", "d32", "d50", "d90"):
+        pred_value = predicted[metric]
+        truth_value = truth[metric]
+        errors[f"{metric}_absolute_error"] = (
+            None if pred_value is None or truth_value is None else round(abs(pred_value - truth_value), 4)
+        )
+        errors[f"{metric}_relative_error"] = (
+            None
+            if pred_value is None or truth_value in (None, 0)
+            else round(abs(pred_value - truth_value) / truth_value, 4)
+        )
+    return {
+        "diameter_unit": predicted["unit"],
+        "predicted_bsd": predicted,
+        "truth_bsd": truth,
+        "count_error": int(count_error),
+        "count_absolute_error": int(abs(count_error)),
+        "count_relative_error": (
+            None if count_relative_error is None else round(float(count_relative_error), 4)
+        ),
+        **errors,
+    }
+
+
+def binary_calibration_metrics(
+    probability: np.ndarray,
+    target: np.ndarray,
+    *,
+    bins: int = 10,
+) -> dict:
+    """Pixel-level Brier score and expected calibration error."""
+    if probability.shape != target.shape:
+        raise ValueError("probability and target shapes differ")
+    if bins < 2:
+        raise ValueError("bins must be at least two")
+    confidence = np.clip(np.asarray(probability, dtype=np.float64).ravel(), 0.0, 1.0)
+    outcome = np.asarray(target, dtype=bool).ravel().astype(np.float64)
+    brier = float(np.mean((confidence - outcome) ** 2))
+    edges = np.linspace(0.0, 1.0, bins + 1)
+    ece = 0.0
+    calibration_bins = []
+    for index in range(bins):
+        upper_inclusive = index == bins - 1
+        selector = (confidence >= edges[index]) & (
+            confidence <= edges[index + 1] if upper_inclusive else confidence < edges[index + 1]
+        )
+        count = int(selector.sum())
+        if not count:
+            calibration_bins.append({
+                "lower": round(float(edges[index]), 4),
+                "upper": round(float(edges[index + 1]), 4),
+                "count": 0,
+                "confidence": None,
+                "accuracy": None,
+            })
+            continue
+        mean_confidence = float(confidence[selector].mean())
+        mean_accuracy = float(outcome[selector].mean())
+        ece += count / confidence.size * abs(mean_confidence - mean_accuracy)
+        calibration_bins.append({
+            "lower": round(float(edges[index]), 4),
+            "upper": round(float(edges[index + 1]), 4),
+            "count": count,
+            "confidence": round(mean_confidence, 4),
+            "accuracy": round(mean_accuracy, 4),
+        })
+    return {
+        "brier": round(brier, 6),
+        "ece": round(float(ece), 6),
+        "bins": calibration_bins,
+    }
+
+
+def full_instance_metrics(
+    pred: np.ndarray,
+    gt: np.ndarray,
+    *,
+    mm_per_px: float | None = None,
+    boundary_tolerance_px: float = 2.0,
+) -> dict:
+    """The complete still-image metric contract shared by every method."""
+    wasserstein = bsd_wasserstein(pred, gt)
+    return {
+        **mask_ap(pred, gt),
+        **panoptic_quality(pred, gt),
+        **boundary_fscore(pred, gt, tolerance_px=boundary_tolerance_px),
+        **morphometry_error(pred, gt, mm_per_px=mm_per_px),
+        "bsd_wasserstein": wasserstein,
+        "bsd_w": wasserstein,
+    }
+
+
+def summarize_metric_rows(rows: list[dict], *, split: str) -> dict:
+    """Aggregate the shared still-image contract without dropping failed rows."""
+    metric_names = (
+        "ap",
+        "ap50",
+        "ap75",
+        "pq",
+        "sq",
+        "rq",
+        "boundary_precision",
+        "boundary_recall",
+        "boundary_fscore",
+        "bsd_wasserstein",
+        "count_absolute_error",
+        "count_relative_error",
+        "d10_relative_error",
+        "d32_relative_error",
+        "d50_relative_error",
+        "d90_relative_error",
+    )
+    aggregate = {}
+    for name in metric_names:
+        values = [float(row[name]) for row in rows if row.get(name) is not None]
+        aggregate[f"mean_{name}"] = None if not values else float(np.mean(values))
+    by_condition = {}
+    for condition in sorted({str(row.get("condition_id")) for row in rows if row.get("condition_id")}):
+        condition_rows = [row for row in rows if row.get("condition_id") == condition]
+        values = [float(row["ap"]) for row in condition_rows if row.get("ap") is not None]
+        by_condition[condition] = {
+            "n": len(condition_rows),
+            "mean_ap": None if not values else float(np.mean(values)),
+            "delta_ap_from_global": (
+                None
+                if not values or aggregate["mean_ap"] is None
+                else float(np.mean(values) - aggregate["mean_ap"])
+            ),
+        }
+    return {
+        "split": split,
+        "n": len(rows),
+        **aggregate,
+        "robustness_by_condition": by_condition,
+        "cases": rows,
+    }
+
+
 def mask_ap(pred: np.ndarray, gt: np.ndarray, thresholds=np.arange(0.5, 1.0, 0.05)) -> dict:
     """Per-image instance mask AP: greedy IoU matching of predicted vs GT instances, averaged over IoU
     thresholds .5:.05:.95 (the COCO-style summary). Returns AP, AP50, AP75, over/under-seg counts."""
@@ -241,6 +460,39 @@ def _iou_matrix(pred: np.ndarray, gt: np.ndarray):
     iou = np.divide(inter, union, out=np.zeros_like(inter), where=union > 0)
     cov = np.divide(inter, gt_area, out=np.zeros_like(inter), where=gt_area > 0)
     return iou, cov, pr_ids, gt_ids
+
+
+def instance_confidence_calibration(
+    pred: np.ndarray,
+    gt: np.ndarray,
+    confidence_by_instance: dict[int, float],
+    *,
+    match_iou: float = 0.5,
+    bins: int = 10,
+) -> dict:
+    """Calibrate detector/foundation scores against held-out instance matches."""
+    iou, _, pred_ids, _ = _iou_matrix(pred, gt)
+    confidences = []
+    outcomes = []
+    for row, pred_id in enumerate(pred_ids):
+        confidences.append(float(confidence_by_instance.get(int(pred_id), 0.0)))
+        outcomes.append(bool(iou.shape[1] and float(iou[row].max()) >= match_iou))
+    if not confidences:
+        return {
+            "brier": 0.0,
+            "ece": 0.0,
+            "bins": [],
+            "n": 0,
+            "target": f"predicted instance has IoU >= {match_iou}",
+        }
+    result = binary_calibration_metrics(
+        np.asarray(confidences),
+        np.asarray(outcomes),
+        bins=bins,
+    )
+    result["n"] = len(confidences)
+    result["target"] = f"predicted instance has IoU >= {match_iou}"
+    return result
 
 
 def panoptic_quality(pred: np.ndarray, gt: np.ndarray, cov_thresh: float = 0.2) -> dict:

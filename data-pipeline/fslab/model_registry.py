@@ -58,10 +58,10 @@ METHODS: tuple[MethodSpec, ...] = (
                True, True, "accepted", "docs/frameworks/07_unet-watershed/README.md"),
     MethodSpec("L2", "deep_marker_watershed", "Deep-marker watershed", "domain-sota", "offline",
                "PyTorch", "Chemical Engineering Research and Design 2024, DOI 10.1016/j.cherd.2024.07.041",
-               "clean-room in-repo implementation: MIT", True, True, "accepted",
+               "clean-room in-repo implementation: Apache-2.0", True, True, "accepted",
                "docs/frameworks/08_deep-marker-watershed/README.md"),
     MethodSpec("L3", "gc_fsegnet", "GC-FSegNet", "domain-sota", "offline", "PyTorch",
-               "Minerals 2025, DOI 10.3390/min15121301", "clean-room in-repo implementation: MIT",
+               "Minerals 2025, DOI 10.3390/min15121301", "clean-room in-repo implementation: Apache-2.0",
                True, True, "accepted", "docs/frameworks/09_gc-fsegnet/README.md"),
     MethodSpec("L4", "stardist_2d", "StarDist 2D", "domain-sota", "offline+live-candidate",
                "official stardist", "Schmidt et al. 2018, DOI 10.1007/978-3-030-00934-2_30", "BSD-3-Clause",
@@ -78,7 +78,7 @@ METHODS: tuple[MethodSpec, ...] = (
                "official facebookresearch/sam2", "Ravi et al. 2024, arXiv:2408.00714", "Apache-2.0",
                True, True, "accepted", "docs/frameworks/13_sam2/README.md"),
     MethodSpec("N1", "lamellastar", "LamellaStar", "frontier", "offline+live-candidate",
-               "in-repo PyTorch", "FrothSeg research model; claim requires ablation", "MIT",
+               "in-repo PyTorch", "FrothSeg research model; claim requires ablation", "Apache-2.0",
                True, True, "accepted", "docs/frameworks/14_lamellastar/README.md"),
 )
 

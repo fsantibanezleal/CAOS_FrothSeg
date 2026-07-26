@@ -12,7 +12,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@fasl-work/caos-app-shell": "^0.2.0",
+    "@fasl-work/caos-app-shell": "^0.3.0",
     "@huggingface/transformers": "^3.8.1",
     "katex": "^0.16.47",
     "lucide-react": "^0.469.0",

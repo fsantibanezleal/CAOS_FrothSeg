@@ -74,6 +74,14 @@ def main() -> None:
         "frames_per_sequence": 8,
         "mean_id_switch_rate": float(np.mean([row["id_switch_rate"] for row in rows])),
         "mean_frame_coverage": float(np.mean([row["mean_frame_coverage"] for row in rows])),
+        "mean_idf1": float(np.mean([row["idf1"] for row in rows])),
+        "mean_hota": float(np.mean([row["hota"] for row in rows])),
+        "total_track_fragmentations": int(sum(row["track_fragmentations"] for row in rows)),
+        "mean_event_precision": float(np.mean([row["event_precision"] for row in rows])),
+        "mean_event_recall": float(np.mean([row["event_recall"] for row in rows])),
+        "mean_flow_epe_px": float(np.mean([
+            row["flow_epe_px"] for row in rows if row["flow_epe_px"] is not None
+        ])),
         "duration_seconds": round(time.perf_counter() - started, 3),
         "sequences": rows,
     }

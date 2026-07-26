@@ -40,7 +40,7 @@ def check_release() -> list[str]:
         errors.append("missing data/derived/release-report.json")
     else:
         report = json.loads(report_path.read_text(encoding="utf-8"))
-        if report.get("schema") != "frothseg.release/v1":
+        if report.get("schema") != "frothseg.release/v2":
             errors.append("release report schema mismatch")
         if report.get("complete") is not True:
             errors.append("release report is not complete")

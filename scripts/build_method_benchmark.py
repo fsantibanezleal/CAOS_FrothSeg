@@ -65,6 +65,11 @@ def _classical_canonical() -> dict[str, dict]:
 
 def build() -> dict:
     classical = _classical_canonical()
+    classical_heldout_document = _load(ROOT / "data/derived/classical-heldout.json")
+    classical_heldout = {
+        row["method"]: row
+        for row in (classical_heldout_document or {}).get("methods", [])
+    }
     rows = []
     for method in METHODS:
         run = _load(MODEL_RUNS[method.slug]) if method.slug in MODEL_RUNS else None
@@ -73,7 +78,34 @@ def build() -> dict:
             if method.slug in CANONICAL_RUNS
             else classical.get(method.slug)
         )
-        evaluation = run.get("evaluation") if run else None
+        evaluation = run.get("evaluation") if run else classical_heldout.get(method.slug)
+        if evaluation and run and "mean_inference_ms" not in evaluation:
+            evaluation = dict(evaluation)
+            timed_cases = [
+                row["inference_ms"] for row in evaluation.get("cases", [])
+                if row.get("inference_ms") is not None
+            ]
+            if timed_cases:
+                evaluation["mean_inference_ms"] = float(np.mean(timed_cases))
+                evaluation["p95_inference_ms"] = float(np.percentile(timed_cases, 95))
+            elif run.get("test_duration_seconds") is not None and evaluation.get("n"):
+                evaluation["mean_inference_ms"] = (
+                    1000.0 * run["test_duration_seconds"] / evaluation["n"]
+                )
+            else:
+                canonical_times = [
+                    row["inference_ms"] for row in (canonical or {}).get("cases", [])
+                    if row.get("inference_ms") is not None
+                ]
+                if canonical_times:
+                    evaluation["mean_inference_ms"] = float(np.mean(canonical_times))
+                    evaluation["p95_inference_ms"] = float(np.percentile(canonical_times, 95))
+                elif run.get("duration_seconds") is not None:
+                    evaluated_images = evaluation.get("n", 0) + (canonical or {}).get("n_cases", 0)
+                    if evaluated_images:
+                        evaluation["mean_inference_ms"] = (
+                            1000.0 * run["duration_seconds"] / evaluated_images
+                        )
         executable = canonical is not None and (not method.learned or run is not None)
         score = evaluation["mean_ap"] if evaluation else (
             canonical["mean_ap"] if canonical else None
@@ -92,8 +124,22 @@ def build() -> dict:
                 else "not-evaluated"
             ),
             "test": {
-                key: evaluation[key]
-                for key in ("split", "n", "mean_ap", "mean_ap50", "mean_pq")
+                key: evaluation.get(key)
+                for key in (
+                    "split",
+                    "n",
+                    "mean_ap",
+                    "mean_ap50",
+                    "mean_pq",
+                    "mean_boundary_fscore",
+                    "mean_bsd_wasserstein",
+                    "mean_count_relative_error",
+                    "mean_d32_relative_error",
+                    "mean_inference_ms",
+                    "p95_inference_ms",
+                    "robustness_by_condition",
+                )
+                if key in evaluation
             } if evaluation else None,
             "canonical": {
                 key: canonical.get(key)

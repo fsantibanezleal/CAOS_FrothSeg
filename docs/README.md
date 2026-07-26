@@ -28,6 +28,12 @@ per-bubble industrial froth ground truth is not publicly available.
   GPU, evaluation, export, and bounded browser lanes.
 - **[cases/](cases.md)**, the synthetic coverage matrix (one case per froth stressor axis) plus the
   positive / negative controls; the App shows one case, Experiments and Benchmark summarize across them.
+- **[data-contract/](data-contract/data-contract.md)**, source, record, calibration, and grouped-split rules.
+- **[metrics/](metrics/metrics.md)**, instance, boundary, morphometry, uncertainty, and compute definitions.
+- **[temporal/](temporal/temporal.md)**, IDF1/HOTA, events, fragmentation, and flow evaluation.
+- **[benchmark/](benchmark/benchmark.md)**, the complete held-out matrix and acceptance boundaries.
+- **[problem-types/](problem-types/problem-types.md)**, domain failure modes and method assumptions.
+- **[use-cases/](use-cases/use-cases.md)**, operational uses, non-goals, and deployment boundaries.
 
 ## Honesty + data policy
 

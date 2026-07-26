@@ -1,7 +1,7 @@
 // Fetch the committed CONTRACT-2 artifacts (copied into public/data by copy-data.mjs). The web loads these for
 // the baked benchmark + the synthetic samples the App runs the live segmenter on; live inference itself is
 // in-browser (src/sam), no backend.
-import type { BenchmarkDoc, CaseCard, CaseIndex, CaseManifest, LearnedBenchmarkDoc, MasksDoc, MethodBenchmarkDoc, SamBenchmarkDoc } from '../lib/contract.types';
+import type { BenchmarkDoc, CaseCard, CaseIndex, CaseManifest, LearnedBenchmarkDoc, MasksDoc, MethodBenchmarkDoc, SamBenchmarkDoc, TemporalBenchmarkDoc } from '../lib/contract.types';
 
 const base = import.meta.env.BASE_URL;
 
@@ -24,3 +24,5 @@ export const loadLearnedBenchmark = (): Promise<LearnedBenchmarkDoc> =>
   getJSON<LearnedBenchmarkDoc>('learned/unet-watershed-v2/benchmark.json');
 export const loadMethodBenchmark = (): Promise<MethodBenchmarkDoc> =>
   getJSON<MethodBenchmarkDoc>('method-benchmark.json');
+export const loadTemporalBenchmark = (): Promise<TemporalBenchmarkDoc> =>
+  getJSON<TemporalBenchmarkDoc>('temporal/unet-watershed-v2.json');

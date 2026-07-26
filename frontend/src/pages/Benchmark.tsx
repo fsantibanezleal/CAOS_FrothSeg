@@ -117,6 +117,10 @@ export default function Benchmark() {
                     <th>{es ? 'motor' : 'engine'}</th>
                     <th>{es ? 'estado' : 'state'}</th>
                     <th className="num">AP test</th>
+                    <th className="num">Boundary F</th>
+                    <th className="num">BSD W</th>
+                    <th className="num">D32 rel.</th>
+                    <th className="num">ms/image</th>
                     <th className="num">AP canon.</th>
                   </tr>
                 </thead>
@@ -165,10 +169,14 @@ function MethodRow({ method, es }: { method: MethodBenchmarkRow; es: boolean }) 
       <td>{method.engine}</td>
       <td>{state}<br /><span className="fs-hint small">{method.quality_status}</span></td>
       <td className={`num ${quality}`}>{fmt(method.test?.mean_ap)}</td>
+      <td className="num">{fmt(method.test?.mean_boundary_fscore)}</td>
+      <td className="num">{fmt(method.test?.mean_bsd_wasserstein)}</td>
+      <td className="num">{fmt(method.test?.mean_d32_relative_error)}</td>
+      <td className="num">{fmt(method.test?.mean_inference_ms, 1)}</td>
       <td className="num">{fmt(method.canonical?.mean_ap)}</td>
     </tr>
   );
 }
 
-const fmt = (value: number | null | undefined): string =>
-  value == null ? '-' : value.toFixed(3);
+const fmt = (value: number | null | undefined, digits = 3): string =>
+  value == null ? '-' : value.toFixed(digits);

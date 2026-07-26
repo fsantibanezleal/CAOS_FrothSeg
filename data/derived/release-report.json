@@ -1,19 +1,24 @@
 {
-  "schema": "frothseg.release/v1",
+  "schema": "frothseg.release/v2",
   "version": "0.4.0",
-  "complete": true,
-  "errors": [],
+  "complete": false,
+  "errors": [
+    "no accepted licensed real held-out source with imported samples and calibration",
+    "L5: Cellpose-SAM is evaluated pretrained but has not been fine-tuned",
+    "version/tag mismatch: expected v0.04.000, latest is v0.03.000"
+  ],
   "branch_policy": "existing develop branch; no worktree",
   "dataset": {
     "manifest": "manifests/learned-dataset-v2.json",
     "schema": "frothseg.learned-dataset/v2",
     "test_samples": 64,
     "calibration_samples": 64,
-    "split_unit": "latent geometry group"
+    "split_unit": "latent geometry group",
+    "accepted_real_sources": []
   },
   "method_benchmark": {
     "path": "data/derived/method-benchmark.json",
-    "sha256": "af659ab7c14bfb7da66e8401b3a3477f67e21de91d4699d6d9c4981f94930302",
+    "sha256": "6b1d4fdeef9db0ff6f526049d31595aa5267eaf341cc9168522f619051741e9c",
     "method_count": 15,
     "implemented_count": 15,
     "leader": {
@@ -30,7 +35,9 @@
       "tier": "classical",
       "implementation_state": "implemented",
       "quality_status": "below-current-bar",
-      "test_mean_ap": null,
+      "test_mean_ap": 0.06521875,
+      "test_mean_boundary_fscore": 0.81125,
+      "test_mean_bsd_wasserstein": 10.164109375,
       "canonical_mean_ap": 0.08424999999999999,
       "run": null,
       "docs_path": "docs/methods/classical.md"
@@ -41,7 +48,9 @@
       "tier": "classical",
       "implementation_state": "implemented",
       "quality_status": "below-current-bar",
-      "test_mean_ap": null,
+      "test_mean_ap": 0.017265625,
+      "test_mean_boundary_fscore": 0.7423500000000001,
+      "test_mean_bsd_wasserstein": 7.3928125,
       "canonical_mean_ap": 0.005583333333333333,
       "run": null,
       "docs_path": "docs/methods/classical.md"
@@ -52,7 +61,9 @@
       "tier": "classical",
       "implementation_state": "implemented",
       "quality_status": "below-current-bar",
-      "test_mean_ap": null,
+      "test_mean_ap": 0.103109375,
+      "test_mean_boundary_fscore": 0.832290625,
+      "test_mean_bsd_wasserstein": 6.032187499999999,
       "canonical_mean_ap": 0.10275000000000001,
       "run": null,
       "docs_path": "docs/methods/classical.md"
@@ -63,7 +74,9 @@
       "tier": "classical",
       "implementation_state": "implemented",
       "quality_status": "below-current-bar",
-      "test_mean_ap": null,
+      "test_mean_ap": 0.19768750000000002,
+      "test_mean_boundary_fscore": 0.834403125,
+      "test_mean_bsd_wasserstein": 2.5898125,
       "canonical_mean_ap": 0.26199999999999996,
       "run": null,
       "docs_path": "docs/methods/classical.md"
@@ -74,7 +87,9 @@
       "tier": "classical",
       "implementation_state": "implemented",
       "quality_status": "below-current-bar",
-      "test_mean_ap": null,
+      "test_mean_ap": 0.132984375,
+      "test_mean_boundary_fscore": 0.7967640624999999,
+      "test_mean_bsd_wasserstein": 16.5679375,
       "canonical_mean_ap": 0.14641666666666664,
       "run": null,
       "docs_path": "docs/methods/classical.md"
@@ -85,7 +100,9 @@
       "tier": "classical",
       "implementation_state": "implemented",
       "quality_status": "below-current-bar",
-      "test_mean_ap": null,
+      "test_mean_ap": 0.01859375,
+      "test_mean_boundary_fscore": 0.78645,
+      "test_mean_bsd_wasserstein": 8.382609375000001,
       "canonical_mean_ap": 0.021083333333333332,
       "run": null,
       "docs_path": "docs/methods/classical.md"
@@ -96,7 +113,9 @@
       "tier": "classical",
       "implementation_state": "implemented",
       "quality_status": "below-current-bar",
-      "test_mean_ap": null,
+      "test_mean_ap": 0.1673125,
+      "test_mean_boundary_fscore": 0.86284375,
+      "test_mean_bsd_wasserstein": 3.564171875,
       "canonical_mean_ap": 0.21783333333333332,
       "run": null,
       "docs_path": "docs/methods/classical.md"
@@ -108,10 +127,12 @@
       "implementation_state": "implemented",
       "quality_status": "passes-current-bar",
       "test_mean_ap": 0.41528125,
+      "test_mean_boundary_fscore": 0.9590359374999999,
+      "test_mean_bsd_wasserstein": 1.6162343750000001,
       "canonical_mean_ap": 0.45649999999999996,
       "run": {
         "path": "models/unet-watershed-v2/run.json",
-        "sha256": "b22105d45942b266c0b594ec070dce6cd7bec3c5b39400ca774b5225ffc2bf25"
+        "sha256": "3c0181df010a18331da680792f2c8c5a6d3caaade47444ab7e691360c5d5a7a3"
       },
       "docs_path": "docs/frameworks/07_unet-watershed/README.md"
     },
@@ -122,10 +143,12 @@
       "implementation_state": "implemented",
       "quality_status": "passes-current-bar",
       "test_mean_ap": 0.324703125,
+      "test_mean_boundary_fscore": 0.9453015625000001,
+      "test_mean_bsd_wasserstein": 1.91696875,
       "canonical_mean_ap": 0.37691666666666673,
       "run": {
         "path": "models/deep-marker-watershed-v1/run.json",
-        "sha256": "871649f87fee16f75062f4f5d9f64bba14bf0419d232de7738af17c6f4ada814"
+        "sha256": "098454718bfb91a2fc94638ffd4938d1e90f9a65bb5c873f440a010f0fc22d05"
       },
       "docs_path": "docs/frameworks/08_deep-marker-watershed/README.md"
     },
@@ -136,10 +159,12 @@
       "implementation_state": "implemented",
       "quality_status": "passes-current-bar",
       "test_mean_ap": 0.319046875,
+      "test_mean_boundary_fscore": 0.9355734375,
+      "test_mean_bsd_wasserstein": 1.8501875,
       "canonical_mean_ap": 0.37616666666666676,
       "run": {
         "path": "models/gc-fsegnet-v1/run.json",
-        "sha256": "9d6acc4271e0b1a915a5b249569a9464cd85bbd6ba575c405b78c9a7a22a1df7"
+        "sha256": "73d91e0e04c512744d23dd25455d94cb035b965c5f9b3e006a61a63443ec7d88"
       },
       "docs_path": "docs/frameworks/09_gc-fsegnet/README.md"
     },
@@ -150,10 +175,12 @@
       "implementation_state": "implemented",
       "quality_status": "below-current-bar",
       "test_mean_ap": 0.111890625,
+      "test_mean_boundary_fscore": 0.7104421875,
+      "test_mean_bsd_wasserstein": 2.820765625,
       "canonical_mean_ap": 0.12041666666666667,
       "run": {
         "path": "models/stardist-froth-v1/run.json",
-        "sha256": "a3b197e8c510c73fd284b714fbe2b250a7dcf5105023929c7ea0e0944ecdf8d6"
+        "sha256": "048da3deec87278d23e2d2b34aeddc81974553ce9a501dd7def636679bc712b0"
       },
       "docs_path": "docs/frameworks/10_stardist/README.md"
     },
@@ -164,10 +191,12 @@
       "implementation_state": "implemented",
       "quality_status": "passes-current-bar",
       "test_mean_ap": 0.43359375,
+      "test_mean_boundary_fscore": 0.932234375,
+      "test_mean_bsd_wasserstein": 0.7500156250000001,
       "canonical_mean_ap": 0.5826666666666667,
       "run": {
         "path": "models/cellpose-sam-cpsam-v2/run.json",
-        "sha256": "ff826361c89497bf4658ad2007b6bbc634b4515676a209ec468f95f9297fd00b"
+        "sha256": "7d45347ec4466a56015d249bd35c82c39dc9548431ba9757b15eefaff4e41964"
       },
       "docs_path": "docs/frameworks/11_cellpose-sam/README.md"
     },
@@ -178,10 +207,12 @@
       "implementation_state": "implemented",
       "quality_status": "below-current-bar",
       "test_mean_ap": 0.293015625,
+      "test_mean_boundary_fscore": 0.90205,
+      "test_mean_bsd_wasserstein": 1.464203125,
       "canonical_mean_ap": 0.40599999999999997,
       "run": {
         "path": "models/yolo-froth-seg-v1/run.json",
-        "sha256": "c9e93584fc4035ac858ba92bc01a515893804fb17b77d704f1890697b12ebb6b"
+        "sha256": "837c6081f8f7553dd43fe7cab3c6bb3f03c4890ed50deda89c49e000c4563daf"
       },
       "docs_path": "docs/frameworks/12_yolo-seg/README.md"
     },
@@ -192,10 +223,12 @@
       "implementation_state": "implemented",
       "quality_status": "below-current-bar",
       "test_mean_ap": 0.135171875,
+      "test_mean_boundary_fscore": 0.5492890625,
+      "test_mean_bsd_wasserstein": 27.150078125,
       "canonical_mean_ap": 0.17416666666666666,
       "run": {
         "path": "models/sam2-1-hiera-tiny/run.json",
-        "sha256": "2d87a77753588853059b1f533e0023cf3e6a7c68b386566a43f9ccb43e25aebc"
+        "sha256": "c825d5bd9e527cb3355b7316b8bb086b8199ce19aab9c4eb85a77249039b57d4"
       },
       "docs_path": "docs/frameworks/13_sam2/README.md"
     },
@@ -206,10 +239,12 @@
       "implementation_state": "implemented",
       "quality_status": "below-current-bar",
       "test_mean_ap": 0.21454687500000003,
+      "test_mean_boundary_fscore": 0.9062281249999999,
+      "test_mean_bsd_wasserstein": 4.601296875,
       "canonical_mean_ap": 0.2215,
       "run": {
         "path": "models/lamellastar-v1/run.json",
-        "sha256": "077ccbc78e2e5fc51bf6d178666e795efc0df0e232d907a4be3c2ecaba3b3b07"
+        "sha256": "9e5e333e1e17c9095082d5c8edbcf47ec4822d37b49d9e303a31929c74a6f79c"
       },
       "docs_path": "docs/frameworks/14_lamellastar/README.md"
     }
@@ -217,13 +252,64 @@
   "temporal_evidence": [
     {
       "path": "data/derived/temporal/unet-watershed-v2.json",
-      "sha256": "350f26a221e6e9c12c9a4fe76457562f88ea144d4a088e95134f87dfd61d64e1",
-      "schema": "frothseg.temporal-benchmark/v1"
+      "sha256": "79ef36853a44472081cbc651fbf4c1b4c30ec7e1ed19fc7a091e3700820e0954",
+      "schema": "frothseg.temporal-benchmark/v1",
+      "metrics": {
+        "event_precision": 0.012048192771084338,
+        "event_recall": 1.0,
+        "flow_epe_px": 0.5522178179750754,
+        "hota": 0.9233070161242221,
+        "idf1": 0.9160686427457099,
+        "track_fragmentations": 16
+      }
     },
     {
       "path": "data/derived/temporal/sam2-1-hiera-tiny.json",
-      "sha256": "8c15e6dbe493bcf45a004f82d567086e66b66f7b95797a9d59e3b0c841ac22bc",
-      "schema": "frothseg.sam2-video-benchmark/v1"
+      "sha256": "e778c28320b6445eb118c20f80318a01793d7c19dd5b31e3481fd7f3626660a8",
+      "schema": "frothseg.sam2-video-benchmark/v1",
+      "metrics": {
+        "event_precision": 1.0,
+        "event_recall": 1.0,
+        "flow_epe_px": 0.8938401729822241,
+        "hota": 1.0,
+        "idf1": 1.0,
+        "track_fragmentations": 0
+      }
     }
-  ]
+  ],
+  "release_contract": {
+    "required_test_metrics": [
+      "mean_ap",
+      "mean_ap50",
+      "mean_boundary_fscore",
+      "mean_bsd_wasserstein",
+      "mean_count_relative_error",
+      "mean_d32_relative_error",
+      "mean_inference_ms",
+      "mean_pq",
+      "robustness_by_condition"
+    ],
+    "required_temporal_metrics": [
+      "event_precision",
+      "event_recall",
+      "flow_epe_px",
+      "hota",
+      "idf1",
+      "track_fragmentations"
+    ],
+    "required_doc_themes": [
+      "architecture",
+      "benchmark",
+      "data-contract",
+      "frameworks",
+      "guides",
+      "methods",
+      "metrics",
+      "problem-types",
+      "temporal",
+      "use-cases"
+    ],
+    "expected_tag": "v0.04.000",
+    "latest_tag": "v0.03.000"
+  }
 }

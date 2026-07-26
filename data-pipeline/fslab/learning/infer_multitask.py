@@ -14,7 +14,11 @@ from skimage.transform import resize
 
 from ..registry import list_cases
 from ..science.froth_gen import generate
-from ..science.segment import bsd_wasserstein, mask_ap, panoptic_quality
+from ..science.segment import (
+    binary_calibration_metrics,
+    full_instance_metrics,
+    summarize_metric_rows,
+)
 from .multitask_models import build_model, probabilities_to_instances
 
 
@@ -70,13 +74,20 @@ def run(model_dir: Path, output: Path, *, device: str = "cuda") -> dict:
         Image.fromarray(labels.astype(np.uint16)).save(mask_path, optimize=True)
         rows.append({
             "case_id": case.id,
-            **mask_ap(labels, scene["labels"]),
-            **panoptic_quality(labels, scene["labels"]),
-            "bsd_w": bsd_wasserstein(labels, scene["labels"]),
+            **full_instance_metrics(labels, scene["labels"]),
+            **{
+                key: value
+                for key, value in binary_calibration_metrics(
+                    probabilities[0],
+                    scene["labels"] > 0,
+                ).items()
+                if key in {"brier", "ece"}
+            },
             "inference_ms": round(inference_ms, 3),
             "mask_path": str(mask_path.relative_to(output)).replace("\\", "/"),
         })
     scored = [row for row in rows if row["ap"] is not None]
+    metric_summary = summarize_metric_rows(rows, split="canonical-synthetic-diagnostic")
     report = {
         "schema": "frothseg.learned-benchmark/v1",
         "method": config["method"],
@@ -87,6 +98,10 @@ def run(model_dir: Path, output: Path, *, device: str = "cuda") -> dict:
         "mean_ap": float(np.mean([row["ap"] for row in scored])),
         "mean_ap50": float(np.mean([row["ap50"] for row in scored])),
         "mean_pq": float(np.mean([row["pq"] for row in scored])),
+        "metric_summary": {
+            key: value for key, value in metric_summary.items()
+            if key not in {"cases", "split", "n"}
+        },
         "cases": rows,
     }
     output.mkdir(parents=True, exist_ok=True)

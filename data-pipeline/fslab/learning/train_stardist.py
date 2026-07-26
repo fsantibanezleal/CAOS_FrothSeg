@@ -9,13 +9,18 @@ import platform
 import time
 from pathlib import Path
 
+import cv2
 import numpy as np
 from PIL import Image
 
 from ..learning.data_cache import load_cache, select_split
 from ..registry import list_cases
 from ..science.froth_gen import generate
-from ..science.segment import bsd_wasserstein, mask_ap, panoptic_quality
+from ..science.segment import (
+    binary_calibration_metrics,
+    full_instance_metrics,
+    summarize_metric_rows,
+)
 
 
 def _normalize(images: np.ndarray) -> list[np.ndarray]:
@@ -115,14 +120,28 @@ def train(
     test_rows = []
     for index, image in enumerate(_normalize(test_cache["images"])):
         labels, _ = model.predict_instances(image)
+        probability, _ = model.predict(image)
+        probability = cv2.resize(
+            probability,
+            (test_cache["labels"][index].shape[1], test_cache["labels"][index].shape[0]),
+            interpolation=cv2.INTER_LINEAR,
+        )
+        pixel_calibration = binary_calibration_metrics(
+            probability,
+            test_cache["labels"][index] > 0,
+        )
         test_rows.append({
             "sample_id": str(test_cache["sample_ids"][index]),
             "condition_id": str(test_cache["conditions"][index]),
             "group_id": str(test_cache["group_ids"][index]),
-            **mask_ap(labels, test_cache["labels"][index]),
-            **panoptic_quality(labels, test_cache["labels"][index]),
+            **full_instance_metrics(labels, test_cache["labels"][index]),
+            "brier": pixel_calibration["brier"],
+            "ece": pixel_calibration["ece"],
+            "pixel_calibration": pixel_calibration,
         })
-    evaluation = _summary(test_rows, split="test")
+    evaluation = summarize_metric_rows(test_rows, split="test")
+    evaluation["mean_brier"] = float(np.mean([row["brier"] for row in test_rows]))
+    evaluation["mean_ece"] = float(np.mean([row["ece"] for row in test_rows]))
 
     canonical_rows = []
     for case in list_cases():
@@ -134,9 +153,7 @@ def train(
         Image.fromarray(labels.astype(np.uint16)).save(mask_path, optimize=True)
         canonical_rows.append({
             "case_id": case.id,
-            **mask_ap(labels, scene["labels"]),
-            **panoptic_quality(labels, scene["labels"]),
-            "bsd_w": bsd_wasserstein(labels, scene["labels"]),
+            **full_instance_metrics(labels, scene["labels"]),
             "mask_path": str(mask_path.relative_to(canonical_output)).replace("\\", "/"),
         })
     canonical = {

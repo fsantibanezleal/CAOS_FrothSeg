@@ -19,7 +19,12 @@ import numpy as np
 
 from ..datasets import SyntheticSample, learned_dataset_matrix, validate_learned_matrix
 from ..science.froth_gen import generate
-from ..science.segment import mask_ap, panoptic_quality
+from ..science.segment import (
+    binary_calibration_metrics,
+    full_instance_metrics,
+    mask_ap,
+    summarize_metric_rows,
+)
 from .unet_watershed import (
     build_model,
     predict,
@@ -258,24 +263,23 @@ def evaluate(
             boundary_threshold=calibration["boundary_threshold"],
             min_distance=calibration["min_distance"],
         )
-        ap = mask_ap(result.labels, scene["labels"])
-        pq = panoptic_quality(result.labels, scene["labels"])
+        pixel_calibration = binary_calibration_metrics(
+            result.foreground_probability,
+            scene["labels"] > 0,
+        )
         rows.append({
             "case_id": sample.record.sample_id,
             "condition_id": sample.condition_id,
             "group_id": sample.record.group_id,
-            **ap,
-            **pq,
+            **full_instance_metrics(result.labels, scene["labels"]),
+            "brier": pixel_calibration["brier"],
+            "ece": pixel_calibration["ece"],
+            "pixel_calibration": pixel_calibration,
         })
-    scored = [row for row in rows if row["ap"] is not None]
-    return {
-        "split": "test",
-        "n": len(rows),
-        "mean_ap": float(np.mean([row["ap"] for row in scored])),
-        "mean_ap50": float(np.mean([row["ap50"] for row in scored])),
-        "mean_pq": float(np.mean([row["pq"] for row in scored])),
-        "cases": rows,
-    }
+    summary = summarize_metric_rows(rows, split="test")
+    summary["mean_brier"] = float(np.mean([row["brier"] for row in rows]))
+    summary["mean_ece"] = float(np.mean([row["ece"] for row in rows]))
+    return summary
 
 
 def main() -> None:

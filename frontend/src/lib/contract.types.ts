@@ -173,6 +173,12 @@ export interface MethodMetricSummary {
   mean_ap: number;
   mean_ap50: number;
   mean_pq: number | null;
+  mean_boundary_fscore?: number;
+  mean_bsd_wasserstein?: number;
+  mean_count_relative_error?: number;
+  mean_d32_relative_error?: number;
+  mean_inference_ms?: number;
+  p95_inference_ms?: number;
 }
 
 export interface MethodBenchmarkRow {
@@ -218,4 +224,30 @@ export interface CaseIndex {
   generator: string;
   n_cases: number;
   cases: CaseIndexEntry[];
+}
+
+export interface TemporalSequenceMetrics {
+  condition_id: string;
+  frames: number;
+  id_switch_rate: number;
+  mean_frame_coverage: number;
+  idf1: number;
+  hota: number;
+  track_fragmentations: number;
+  event_precision: number;
+  event_recall: number;
+  flow_epe_px: number | null;
+}
+
+export interface TemporalBenchmarkDoc {
+  schema: string;
+  method: string;
+  device: string;
+  mean_idf1: number;
+  mean_hota: number;
+  total_track_fragmentations: number;
+  mean_event_precision: number;
+  mean_event_recall: number;
+  mean_flow_epe_px: number;
+  sequences: TemporalSequenceMetrics[];
 }

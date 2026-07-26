@@ -19,6 +19,7 @@
 .fs-tab { background: none; border: none; border-bottom: 2px solid transparent; color: var(--color-fg-subtle); padding: 0.4rem 0.7rem; font-size: 0.85rem; cursor: pointer; }
 .fs-tab:hover { color: var(--color-fg); }
 .fs-tab.on { color: var(--color-fg); border-bottom-color: var(--color-accent); font-weight: 600; }
+.fs-command { overflow-x: auto; margin: 0.8rem 0; padding: 0.7rem; border: 1px solid var(--color-border); border-radius: 8px; background: var(--color-bg); color: var(--color-fg); font: 0.75rem/1.5 var(--font-mono); }
 
 /* method portfolio + two-column workbench */
 .fs-method-portfolio { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.75rem; margin: 0 0 1.25rem; }
@@ -77,3 +78,10 @@
 
 .fs-spinner { display: inline-block; width: 1rem; height: 1rem; border: 2px solid var(--color-border); border-top-color: var(--color-accent); border-radius: 50%; animation: fs-spin 0.8s linear infinite; vertical-align: middle; }
 @keyframes fs-spin { to { transform: rotate(360deg); } }
+
+/* Shell 0.3 still renders a fixed MIT label; FrothSeg's repository license is Apache-2.0. */
+.footer-meta a[href*="github"] + span + .faint { font-size: 0; }
+.footer-meta a[href*="github"] + span + .faint::after {
+  content: "Apache-2.0 licensed · open source";
+  font-size: 0.75rem;
+}

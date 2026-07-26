@@ -1,0 +1,37 @@
+{
+  "schema": "frothseg.workbench-verification/v1",
+  "verified_on": "2026-07-26",
+  "route": "/",
+  "selected_case_rule": true,
+  "view_count": 10,
+  "views": [
+    "segmentation",
+    "boundary-error",
+    "size-distribution",
+    "morphometry",
+    "confidence-calibration",
+    "froth-state",
+    "temporal",
+    "provenance",
+    "export",
+    "method-comparison"
+  ],
+  "live_methods": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "C6",
+    "C7",
+    "SlimSAM"
+  ],
+  "browser_checks": {
+    "classical_selected_case_run": "passed",
+    "ground_truth_ap": "passed",
+    "seven_method_live_comparison": "passed",
+    "temporal_replay": "passed",
+    "six_routes_render": "passed",
+    "console_errors": 0
+  }
+}

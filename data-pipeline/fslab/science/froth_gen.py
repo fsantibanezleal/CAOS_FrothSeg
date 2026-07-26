@@ -174,7 +174,10 @@ def generate_sequence(
     if frames < 2:
         raise ValueError("a temporal sequence requires at least two frames")
     sites = pack_bubbles(spec)
+    birth_index = len(sites) - 1 if spec.name.startswith("bursting") and len(sites) else None
+    disappearance_index = len(sites) // 2 if spec.name.startswith("bursting") and len(sites) > 1 else None
     out: list[dict] = []
+    previous_sites: dict[int, np.ndarray] = {}
     for frame_index in range(frames):
         phase = 2.0 * np.pi * frame_index / frames
         moved = sites.copy()
@@ -186,18 +189,46 @@ def generate_sequence(
             name=f"{spec.name}-f{frame_index:03d}",
             appearance_seed=spec.seed + 500_000 + frame_index,
         )
-        labels = laguerre_labels(frame_spec, moved)
-        image = render(frame_spec, moved, labels)
+        active_indices = list(range(len(moved)))
+        events: list[dict[str, int | str]] = []
+        if birth_index is not None and frame_index < max(1, frames // 3):
+            active_indices.remove(birth_index)
+        elif birth_index is not None and frame_index == max(1, frames // 3):
+            events.append({"type": "birth", "instance_id": birth_index + 1})
+        if disappearance_index is not None and frame_index >= max(2, 2 * frames // 3):
+            active_indices.remove(disappearance_index)
+            if frame_index == max(2, 2 * frames // 3):
+                events.append({
+                    "type": "coalescence",
+                    "instance_id": disappearance_index + 1,
+                })
+        active_sites = moved[active_indices]
+        local_labels = laguerre_labels(frame_spec, active_sites)
+        labels = np.zeros_like(local_labels)
+        for local_id, original_index in enumerate(active_indices, start=1):
+            labels[local_labels == local_id] = original_index + 1
+        image = render(frame_spec, active_sites, labels)
+        flow_by_instance: dict[str, list[float]] = {}
+        current_sites: dict[int, np.ndarray] = {
+            original_index + 1: moved[original_index, :2]
+            for original_index in active_indices
+        }
+        for instance_id in previous_sites.keys() & current_sites.keys():
+            delta = current_sites[instance_id] - previous_sites[instance_id]
+            flow_by_instance[str(instance_id)] = [float(delta[0]), float(delta[1])]
         out.append(
             {
                 "spec": frame_spec,
                 "frame_index": frame_index,
-                "sites": moved,
+                "sites": active_sites,
                 "labels": labels,
                 "image": image,
                 "bsd": bsd(labels),
+                "flow_by_instance_px": flow_by_instance,
+                "events": events,
             }
         )
+        previous_sites = current_sites
     return out
 
 

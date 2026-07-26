@@ -14,7 +14,11 @@ from PIL import Image
 from ..learning.data_cache import load_cache, select_split
 from ..registry import list_cases
 from ..science.froth_gen import generate
-from ..science.segment import bsd_wasserstein, mask_ap, panoptic_quality
+from ..science.segment import (
+    full_instance_metrics,
+    instance_confidence_calibration,
+    summarize_metric_rows,
+)
 
 MODEL_ID = "facebook/sam2.1-hiera-tiny"
 UPSTREAM_COMMIT = "2b90b9f5ceec907a1c18123530e92e794ad901a4"
@@ -29,6 +33,17 @@ def _annotations_to_labels(annotations: list[dict], shape: tuple[int, int]) -> n
     for instance_id, annotation in enumerate(ordered, start=1):
         labels[np.asarray(annotation["segmentation"], dtype=bool)] = instance_id
     return labels
+
+
+def _annotation_confidences(annotations: list[dict]) -> dict[int, float]:
+    ordered = sorted(
+        annotations,
+        key=lambda item: (float(item.get("predicted_iou", 0)), -int(item.get("area", 0))),
+    )
+    return {
+        instance_id: float(annotation.get("predicted_iou", 0.0))
+        for instance_id, annotation in enumerate(ordered, start=1)
+    }
 
 
 def _summary(rows: list[dict], *, split: str) -> dict:
@@ -76,16 +91,25 @@ def run(cache_path: Path, output: Path, canonical_output: Path) -> dict:
         with torch.inference_mode(), torch.autocast("cuda", dtype=torch.bfloat16):
             annotations = generator.generate(rgb)
         labels = _annotations_to_labels(annotations, image.shape)
+        confidence_calibration = instance_confidence_calibration(
+            labels,
+            test["labels"][index],
+            _annotation_confidences(annotations),
+        )
         rows.append({
             "sample_id": str(test["sample_ids"][index]),
             "condition_id": str(test["conditions"][index]),
             "group_id": str(test["group_ids"][index]),
             "n_masks": len(annotations),
-            **mask_ap(labels, test["labels"][index]),
-            **panoptic_quality(labels, test["labels"][index]),
+            **full_instance_metrics(labels, test["labels"][index]),
+            "brier": confidence_calibration["brier"],
+            "ece": confidence_calibration["ece"],
+            "instance_calibration": confidence_calibration,
         })
         print(f"sam2_test={index + 1}/{len(test['images'])} masks={len(annotations)}", flush=True)
-    evaluation = _summary(rows, split="test")
+    evaluation = summarize_metric_rows(rows, split="test")
+    evaluation["mean_brier"] = float(np.mean([row["brier"] for row in rows]))
+    evaluation["mean_ece"] = float(np.mean([row["ece"] for row in rows]))
 
     canonical_rows = []
     for index, case in enumerate(list_cases()):
@@ -101,9 +125,7 @@ def run(cache_path: Path, output: Path, canonical_output: Path) -> dict:
         canonical_rows.append({
             "case_id": case.id,
             "n_masks": len(annotations),
-            **mask_ap(labels, scene["labels"]),
-            **panoptic_quality(labels, scene["labels"]),
-            "bsd_w": bsd_wasserstein(labels, scene["labels"]),
+            **full_instance_metrics(labels, scene["labels"]),
             "mask_path": str(mask_path.relative_to(canonical_output)).replace("\\", "/"),
         })
         print(f"sam2_canonical={index + 1}/13 masks={len(annotations)}", flush=True)
