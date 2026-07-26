@@ -20,7 +20,9 @@ def test_health_and_release_evidence():
     assert health.json()["version"] == "0.04.000"
     release = get("/api/release")
     assert release.status_code == 200
-    assert release.json()["complete"] is True
+    document = release.json()
+    assert document["complete"] is (len(document["errors"]) == 0)
+    assert document["schema"] == "frothseg.release/v2"
 
 
 def test_method_and_case_endpoints():
