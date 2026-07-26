@@ -174,11 +174,36 @@ export interface MethodMetricSummary {
   mean_ap50: number;
   mean_pq: number | null;
   mean_boundary_fscore?: number;
+  mean_brier?: number;
+  mean_ece?: number;
   mean_bsd_wasserstein?: number;
   mean_count_relative_error?: number;
   mean_d32_relative_error?: number;
   mean_inference_ms?: number;
   p95_inference_ms?: number;
+  robustness_by_condition?: Record<string, {
+    n: number;
+    mean_ap: number;
+    delta_ap_from_global: number;
+  }>;
+  micro?: {
+    nGt: number;
+    nPred: number;
+    tp: number;
+    fp: number;
+    fn: number;
+    instance_precision: number;
+    instance_recall: number;
+    instance_f1: number;
+  };
+  cases?: Array<{
+    sample_id: string;
+    condition_id: string;
+    group_id: string;
+    ap: number;
+    ap50: number;
+    pq: number;
+  }>;
 }
 
 export interface MethodBenchmarkRow {
@@ -193,16 +218,37 @@ export interface MethodBenchmarkRow {
   test: MethodMetricSummary | null;
   canonical: MethodMetricSummary | null;
   canonical_cases: Array<{ case_id: string; ap: number | null }>;
+  compute: {
+    hardware_lane: 'cpu' | 'gpu';
+    device: string;
+    mean_inference_ms: number;
+    p95_inference_ms: number | null;
+    peak_memory_mib: number;
+    peak_memory_metric: string;
+    model_artifact_bytes: number;
+    model_artifact_sha256?: string | null;
+    model_artifact_committed?: boolean;
+    training_duration_seconds?: number | null;
+  };
   docs_path: string;
 }
 
 export interface MethodBenchmarkDoc {
-  schema: 'frothseg.method-benchmark/v1';
+  schema: 'frothseg.method-benchmark/v2';
   dataset_schema: string;
   canonical_case_count: number;
   method_count: number;
   implemented_count: number;
   missing_count: number;
+  coverage: {
+    expected_methods: number;
+    expected_test_samples: number;
+    expected_cells: number;
+    observed_cells: number;
+    condition_count: number;
+    complete: boolean;
+    errors: string[];
+  };
   current_bar: {
     metric: string;
     threshold: number;

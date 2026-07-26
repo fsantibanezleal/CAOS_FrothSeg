@@ -3,108 +3,415 @@ import { Equation, Refs, SubTabs, useShellLang } from '@fasl-work/caos-app-shell
 export default function Methodology() {
   const es = useShellLang() === 'es';
   const tabs = [
-    { id: 'portfolio', label: es ? '15 métodos' : '15 methods', content: <Portfolio es={es} /> },
-    { id: 'classical', label: es ? 'Clásicos C1-C7' : 'Classical C1-C7', content: <Classical es={es} /> },
-    { id: 'learned', label: es ? 'Aprendidos L1-L7' : 'Learned L1-L7', content: <Learned es={es} /> },
-    { id: 'data', label: es ? 'Datos y splits' : 'Data and splits', content: <Data es={es} /> },
-    { id: 'metrics', label: es ? 'Métricas' : 'Metrics', content: <Metrics es={es} /> },
-    { id: 'morphometry', label: es ? 'BSD' : 'BSD', content: <Morphometry es={es} /> },
+    { id: 'protocol', label: es ? 'Protocolo' : 'Protocol', content: <Protocol es={es} /> },
+    { id: 'data', label: es ? 'Datos y splits' : 'Data & splits', content: <DataProtocol es={es} /> },
+    { id: 'classical', label: es ? 'Métodos clásicos' : 'Classical methods', content: <Classical es={es} /> },
+    { id: 'learned', label: es ? 'Métodos aprendidos' : 'Learned methods', content: <Learned es={es} /> },
+    { id: 'training', label: es ? 'Entrenamiento' : 'Training', content: <Training es={es} /> },
+    { id: 'inference', label: es ? 'Inferencia' : 'Inference', content: <Inference es={es} /> },
+    { id: 'temporal', label: es ? 'Secuencias' : 'Sequences', content: <Temporal es={es} /> },
+    { id: 'evaluation', label: es ? 'Evaluación' : 'Evaluation', content: <Evaluation es={es} /> },
   ];
   return (
-    <div className="page-body prose">
-      <div className="page-head">
-        <h1>{es ? 'Metodología completa' : 'Complete methodology'}</h1>
+    <div className="page-body prose fs-science-page">
+      <header className="page-head fs-science-head">
+        <span className="eyebrow">{es ? 'Métodos y protocolo experimental' : 'Methods and experimental protocol'}</span>
+        <h1>{es ? 'Cómo se convierte una imagen en evidencia comparable' : 'How an image becomes comparable evidence'}</h1>
         <p className="lede">
           {es
-            ? 'Una escalera comparable de métodos, splits sin fuga, calibración separada, métricas de instancia y evidencia temporal.'
-            : 'A comparable method ladder, leakage-resistant splits, separate calibration, instance metrics, and temporal evidence.'}
+            ? 'Todos los métodos reciben el mismo dato, producen el mismo contrato de instancias y se evalúan con splits, calibración y métricas fijados antes de tocar la prueba.'
+            : 'Every method receives the same input, produces the same instance contract, and is evaluated with splits, calibration, and metrics fixed before the test set is touched.'}
         </p>
-      </div>
-      <section><SubTabs tabs={tabs} ariaLabel="methodology" /></section>
+      </header>
+      <section><SubTabs tabs={tabs} ariaLabel={es ? 'Capítulos de metodología' : 'Methodology chapters'} /></section>
     </div>
   );
 }
 
-function Portfolio({ es }: { es: boolean }) {
+function Protocol({ es }: { es: boolean }) {
   return (
-    <>
-      <table className="fs-table">
-        <thead><tr><th>{es ? 'Clase' : 'Tier'}</th><th>ID</th><th>{es ? 'Métodos' : 'Methods'}</th></tr></thead>
-        <tbody>
-          <tr><td>{es ? 'Clásicos' : 'Classical'}</td><td>C1-C7</td><td>Otsu+CC · immersion · marker · distance · H-minima · SLIC+RAG · lamella valley</td></tr>
-          <tr><td>{es ? 'Dominio' : 'Domain'}</td><td>L1-L4, L6</td><td>U-Net · deep markers · global context · StarDist · YOLO</td></tr>
-          <tr><td>{es ? 'Fundacionales' : 'Foundation'}</td><td>L5, L7</td><td>Cellpose-SAM · SAM2.1 image/video</td></tr>
-          <tr><td>{es ? 'Frontera' : 'Frontier'}</td><td>N1</td><td>LamellaStar</td></tr>
-        </tbody>
-      </table>
-      <p>{es ? 'Todos están implementados. La aceptación de implementación no oculta la calidad: cada resultado conserva su estado respecto al bar AP 0.30.' : 'All are implemented. Implementation acceptance does not hide quality: each result retains its status against the AP 0.30 bar.'}</p>
-    </>
+    <div className="fs-method-chapter">
+      <ChapterLead
+        index="01"
+        title={es ? 'Una cadena experimental cerrada' : 'A closed experimental chain'}
+        text={es
+          ? 'El protocolo separa decisiones que pueden aprenderse de los datos de la medición final. La prueba retenida solo se abre después de congelar pesos, umbrales y postproceso.'
+          : 'The protocol separates decisions that may be learned from data from the final measurement. The held-out test is opened only after weights, thresholds, and post-processing are frozen.'}
+      />
+      <MethodFlowDiagram es={es} />
+      <div className="fs-principle-grid">
+        <Principle n="1" title={es ? 'Unidad experimental' : 'Experimental unit'} text={es ? 'La geometría latente, no la imagen renderizada.' : 'The latent geometry, not the rendered image.'} />
+        <Principle n="2" title={es ? 'Salida común' : 'Common output'} text={es ? 'Mapa entero: 0 fondo, 1…N identidades.' : 'Integer map: 0 background, 1…N identities.'} />
+        <Principle n="3" title={es ? 'Selección separada' : 'Separate selection'} text={es ? 'Validación para pesos; calibración para umbrales.' : 'Validation for weights; calibration for thresholds.'} />
+        <Principle n="4" title={es ? 'Prueba única' : 'Single test'} text={es ? '64 muestras retenidas para los 15 métodos.' : '64 held-out samples for all 15 methods.'} />
+      </div>
+      <h3>{es ? 'Contratos invariantes' : 'Invariant contracts'}</h3>
+      <p>
+        {es
+          ? 'La ingesta valida forma, rango dinámico y metadatos de agrupación. La inferencia emite etiquetas de instancia y probabilidades cuando existen. La evaluación consume únicamente esos contratos: ningún evaluador conoce detalles internos del modelo.'
+          : 'Ingestion validates shape, dynamic range, and grouping metadata. Inference emits instance labels and probabilities when available. Evaluation consumes only those contracts: no evaluator knows model internals.'}
+      </p>
+      <p className="fs-note good">
+        {es
+          ? 'El conjunto canónico de 13 casos sirve para explicación visual y diagnóstico. No se mezcla con el ranking de prueba.'
+          : 'The 13-case canonical set is used for visual explanation and diagnosis. It is never mixed into the test ranking.'}
+      </p>
+    </div>
+  );
+}
+
+function DataProtocol({ es }: { es: boolean }) {
+  return (
+    <div className="fs-method-chapter">
+      <ChapterLead
+        index="02"
+        title={es ? 'Diseño de datos sin fuga geométrica' : 'Leakage-resistant data design'}
+        text={es
+          ? 'Cada escena latente genera dos apariencias. Ambas permanecen en el mismo split para impedir que el modelo vea en entrenamiento la geometría que luego se evalúa.'
+          : 'Each latent scene produces two appearances. Both stay in the same split so the model cannot see test geometry during training.'}
+      />
+      <SplitDiagram es={es} />
+      <div className="fs-explain-grid">
+        <article>
+          <span>384</span><strong>{es ? 'muestras' : 'samples'}</strong>
+          <p>{es ? '16 condiciones × 12 grupos geométricos × 2 apariencias.' : '16 conditions × 12 geometry groups × 2 appearances.'}</p>
+        </article>
+        <article>
+          <span>192</span><strong>train</strong>
+          <p>{es ? 'Optimización de parámetros aprendidos.' : 'Optimization of learned parameters.'}</p>
+        </article>
+        <article>
+          <span>64</span><strong>validation</strong>
+          <p>{es ? 'Selección de época y arquitectura.' : 'Epoch and architecture selection.'}</p>
+        </article>
+        <article>
+          <span>64</span><strong>calibration</strong>
+          <p>{es ? 'Umbrales, marcadores y probabilidades.' : 'Thresholds, markers, and probabilities.'}</p>
+        </article>
+        <article>
+          <span>64</span><strong>test</strong>
+          <p>{es ? 'Comparación final, abierta una sola vez.' : 'Final comparison, opened once.'}</p>
+        </article>
+      </div>
+      <h3>{es ? 'Cobertura de condiciones' : 'Condition coverage'}</h3>
+      <p>
+        {es
+          ? 'El diseño cruza espuma fina, gruesa, bimodal, acuosa y cargada con brillo, baja luz, desenfoque, movimiento, encuadre parcial y combinaciones compuestas. La verdad exacta conserva área, contorno e identidad de cada burbuja.'
+          : 'The design crosses fine, coarse, bimodal, watery, and loaded froth with glare, low light, defocus, motion, edge framing, and compound degradations. Exact truth preserves every bubble’s area, boundary, and identity.'}
+      </p>
+      <h3>{es ? 'Ingreso de datos industriales' : 'Industrial-data ingestion'}</h3>
+      <p>
+        {es
+          ? 'Las fuentes reales se incorporan mediante manifiestos con licencia, sitio, cámara, escala física y grupo de secuencia. Los cuadros de un mismo video o campaña permanecen juntos. No se publica una cifra de planta sin un test externo gobernado.'
+          : 'Real sources enter through manifests recording license, site, camera, physical scale, and sequence group. Frames from one video or campaign remain together. No plant-accuracy number is published without a governed external test.'}
+      </p>
+    </div>
   );
 }
 
 function Classical({ es }: { es: boolean }) {
+  const methods = [
+    ['C1', 'Otsu + connected components', es ? 'Umbral global; expone uniones entre burbujas en contacto.' : 'Global threshold; exposes merges between touching bubbles.'],
+    ['C2', 'Gradient immersion watershed', es ? 'Inunda mínimos del gradiente; expone sobresegmentación por textura.' : 'Floods gradient minima; exposes texture-driven over-segmentation.'],
+    ['C3', 'Marker-controlled watershed', es ? 'Máximos brillantes como semillas; sensible a reflejos saturados.' : 'Bright maxima as seeds; sensitive to saturated glare.'],
+    ['C4', 'Distance-transform watershed', es ? 'Picos de distancia como centros de burbuja.' : 'Distance peaks act as bubble centers.'],
+    ['C5', 'H-minima watershed', es ? 'Suprime cuencas someras antes de la inundación.' : 'Suppresses shallow basins before flooding.'],
+    ['C6', 'SLIC + RAG merge', es ? 'Superpíxeles y fusión por similitud regional.' : 'Superpixels followed by region-similarity merging.'],
+    ['C7', 'Lamella-valley watershed', es ? 'Detecta valles oscuros de lamela en vez de reflejos.' : 'Detects dark lamella valleys instead of highlights.'],
+  ];
   return (
-    <>
-      <p>{es ? 'Los clásicos establecen fallas interpretables y costos bajos. Se ejecutan con scikit-image, SciPy y OpenCV en el benchmark autoritativo.' : 'Classical methods establish interpretable failure modes and low-cost baselines. The authoritative benchmark uses scikit-image, SciPy, and OpenCV.'}</p>
-      <ul>
-        <li>C1 · {es ? 'Otsu y componentes conectados' : 'Otsu and connected components'}</li>
-        <li>C2 · {es ? 'watershed de inmersión por gradiente' : 'gradient immersion watershed'}</li>
-        <li>C3 · {es ? 'watershed controlado por marcadores' : 'marker-controlled watershed'}</li>
-        <li>C4 · {es ? 'watershed por transformada de distancia' : 'distance-transform watershed'}</li>
-        <li>C5 · H-minima watershed</li>
-        <li>C6 · SLIC + RAG merge</li>
-        <li>C7 · {es ? 'watershed restringido por valles de lamela' : 'lamella-valley constrained watershed'}</li>
-      </ul>
+    <div className="fs-method-chapter">
+      <ChapterLead
+        index="03"
+        title={es ? 'Siete hipótesis clásicas, siete modos de error' : 'Seven classical hypotheses, seven failure modes'}
+        text={es
+          ? 'La escalera clásica no es relleno: hace explícito qué señal física usa cada algoritmo y dónde deja de ser válida.'
+          : 'The classical ladder is not filler: it makes explicit which physical signal each algorithm uses and where that assumption fails.'}
+      />
+      <ClassicalMechanismDiagram es={es} />
+      <div className="fs-method-list">
+        {methods.map(([id, name, description]) => (
+          <article key={id}>
+            <span>{id}</span>
+            <div><strong>{name}</strong><p>{description}</p></div>
+          </article>
+        ))}
+      </div>
+      <h3>{es ? 'Formulación común del watershed' : 'Common watershed formulation'}</h3>
+      <Equation tex={String.raw`\hat{Y}=\operatorname{Watershed}\!\left(E,\;M,\;\Omega\right)`} />
+      <p>
+        {es
+          ? 'E es la superficie de elevación (gradiente, borde o distancia negada), M son marcadores y Ω limita la región de espuma. C2–C5 y C7 difieren precisamente en cómo construyen esas tres cantidades.'
+          : 'E is the elevation surface (gradient, boundary, or negative distance), M contains markers, and Ω limits the froth region. C2–C5 and C7 differ precisely in how those three quantities are constructed.'}
+      </p>
       <Refs ids={['meyer1994', 'vincent1991', 'achanta2012slic']} label="Refs" />
-    </>
+    </div>
   );
 }
 
 function Learned({ es }: { es: boolean }) {
+  const families = [
+    ['L1–L3', es ? 'Campos densos + watershed' : 'Dense fields + watershed', es ? 'Foreground, borde y distancia producen marcadores e instancias.' : 'Foreground, boundary, and distance fields produce markers and instances.'],
+    ['L4', 'StarDist 2D', es ? 'Distancias radiales describen polígonos estrellados por objeto.' : 'Radial distances describe star-convex polygons per object.'],
+    ['L5', 'Cellpose-SAM', es ? 'Representaciones preentrenadas ajustadas a las instancias de espuma.' : 'Pretrained representations fine-tuned for froth instances.'],
+    ['L6', 'YOLO instance segmentation', es ? 'Detección y máscara por instancia en una arquitectura unificada.' : 'Detection and per-instance masks in a unified architecture.'],
+    ['L7', 'SAM 2.1 image/video', es ? 'Segmentación con prompts y memoria temporal oficial.' : 'Prompted segmentation with official temporal memory.'],
+    ['N1', 'LamellaStar', es ? 'Foreground, borde, distancia y centros con compuertas de lamela.' : 'Foreground, boundary, distance, and center heads with lamella gates.'],
+  ];
   return (
-    <>
-      <p>{es ? 'L1-L3 aprenden foreground, borde y distancia antes del watershed. StarDist predice polígonos radiales. YOLO aprende instancias desde polígonos exactos. Cellpose-SAM y SAM2 usan implementaciones y checkpoints oficiales. LamellaStar agrega evidencia de centro, pero su primera hipótesis falló.' : 'L1-L3 learn foreground, boundary, and distance before watershed. StarDist predicts radial polygons. YOLO learns instances from exact polygons. Cellpose-SAM and SAM2 use official implementations and checkpoints. LamellaStar adds center evidence, but its first hypothesis failed.'}</p>
-      <p className="fs-note">{es ? 'Cellpose-SAM ajustado lidera el test con AP 0.5099. No existe afirmación beyond SOTA.' : 'Fine-tuned Cellpose-SAM leads the test at AP 0.5099. There is no beyond-SOTA claim.'}</p>
+    <div className="fs-method-chapter">
+      <ChapterLead
+        index="04"
+        title={es ? 'Representaciones aprendidas para separar contacto y textura' : 'Learned representations for contact and texture'}
+        text={es
+          ? 'Los modelos no compiten mediante interfaces distintas. Todos terminan en el mismo mapa de instancias y pasan por el mismo evaluador.'
+          : 'Models do not compete through different interfaces. Every path ends in the same instance map and passes through the same evaluator.'}
+      />
+      <DenseTargetDiagram es={es} />
+      <div className="fs-family-grid">
+        {families.map(([id, title, text]) => <article key={id}><span>{id}</span><strong>{title}</strong><p>{text}</p></article>)}
+      </div>
+      <h3>{es ? 'Objetivos densos' : 'Dense targets'}</h3>
+      <Equation tex={String.raw`\mathcal{L}=\lambda_f\mathcal{L}_{Dice+BCE}(F)+\lambda_b\mathcal{L}_{BCE}(B)+\lambda_d\mathcal{L}_{SmoothL1}(D)+\lambda_c\mathcal{L}_{MSE}(C)`} />
+      <p>
+        {es
+          ? 'F representa interior, B borde de instancia, D distancia normalizada al borde y C centros por instancia cuando el modelo los usa. En inferencia, D y C proponen semillas; B impide que la inundación atraviese lamelas.'
+          : 'F represents interior, B instance boundary, D normalized distance to the boundary, and C per-instance centers when used. At inference, D and C propose markers; B prevents flooding across lamellae.'}
+      </p>
+      <p className="fs-note">
+        {es
+          ? 'Cellpose-SAM es el líder medido del test. LamellaStar sigue siendo una hipótesis evaluada con resultado inferior; no se presenta como una mejora.'
+          : 'Cellpose-SAM is the measured test leader. LamellaStar remains an evaluated hypothesis with a lower result; it is not presented as an improvement.'}
+      </p>
       <Refs ids={['kirillov2023']} label="Refs" />
-    </>
+    </div>
   );
 }
 
-function Data({ es }: { es: boolean }) {
+function Training({ es }: { es: boolean }) {
   return (
-    <>
-      <p>{es ? 'Dieciséis familias de condición producen 192 grupos geométricos y dos apariencias por grupo: 384 muestras. La unidad del split es el grupo, no la imagen.' : 'Sixteen condition families produce 192 geometry groups and two appearances per group: 384 samples. The split unit is the group, not the image.'}</p>
-      <table className="fs-table">
-        <thead><tr><th>Split</th><th className="num">{es ? 'Muestras' : 'Samples'}</th><th>{es ? 'Uso' : 'Use'}</th></tr></thead>
-        <tbody>
-          <tr><td>train</td><td className="num">192</td><td>{es ? 'optimización' : 'optimization'}</td></tr>
-          <tr><td>validation</td><td className="num">64</td><td>{es ? 'monitoreo' : 'monitoring'}</td></tr>
-          <tr><td>calibration</td><td className="num">64</td><td>{es ? 'umbrales y postproceso' : 'thresholds and post-processing'}</td></tr>
-          <tr><td>test</td><td className="num">64</td><td>{es ? 'comparación intocable' : 'untouched comparison'}</td></tr>
-        </tbody>
-      </table>
-    </>
+    <div className="fs-method-chapter">
+      <ChapterLead
+        index="05"
+        title={es ? 'Selección de modelos sin consultar la prueba' : 'Model selection without consulting the test'}
+        text={es
+          ? 'Cada corrida guarda configuración, semilla, checksum del dataset, dispositivo, historial, checkpoint seleccionado y calibración posterior.'
+          : 'Every run records configuration, seed, dataset checksum, device, history, selected checkpoint, and subsequent calibration.'}
+      />
+      <TrainingTimeline es={es} />
+      <div className="fs-decision-grid">
+        <article><span>train</span><strong>{es ? 'Aprender pesos' : 'Learn weights'}</strong><p>{es ? 'Aumentos fotométricos y geométricos se aplican solo aquí.' : 'Photometric and geometric augmentation is applied only here.'}</p></article>
+        <article><span>validation</span><strong>{es ? 'Elegir checkpoint' : 'Choose checkpoint'}</strong><p>{es ? 'Early stopping y selección por AP/PQ de validación.' : 'Early stopping and selection by validation AP/PQ.'}</p></article>
+        <article><span>calibration</span><strong>{es ? 'Fijar decisión' : 'Fix decisions'}</strong><p>{es ? 'Umbrales de foreground, borde, marcadores y confianza.' : 'Foreground, boundary, marker, and confidence thresholds.'}</p></article>
+        <article><span>test</span><strong>{es ? 'Medir una vez' : 'Measure once'}</strong><p>{es ? 'Sin ajuste posterior basado en sus resultados.' : 'No subsequent tuning based on its results.'}</p></article>
+      </div>
+      <h3>{es ? 'Reproducibilidad computacional' : 'Computational reproducibility'}</h3>
+      <p>
+        {es
+          ? 'Los entrenamientos PyTorch y los modelos fundacionales verifican CUDA cuando la corrida declara GPU; no existe una caída silenciosa a CPU. Los checkpoints se enlazan por SHA-256 y los exportadores verifican paridad numérica antes de aceptar un artefacto.'
+          : 'PyTorch training and foundation-model runs verify CUDA whenever a run declares GPU; silent CPU fallback is not allowed. Checkpoints are linked by SHA-256, and exporters verify numerical parity before accepting an artifact.'}
+      </p>
+    </div>
   );
 }
 
-function Metrics({ es }: { es: boolean }) {
+function Inference({ es }: { es: boolean }) {
   return (
-    <>
-      <Equation tex={String.raw`\mathrm{IoU}(A,B)=\frac{|A\cap B|}{|A\cup B|}`} />
-      <Equation tex={String.raw`\mathrm{AP}=\frac{1}{10}\sum_{t\in\{0.50,\ldots,0.95\}}\frac{\mathrm{TP}_t}{\mathrm{TP}_t+\mathrm{FP}_t+\mathrm{FN}_t}`} />
-      <p>{es ? 'También se reportan AP50, PQ, SQ, RQ, merges, splits, falsos positivos y falsos negativos. La identidad temporal se mide sobre secuencias con IDs exactos.' : 'AP50, PQ, SQ, RQ, merges, splits, false positives, and false negatives are also reported. Temporal identity is measured on sequences with exact IDs.'}</p>
-      <Refs ids={['lin2014coco']} label="Refs" />
-    </>
+    <div className="fs-method-chapter">
+      <ChapterLead
+        index="06"
+        title={es ? 'Del campo probabilístico a burbujas discretas' : 'From probability fields to discrete bubbles'}
+        text={es
+          ? 'La inferencia conserva tanto las probabilidades como la decisión final. Esto permite diagnosticar si el error proviene del modelo o del postproceso.'
+          : 'Inference preserves both probabilities and the final decision. This makes it possible to diagnose whether an error comes from the model or from post-processing.'}
+      />
+      <InferenceDiagram es={es} />
+      <h3>{es ? 'Postproceso de los modelos densos' : 'Dense-model post-processing'}</h3>
+      <ol className="fs-numbered-method">
+        <li><strong>{es ? 'Interior' : 'Interior'}</strong><span>{es ? 'Aplicar el umbral de foreground calibrado.' : 'Apply the calibrated foreground threshold.'}</span></li>
+        <li><strong>{es ? 'Semillas' : 'Markers'}</strong><span>{es ? 'Combinar distancia aprendida y evidencia de centro; extraer máximos separados.' : 'Combine learned distance and center evidence; extract separated maxima.'}</span></li>
+        <li><strong>{es ? 'Barreras' : 'Barriers'}</strong><span>{es ? 'Anular semillas sobre bordes y usar el borde como elevación.' : 'Suppress markers on boundaries and use the boundary as elevation.'}</span></li>
+        <li><strong>Watershed</strong><span>{es ? 'Inundar dentro del foreground y emitir etiquetas enteras contiguas.' : 'Flood inside foreground and emit contiguous integer labels.'}</span></li>
+        <li><strong>{es ? 'Filtrado' : 'Filtering'}</strong><span>{es ? 'Eliminar objetos fuera del rango físico y registrar cada decisión.' : 'Remove objects outside the physical range and record every decision.'}</span></li>
+      </ol>
+      <h3>{es ? 'Ejecución offline y exploración web' : 'Offline execution and web exploration'}</h3>
+      <p>
+        {es
+          ? 'El pipeline offline procesa imágenes o videos completos, usa los runtimes científicos y exporta máscaras, tablas y proveniencia. La web reproduce esos artefactos para los 15 métodos. Solo una carga arbitraria utiliza cuatro motores interactivos explícitamente separados.'
+          : 'The offline pipeline processes complete images or videos, uses the scientific runtimes, and exports masks, tables, and provenance. The web replays those artifacts for all 15 methods. Only arbitrary uploads use four explicitly separated interactive engines.'}
+      </p>
+    </div>
   );
 }
 
-function Morphometry({ es }: { es: boolean }) {
+function Temporal({ es }: { es: boolean }) {
   return (
-    <>
-      <Equation tex={String.raw`d_{\mathrm{eq}}=2\sqrt{A/\pi}`} />
-      <Equation tex={String.raw`d_{32}=\frac{\sum_i d_i^3}{\sum_i d_i^2}`} />
-      <p>{es ? 'Las máscaras se reducen a D10, D50, D90, d32 y descriptores por burbuja. La distancia Wasserstein-1 cuantifica la fidelidad de la distribución.' : 'Masks reduce to D10, D50, D90, d32, and per-bubble descriptors. Wasserstein-1 quantifies distribution fidelity.'}</p>
-      <Refs ids={['aldrich2010', 'sautermean']} label="Refs" />
-    </>
+    <div className="fs-method-chapter">
+      <ChapterLead
+        index="07"
+        title={es ? 'Identidad a través del tiempo' : 'Identity through time'}
+        text={es
+          ? 'La segmentación por cuadro se asocia mediante solapamiento y asignación bipartita. SAM 2.1 se evalúa aparte como propagador con memoria, condicionado por máscaras iniciales.'
+          : 'Framewise segmentation is associated through overlap and bipartite assignment. SAM 2.1 is evaluated separately as a memory-based propagator conditioned on initial masks.'}
+      />
+      <TemporalIdentityDiagram es={es} />
+      <Equation tex={String.raw`C_{ij}=1-\operatorname{IoU}\!\left(Y^{t-1}_i,Y^t_j\right),\qquad \pi^*=\arg\min_{\pi}\sum_i C_{i,\pi(i)}`} />
+      <p>
+        {es
+          ? 'La asignación húngara conserva IDs cuando el IoU supera el umbral. Nacimientos, desapariciones, divisiones y uniones quedan como eventos explícitos en lugar de ser ocultados dentro de un promedio.'
+          : 'Hungarian assignment preserves IDs when IoU exceeds the threshold. Births, disappearances, splits, and merges remain explicit events instead of being hidden inside an average.'}
+      </p>
+      <div className="fs-metric-defs">
+        <article><strong>IDF1</strong><p>{es ? 'Precisión y exhaustividad de identidad en todos los cuadros.' : 'Identity precision and recall across all frames.'}</p></article>
+        <article><strong>HOTA</strong><p>{es ? 'Balance entre detección y asociación.' : 'Balance between detection and association.'}</p></article>
+        <article><strong>{es ? 'Fragmentaciones' : 'Fragmentations'}</strong><p>{es ? 'Veces que una trayectoria persistente se interrumpe.' : 'Times a persistent track is interrupted.'}</p></article>
+        <article><strong>Flow EPE</strong><p>{es ? 'Error de desplazamiento de centroides en píxeles.' : 'Centroid displacement error in pixels.'}</p></article>
+      </div>
+      <p className="fs-note good">
+        {es
+          ? 'El benchmark temporal usa cinco secuencias de ocho cuadros con identidades exactas. La propagación SAM 2.1 recibe prompts solo en el primer cuadro.'
+          : 'The temporal benchmark uses five eight-frame sequences with exact identities. SAM 2.1 propagation receives prompts only in the first frame.'}
+      </p>
+    </div>
+  );
+}
+
+function Evaluation({ es }: { es: boolean }) {
+  return (
+    <div className="fs-method-chapter">
+      <ChapterLead
+        index="08"
+        title={es ? 'Calidad de instancia, frontera y proceso' : 'Instance, boundary, and process quality'}
+        text={es
+          ? 'Ninguna métrica única describe el error de espuma. El protocolo combina correspondencia por IoU, calidad panóptica, fronteras, conteo, distribución de tamaño, calibración, tiempo y memoria.'
+          : 'No single metric describes froth error. The protocol combines IoU matching, panoptic quality, boundaries, count, size distribution, calibration, time, and memory.'}
+      />
+      <div className="fs-equation-grid">
+        <article><strong>Mask AP</strong><Equation tex={String.raw`\mathrm{AP}=\frac1{10}\sum_{\tau=.50}^{.95}\frac{TP_\tau}{TP_\tau+FP_\tau+FN_\tau}`} /></article>
+        <article><strong>Panoptic quality</strong><Equation tex={String.raw`\mathrm{PQ}=\underbrace{\frac{\sum_{(p,g)}IoU(p,g)}{|TP|}}_{SQ}\;\underbrace{\frac{|TP|}{|TP|+\frac12|FP|+\frac12|FN|}}_{RQ}`} /></article>
+        <article><strong>{es ? 'Diámetro equivalente' : 'Equivalent diameter'}</strong><Equation tex={String.raw`d_i=2\sqrt{A_i/\pi},\qquad d_{32}=\frac{\sum_i d_i^3}{\sum_i d_i^2}`} /></article>
+        <article><strong>{es ? 'Calibración' : 'Calibration'}</strong><Equation tex={String.raw`\mathrm{Brier}=\frac1N\sum_i(p_i-y_i)^2,\qquad ECE=\sum_b\frac{|b|}{N}|\mathrm{acc}(b)-\mathrm{conf}(b)|`} /></article>
+      </div>
+      <h3>{es ? 'Lectura de los errores' : 'Reading the errors'}</h3>
+      <div className="fs-error-matrix">
+        <article><span>{es ? 'Unión' : 'Merge'}</span><p>{es ? 'Una predicción cubre varias burbujas reales: el tamaño queda sesgado hacia arriba.' : 'One prediction covers several true bubbles: size is biased upward.'}</p></article>
+        <article><span>{es ? 'Separación' : 'Split'}</span><p>{es ? 'Varias predicciones cubren una burbuja real: el tamaño queda sesgado hacia abajo.' : 'Several predictions cover one true bubble: size is biased downward.'}</p></article>
+        <article><span>{es ? 'Frontera' : 'Boundary'}</span><p>{es ? 'La identidad puede ser correcta aunque la lamela esté desplazada.' : 'Identity can be correct while the lamella is displaced.'}</p></article>
+        <article><span>{es ? 'Distribución' : 'Distribution'}</span><p>{es ? 'Wasserstein-1 mide cuánto trabajo mueve una BSD predicha hacia la real.' : 'Wasserstein-1 measures the work needed to move a predicted BSD to truth.'}</p></article>
+      </div>
+      <h3>{es ? 'Agregación y afirmaciones' : 'Aggregation and claims'}</h3>
+      <p>
+        {es
+          ? 'Se publican medias macro por muestra y conteos micro agrupados. Las 960 celdas método–muestra deben estar presentes. El umbral predeclarado es AP 0.30 en el banco controlado; no equivale a preparación industrial ni a superioridad fuera de este dominio.'
+          : 'Per-sample macro means and pooled micro counts are both published. All 960 method–sample cells must be present. The predeclared threshold is AP 0.30 on the controlled benchmark; it does not imply industrial readiness or superiority outside this domain.'}
+      </p>
+      <Refs ids={['lin2014coco', 'aldrich2010', 'sautermean']} label="Refs" />
+    </div>
+  );
+}
+
+function ChapterLead({ index, title, text }: { index: string; title: string; text: string }) {
+  return <div className="fs-chapter-lead"><span>{index}</span><div><h2>{title}</h2><p>{text}</p></div></div>;
+}
+
+function Principle({ n, title, text }: { n: string; title: string; text: string }) {
+  return <article><span>{n}</span><strong>{title}</strong><p>{text}</p></article>;
+}
+
+function MethodFlowDiagram({ es }: { es: boolean }) {
+  const stages = es
+    ? ['Ingesta', 'Split por grupo', 'Entrenamiento', 'Calibración', 'Prueba retenida', 'Artefactos']
+    : ['Ingestion', 'Group split', 'Training', 'Calibration', 'Held-out test', 'Artifacts'];
+  return <FlowDiagram stages={stages} caption={es ? 'Las flechas de decisión nunca regresan desde test' : 'Decision arrows never return from test'} />;
+}
+
+function FlowDiagram({ stages, caption }: { stages: string[]; caption: string }) {
+  return (
+    <figure className="fs-method-flow">
+      <svg viewBox="0 0 1080 230" role="img">
+        <defs><marker id="method-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="currentColor" /></marker></defs>
+        <g stroke="currentColor" strokeWidth="2.5" fill="none" markerEnd="url(#method-arrow)">
+          {stages.slice(0, -1).map((_, i) => <path key={i} d={`M${156 + i * 178} 91 H${194 + i * 178}`} />)}
+        </g>
+        {stages.map((stage, i) => <g key={stage} transform={`translate(${14 + i * 178} 38)`}><rect width="142" height="105" rx="16" /><circle cx="71" cy="38" r="16" /><text x="71" y="43" textAnchor="middle">{i + 1}</text><text x="71" y="79" textAnchor="middle">{stage}</text></g>)}
+        <text x="540" y="194" textAnchor="middle" className="caption">{caption}</text>
+      </svg>
+    </figure>
+  );
+}
+
+function SplitDiagram({ es }: { es: boolean }) {
+  return (
+    <figure className="fs-split-diagram">
+      <svg viewBox="0 0 960 290" role="img">
+        <g className="source">
+          <text x="32" y="35">{es ? 'GRUPO LATENTE' : 'LATENT GROUP'}</text>
+          {[0, 1, 2, 3].map((i) => <g key={i} transform={`translate(${35 + i * 92} 70)`}><circle cx="32" cy="32" r={28 - i * 2} /><path d="M16 32 Q32 10 48 32 Q32 54 16 32" /></g>)}
+          <path d="M410 102 H495" />
+        </g>
+        <g className="split">
+          {([
+            [520, 42, '#36d6c5', 'TRAIN 192'],
+            [730, 42, '#7fb4ff', 'VALIDATION 64'],
+            [520, 166, '#ffb454', 'CALIBRATION 64'],
+            [730, 166, '#e888a5', 'TEST 64'],
+          ] as Array<[number, number, string, string]>).map(([x, y, color, label]) => <g key={label} transform={`translate(${x} ${y})`}><rect width="176" height="82" rx="13" style={{ stroke: color }} /><text x="88" y="35" textAnchor="middle">{label}</text><text x="88" y="58" textAnchor="middle" className="small">{es ? 'grupos completos' : 'whole groups'}</text></g>)}
+        </g>
+        <text x="205" y="213" textAnchor="middle" className="caption">{es ? 'dos apariencias, un único destino' : 'two appearances, one destination'}</text>
+        <text x="480" y="272" textAnchor="middle" className="caption">{es ? 'ninguna geometría cruza divisiones' : 'no geometry crosses splits'}</text>
+      </svg>
+    </figure>
+  );
+}
+
+function ClassicalMechanismDiagram({ es }: { es: boolean }) {
+  return (
+    <figure className="fs-mechanism-diagram">
+      <svg viewBox="0 0 1000 250" role="img">
+        <g transform="translate(30 28)"><text x="0" y="0">{es ? 'IMAGEN' : 'IMAGE'}</text><circle cx="75" cy="92" r="58" /><circle cx="154" cy="92" r="47" /><ellipse cx="103" cy="61" rx="24" ry="10" className="glare" /></g>
+        <g transform="translate(300 28)"><text x="0" y="0">{es ? 'SEÑAL' : 'SIGNAL'}</text><path d="M0 145 Q38 120 62 40 Q83 132 118 146 Q147 124 171 56 Q193 133 228 145" /><path d="M75 33V165 M181 48V165" className="markers" /></g>
+        <g transform="translate(620 28)"><text x="0" y="0">{es ? 'DECISIÓN' : 'DECISION'}</text><path d="M0 151 H330" /><path d="M0 151 Q44 129 71 47 Q93 135 127 151 Q159 126 190 60 Q212 136 246 151 Q281 135 330 151" /><path d="M106 47 V151 M212 60 V151" className="watershed" /><text x="168" y="190" textAnchor="middle" className="caption">{es ? 'los marcadores controlan el número de instancias' : 'markers control the number of instances'}</text></g>
+      </svg>
+    </figure>
+  );
+}
+
+function DenseTargetDiagram({ es }: { es: boolean }) {
+  const labels = es ? ['Imagen', 'Interior F', 'Borde B', 'Distancia D', 'Centros C', 'Instancias'] : ['Image', 'Interior F', 'Boundary B', 'Distance D', 'Centers C', 'Instances'];
+  return (
+    <figure className="fs-target-diagram">
+      <svg viewBox="0 0 1080 230" role="img">
+        {labels.map((label, i) => <g key={label} transform={`translate(${15 + i * 178} 25)`}><rect width="150" height="145" rx="13" /><TargetGlyph index={i} /><text x="75" y="128" textAnchor="middle">{label}</text>{i < labels.length - 1 && <path d="M150 72 H174" markerEnd="url(#method-arrow)" />}</g>)}
+        <text x="540" y="208" textAnchor="middle" className="caption">{es ? 'supervisión densa → marcadores → watershed por instancia' : 'dense supervision → markers → instance watershed'}</text>
+      </svg>
+    </figure>
+  );
+}
+
+function TargetGlyph({ index }: { index: number }) {
+  if (index === 0) return <g><circle cx="54" cy="59" r="31" /><circle cx="96" cy="56" r="27" /><ellipse cx="71" cy="43" rx="18" ry="7" className="glare" /></g>;
+  if (index === 1) return <g className="filled"><circle cx="54" cy="59" r="31" /><circle cx="96" cy="56" r="27" /></g>;
+  if (index === 2) return <g className="boundary"><circle cx="54" cy="59" r="31" /><circle cx="96" cy="56" r="27" /></g>;
+  if (index === 3) return <g className="distance"><circle cx="54" cy="59" r="31" /><circle cx="96" cy="56" r="27" /><circle cx="54" cy="59" r="7" /><circle cx="96" cy="56" r="7" /></g>;
+  if (index === 4) return <g className="centers"><circle cx="54" cy="59" r="8" /><circle cx="96" cy="56" r="8" /></g>;
+  return <g className="instances"><circle cx="54" cy="59" r="31" /><circle cx="96" cy="56" r="27" /><text x="54" y="64" textAnchor="middle">1</text><text x="96" y="61" textAnchor="middle">2</text></g>;
+}
+
+function TrainingTimeline({ es }: { es: boolean }) {
+  return <FlowDiagram stages={es ? ['Inicializar', 'Optimizar', 'Validar', 'Seleccionar', 'Calibrar', 'Congelar'] : ['Initialize', 'Optimize', 'Validate', 'Select', 'Calibrate', 'Freeze']} caption={es ? 'la prueba permanece cerrada durante toda la selección' : 'the test remains closed throughout selection'} />;
+}
+
+function InferenceDiagram({ es }: { es: boolean }) {
+  return <FlowDiagram stages={es ? ['Normalizar', 'Predecir', 'Construir semillas', 'Separar', 'Medir', 'Exportar'] : ['Normalize', 'Predict', 'Build markers', 'Separate', 'Measure', 'Export']} caption={es ? 'cada etapa conserva parámetros y hashes' : 'every stage preserves parameters and hashes'} />;
+}
+
+function TemporalIdentityDiagram({ es }: { es: boolean }) {
+  return (
+    <figure className="fs-temporal-method">
+      <svg viewBox="0 0 980 250" role="img">
+        {[0, 1, 2, 3].map((frame) => <g key={frame} transform={`translate(${35 + frame * 235} 32)`}><rect width="190" height="145" rx="14" /><text x="14" y="24">t{frame}</text><circle cx={55 + frame * 7} cy={74 + frame * 4} r="29" className="track-a" /><text x={55 + frame * 7} y={79 + frame * 4} textAnchor="middle">17</text><circle cx={132 - frame * 5} cy={91 - frame * 3} r="24" className="track-b" /><text x={132 - frame * 5} y={96 - frame * 3} textAnchor="middle">31</text>{frame < 3 && <path d="M190 74 H224" markerEnd="url(#method-arrow)" />}</g>)}
+        <text x="490" y="224" textAnchor="middle" className="caption">{es ? 'las etiquetas espaciales se convierten en trayectorias persistentes' : 'spatial labels become persistent tracks'}</text>
+      </svg>
+    </figure>
   );
 }
