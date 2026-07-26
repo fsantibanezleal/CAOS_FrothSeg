@@ -314,7 +314,8 @@ def train(config: Config, cache_path: Path, output: Path, *, resume: bool = True
         "calibration": calibration,
         "evaluation": evaluation,
     }
-    (output / "run.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+    with (output / "run.json").open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(json.dumps(manifest, indent=2))
     return manifest
 
 

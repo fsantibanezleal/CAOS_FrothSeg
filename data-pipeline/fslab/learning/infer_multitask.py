@@ -106,7 +106,8 @@ def run(model_dir: Path, output: Path, *, device: str = "cuda") -> dict:
         "cases": rows,
     }
     output.mkdir(parents=True, exist_ok=True)
-    (output / "benchmark.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
+    with (output / "benchmark.json").open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(json.dumps(report, indent=2))
     return report
 
 

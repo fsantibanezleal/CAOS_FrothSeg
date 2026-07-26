@@ -18,7 +18,7 @@
   },
   "method_benchmark": {
     "path": "data/derived/method-benchmark.json",
-    "sha256": "dbbd0b6e54826f027537c9201d420361b1c5f3c03e52fa61c4256644d4b57f9e",
+    "sha256": "1b3ad36a646cac9448544db73ace2b94ca0e5862badf5dd7ba4e2df1c187caf2",
     "method_count": 15,
     "implemented_count": 15,
     "leader": {
@@ -651,7 +651,7 @@
       "canonical_mean_ap": 0.48608333333333337,
       "run": {
         "path": "models/lamellastar-v1/run.json",
-        "sha256": "e5d9fa92d1787e692047c8287c0a1ed5862e533c05a9b304bc9e2d7ea2c9808f"
+        "sha256": "baa93e730a5e4e23964420c377630acc3a0e05fdef4700abae42fd0355665587"
       },
       "docs_path": "docs/frameworks/14_lamellastar/README.md"
     }

@@ -71,10 +71,12 @@ def run(
         },
         "providers": session.get_providers(),
     }
-    (destination / "onnx-parity.json").write_text(
-        json.dumps(report, indent=2),
+    with (destination / "onnx-parity.json").open(
+        "w",
         encoding="utf-8",
-    )
+        newline="\n",
+    ) as handle:
+        handle.write(json.dumps(report, indent=2))
     if not report["passed"]:
         raise RuntimeError(f"ONNX parity failed: {max_abs_error}")
     return report

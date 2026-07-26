@@ -103,11 +103,11 @@
     },
     "run_manifest": {
       "path": "models/lamellastar-v1/run.json",
-      "sha256": "e5d9fa92d1787e692047c8287c0a1ed5862e533c05a9b304bc9e2d7ea2c9808f"
+      "sha256": "baa93e730a5e4e23964420c377630acc3a0e05fdef4700abae42fd0355665587"
     },
     "canonical_benchmark": {
       "path": "data/derived/learned/lamellastar-v1/benchmark.json",
-      "sha256": "37d4c8eadcfda87c899561d136f3c3ee8ec4b1453d1e56560ea4786a5581b601"
+      "sha256": "94d8ac588b2296ca3b6b94c6459544ff213a76dcd5447ed9026f04f48e70ef16"
     }
   }
 }

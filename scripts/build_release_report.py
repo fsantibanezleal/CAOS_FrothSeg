@@ -419,7 +419,8 @@ def main() -> int:
     args = parser.parse_args()
     report = build()
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(report, indent=2), encoding="utf-8")
+    with args.output.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(json.dumps(report, indent=2))
     print(json.dumps({
         "complete": report["complete"],
         "errors": report["errors"],

@@ -366,7 +366,8 @@ def main() -> None:
     args = parser.parse_args()
     document = build()
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(document, indent=2), encoding="utf-8")
+    with args.output.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(json.dumps(document, indent=2))
     print(json.dumps({
         key: document[key]
         for key in (
