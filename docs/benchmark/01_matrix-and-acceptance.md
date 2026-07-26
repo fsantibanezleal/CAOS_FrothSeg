@@ -17,8 +17,9 @@ from every condition. C2/C5/C6/C7 remain scientific offline implementations
 and are shown on the companion web only as committed canonical replay.
 
 Current synthetic results are diagnostic: the grouped-split, two-epoch
-fine-tuned Cellpose-SAM leads the controlled test, while LamellaStar v1 does
-not support a beyond-SOTA claim.
+fine-tuned Cellpose-SAM leads the controlled test at AP 0.5099. The
+preregistered LamellaStar revision reaches AP 0.4717, a substantial internal
+improvement that does not exceed the measured leader.
 Product acceptance remains blocked until a licensed, calibrated real held-out
 lane meets predeclared thresholds. A green artifact-inventory check cannot
 override that scientific gate.

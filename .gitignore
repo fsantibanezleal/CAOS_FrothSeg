@@ -72,6 +72,7 @@ Thumbs.db
 /verification/*
 !/verification/workbench-contract.json
 !/verification/classical-live-parity.json
+!/verification/n1-preregistered-ablation.json
 !/verification/visual-qa/
 /verification/visual-qa/*
 !/verification/visual-qa/manifest.json

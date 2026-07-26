@@ -180,8 +180,8 @@ function Learned({ es }: { es: boolean }) {
       </p>
       <p className="fs-note">
         {es
-          ? 'Cellpose-SAM es el líder medido del test. LamellaStar sigue siendo una hipótesis evaluada con resultado inferior; no se presenta como una mejora.'
-          : 'Cellpose-SAM is the measured test leader. LamellaStar remains an evaluated hypothesis with a lower result; it is not presented as an improvement.'}
+          ? 'Cellpose-SAM es el líder medido del test con AP 0,510. La ablación preregistrada mejoró LamellaStar a AP 0,472, bajo el líder; se informa como mejora interna, no como superioridad.'
+          : 'Cellpose-SAM is the measured test leader at AP 0.510. The preregistered ablation improved LamellaStar to AP 0.472, below the leader; it is reported as an internal improvement, not superiority.'}
       </p>
       <Refs ids={['kirillov2023']} label="Refs" />
     </div>

@@ -142,8 +142,17 @@ def targets(labels: np.ndarray, *, include_centers: bool) -> np.ndarray:
     distance = np.clip(distance / max(scale, 1.0), 0.0, 1.0)
     channels = [foreground.astype(np.float32), boundary.astype(np.float32), distance]
     if include_centers:
-        maxima = (distance == ndi.maximum_filter(distance, size=5)) & (distance > 0.25)
-        center = ndi.gaussian_filter(maxima.astype(np.float32), sigma=1.0)
+        center_points = np.zeros_like(distance, dtype=np.float32)
+        for instance_id in np.unique(labels):
+            if instance_id <= 0:
+                continue
+            instance = labels == instance_id
+            if not np.any(instance):
+                continue
+            instance_distance = ndi.distance_transform_edt(instance)
+            y, x = np.unravel_index(np.argmax(instance_distance), instance_distance.shape)
+            center_points[y, x] = 1.0
+        center = ndi.gaussian_filter(center_points, sigma=1.25)
         if center.max() > 0:
             center /= center.max()
         channels.append(center.astype(np.float32))
@@ -163,13 +172,17 @@ def probabilities_to_instances(
     boundary_threshold: float,
     marker_threshold: float,
     min_distance: int,
+    center_weight: float = 0.5,
 ) -> np.ndarray:
+    if not 0.0 <= center_weight <= 1.0:
+        raise ValueError("center_weight must be between 0 and 1")
     foreground = probabilities[0] >= foreground_threshold
     boundary = probabilities[1]
     learned_distance = probabilities[2]
     seed_surface = learned_distance * (1.0 - boundary)
     if probabilities.shape[0] > 3:
-        seed_surface *= 0.35 + 0.65 * probabilities[3]
+        center = probabilities[3]
+        seed_surface = (1.0 - center_weight) * seed_surface + center_weight * center
     seed_surface[~foreground] = 0.0
     seed_surface[boundary >= boundary_threshold] = 0.0
     coords = feature.peak_local_max(

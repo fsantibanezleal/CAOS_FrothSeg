@@ -66,6 +66,7 @@ def run(model_dir: Path, output: Path, *, device: str = "cuda") -> dict:
             boundary_threshold=calibration["boundary_threshold"],
             marker_threshold=calibration["marker_threshold"],
             min_distance=max(1, int(round(calibration["min_distance"] * scale))),
+            center_weight=calibration.get("center_weight", 0.5),
         )
         inference_ms = (time.perf_counter() - started) * 1000
         case_dir = output / "cases" / case.id

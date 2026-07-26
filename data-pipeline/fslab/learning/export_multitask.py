@@ -12,7 +12,11 @@ import numpy as np
 from .multitask_models import build_model
 
 
-def run(model_dir: Path) -> dict:
+def run(
+    model_dir: Path,
+    output_dir: Path | None = None,
+    cache_metadata: Path = Path("data/cache/learned-v2-192.json"),
+) -> dict:
     import onnxruntime as ort
     import torch
 
@@ -28,11 +32,11 @@ def run(model_dir: Path) -> dict:
         name: torch.from_numpy(archive[name]) for name in archive.files
     })
     model.eval()
-    size = int(json.loads(
-        (Path("data/cache/learned-v2-192.json")).read_text(encoding="utf-8")
-    )["image_size"])
+    size = int(json.loads(cache_metadata.read_text(encoding="utf-8"))["image_size"])
     example = torch.linspace(0, 1, size * size).reshape(1, 1, size, size)
-    onnx_path = model_dir / "model.onnx"
+    destination = output_dir or model_dir
+    destination.mkdir(parents=True, exist_ok=True)
+    onnx_path = destination / "model.onnx"
     torch.onnx.export(
         model,
         example,
@@ -67,7 +71,10 @@ def run(model_dir: Path) -> dict:
         },
         "providers": session.get_providers(),
     }
-    (model_dir / "onnx-parity.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
+    (destination / "onnx-parity.json").write_text(
+        json.dumps(report, indent=2),
+        encoding="utf-8",
+    )
     if not report["passed"]:
         raise RuntimeError(f"ONNX parity failed: {max_abs_error}")
     return report
@@ -76,8 +83,18 @@ def run(model_dir: Path) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", type=Path, required=True)
+    parser.add_argument(
+        "--output",
+        type=Path,
+        help="export root; defaults to the model directory for a canonical bake",
+    )
+    parser.add_argument(
+        "--cache-metadata",
+        type=Path,
+        default=Path("data/cache/learned-v2-192.json"),
+    )
     args = parser.parse_args()
-    print(json.dumps(run(args.model), indent=2))
+    print(json.dumps(run(args.model, args.output, args.cache_metadata), indent=2))
 
 
 if __name__ == "__main__":

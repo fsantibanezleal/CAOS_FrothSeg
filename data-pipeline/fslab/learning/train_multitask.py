@@ -37,6 +37,14 @@ class Config:
     base_channels: int = 16
     batch_size: int = 8
     device: str = "cuda"
+    evaluation_split: str = "validation"
+
+
+def _training_config(config: Config) -> dict:
+    """Return fields that affect optimization and checkpoint compatibility."""
+    values = asdict(config)
+    values.pop("evaluation_split")
+    return values
 
 
 def _seed(seed: int) -> None:
@@ -65,7 +73,13 @@ def _loss(logits, truth):
     import torch
     from torch.nn import functional as functional
 
-    foreground = functional.binary_cross_entropy_with_logits(logits[:, 0], truth[:, 0])
+    foreground_probability = torch.sigmoid(logits[:, 0])
+    foreground_bce = functional.binary_cross_entropy_with_logits(logits[:, 0], truth[:, 0])
+    foreground_dice = 1.0 - (
+        (2.0 * (foreground_probability * truth[:, 0]).sum(dim=(1, 2)) + 1.0)
+        / (foreground_probability.sum(dim=(1, 2)) + truth[:, 0].sum(dim=(1, 2)) + 1.0)
+    ).mean()
+    foreground = foreground_bce + foreground_dice
     boundary_raw = functional.binary_cross_entropy_with_logits(
         logits[:, 1], truth[:, 1], reduction="none",
     )
@@ -99,36 +113,41 @@ def _calibrate(probabilities, cache_split) -> dict:
     _, indices = np.unique(cache_split["group_ids"], return_index=True)
     indices = np.sort(indices)
     best = {"mean_ap": -1.0}
+    center_weights = (0.0,) if probabilities.shape[1] == 3 else (0.0, 0.25, 0.5, 0.75, 1.0)
     for foreground_threshold in (0.4, 0.5, 0.6):
         for boundary_threshold in (0.35, 0.5, 0.65):
             for marker_threshold in (0.15, 0.25, 0.35):
-                values = []
-                for index in indices:
-                    labels = probabilities_to_instances(
-                        probabilities[index],
-                        foreground_threshold=foreground_threshold,
-                        boundary_threshold=boundary_threshold,
-                        marker_threshold=marker_threshold,
-                        min_distance=2,
-                    )
-                    score = mask_ap(labels, cache_split["labels"][index])["ap"]
-                    if score is not None:
-                        values.append(score)
-                mean_ap = float(np.mean(values))
-                if mean_ap > best["mean_ap"]:
-                    best = {
-                        "split": "calibration",
-                        "n_groups": len(indices),
-                        "mean_ap": mean_ap,
-                        "foreground_threshold": foreground_threshold,
-                        "boundary_threshold": boundary_threshold,
-                        "marker_threshold": marker_threshold,
-                        "min_distance": 2,
-                    }
+                for min_distance in (1, 2, 3):
+                    for center_weight in center_weights:
+                        values = []
+                        for index in indices:
+                            labels = probabilities_to_instances(
+                                probabilities[index],
+                                foreground_threshold=foreground_threshold,
+                                boundary_threshold=boundary_threshold,
+                                marker_threshold=marker_threshold,
+                                min_distance=min_distance,
+                                center_weight=center_weight,
+                            )
+                            score = mask_ap(labels, cache_split["labels"][index])["ap"]
+                            if score is not None:
+                                values.append(score)
+                        mean_ap = float(np.mean(values))
+                        if mean_ap > best["mean_ap"]:
+                            best = {
+                                "split": "calibration",
+                                "n_groups": len(indices),
+                                "mean_ap": mean_ap,
+                                "foreground_threshold": foreground_threshold,
+                                "boundary_threshold": boundary_threshold,
+                                "marker_threshold": marker_threshold,
+                                "min_distance": min_distance,
+                                "center_weight": center_weight,
+                            }
     return best
 
 
-def _evaluate(probabilities, cache_split, calibration) -> dict:
+def _evaluate(probabilities, cache_split, calibration, *, split: str) -> dict:
     rows = []
     for index, probability in enumerate(probabilities):
         labels = probabilities_to_instances(
@@ -137,6 +156,7 @@ def _evaluate(probabilities, cache_split, calibration) -> dict:
             boundary_threshold=calibration["boundary_threshold"],
             marker_threshold=calibration["marker_threshold"],
             min_distance=calibration["min_distance"],
+            center_weight=calibration.get("center_weight", 0.5),
         )
         truth = cache_split["labels"][index]
         pixel_calibration = binary_calibration_metrics(probability[0], truth > 0)
@@ -149,7 +169,7 @@ def _evaluate(probabilities, cache_split, calibration) -> dict:
             "ece": pixel_calibration["ece"],
             "pixel_calibration": pixel_calibration,
         })
-    summary = summarize_metric_rows(rows, split="test")
+    summary = summarize_metric_rows(rows, split=split)
     summary["mean_brier"] = float(np.mean([row["brier"] for row in rows]))
     summary["mean_ece"] = float(np.mean([row["ece"] for row in rows]))
     return summary
@@ -168,7 +188,9 @@ def train(config: Config, cache_path: Path, output: Path, *, resume: bool = True
     train_cache = select_split(cache, "train")
     validation_cache = select_split(cache, "validation")
     calibration_cache = select_split(cache, "calibration")
-    test_cache = select_split(cache, "test")
+    if config.evaluation_split not in {"validation", "test"}:
+        raise ValueError("evaluation_split must be validation or test")
+    evaluation_cache = select_split(cache, config.evaluation_split)
     include_centers = config.method == "lamellastar"
     train_images, train_truth = _tensor_data(train_cache, include_centers=include_centers)
     validation_images, validation_truth = _tensor_data(
@@ -183,7 +205,9 @@ def train(config: Config, cache_path: Path, output: Path, *, resume: bool = True
     start_epoch = 0
     if resume and checkpoint_path.exists():
         checkpoint = torch.load(checkpoint_path, map_location="cpu", weights_only=False)
-        if checkpoint["config"] != asdict(config):
+        checkpoint_config = dict(checkpoint["config"])
+        checkpoint_config.pop("evaluation_split", None)
+        if checkpoint_config != _training_config(config):
             raise RuntimeError("checkpoint configuration mismatch")
         model.load_state_dict(checkpoint["model"])
         optimizer.load_state_dict(checkpoint["optimizer"])
@@ -245,15 +269,22 @@ def train(config: Config, cache_path: Path, output: Path, *, resume: bool = True
     calibration_images = (
         torch.from_numpy(calibration_cache["images"].astype(np.float32)[:, None] / 255.0)
     )
-    test_images = torch.from_numpy(test_cache["images"].astype(np.float32)[:, None] / 255.0)
+    evaluation_images = torch.from_numpy(
+        evaluation_cache["images"].astype(np.float32)[:, None] / 255.0
+    )
     calibration_probabilities = _probabilities(
         model, calibration_images, device=device, batch_size=config.batch_size,
     )
     calibration = _calibrate(calibration_probabilities, calibration_cache)
-    test_probabilities = _probabilities(
-        model, test_images, device=device, batch_size=config.batch_size,
+    evaluation_probabilities = _probabilities(
+        model, evaluation_images, device=device, batch_size=config.batch_size,
     )
-    evaluation = _evaluate(test_probabilities, test_cache, calibration)
+    evaluation = _evaluate(
+        evaluation_probabilities,
+        evaluation_cache,
+        calibration,
+        split=config.evaluation_split,
+    )
     props = torch.cuda.get_device_properties(device)
     cache_report = json.loads(cache_path.with_suffix(".json").read_text(encoding="utf-8"))
     manifest = {
@@ -292,18 +323,28 @@ def main() -> None:
     parser.add_argument("--method", choices=sorted(METHOD_CHANNELS), required=True)
     parser.add_argument("--cache", type=Path, default=Path("data/cache/learned-v2-192.npz"))
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--seed", type=int, default=20260725)
     parser.add_argument("--epochs", type=int, default=16)
+    parser.add_argument("--learning-rate", type=float, default=8e-4)
     parser.add_argument("--base-channels", type=int, default=16)
     parser.add_argument("--batch-size", type=int, default=8)
     parser.add_argument("--device", default="cuda")
+    parser.add_argument(
+        "--evaluation-split",
+        choices=("validation", "test"),
+        default="validation",
+    )
     parser.add_argument("--no-resume", action="store_true")
     args = parser.parse_args()
     config = Config(
         method=args.method,
+        seed=args.seed,
         epochs=args.epochs,
+        learning_rate=args.learning_rate,
         base_channels=args.base_channels,
         batch_size=args.batch_size,
         device=args.device,
+        evaluation_split=args.evaluation_split,
     )
     manifest = train(config, args.cache, args.output, resume=not args.no_resume)
     print(json.dumps(manifest["evaluation"], indent=2))

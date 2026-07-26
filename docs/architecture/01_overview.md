@@ -65,13 +65,14 @@ scale, empty input, and mixed distributions.
 - C1-C7 are classical and transparent.
 - L1-L4 and L6 are domain-learned methods.
 - L5 and L7 are official foundation-model integrations.
-- N1 is an experimental LamellaStar hypothesis whose first version scored below
-  the predeclared AP 0.30 comparison threshold.
+- N1 is the in-repository LamellaStar research model. Its preregistered revision
+  clears the AP 0.30 threshold but remains below the measured Cellpose-SAM
+  leader.
 
 Reproducibility and predictive quality are separate. A method can have a
-checkpoint, inference path, evaluation, and export while still scoring below a
-predeclared threshold. N1 is retained as that kind of reproducible negative
-result; FrothSeg makes no beyond-SOTA claim for it.
+checkpoint, inference path, evaluation, and export without leading the
+comparison. N1 is retained as a reproducible positive ablation and a measured
+non-leader; FrothSeg makes no superiority claim for it.
 
 ## Companion workbench
 

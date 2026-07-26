@@ -28,11 +28,11 @@ scores remain a separate diagnostic and are never mixed into the test ranking.
 | ID | Method | AP | AP50 | PQ | Current bar |
 |---|---|---:|---:|---:|---|
 | L5 | Cellpose-SAM, fine-tuned from `cpsam_v2` | 0.5099 | 0.8238 | 0.7227 | pass |
+| N1 | LamellaStar | 0.4717 | 0.7755 | 0.6967 | pass |
 | L1 | Boundary U-Net + watershed | 0.4153 | 0.6987 | 0.6559 | pass |
 | L2 | Deep-marker watershed | 0.3247 | 0.5990 | 0.5694 | pass |
 | L3 | GC-FSegNet | 0.3190 | 0.5958 | 0.5582 | pass |
 | L6 | YOLO froth segmentation | 0.2930 | 0.5766 | 0.5326 | below |
-| N1 | LamellaStar | 0.2145 | 0.3731 | 0.4055 | below |
 | L7 | SAM2.1 automatic masks | 0.1352 | 0.1821 | 0.2391 | below |
 | L4 | StarDist 2D | 0.1119 | 0.3473 | 0.3242 | below |
 
@@ -54,9 +54,10 @@ automatic object discovery.
 ## Claim policy
 
 Implementation completeness does not imply quality success. All 15 methods are
-implemented, but only four learned/foundation methods clear the present AP
-bar. Cellpose-SAM is the leader. LamellaStar v1 is a falsified frontier
-hypothesis and there is no beyond-SOTA claim.
+implemented, and five learned/research methods clear the present AP bar.
+Cellpose-SAM remains the leader. The preregistered LamellaStar revision improves
+from AP 0.2145 to 0.4717 but does not exceed the leader, so the evidence does
+not support a superiority claim.
 
 Synthetic metrics are not real-plant accuracy. A plant claim requires a
 separately governed, representative, expert-labelled real-froth dataset and a

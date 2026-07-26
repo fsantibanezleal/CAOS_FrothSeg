@@ -18,9 +18,9 @@ export const architecture: ArchitectureConfig = {
       es: 'Escalera de métodos',
       svg: 'svg/tech/04-the-science.svg',
       body_en:
-        'The registry contains 15 implemented offline methods. C1-C7 are classical. L1-L4 and L6 are trained for the task. L5 Cellpose-SAM and L7 SAM2.1 use official foundation implementations. N1 LamellaStar is an evaluated research model.\n\nCellpose-SAM leads the controlled held-out test. LamellaStar reached AP 0.2145, below the predeclared AP 0.30 threshold, so the measurements do not support presenting it as an improvement.',
+        'The registry contains 15 implemented offline methods. C1-C7 are classical. L1-L4 and L6 are trained for the task. L5 Cellpose-SAM and L7 SAM2.1 use official foundation implementations. N1 LamellaStar is an evaluated research model.\n\nCellpose-SAM leads the controlled held-out test at AP 0.5099. A preregistered LamellaStar ablation improved N1 to AP 0.4717 and cleared the AP 0.30 comparison threshold, but did not exceed the leader.',
       body_es:
-        'El registro contiene 15 métodos offline implementados. C1-C7 son clásicos. L1-L4 y L6 se entrenan para la tarea. L5 Cellpose-SAM y L7 SAM2.1 usan implementaciones fundacionales oficiales. N1 LamellaStar es un modelo de investigación evaluado.\n\nCellpose-SAM lidera el test controlado retenido. LamellaStar alcanzó AP 0,2145, bajo el umbral predefinido de AP 0,30; por lo tanto, las mediciones no permiten presentarlo como una mejora.',
+        'El registro contiene 15 métodos offline implementados. C1-C7 son clásicos. L1-L4 y L6 se entrenan para la tarea. L5 Cellpose-SAM y L7 SAM2.1 usan implementaciones fundacionales oficiales. N1 LamellaStar es un modelo de investigación evaluado.\n\nCellpose-SAM lidera el test controlado retenido con AP 0,5099. Una ablación preregistrada mejoró LamellaStar a AP 0,4717 y superó el umbral comparativo AP 0,30, pero no superó al líder.',
     },
     {
       id: 'flow',

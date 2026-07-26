@@ -1,0 +1,113 @@
+{
+  "schema": "frothseg.n1-preregistered-ablation/v1",
+  "protocol": {
+    "selection_metric": "validation mean_ap",
+    "calibration_split": "calibration",
+    "test_access_before_selection": false,
+    "stage_1": {
+      "epochs": 24,
+      "seed": 20260725,
+      "base_channels": [
+        16,
+        24,
+        32
+      ]
+    },
+    "stage_2": {
+      "selected_base_channels": 24,
+      "epochs": 40,
+      "seeds": [
+        20260725,
+        20260726,
+        20260727
+      ]
+    },
+    "final_test_evaluations": 1
+  },
+  "validation_results": [
+    {
+      "id": "c16-e24-s20260725",
+      "mean_ap": 0.37209375
+    },
+    {
+      "id": "c24-e24-s20260725",
+      "mean_ap": 0.46848437499999995
+    },
+    {
+      "id": "c32-e24-s20260725",
+      "mean_ap": 0.45159375
+    },
+    {
+      "id": "c24-e40-s20260725",
+      "mean_ap": 0.44609374999999996
+    },
+    {
+      "id": "c24-e40-s20260726",
+      "mean_ap": 0.45215625000000004
+    },
+    {
+      "id": "c24-e40-s20260727",
+      "mean_ap": 0.4765625
+    }
+  ],
+  "selection": {
+    "id": "c24-e40-s20260727",
+    "base_channels": 24,
+    "epochs": 40,
+    "seed": 20260727,
+    "validation_mean_ap": 0.4765625,
+    "calibration_mean_ap": 0.48362499999999997,
+    "foreground_threshold": 0.6,
+    "boundary_threshold": 0.65,
+    "marker_threshold": 0.15,
+    "min_distance": 3,
+    "center_weight": 0.25
+  },
+  "untouched_test": {
+    "split": "test",
+    "n": 64,
+    "mean_ap": 0.471671875,
+    "mean_ap50": 0.775453125,
+    "mean_pq": 0.69671875,
+    "mean_brier": 0.012761671875000002,
+    "mean_ece": 0.010093265625
+  },
+  "canonical_diagnostic": {
+    "n_cases": 13,
+    "mean_ap": 0.48608333333333337,
+    "mean_ap50": 0.7844166666666667,
+    "mean_pq": 0.71375
+  },
+  "comparison": {
+    "controlled_bar_mean_ap": 0.3,
+    "cellpose_sam_mean_ap": 0.5098906249999999,
+    "clears_controlled_bar": true,
+    "exceeds_measured_leader": false,
+    "claim": "Measured internal improvement; no superiority claim."
+  },
+  "artifacts": {
+    "checkpoint": {
+      "path": "models/lamellastar-v1/checkpoint.pt",
+      "sha256": "8d1cc055ea529f49d0e2c133ff7b2f6d9f5ed3c889087863f0afbc5f61a1790c"
+    },
+    "weights": {
+      "path": "models/lamellastar-v1/weights.npz",
+      "sha256": "5861f672bc9c31749964f5c8c641d6c0abfec3ff8cbfbd09b388d8378daca895"
+    },
+    "onnx": {
+      "path": "models/lamellastar-v1/model.onnx",
+      "sha256": "8fd3cefc837de26e146c836f863b02549e9dbf8ec07e2a7e4476878a9e3b6cec",
+      "parity_max_abs_error": 0.000015914440155029297,
+      "parity_tolerance": 0.00003,
+      "parity_passed": true
+    },
+    "run_manifest": {
+      "path": "models/lamellastar-v1/run.json",
+      "sha256": "e5d9fa92d1787e692047c8287c0a1ed5862e533c05a9b304bc9e2d7ea2c9808f"
+    },
+    "canonical_benchmark": {
+      "path": "data/derived/learned/lamellastar-v1/benchmark.json",
+      "sha256": "37d4c8eadcfda87c899561d136f3c3ee8ec4b1453d1e56560ea4786a5581b601"
+    }
+  }
+}

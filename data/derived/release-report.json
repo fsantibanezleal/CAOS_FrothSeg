@@ -18,7 +18,7 @@
   },
   "method_benchmark": {
     "path": "data/derived/method-benchmark.json",
-    "sha256": "ce2a6299ae4eaa414353323c47b8e25b280db978afaef5fa27bfc9d274ba4feb",
+    "sha256": "dbbd0b6e54826f027537c9201d420361b1c5f3c03e52fa61c4256644d4b57f9e",
     "method_count": 15,
     "implemented_count": 15,
     "leader": {
@@ -617,41 +617,41 @@
       "slug": "lamellastar",
       "tier": "frontier",
       "implementation_state": "implemented",
-      "quality_status": "below-current-bar",
-      "test_mean_ap": 0.21454687500000003,
-      "test_mean_boundary_fscore": 0.9062281249999999,
-      "test_mean_bsd_wasserstein": 4.601296875,
+      "quality_status": "passes-current-bar",
+      "test_mean_ap": 0.471671875,
+      "test_mean_boundary_fscore": 0.9776218750000001,
+      "test_mean_bsd_wasserstein": 1.05859375,
       "test_cell_count": 64,
       "test_micro": {
         "association_iou": 0.5,
         "nGt": 17846,
-        "nPred": 8960,
-        "tp": 6293,
-        "fp": 2667,
-        "fn": 11553,
-        "merges": 4123,
-        "splits": 654,
-        "instance_precision": 0.70234375,
-        "instance_recall": 0.3526280398968957,
-        "instance_f1": 0.46952174886219505
+        "nPred": 14839,
+        "tp": 12678,
+        "fp": 2161,
+        "fn": 5168,
+        "merges": 2475,
+        "splits": 639,
+        "instance_precision": 0.8543702405822495,
+        "instance_recall": 0.7104112966491091,
+        "instance_f1": 0.7757687012391006
       },
       "compute": {
         "hardware_lane": "gpu",
         "device": "NVIDIA GeForce RTX 4070 Laptop GPU",
-        "mean_inference_ms": 47.775230769230774,
-        "p95_inference_ms": 133.69479999999965,
-        "peak_memory_mib": 210.4,
+        "mean_inference_ms": 73.9396153846154,
+        "p95_inference_ms": 178.9225999999996,
+        "peak_memory_mib": 266.5,
         "peak_memory_metric": "cuda-peak-allocated",
-        "model_artifact_bytes": 739634,
-        "model_artifact_sha256": "a444ebb7d7508a6b5395eee86de7b716d5cbca6286bed27f8eba9f82f76b1546",
+        "model_artifact_bytes": 1638138,
+        "model_artifact_sha256": "5861f672bc9c31749964f5c8c641d6c0abfec3ff8cbfbd09b388d8378daca895",
         "model_artifact_committed": true,
-        "training_duration_seconds": 18.003,
+        "training_duration_seconds": 393.818,
         "run_manifest": "models/lamellastar-v1/run.json"
       },
-      "canonical_mean_ap": 0.2215,
+      "canonical_mean_ap": 0.48608333333333337,
       "run": {
         "path": "models/lamellastar-v1/run.json",
-        "sha256": "9e5e333e1e17c9095082d5c8edbcf47ec4822d37b49d9e303a31929c74a6f79c"
+        "sha256": "e5d9fa92d1787e692047c8287c0a1ed5862e533c05a9b304bc9e2d7ea2c9808f"
       },
       "docs_path": "docs/frameworks/14_lamellastar/README.md"
     }

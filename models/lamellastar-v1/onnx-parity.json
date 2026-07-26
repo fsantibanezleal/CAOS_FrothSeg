@@ -8,13 +8,13 @@
     192,
     192
   ],
-  "max_abs_error": 1.068413257598877e-05,
+  "max_abs_error": 1.5914440155029297e-05,
   "absolute_tolerance": 3e-05,
   "passed": true,
   "onnx": {
     "path": "model.onnx",
-    "bytes": 781494,
-    "sha256": "bc6286e910589a687758badd365c6c2d72bbb004a63c96ca466c43bc50e78a41"
+    "bytes": 1745566,
+    "sha256": "8fd3cefc837de26e146c836f863b02549e9dbf8ec07e2a7e4476878a9e3b6cec"
   },
   "providers": [
     "CPUExecutionProvider"
