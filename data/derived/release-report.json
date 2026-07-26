@@ -181,7 +181,7 @@
       "canonical_mean_ap": 0.40599999999999997,
       "run": {
         "path": "models/yolo-froth-seg-v1/run.json",
-        "sha256": "94a501c9a15a2e6067192215b2d5a8d570f9b4795a94d9918329361c8f15b4a9"
+        "sha256": "c9e93584fc4035ac858ba92bc01a515893804fb17b77d704f1890697b12ebb6b"
       },
       "docs_path": "docs/frameworks/12_yolo-seg/README.md"
     },

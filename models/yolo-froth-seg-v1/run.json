@@ -22,8 +22,8 @@
   "duration_seconds": 13.923,
   "inference_weights": {
     "path": "weights/best.pt",
-    "bytes": 5950884,
-    "sha256": "831657310d3cbe3360676fe55f3db8be47c19111436a66d1362675d0a1bf17b5"
+    "bytes": 5950820,
+    "sha256": "3bfe46f34e4f386dfc6711469ca0d90e973bc39f633b850549ba279221e78725"
   },
   "evaluation": {
     "split": "test",

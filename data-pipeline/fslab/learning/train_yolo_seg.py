@@ -5,7 +5,6 @@ from __future__ import annotations
 import hashlib
 import json
 import platform
-import shutil
 import time
 from pathlib import Path
 
@@ -99,6 +98,20 @@ def _summary(rows: list[dict], *, split: str) -> dict:
     }
 
 
+def _export_portable_checkpoint(source: Path, destination: Path, torch) -> None:
+    """Remove checkout-specific metadata while preserving the trained model."""
+    checkpoint = torch.load(source, map_location="cpu", weights_only=False)
+    if isinstance(checkpoint, dict):
+        git_metadata = checkpoint.get("git")
+        if isinstance(git_metadata, dict) and "root" in git_metadata:
+            git_metadata["root"] = "."
+        model = checkpoint.get("model")
+        model_args = getattr(model, "args", None)
+        if isinstance(model_args, dict) and "save_dir" in model_args:
+            model_args["save_dir"] = "runs/segment"
+    torch.save(checkpoint, destination)
+
+
 def train(
     cache_path: Path,
     dataset_dir: Path,
@@ -142,10 +155,9 @@ def train(
     output.mkdir(parents=True, exist_ok=True)
     best_path = output / "weights" / "best.pt"
     best_path.parent.mkdir(parents=True, exist_ok=True)
-    if source_best_path.resolve() != best_path.resolve():
-        shutil.copy2(source_best_path, best_path)
+    _export_portable_checkpoint(source_best_path, best_path, torch)
     if training_results_source.exists():
-        shutil.copy2(training_results_source, output / "training-results.csv")
+        (output / "training-results.csv").write_bytes(training_results_source.read_bytes())
     model = YOLO(str(best_path))
     cache = load_cache(cache_path)
     test = select_split(cache, "test")
