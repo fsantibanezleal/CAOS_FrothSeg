@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react';
 import { artifactUrl, loadTemporalShowcase } from '../api/artifacts';
-import type { TemporalBenchmarkDoc, TemporalSequenceMetrics } from '../lib/contract.types';
+import type { TemporalSequenceMetrics } from '../lib/contract.types';
 import { decodeShowcaseLabels, type DecodedShowcaseLabels } from '../lib/showcaseLabels';
 import {
   availableSequenceViews, isNativeVideoMode, type SequenceView, type TemporalEvent,
@@ -11,13 +11,7 @@ import {
 
 type SequenceTab = 'replay' | 'tracking' | 'events' | 'compare' | 'provenance';
 
-export function SequenceWorkbench({
-  es,
-  temporal,
-}: {
-  es: boolean;
-  temporal: TemporalBenchmarkDoc | null;
-}) {
+export function SequenceWorkbench({ es }: { es: boolean }) {
   const [manifest, setManifest] = useState<TemporalShowcaseManifest | null>(null);
   const [loadError, setLoadError] = useState('');
   const [sequenceIndex, setSequenceIndex] = useState(0);
@@ -63,9 +57,7 @@ export function SequenceWorkbench({
     prediction_path: predictionFrame?.prediction_path ?? null,
     prediction_sha256: predictionFrame?.prediction_sha256 ?? null,
   } : null;
-  const metrics = prediction?.metrics
-    ?? temporal?.sequences.find((row) => row.condition_id === sequence?.case_id)
-    ?? null;
+  const metrics = prediction?.metrics ?? null;
   const views = displayFrame ? availableSequenceViews(displayFrame) : [];
   const tabs: SequenceTab[] = metrics
     ? ['replay', 'tracking', 'events', 'compare', 'provenance']
@@ -347,8 +339,8 @@ export function SequenceWorkbench({
             manifest={manifest}
             frame={displayFrame ?? frame}
             sequenceId={sequence.case_id}
-            method={prediction ? `${prediction.method_id} · ${prediction.method_slug}` : temporal?.method ?? null}
-            device={temporal?.device ?? null}
+            method={prediction ? `${prediction.method_id} · ${prediction.method_slug}` : null}
+            device={prediction?.model_provenance?.device ?? null}
             evidencePath={prediction?.evidence_path ?? null}
             evidenceSha={prediction?.evidence_sha256 ?? null}
             es={es}

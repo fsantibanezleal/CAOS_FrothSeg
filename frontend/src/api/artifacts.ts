@@ -25,7 +25,9 @@ export const loadLearnedBenchmark = (): Promise<LearnedBenchmarkDoc> =>
   getJSON<LearnedBenchmarkDoc>('learned/unet-watershed-v2/benchmark.json');
 export const loadMethodBenchmark = (): Promise<MethodBenchmarkDoc> =>
   getJSON<MethodBenchmarkDoc>('method-benchmark.json');
+/** L1's temporal report. Reports are keyed by method slug; the old `unet-watershed-v2.json`
+ *  path 404'd after the bake was generalised over the registry. */
 export const loadTemporalBenchmark = (): Promise<TemporalBenchmarkDoc> =>
-  getJSON<TemporalBenchmarkDoc>('temporal/unet-watershed-v2.json');
+  getJSON<TemporalBenchmarkDoc>('temporal/unet_watershed.json');
 export const loadTemporalShowcase = (): Promise<TemporalShowcaseManifest> =>
   getJSON<TemporalShowcaseManifest>('showcase/temporal/manifest.json');

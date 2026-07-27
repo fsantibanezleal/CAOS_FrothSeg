@@ -51,6 +51,14 @@ export interface TemporalPrediction {
   evidence_path: string;
   evidence_sha256: string;
   metrics: TemporalSequenceMetrics;
+  model_provenance?: {
+    model_id?: string;
+    upstream_commit?: string;
+    checkpoint_sha256?: string;
+    checkpoint_bytes?: number;
+    device?: string;
+    association_threshold?: number;
+  };
   events_path: string;
   events_sha256: string;
   truth_event_count: number;

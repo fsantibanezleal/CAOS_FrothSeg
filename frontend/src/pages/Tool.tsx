@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useShellLang } from '@fasl-work/caos-app-shell';
 import {
-  artifactUrl, loadIndex, loadMasks, loadMethodBenchmark, loadTemporalBenchmark,
+  artifactUrl, loadIndex, loadMasks, loadMethodBenchmark,
 } from '../api/artifacts';
 import type {
-  CaseIndex, MethodBenchmarkDoc, MethodBenchmarkRow, TemporalBenchmarkDoc,
+  CaseIndex, MethodBenchmarkDoc, MethodBenchmarkRow,
 } from '../lib/contract.types';
 import { decodeLabels } from '../lib/rle';
 import { validateImage } from '../lib/imageGate';
@@ -33,7 +33,6 @@ type Tab = StillTab;
 export default function Tool() {
   const es = useShellLang() === 'es';
   const [index, setIndex] = useState<CaseIndex | null>(null);
-  const [temporal, setTemporal] = useState<TemporalBenchmarkDoc | null>(null);
   const [methodBenchmark, setMethodBenchmark] = useState<MethodBenchmarkDoc | null>(null);
   const [workbenchSource, setWorkbenchSource] = useState<WorkbenchSource>('still');
   const [source, setSource] = useState<'sample' | 'upload'>('sample');
@@ -67,7 +66,6 @@ export default function Tool() {
 
   useEffect(() => {
     loadIndex().then(setIndex).catch(() => setIndex(null));
-    loadTemporalBenchmark().then(setTemporal).catch(() => setTemporal(null));
     loadMethodBenchmark().then(setMethodBenchmark).catch(() => setMethodBenchmark(null));
   }, []);
 
@@ -675,7 +673,7 @@ export default function Tool() {
         </div>
       </div>
       )}
-      {workbenchSource === 'sequence' && <SequenceWorkbench es={es} temporal={temporal} />}
+      {workbenchSource === 'sequence' && <SequenceWorkbench es={es} />}
     </div>
   );
 }
