@@ -89,7 +89,7 @@ function RegisteredStudies({ es, methods }: { es: boolean; methods: MethodBenchm
     ['E2', 'L1–L3', es ? 'Representación densa' : 'Dense representation', es ? 'Foreground/borde/distancia frente a contexto global y marcadores profundos.' : 'Foreground/boundary/distance versus global context and deep markers.'],
     ['E3', 'L4–L7', es ? 'Geometría y preentrenamiento' : 'Geometry and pretraining', es ? 'Star-convex, detector de instancias y dos familias fundacionales.' : 'Star-convex, instance detector, and two foundation families.'],
     ['E4', 'N1', es ? 'Hipótesis de centro y lamela' : 'Center and lamella hypothesis', es ? 'Ablación de evidencia central, compuertas y postproceso.' : 'Ablation of center evidence, gates, and post-processing.'],
-    ['E5', 'L1 · L7', es ? 'Consistencia temporal' : 'Temporal consistency', es ? 'Asociación cuadro a cuadro frente a propagación con memoria.' : 'Framewise association versus memory-based propagation.'],
+    ['E5', 'C1–N1', es ? 'Consistencia temporal' : 'Temporal consistency', es ? 'Los 15 métodos sobre las cinco secuencias: asociación cuadro a cuadro, y por separado la propagación con memoria de L7.' : 'All 15 methods over the five sequences: framewise association, with L7 memory propagation reported separately.'],
     ['E6', 'C1–N1', es ? 'Costo y despliegue' : 'Cost and deployment', es ? 'Latencia, p95, memoria pico, tamaño y dispositivo.' : 'Latency, p95, peak memory, size, and device.'],
   ];
   return (

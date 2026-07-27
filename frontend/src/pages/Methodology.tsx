@@ -380,7 +380,7 @@ function Temporal({ es }: { es: boolean }) {
         ? 'El flujo óptico sirve como señal auxiliar y como prueba de desplazamiento, pero no reemplaza identidades. Una trayectoria debe conservar correspondencia de instancia incluso cuando la forma se deforma.'
         : 'Optical flow is an auxiliary cue and displacement test, but it does not replace identities. A track must preserve instance correspondence even as shape deforms.'}</p>
       <Callout variant="honest" title={es ? 'Cobertura temporal' : 'Temporal coverage'}>
-        {es ? 'El banco temporal contiene cinco secuencias de ocho cuadros. Solo se muestran predicciones cuando el pipeline ha persistido máscaras e identidades reales para ese método.' : 'The temporal benchmark contains five eight-frame sequences. Predictions are shown only when the pipeline has persisted real masks and identities for that method.'}
+        {es ? 'El banco temporal contiene cinco secuencias de ocho cuadros, y los 15 métodos tienen predicciones persistidas en las cinco. L7 recibe las máscaras exactas del primer cuadro y solo debe conservarlas, así que sus métricas de identidad se publican aparte y nunca se ordenan junto a las demás.' : 'The temporal benchmark contains five eight-frame sequences, and all 15 methods have persisted predictions on all five. L7 receives the exact first-frame masks and only has to keep them, so its identity metrics are published separately and never ranked against the rest.'}
       </Callout>
       <Refs ids={['kuhn1955hungarian', 'luiten2021hota', 'ravi2024sam2', 'carion2025sam3']} label="Refs" />
     </div>

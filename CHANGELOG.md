@@ -7,6 +7,32 @@ Not tagged. The release gate (`scripts/build_release_report.py`) reports
 samples and calibration". Everything below is on `develop`; `main` is still at
 v0.03.000.
 
+### Added (2026-07-27): the temporal lane covers the whole ladder
+
+- Every registered method now has precomputed temporal evidence on every canonical
+  sequence: 15 methods x 5 sequences x 8 frames, 75 pairs, 600 prediction frames. It
+  was L1 on five sequences and L7 on one; the other thirteen were `not_precomputed`.
+- New `fslab/temporal_bake.py` gives each method a per-frame predictor (classical
+  callables, the U-Net, the shared multitask head for L2/L3/N1, StarDist, Cellpose-SAM,
+  YOLO) and assigns identities by IoU association. The generic path reproduces the
+  previously published L1 numbers exactly, which is what validates it.
+- SAM 2.1 video propagation now covers all five sequences instead of `motion-fast` alone.
+- The two prediction modes are kept apart everywhere. L7 is handed the exact first-frame
+  masks and only has to keep them, so its IDF1 and HOTA are 1.000 by construction; its
+  honest number is the identity IoU (0.898). The mode travels with every row, the method
+  picker groups by it, and the comparison table separates them with the reason stated.
+- New Compare methods view: every method on the selected sequence ordered by HOTA with
+  ID switches and fragmentations, and a row picker that replays the chosen method.
+- Payload: the showcase manifest carried every event log inline (10.4 MB, 97% of its
+  weight, downloaded by every visitor). Event logs moved beside their frames and are
+  fetched on demand; the manifest went from 22 MB to 321 KB. 600 pre-rendered prediction
+  overlays were dropped in favour of compositing source + labels on the canvas, which cut
+  63 MB. The derived temporal payload went from 113 MB to 51 MB.
+- The three validators that check this contract each held their own copy of the logic,
+  which is why only one was updated when the shape changed. They now share
+  `fslab.showcase.verify_temporal_prediction`, and the release gate derives its
+  expectations from the registry so a new method cannot skip the sequence lane.
+
 ### Fixed (2026-07-27 audit)
 
 - The App export panel printed `python -m fslab.pipeline infer --input <image-or-video>
