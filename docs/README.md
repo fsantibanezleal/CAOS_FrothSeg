@@ -30,7 +30,9 @@ per-bubble industrial froth ground truth is not publicly available.
   positive / negative controls; the App shows one case, Experiments and Benchmark summarize across them.
 - **[data-contract/](data-contract/data-contract.md)**, source, record, calibration, and grouped-split rules.
 - **[metrics/](metrics/metrics.md)**, instance, boundary, morphometry, uncertainty, and compute definitions.
-- **[temporal/](temporal/temporal.md)**, IDF1/HOTA, events, fragmentation, and flow evaluation.
+- **[temporal/](temporal/temporal.md)**, IDF1/HOTA, events, fragmentation, and flow evaluation,
+  plus [the full 15-method x 5-sequence matrix](temporal/02_the-full-method-matrix.md) and why
+  the framewise and prompted-video lanes are never ranked against each other.
 - **[benchmark/](benchmark/benchmark.md)**, the complete held-out matrix and acceptance boundaries.
 - **[problem-types/](problem-types/problem-types.md)**, domain failure modes and method assumptions.
 - **[use-cases/](use-cases/use-cases.md)**, operational uses, non-goals, and deployment boundaries.
