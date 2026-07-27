@@ -135,6 +135,24 @@ def _latest_tag() -> str | None:
     return result.stdout.strip() or None
 
 
+def _semver(display_version: str) -> str:
+    """`0.04.000` (display, ADR-0068) -> `0.4.0` (the PEP 440 / npm manifest form)."""
+    return ".".join(str(int(part)) for part in display_version.split("."))
+
+
+def _pyproject_version() -> str:
+    for line in (ROOT / "pyproject.toml").read_text(encoding="utf-8").splitlines():
+        if line.startswith("version"):
+            return line.split("=", 1)[1].strip().strip('"')
+    return ""
+
+
+def _fslab_display_version() -> str:
+    from fslab import __version__
+
+    return __version__
+
+
 def build() -> dict:
     benchmark_path = ROOT / "data/derived/method-benchmark.json"
     benchmark = json.loads(benchmark_path.read_text(encoding="utf-8"))
@@ -403,11 +421,24 @@ def build() -> dict:
             "acceptance": parity.get("acceptance"),
         }
 
-    version = "0.4.0"
+    # ADR-0068: the VERSION file is the single source of truth. Read it instead of repeating a
+    # literal here, so the report can never disagree with the release the repository declares.
+    display_version = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
+    version = _semver(display_version)
     latest_tag = _latest_tag()
-    expected_tag = "v0.04.000"
+    expected_tag = f"v{display_version}"
     if latest_tag != expected_tag:
         errors.append(f"version/tag mismatch: expected {expected_tag}, latest is {latest_tag}")
+    for manifest_version, label in (
+        (json.loads((ROOT / "frontend/package.json").read_text(encoding="utf-8"))["version"], "frontend/package.json"),
+        (_pyproject_version(), "pyproject.toml"),
+    ):
+        if manifest_version != version:
+            errors.append(f"{label} version {manifest_version} disagrees with VERSION {display_version}")
+    if _fslab_display_version() != display_version:
+        errors.append(
+            f"fslab.__version__ {_fslab_display_version()} disagrees with VERSION {display_version}"
+        )
     license_text = (ROOT / "LICENSE").read_text(encoding="utf-8")
     if "Apache License" not in license_text:
         errors.append("repository code license is not Apache-2.0")

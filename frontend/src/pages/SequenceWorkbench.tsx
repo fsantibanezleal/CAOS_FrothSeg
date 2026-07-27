@@ -22,7 +22,9 @@ export function SequenceWorkbench({
   const [sequenceIndex, setSequenceIndex] = useState(0);
   const [predictionIndex, setPredictionIndex] = useState(0);
   const [frameIndex, setFrameIndex] = useState(0);
-  const [playing, setPlaying] = useState(true);
+  // Replay starts paused. An animation that runs on mount burns a timer on a tab the user may
+  // never look at, and it moves the frame out from under anyone reading the per-frame evidence.
+  const [playing, setPlaying] = useState(false);
   const [speed, setSpeed] = useState(2);
   const [view, setView] = useState<SequenceView>('overlay');
   const [tab, setTab] = useState<SequenceTab>('replay');
@@ -66,10 +68,17 @@ export function SequenceWorkbench({
     return () => window.clearInterval(timer);
   }, [playing, speed, frames.length]);
 
+  // A background tab must not keep advancing frames and decoding rasters.
+  useEffect(() => {
+    const onVisibility = () => { if (document.hidden) setPlaying(false); };
+    document.addEventListener('visibilitychange', onVisibility);
+    return () => document.removeEventListener('visibilitychange', onVisibility);
+  }, []);
+
   useEffect(() => {
     setFrameIndex(0);
     setPredictionIndex(0);
-    setPlaying(true);
+    setPlaying(false);
     setTab('replay');
   }, [sequenceIndex]);
 

@@ -33,6 +33,12 @@ window.addEventListener('vite:preloadError', (event) => {
   }
 });
 
+/** `0.4.0` (npm semver) -> `0.04.000` (the padded display form the CHANGELOG and tags use). */
+function displayVersion(semver: string): string {
+  const [major = '0', minor = '0', patch = '0'] = semver.split('.');
+  return `${major}.${minor.padStart(2, '0')}.${patch.padStart(3, '0')}`;
+}
+
 const config: ShellConfig = {
   product: { name: 'FrothSeg', mark: <CircleDot size={18} aria-hidden="true" /> },
   routes: [
@@ -44,7 +50,9 @@ const config: ShellConfig = {
     { path: '/benchmark', en: 'Benchmark', es: 'Benchmark' },
   ],
   links: { github: 'https://github.com/fsantibanezleal/CAOS_FrothSeg' },
-  version: pkg.version,
+  // The shell footer takes the display form X.XX.XXX (ADR-0068); package.json carries the semver
+  // form with zeros dropped. Derive one from the other so the footer cannot drift from the manifest.
+  version: displayVersion(pkg.version),
   architecture,
   footer: {
     provenance: {

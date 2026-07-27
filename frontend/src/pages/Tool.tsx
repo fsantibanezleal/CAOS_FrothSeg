@@ -632,8 +632,13 @@ export default function Tool() {
                   scale_px_per_mm: scale,
                   labels: Array.from(result.labels),
                 })}>{es ? 'Descargar JSON de instancia' : 'Download instance JSON'}</button>
-                <pre className="fs-command">python -m fslab.pipeline infer --input &lt;image-or-video&gt; --method {source === 'sample' ? (showcaseMethod?.slug ?? showcaseMethodId) : method === 'sam' ? 'sam2_1' : method} --output-root runs/local</pre>
-                <p className="fs-hint">{es ? 'El archivo contiene la máscara local. El comando ejecuta el motor científico offline; no se envían datos a un servicio web.' : 'The file contains the local mask. The command runs the offline scientific engine; data is not sent to a web service.'}</p>
+                <pre className="fs-command">python -m fslab.pipeline all --output runs/local</pre>
+                <p className="fs-hint">{es
+                  ? 'El archivo contiene la máscara mostrada. El comando reproduce el horneado canónico completo (13 casos, 15 métodos) en un directorio de trabajo; no se envían datos a un servicio web.'
+                  : 'The file contains the mask shown here. The command reproduces the complete canonical bake (13 cases, 15 methods) into a sandbox directory; data is not sent to a web service.'}</p>
+                <p className="fs-note">{es
+                  ? 'Todavía no existe un comando de inferencia por archivo. El repositorio ejecuta métodos sobre los casos registrados y sobre secuencias de imágenes; no decodifica video.'
+                  : 'A per-file inference command does not exist yet. The repository runs methods over registered cases and over image sequences; it does not decode video.'}</p>
               </div>
             </PanelBoundary>
           )}

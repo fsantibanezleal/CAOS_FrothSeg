@@ -1,6 +1,31 @@
 # Changelog
 
-## [0.04.000] · 2026-07-25
+## [0.04.000] · UNRELEASED (work 2026-07-25 to 2026-07-27)
+
+Not tagged. The release gate (`scripts/build_release_report.py`) reports
+`complete: false`, blocked on "no accepted licensed real held-out source with imported
+samples and calibration". Everything below is on `develop`; `main` is still at
+v0.03.000.
+
+### Fixed (2026-07-27 audit)
+
+- The App export panel printed `python -m fslab.pipeline infer --input <image-or-video>
+  --method ... --output-root ...`. No such subcommand, no such flags, and the repository
+  decodes no video anywhere. The panel now prints the command that exists and states
+  plainly that per-file inference does not exist yet and that video is not read.
+- Sequence replay started playing on mount. It now starts paused and stops when the tab
+  is hidden, so a background tab does not advance frames and decode rasters.
+- The sequence stage was 16/9 while the canonical frames are square, so it pillarboxed
+  each 256 x 256 frame into a 813 x 459 box and used 56% of its own width. The stage now
+  matches the source aspect and the frame fills it.
+- Version drift. `VERSION` held the semver form `0.4.0` instead of the display form
+  `0.04.000` required by ADR-0068, the release report hardcoded the version instead of
+  reading `VERSION`, the footer rendered `v0.4.0`, and `app/__init__.py` still carried
+  the template's `0.01.000`. `VERSION` is now the single source and the report fails on
+  any disagreement between it, `pyproject.toml`, `frontend/package.json` and
+  `fslab.__version__`.
+- Added `scripts/check_template_residue.py` (ADR-0057), missing since instantiation, and
+  wired it into CI. It caught template text in `.vscode/settings.json`.
 
 ### Rebuilt
 

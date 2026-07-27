@@ -86,3 +86,5 @@ jobs:
           python-version: "3.12"
       - name: Content standards (no em-dash / emoji in tracked content, ADR-0067)
         run: python scripts/check_content_standards.py
+      - name: Template residue (instantiation left no example-lab / placeholder text, ADR-0057)
+        run: python scripts/check_template_residue.py
