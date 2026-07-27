@@ -16,9 +16,8 @@ from fslab.showcase import (  # noqa: E402
     PRIMARY_EXCLUDED_CASE_IDS,
     TEMPORAL_CASE_IDS,
     TEMPORAL_FRAMES,
-    TEMPORAL_METRIC_FIELDS,
     TEMPORAL_PREDICTION_SOURCES,
-    decode_label_runs,
+    verify_temporal_prediction,
 )
 
 
@@ -145,10 +144,13 @@ def check_development() -> list[str]:
                 or temporal.get("label_kind") != "ground_truth"
                 or temporal.get("sequence_count") != len(TEMPORAL_CASE_IDS)
                 or temporal.get("frames_per_sequence") != TEMPORAL_FRAMES
+                # 3 base artifacts per frame, 1 label file per prediction frame, 1 event log
+                # per (method, sequence) pair.
                 or temporal.get("artifact_count")
                 != (
                     len(TEMPORAL_CASE_IDS) * TEMPORAL_FRAMES * 3
-                    + len(expected_prediction_pairs) * TEMPORAL_FRAMES * 2
+                    + len(expected_prediction_pairs) * TEMPORAL_FRAMES
+                    + len(expected_prediction_pairs)
                 )
                 or temporal.get("prediction_method_count")
                 != len(TEMPORAL_PREDICTION_SOURCES)
@@ -164,7 +166,7 @@ def check_development() -> list[str]:
                 or set(availability) != expected_ids
             ):
                 errors.append(
-                    "temporal showcase lacks complete truth and governed L1/L7 predictions"
+                    "temporal showcase lacks complete truth or the full method x sequence matrix"
                 )
             for method_id in expected_ids:
                 row = availability.get(method_id, {})
@@ -221,74 +223,13 @@ def check_development() -> list[str]:
                         if isinstance(relative_path, str):
                             expected_showcase_paths.add(relative_path)
                 for prediction in sequence.get("predictions", []):
-                    if (
-                        not isinstance(prediction.get("truth_events"), list)
-                        or not isinstance(prediction.get("predicted_events"), list)
-                        or set(TEMPORAL_METRIC_FIELDS)
-                        - set(prediction.get("metrics", {}))
-                    ):
-                        errors.append(
-                            "incomplete temporal identity/event evidence: "
-                            f"{prediction.get('method_id')}/{sequence.get('case_id')}"
-                        )
-                    evidence_relative = prediction.get("evidence_path")
-                    evidence_path = (
-                        ROOT / "data/derived" / evidence_relative
-                        if isinstance(evidence_relative, str)
-                        else None
+                    row_errors, row_paths = verify_temporal_prediction(
+                        prediction,
+                        case_id=str(sequence.get("case_id")),
+                        derived_root=ROOT / "data/derived",
                     )
-                    if (
-                        evidence_path is None
-                        or not evidence_path.is_file()
-                        or _sha256(evidence_path)
-                        != prediction.get("evidence_sha256")
-                    ):
-                        errors.append(
-                            "missing or stale temporal source evidence: "
-                            f"{prediction.get('method_id')}/{sequence.get('case_id')}"
-                        )
-                    prediction_frames = prediction.get("frames", [])
-                    if (
-                        len(prediction_frames) != TEMPORAL_FRAMES
-                        or {frame.get("frame_index") for frame in prediction_frames}
-                        != set(range(TEMPORAL_FRAMES))
-                    ):
-                        errors.append(
-                            "incomplete temporal prediction frames: "
-                            f"{prediction.get('method_id')}/{sequence.get('case_id')}"
-                        )
-                    for frame in prediction_frames:
-                        for name in ("prediction", "overlay"):
-                            relative_path = frame.get(f"{name}_path")
-                            path = (
-                                ROOT / "data/derived" / relative_path
-                                if isinstance(relative_path, str)
-                                else None
-                            )
-                            if (
-                                path is None
-                                or not path.is_file()
-                                or _sha256(path)
-                                != frame.get(f"{name}_sha256")
-                            ):
-                                errors.append(
-                                    f"missing or stale temporal {name}: "
-                                    f"{prediction.get('method_id')}/"
-                                    f"{sequence.get('case_id')}/"
-                                    f"{frame.get('frame_index')}"
-                                )
-                            elif (
-                                name == "prediction"
-                                and not decode_label_runs(path.read_bytes()).any()
-                            ):
-                                errors.append(
-                                    "empty enabled temporal prediction: "
-                                    f"{prediction.get('method_id')}/"
-                                    f"{sequence.get('case_id')}/"
-                                    f"{frame.get('frame_index')}"
-                                )
-                            if isinstance(relative_path, str):
-                                expected_showcase_paths.add(relative_path)
+                    errors.extend(row_errors)
+                    expected_showcase_paths |= row_paths
         actual_showcase_paths = {
             path.relative_to(ROOT / "data/derived").as_posix()
             for path in showcase_path.parent.rglob("*")

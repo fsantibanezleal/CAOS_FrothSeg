@@ -1,0 +1,478 @@
+{
+  "case_id": "poly-normal",
+  "method_id": "N1",
+  "predicted_events": [
+    {
+      "frame_index": 1,
+      "instance_id": 186,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 187,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 188,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 189,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 190,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 191,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 192,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 193,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 129,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 141,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 143,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 180,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 182,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 184,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 194,
+      "type": "birth"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 195,
+      "type": "birth"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 196,
+      "type": "birth"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 197,
+      "type": "birth"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 198,
+      "type": "birth"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 199,
+      "type": "birth"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 200,
+      "type": "birth"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 32,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 109,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 154,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 186,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 190,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 191,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 192,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 193,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 201,
+      "type": "birth"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 202,
+      "type": "birth"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 172,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 174,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 176,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 194,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 196,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 197,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 198,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 199,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 203,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 204,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 205,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 206,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 207,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 208,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 209,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 210,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 211,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 189,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 212,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 213,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 214,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 215,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 216,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 217,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 34,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 120,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 201,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 203,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 205,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 218,
+      "type": "birth"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 219,
+      "type": "birth"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 220,
+      "type": "birth"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 221,
+      "type": "birth"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 222,
+      "type": "birth"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 7,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 10,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 122,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 142,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 195,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 204,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 215,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 217,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 223,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 224,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 225,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 226,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 227,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 228,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 229,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 230,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 231,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 232,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 233,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 135,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 168,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 169,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 213,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 218,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 219,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 221,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 222,
+      "type": "disappearance"
+    }
+  ],
+  "truth_events": [
+    {
+      "frame_index": 2,
+      "instance_id": 164,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 164,
+      "type": "birth"
+    }
+  ]
+}

@@ -14,6 +14,11 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "data-pipeline"))
+
+from fslab.model_registry import METHODS  # noqa: E402
+from fslab.showcase import verify_temporal_prediction  # noqa: E402
+
 DERIVED = ROOT / "data" / "derived"
 MANIFESTS = DERIVED / "manifests"
 PRIMARY_EXCLUDED_CASE_IDS = {"empty-control"}
@@ -24,10 +29,8 @@ TEMPORAL_CASE_IDS = {
     "motion-fast",
     "bursting",
 }
-TEMPORAL_PREDICTION_CASES = {
-    "L1": TEMPORAL_CASE_IDS,
-    "L7": {"motion-fast"},
-}
+# Every registered method owes a prediction on every canonical sequence.
+TEMPORAL_PREDICTION_CASES = {method.id: TEMPORAL_CASE_IDS for method in METHODS}
 TEMPORAL_METRICS = {
     "frames",
     "matched_gt_instances",
@@ -215,10 +218,18 @@ def main() -> int:
                 temporal.get("schema") != "frothseg.temporal-showcase/v2"
                 or temporal.get("sequence_count") != 5
                 or temporal.get("frames_per_sequence") != 8
-                or temporal.get("prediction_method_count") != 2
-                or temporal.get("prediction_sequence_count") != 6
-                or temporal.get("prediction_frame_count") != 48
-                or temporal.get("artifact_count") != 216
+                or temporal.get("prediction_method_count") != len(METHODS)
+                or temporal.get("prediction_sequence_count") != len(expected_prediction_pairs)
+                or temporal.get("prediction_frame_count")
+                != len(expected_prediction_pairs) * 8
+                # 3 base artifacts per frame, 1 label file per prediction frame, 1 event log
+                # per (method, sequence) pair.
+                or temporal.get("artifact_count")
+                != (
+                    len(TEMPORAL_CASE_IDS) * 8 * 3
+                    + len(expected_prediction_pairs) * 8
+                    + len(expected_prediction_pairs)
+                )
                 or temporal.get("complete") is not True
                 or len(sequences) != 5
                 or {sequence.get("case_id") for sequence in sequences}
@@ -277,73 +288,13 @@ def main() -> int:
                         if isinstance(relative_path, str):
                             expected_showcase_paths.add(relative_path)
                 for prediction in sequence.get("predictions", []):
-                    if (
-                        not isinstance(prediction.get("truth_events"), list)
-                        or not isinstance(prediction.get("predicted_events"), list)
-                        or TEMPORAL_METRICS - set(prediction.get("metrics", {}))
-                    ):
-                        errs.append(
-                            "temporal identity/event evidence drift: "
-                            f"{prediction.get('method_id')}/{sequence.get('case_id')}"
-                        )
-                    evidence_relative = prediction.get("evidence_path")
-                    evidence_path = (
-                        DERIVED / evidence_relative
-                        if isinstance(evidence_relative, str)
-                        else None
+                    row_errors, row_paths = verify_temporal_prediction(
+                        prediction,
+                        case_id=str(sequence.get("case_id")),
+                        derived_root=ROOT / "data/derived",
                     )
-                    if (
-                        evidence_path is None
-                        or not evidence_path.is_file()
-                        or _sha256(evidence_path)
-                        != prediction.get("evidence_sha256")
-                    ):
-                        errs.append(
-                            "temporal source evidence drift: "
-                            f"{prediction.get('method_id')}/{sequence.get('case_id')}"
-                        )
-                    prediction_frames = prediction.get("frames", [])
-                    if (
-                        len(prediction_frames) != 8
-                        or {frame.get("frame_index") for frame in prediction_frames}
-                        != set(range(8))
-                    ):
-                        errs.append(
-                            "temporal prediction frame-count drift: "
-                            f"{prediction.get('method_id')}/{sequence.get('case_id')}"
-                        )
-                    for frame in prediction_frames:
-                        for name in ("prediction", "overlay"):
-                            relative_path = frame.get(f"{name}_path")
-                            path = (
-                                DERIVED / relative_path
-                                if isinstance(relative_path, str)
-                                else None
-                            )
-                            if path is None or not path.is_file():
-                                errs.append(
-                                    f"missing temporal {name}: "
-                                    f"{prediction.get('method_id')}/"
-                                    f"{sequence.get('case_id')}/"
-                                    f"{frame.get('frame_index')}"
-                                )
-                            elif _sha256(path) != frame.get(f"{name}_sha256"):
-                                errs.append(
-                                    f"sha256 drift temporal {name}: "
-                                    f"{prediction.get('method_id')}/"
-                                    f"{sequence.get('case_id')}/"
-                                    f"{frame.get('frame_index')}"
-                                )
-                            elif name == "prediction" and not _rle_has_foreground(path):
-                                errs.append(
-                                    f"empty/corrupt temporal prediction: "
-                                    f"{prediction.get('method_id')}/"
-                                    f"{sequence.get('case_id')}/"
-                                    f"{frame.get('frame_index')}"
-                                )
-                            if isinstance(relative_path, str):
-                                expected_showcase_paths.add(relative_path)
-
+                    errs.extend(row_errors)
+                    expected_showcase_paths |= row_paths
         actual_showcase_paths = {
             path.relative_to(DERIVED).as_posix()
             for path in showcase_path.parent.rglob("*")

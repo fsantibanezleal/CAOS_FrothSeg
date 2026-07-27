@@ -1,0 +1,8295 @@
+{
+  "association_threshold": 0.25,
+  "checkpoint_sha256": null,
+  "device": "cpu",
+  "duration_seconds": 20.474,
+  "frames_per_sequence": 8,
+  "mean_event_precision": 0.00423202169171881,
+  "mean_event_recall": 0.6,
+  "mean_flow_epe_px": 1.333242659835441,
+  "mean_frame_coverage": 0.25314689266666085,
+  "mean_hota": 0.34084754501133685,
+  "mean_id_switch_rate": 0.017091148726113954,
+  "mean_idf1": 0.2878132672987792,
+  "method": "otsu_cc",
+  "method_id": "C1",
+  "prediction_kind": "framewise_segmentation_with_iou_identity_association",
+  "schema": "frothseg.temporal-benchmark/v1",
+  "sequence_count": 5,
+  "sequences": [
+    {
+      "association_accuracy": 0.6956814913696445,
+      "condition_id": "poly-normal",
+      "detection_accuracy": 0.35785536159601,
+      "event_f1": 0.022222222222222223,
+      "event_false_negatives": 0,
+      "event_false_positives": 176,
+      "event_precision": 0.011235955056179775,
+      "event_recall": 1.0,
+      "event_true_positives": 2,
+      "false_negative_instances": 1001,
+      "false_positive_instances": 29,
+      "flow_epe_px": 1.2055905335317614,
+      "frame_artifacts": [
+        {
+          "frame_index": 0,
+          "prediction_path": "otsu_cc/poly-normal/000/prediction.rle",
+          "prediction_sha256": "1af70a39cd52eacf53acfd41bcf04577272ec6b0174720cdba5b30925c2aabed"
+        },
+        {
+          "frame_index": 1,
+          "prediction_path": "otsu_cc/poly-normal/001/prediction.rle",
+          "prediction_sha256": "2ead871eef287b080a63316f133c5c11858ed2928775757903f90ee0e1fb576c"
+        },
+        {
+          "frame_index": 2,
+          "prediction_path": "otsu_cc/poly-normal/002/prediction.rle",
+          "prediction_sha256": "66d4958ee58caf11b640915a6a64d0dfab3da00c8bc8a03d256b2895ea00d2be"
+        },
+        {
+          "frame_index": 3,
+          "prediction_path": "otsu_cc/poly-normal/003/prediction.rle",
+          "prediction_sha256": "cd573976a5f5e5e0d50e3022048c117503790d8bccdd09f48e2143950d06abd2"
+        },
+        {
+          "frame_index": 4,
+          "prediction_path": "otsu_cc/poly-normal/004/prediction.rle",
+          "prediction_sha256": "8b8f5ac16ff84676c0244aef256d9ef64b2aead2bf5f4d892659d35e4906a930"
+        },
+        {
+          "frame_index": 5,
+          "prediction_path": "otsu_cc/poly-normal/005/prediction.rle",
+          "prediction_sha256": "262efc25c6880d70e47f44227c8a71006d558032056478e5292e85bf241ddb3b"
+        },
+        {
+          "frame_index": 6,
+          "prediction_path": "otsu_cc/poly-normal/006/prediction.rle",
+          "prediction_sha256": "25729d10edf01beef2fd9d458ef2e2785f0884e23aa72cafbf7572bc1ba0a058"
+        },
+        {
+          "frame_index": 7,
+          "prediction_path": "otsu_cc/poly-normal/007/prediction.rle",
+          "prediction_sha256": "83536ac6cf8eebcfe84fa754a54d78e73de36ca4b06cc27daccea255671a5be9"
+        }
+      ],
+      "frames": 8,
+      "hota": 0.49895225387779907,
+      "id_precision": 0.7943615257048093,
+      "id_recall": 0.30412698412698413,
+      "id_switch_rate": 0.013937282229965157,
+      "id_switches": 8,
+      "idf1": 0.4398530762167126,
+      "matched_gt_instances": 574,
+      "mean_frame_coverage": 0.36444952346420806,
+      "predicted_events": [
+        {
+          "frame_index": 1,
+          "instance_id": 75,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 76,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 77,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 78,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 79,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 80,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 81,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 82,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 83,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 84,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 85,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 86,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 87,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 6,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 7,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 18,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 27,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 34,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 39,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 46,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 54,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 59,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 60,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 62,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 65,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 72,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 88,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 89,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 90,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 91,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 92,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 93,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 94,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 95,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 96,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 97,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 15,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 25,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 48,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 55,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 69,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 75,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 76,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 86,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 98,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 99,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 100,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 101,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 102,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 103,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 104,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 105,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 106,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 107,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 108,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 109,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 33,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 37,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 52,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 61,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 71,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 82,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 85,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 87,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 95,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 97,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 110,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 111,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 112,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 113,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 114,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 115,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 116,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 117,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 118,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 119,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 120,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 121,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 122,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 123,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 124,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 125,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 17,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 23,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 30,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 49,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 66,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 73,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 74,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 77,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 78,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 81,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 84,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 88,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 92,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 93,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 94,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 96,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 98,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 102,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 106,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 107,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 109,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 126,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 127,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 128,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 129,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 130,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 131,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 132,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 133,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 134,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 135,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 136,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 137,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 138,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 139,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 140,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 80,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 90,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 91,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 99,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 104,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 105,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 112,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 113,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 114,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 116,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 117,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 118,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 121,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 124,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 125,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 141,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 142,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 143,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 144,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 145,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 146,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 147,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 148,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 149,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 150,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 151,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 152,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 153,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 154,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 155,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 156,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 1,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 67,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 79,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 100,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 101,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 108,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 123,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 128,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 135,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 137,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 139,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 140,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 157,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 158,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 159,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 160,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 161,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 162,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 163,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 164,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 165,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 45,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 58,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 120,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 126,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 142,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 145,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 147,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 156,
+          "type": "disappearance"
+        }
+      ],
+      "track_fragmentations": 60,
+      "truth_events": [
+        {
+          "frame_index": 2,
+          "instance_id": 164,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 164,
+          "type": "birth"
+        }
+      ]
+    },
+    {
+      "association_accuracy": 0.4657948712048942,
+      "condition_id": "fine-froth",
+      "detection_accuracy": 0.27082048118445406,
+      "event_f1": 0.00245398773006135,
+      "event_false_negatives": 0,
+      "event_false_positives": 813,
+      "event_precision": 0.0012285012285012285,
+      "event_recall": 1.0,
+      "event_true_positives": 1,
+      "false_negative_instances": 3426,
+      "false_positive_instances": 120,
+      "flow_epe_px": 1.1172726551622845,
+      "frame_artifacts": [
+        {
+          "frame_index": 0,
+          "prediction_path": "otsu_cc/fine-froth/000/prediction.rle",
+          "prediction_sha256": "d8ef55ea712d83b154f2572c3c6f1dd35c6ee30b407c0e4ba753e42c8de71885"
+        },
+        {
+          "frame_index": 1,
+          "prediction_path": "otsu_cc/fine-froth/001/prediction.rle",
+          "prediction_sha256": "68f8a1d20401b9e4fa730dfcc6ece95e7a5d99bffddf7815ce788d19b539a534"
+        },
+        {
+          "frame_index": 2,
+          "prediction_path": "otsu_cc/fine-froth/002/prediction.rle",
+          "prediction_sha256": "95e4bed9d817e5b8682478ae2ada18b6e1dd988ffbba629947259b926267f67d"
+        },
+        {
+          "frame_index": 3,
+          "prediction_path": "otsu_cc/fine-froth/003/prediction.rle",
+          "prediction_sha256": "421bd26dac03d910cf602f2f2648c8f21c306cb5e4c94f73ff82a2c66b27922a"
+        },
+        {
+          "frame_index": 4,
+          "prediction_path": "otsu_cc/fine-froth/004/prediction.rle",
+          "prediction_sha256": "fe9a7aa4e35d0a2c8248340d91f574c54167cbbe7e0b1d35dce2ff4835730b31"
+        },
+        {
+          "frame_index": 5,
+          "prediction_path": "otsu_cc/fine-froth/005/prediction.rle",
+          "prediction_sha256": "58303d5a4b0d346d9e1b8f62cb2e336a9b23ea0a61acc0decbead90f7b7b7c61"
+        },
+        {
+          "frame_index": 6,
+          "prediction_path": "otsu_cc/fine-froth/006/prediction.rle",
+          "prediction_sha256": "2ad7c05ce79dac901d1b2e9408fd483f87bcd96185beaedc97f3f2179c203f61"
+        },
+        {
+          "frame_index": 7,
+          "prediction_path": "otsu_cc/fine-froth/007/prediction.rle",
+          "prediction_sha256": "5f9e54f13371819ff8d008203a2bef0c15348fcb98ee3d33d18c6ebf6e496849"
+        }
+      ],
+      "frames": 8,
+      "hota": 0.35517149541166765,
+      "id_precision": 0.6604036186499652,
+      "id_recall": 0.2000843348091925,
+      "id_switch_rate": 0.03416856492027335,
+      "id_switches": 45,
+      "idf1": 0.30711974110032364,
+      "matched_gt_instances": 1317,
+      "mean_frame_coverage": 0.2776715110979445,
+      "predicted_events": [
+        {
+          "frame_index": 1,
+          "instance_id": 177,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 178,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 179,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 180,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 181,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 182,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 183,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 184,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 185,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 186,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 187,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 188,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 189,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 190,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 191,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 192,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 193,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 194,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 195,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 196,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 197,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 198,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 199,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 200,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 201,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 202,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 203,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 204,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 205,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 206,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 207,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 208,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 209,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 210,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 211,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 212,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 213,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 214,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 215,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 216,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 217,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 218,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 219,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 220,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 221,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 222,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 223,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 224,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 225,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 226,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 227,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 228,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 229,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 230,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 231,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 232,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 233,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 234,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 235,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 236,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 237,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 238,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 239,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 240,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 241,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 242,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 243,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 244,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 245,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 246,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 3,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 5,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 7,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 10,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 11,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 12,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 13,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 15,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 16,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 20,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 22,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 23,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 25,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 31,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 32,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 35,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 36,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 39,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 40,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 41,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 46,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 48,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 54,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 55,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 58,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 59,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 72,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 73,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 74,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 78,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 81,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 82,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 83,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 89,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 93,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 94,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 95,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 97,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 99,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 103,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 104,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 105,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 108,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 109,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 113,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 123,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 124,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 125,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 129,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 130,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 136,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 137,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 142,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 143,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 144,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 145,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 150,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 154,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 158,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 159,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 169,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 247,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 248,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 249,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 250,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 251,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 252,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 253,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 254,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 255,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 256,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 257,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 258,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 259,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 260,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 261,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 262,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 263,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 264,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 265,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 266,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 267,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 268,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 269,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 270,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 271,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 272,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 273,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 274,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 275,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 276,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 277,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 278,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 279,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 280,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 281,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 282,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 283,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 284,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 285,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 286,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 287,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 288,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 289,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 290,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 291,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 292,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 293,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 294,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 295,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 296,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 17,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 18,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 21,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 49,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 50,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 53,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 76,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 79,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 92,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 98,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 102,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 111,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 114,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 115,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 116,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 117,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 128,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 133,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 134,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 135,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 149,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 151,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 165,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 166,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 173,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 176,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 180,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 181,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 183,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 185,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 188,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 190,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 194,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 199,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 200,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 201,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 202,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 203,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 204,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 205,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 207,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 209,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 210,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 211,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 212,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 214,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 217,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 218,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 221,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 224,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 226,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 227,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 228,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 229,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 231,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 243,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 245,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 246,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 297,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 298,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 299,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 300,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 301,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 302,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 303,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 304,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 305,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 306,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 307,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 308,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 309,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 310,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 311,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 312,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 313,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 314,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 315,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 316,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 317,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 318,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 319,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 320,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 321,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 322,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 323,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 324,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 325,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 326,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 327,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 328,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 329,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 330,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 331,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 332,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 333,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 334,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 335,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 336,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 337,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 338,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 339,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 340,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 341,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 342,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 343,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 24,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 26,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 34,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 61,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 70,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 86,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 96,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 110,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 119,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 120,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 127,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 138,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 140,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 146,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 156,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 161,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 162,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 164,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 167,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 168,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 177,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 182,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 189,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 215,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 216,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 219,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 237,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 239,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 241,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 250,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 251,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 256,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 259,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 260,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 261,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 270,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 271,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 274,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 275,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 278,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 280,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 282,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 284,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 290,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 293,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 294,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 295,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 344,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 345,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 346,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 347,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 348,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 349,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 350,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 351,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 352,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 353,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 354,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 355,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 356,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 357,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 358,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 359,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 360,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 361,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 362,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 363,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 364,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 365,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 366,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 367,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 368,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 369,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 370,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 371,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 372,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 373,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 374,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 375,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 376,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 377,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 378,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 379,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 380,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 381,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 382,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 383,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 384,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 385,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 386,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 387,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 388,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 389,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 390,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 391,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 392,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 393,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 394,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 395,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 396,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 397,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 398,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 399,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 400,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 401,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 402,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 403,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 404,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 405,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 406,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 407,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 408,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 409,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 410,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 411,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 412,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 8,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 51,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 85,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 101,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 107,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 155,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 192,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 193,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 208,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 213,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 223,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 232,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 234,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 235,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 238,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 240,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 242,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 247,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 249,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 252,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 257,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 262,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 264,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 266,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 267,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 269,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 272,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 277,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 285,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 286,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 287,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 291,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 296,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 297,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 299,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 300,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 301,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 304,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 306,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 307,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 312,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 313,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 315,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 323,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 326,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 327,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 328,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 329,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 330,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 332,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 333,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 335,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 336,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 337,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 340,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 342,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 413,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 414,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 415,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 416,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 417,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 418,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 419,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 420,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 421,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 422,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 423,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 424,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 425,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 426,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 427,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 428,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 429,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 430,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 431,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 432,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 433,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 434,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 435,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 436,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 437,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 438,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 439,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 440,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 441,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 442,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 443,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 444,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 445,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 446,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 447,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 448,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 449,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 450,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 451,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 452,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 453,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 454,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 455,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 456,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 457,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 458,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 459,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 460,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 461,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 462,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 463,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 464,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 465,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 466,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 467,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 468,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 469,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 470,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 471,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 472,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 28,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 30,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 42,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 45,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 52,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 56,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 60,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 67,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 87,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 100,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 122,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 160,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 172,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 175,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 187,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 196,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 198,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 222,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 230,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 233,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 254,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 265,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 268,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 276,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 283,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 308,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 309,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 310,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 311,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 320,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 334,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 338,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 341,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 347,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 348,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 349,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 350,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 355,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 359,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 360,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 362,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 365,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 367,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 368,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 369,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 371,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 372,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 375,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 377,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 378,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 381,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 382,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 384,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 389,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 390,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 392,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 393,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 397,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 398,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 400,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 401,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 402,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 404,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 405,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 406,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 407,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 408,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 411,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 412,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 473,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 474,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 475,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 476,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 477,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 478,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 479,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 480,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 481,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 482,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 483,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 484,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 485,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 486,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 487,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 488,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 489,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 490,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 491,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 492,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 493,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 494,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 495,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 496,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 497,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 498,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 499,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 500,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 501,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 502,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 503,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 504,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 505,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 506,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 507,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 508,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 509,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 510,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 511,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 512,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 513,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 514,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 515,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 516,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 517,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 518,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 519,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 520,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 521,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 522,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 523,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 524,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 525,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 526,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 527,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 528,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 529,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 530,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 531,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 532,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 533,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 534,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 535,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 47,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 75,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 206,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 236,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 255,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 298,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 302,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 303,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 314,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 317,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 321,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 322,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 343,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 344,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 345,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 354,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 356,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 357,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 370,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 376,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 399,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 403,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 410,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 413,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 414,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 415,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 416,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 417,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 418,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 422,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 424,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 426,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 427,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 428,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 429,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 430,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 431,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 432,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 433,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 434,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 436,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 437,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 440,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 441,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 442,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 444,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 446,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 447,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 448,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 450,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 454,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 455,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 460,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 461,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 463,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 464,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 468,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 469,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 472,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 536,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 537,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 538,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 539,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 540,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 541,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 542,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 543,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 544,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 545,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 546,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 547,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 548,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 549,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 550,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 551,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 552,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 553,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 554,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 555,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 556,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 557,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 558,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 559,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 560,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 561,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 562,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 563,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 564,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 565,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 566,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 567,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 568,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 569,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 570,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 571,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 572,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 573,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 574,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 575,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 576,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 577,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 578,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 63,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 64,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 69,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 141,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 174,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 186,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 244,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 253,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 258,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 263,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 279,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 288,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 325,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 353,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 363,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 366,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 373,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 383,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 387,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 394,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 409,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 421,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 438,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 443,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 445,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 449,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 453,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 456,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 457,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 458,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 462,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 465,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 476,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 478,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 481,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 485,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 486,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 487,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 493,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 496,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 497,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 499,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 501,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 502,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 503,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 504,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 507,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 511,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 512,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 513,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 515,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 517,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 519,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 520,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 521,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 522,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 524,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 526,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 527,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 529,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 533,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 534,
+          "type": "disappearance"
+        }
+      ],
+      "track_fragmentations": 266,
+      "truth_events": [
+        {
+          "frame_index": 1,
+          "instance_id": 337,
+          "type": "birth"
+        }
+      ]
+    },
+    {
+      "association_accuracy": 0.20323403113258193,
+      "condition_id": "glare-storm",
+      "detection_accuracy": 0.1287313432835821,
+      "event_f1": 0.0,
+      "event_false_negatives": 0,
+      "event_false_positives": 336,
+      "event_precision": 0.0,
+      "event_recall": 0.0,
+      "event_true_positives": 0,
+      "false_negative_instances": 1369,
+      "false_positive_instances": 32,
+      "flow_epe_px": 1.76052068947555,
+      "frame_artifacts": [
+        {
+          "frame_index": 0,
+          "prediction_path": "otsu_cc/glare-storm/000/prediction.rle",
+          "prediction_sha256": "006f0b31fa1031c9fd17357807c75d0d7b0d5d75c44b0b0edb7677e7765fa623"
+        },
+        {
+          "frame_index": 1,
+          "prediction_path": "otsu_cc/glare-storm/001/prediction.rle",
+          "prediction_sha256": "eca35fc0d9a7dcd149d42d3ba51dde4bc7235cc487f0f39c8ddb2162c87dc856"
+        },
+        {
+          "frame_index": 2,
+          "prediction_path": "otsu_cc/glare-storm/002/prediction.rle",
+          "prediction_sha256": "b4fad3b1b340ffb6158ca5b544652a2b79da812507ce5e05519c15cad676dbfc"
+        },
+        {
+          "frame_index": 3,
+          "prediction_path": "otsu_cc/glare-storm/003/prediction.rle",
+          "prediction_sha256": "fe5936bd1b9eb79c55f7ee6fccaec65d7ca1e50213d16b78caf775f8b21bc1bb"
+        },
+        {
+          "frame_index": 4,
+          "prediction_path": "otsu_cc/glare-storm/004/prediction.rle",
+          "prediction_sha256": "b8773779bc9226b210122433f8fb16eac09ad0d6ac02780fc6627a273c707735"
+        },
+        {
+          "frame_index": 5,
+          "prediction_path": "otsu_cc/glare-storm/005/prediction.rle",
+          "prediction_sha256": "b54b00ed9588df460d290b8034dbb3b8b258dd9731c535774cd27561cebea53b"
+        },
+        {
+          "frame_index": 6,
+          "prediction_path": "otsu_cc/glare-storm/006/prediction.rle",
+          "prediction_sha256": "9c3e387e5b1304244d4c75086ab921d6bff61d95aff771fccc1870e6d1ff63f4"
+        },
+        {
+          "frame_index": 7,
+          "prediction_path": "otsu_cc/glare-storm/007/prediction.rle",
+          "prediction_sha256": "98a770cb5356cd786be78d70351874fe92b9c6ef311cb6e2848effe703a8eb40"
+        }
+      ],
+      "frames": 8,
+      "hota": 0.16174853887635157,
+      "id_precision": 0.5523012552301255,
+      "id_recall": 0.08375634517766498,
+      "id_switch_rate": 0.014492753623188406,
+      "id_switches": 3,
+      "idf1": 0.14545454545454545,
+      "matched_gt_instances": 207,
+      "mean_frame_coverage": 0.1313451776649746,
+      "predicted_events": [
+        {
+          "frame_index": 1,
+          "instance_id": 23,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 24,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 25,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 26,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 27,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 28,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 29,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 30,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 31,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 32,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 33,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 34,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 35,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 36,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 37,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 38,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 39,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 40,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 41,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 42,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 43,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 44,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 45,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 46,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 47,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 2,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 3,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 5,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 6,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 7,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 8,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 9,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 11,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 12,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 13,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 14,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 15,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 16,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 17,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 18,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 19,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 20,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 21,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 22,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 48,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 49,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 50,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 51,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 52,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 53,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 54,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 55,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 56,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 57,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 58,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 59,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 60,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 61,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 62,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 63,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 64,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 65,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 66,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 67,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 68,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 69,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 70,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 71,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 72,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 73,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 74,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 75,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 76,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 77,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 78,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 79,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 80,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 23,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 25,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 29,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 30,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 36,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 40,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 41,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 44,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 46,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 47,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 81,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 82,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 83,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 84,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 85,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 86,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 87,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 88,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 89,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 90,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 91,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 92,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 93,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 94,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 95,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 96,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 97,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 98,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 99,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 100,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 101,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 102,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 103,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 104,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 105,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 106,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 10,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 24,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 26,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 27,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 28,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 31,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 32,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 34,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 35,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 37,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 39,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 42,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 43,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 49,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 50,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 51,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 52,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 53,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 54,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 55,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 56,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 57,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 58,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 59,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 60,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 61,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 62,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 63,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 64,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 65,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 66,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 67,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 68,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 69,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 70,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 71,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 72,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 73,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 74,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 75,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 76,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 77,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 78,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 79,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 80,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 107,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 108,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 109,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 110,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 111,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 45,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 48,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 82,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 83,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 84,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 86,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 89,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 91,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 92,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 93,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 94,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 95,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 96,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 97,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 98,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 99,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 100,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 101,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 102,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 103,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 104,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 106,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 112,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 113,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 114,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 115,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 116,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 117,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 118,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 119,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 120,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 121,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 122,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 123,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 124,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 125,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 126,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 127,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 128,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 129,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 130,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 131,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 132,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 133,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 134,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 135,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 136,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 81,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 87,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 88,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 107,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 108,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 109,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 111,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 137,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 138,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 139,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 140,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 141,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 142,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 143,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 144,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 145,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 146,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 147,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 148,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 149,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 150,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 151,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 152,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 153,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 154,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 155,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 156,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 157,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 158,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 159,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 160,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 161,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 162,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 163,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 164,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 165,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 166,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 167,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 168,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 1,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 33,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 38,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 85,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 90,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 105,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 110,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 112,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 114,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 115,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 116,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 117,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 118,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 119,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 120,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 121,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 122,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 123,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 124,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 125,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 126,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 127,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 128,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 129,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 130,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 131,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 132,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 133,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 134,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 135,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 136,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 169,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 170,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 171,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 172,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 173,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 174,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 175,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 176,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 177,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 178,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 179,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 180,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 181,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 182,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 183,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 184,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 185,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 186,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 187,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 188,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 189,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 190,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 191,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 113,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 137,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 138,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 139,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 140,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 141,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 142,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 143,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 144,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 145,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 146,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 147,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 148,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 149,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 150,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 151,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 152,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 153,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 154,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 155,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 156,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 157,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 158,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 159,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 160,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 161,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 162,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 163,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 164,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 165,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 166,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 167,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 168,
+          "type": "disappearance"
+        }
+      ],
+      "track_fragmentations": 71,
+      "truth_events": []
+    },
+    {
+      "association_accuracy": 0.6775096525096526,
+      "condition_id": "motion-fast",
+      "detection_accuracy": 0.04671717171717172,
+      "event_f1": 0.0,
+      "event_false_negatives": 0,
+      "event_false_positives": 22,
+      "event_precision": 0.0,
+      "event_recall": 0.0,
+      "event_true_positives": 0,
+      "false_negative_instances": 1502,
+      "false_positive_instances": 8,
+      "flow_epe_px": 0.8596622303713578,
+      "frame_artifacts": [
+        {
+          "frame_index": 0,
+          "prediction_path": "otsu_cc/motion-fast/000/prediction.rle",
+          "prediction_sha256": "9b2810666a2350ca78e4191338ef767b5b47d1212a0360635a03ac1bf34533fa"
+        },
+        {
+          "frame_index": 1,
+          "prediction_path": "otsu_cc/motion-fast/001/prediction.rle",
+          "prediction_sha256": "c3335478ff709029ab7b260b18a119e6aa15ba880c17f31e1bdf07648984b146"
+        },
+        {
+          "frame_index": 2,
+          "prediction_path": "otsu_cc/motion-fast/002/prediction.rle",
+          "prediction_sha256": "a3fdc7b4b4af9c4421a63edcf4f6cf58b9edcc1e3027e1f3bb75e7acc7d49ca1"
+        },
+        {
+          "frame_index": 3,
+          "prediction_path": "otsu_cc/motion-fast/003/prediction.rle",
+          "prediction_sha256": "00225ffdeac882f3bd7b4dfa31c687c234aefa7969618220d325b2d3323d6277"
+        },
+        {
+          "frame_index": 4,
+          "prediction_path": "otsu_cc/motion-fast/004/prediction.rle",
+          "prediction_sha256": "068e9cc5930567f34e7620ac72479fcfa2e8443bd8d555884a93bce4425a7cd9"
+        },
+        {
+          "frame_index": 5,
+          "prediction_path": "otsu_cc/motion-fast/005/prediction.rle",
+          "prediction_sha256": "b11a64e66bec2a671619ef0a71121d54fc15033c9e5a64329a11995ef6cee0c9"
+        },
+        {
+          "frame_index": 6,
+          "prediction_path": "otsu_cc/motion-fast/006/prediction.rle",
+          "prediction_sha256": "bf4d7c3665ca261bc661f8370ba626a973671bb440c33a312a6d0a8dbb4ca875"
+        },
+        {
+          "frame_index": 7,
+          "prediction_path": "otsu_cc/motion-fast/007/prediction.rle",
+          "prediction_sha256": "16301940e62ca76d8cc781eb8faebbcfd2f3ec4e78c2bd17617feb25b01c8a34"
+        }
+      ],
+      "frames": 8,
+      "hota": 0.17790822009208787,
+      "id_precision": 0.7926829268292683,
+      "id_recall": 0.041243654822335024,
+      "id_switch_rate": 0.0,
+      "id_switches": 0,
+      "idf1": 0.07840772014475271,
+      "matched_gt_instances": 74,
+      "mean_frame_coverage": 0.046954314720812185,
+      "predicted_events": [
+        {
+          "frame_index": 1,
+          "instance_id": 9,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 10,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 4,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 11,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 12,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 13,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 14,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 15,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 3,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 9,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 11,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 16,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 17,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 18,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 12,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 15,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 16,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 19,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 20,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 5,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 8,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 17,
+          "type": "disappearance"
+        }
+      ],
+      "track_fragmentations": 6,
+      "truth_events": []
+    },
+    {
+      "association_accuracy": 0.6064997119282837,
+      "condition_id": "bursting",
+      "detection_accuracy": 0.42962356792144024,
+      "event_f1": 0.017241379310344827,
+      "event_false_negatives": 0,
+      "event_false_positives": 228,
+      "event_precision": 0.008695652173913044,
+      "event_recall": 1.0,
+      "event_true_positives": 2,
+      "false_negative_instances": 654,
+      "false_positive_instances": 43,
+      "flow_epe_px": 1.7231671906362511,
+      "frame_artifacts": [
+        {
+          "frame_index": 0,
+          "prediction_path": "otsu_cc/bursting/000/prediction.rle",
+          "prediction_sha256": "85aa07ae7465179694cf9e29b3959563c8af1e10c74799d935c588d3042769c1"
+        },
+        {
+          "frame_index": 1,
+          "prediction_path": "otsu_cc/bursting/001/prediction.rle",
+          "prediction_sha256": "48257acc874dbaece8c4b5853be49aad033dd558e6a54bd791e8226b08de2e29"
+        },
+        {
+          "frame_index": 2,
+          "prediction_path": "otsu_cc/bursting/002/prediction.rle",
+          "prediction_sha256": "b0d33c5bf59472343c322b65b51136804c9896504cd2717674cd0814bfb4348a"
+        },
+        {
+          "frame_index": 3,
+          "prediction_path": "otsu_cc/bursting/003/prediction.rle",
+          "prediction_sha256": "e8854cafa01c4055e1a1161ff444e44a46b5c0083bf99e69425455f411785abc"
+        },
+        {
+          "frame_index": 4,
+          "prediction_path": "otsu_cc/bursting/004/prediction.rle",
+          "prediction_sha256": "8223d8e276b3b157b1a621fe262d1e4d25c465a33375329023ab79b7ddba9619"
+        },
+        {
+          "frame_index": 5,
+          "prediction_path": "otsu_cc/bursting/005/prediction.rle",
+          "prediction_sha256": "4c3466ad8a543a5441755acf4d406fbdfd42a36816bd6d4f3d74186425996528"
+        },
+        {
+          "frame_index": 6,
+          "prediction_path": "otsu_cc/bursting/006/prediction.rle",
+          "prediction_sha256": "bdebd6a6be56725107e9fc668528acb6b446954241579f5dfeb604ffe1515048"
+        },
+        {
+          "frame_index": 7,
+          "prediction_path": "otsu_cc/bursting/007/prediction.rle",
+          "prediction_sha256": "1db0c751d6b34829c3435c2c6e02195c0ea27330cb1ba6ad9c07d071f68ec3d0"
+        }
+      ],
+      "frames": 8,
+      "hota": 0.5104572167987782,
+      "id_precision": 0.7200704225352113,
+      "id_recall": 0.3469041560644614,
+      "id_switch_rate": 0.022857142857142857,
+      "id_switches": 12,
+      "idf1": 0.4682312535775615,
+      "matched_gt_instances": 525,
+      "mean_frame_coverage": 0.445313936385365,
+      "predicted_events": [
+        {
+          "frame_index": 1,
+          "instance_id": 78,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 79,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 80,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 81,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 82,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 83,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 84,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 85,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 86,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 87,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 88,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 89,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 90,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 91,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 92,
+          "type": "birth"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 1,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 5,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 7,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 8,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 17,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 21,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 24,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 26,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 33,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 34,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 39,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 41,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 43,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 45,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 46,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 47,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 49,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 55,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 56,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 61,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 62,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 65,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 1,
+          "instance_id": 77,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 93,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 94,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 95,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 96,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 97,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 98,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 99,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 100,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 101,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 102,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 103,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 104,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 105,
+          "type": "birth"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 15,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 27,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 48,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 50,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 54,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 72,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 78,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 79,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 81,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 88,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 90,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 91,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 2,
+          "instance_id": 92,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 106,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 107,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 108,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 109,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 110,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 111,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 112,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 113,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 114,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 115,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 116,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 117,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 118,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 119,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 120,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 121,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 122,
+          "type": "birth"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 4,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 6,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 31,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 60,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 75,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 80,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 83,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 87,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 89,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 93,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 94,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 96,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 99,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 102,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 3,
+          "instance_id": 103,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 123,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 124,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 125,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 126,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 127,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 128,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 129,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 130,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 131,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 132,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 133,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 134,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 135,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 136,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 137,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 138,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 139,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 140,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 141,
+          "type": "birth"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 16,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 19,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 30,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 59,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 64,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 66,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 67,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 70,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 100,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 104,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 106,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 108,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 109,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 111,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 112,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 113,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 114,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 115,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 118,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 119,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 4,
+          "instance_id": 120,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 142,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 143,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 144,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 145,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 146,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 147,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 148,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 149,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 150,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 151,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 152,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 153,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 154,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 155,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 156,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 157,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 158,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 159,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 37,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 76,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 82,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 84,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 95,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 105,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 107,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 121,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 123,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 126,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 127,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 129,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 130,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 133,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 134,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 135,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 136,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 137,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 140,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 160,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 161,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 162,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 163,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 164,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 165,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 166,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 167,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 168,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 169,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 170,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 171,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 172,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 173,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 174,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 175,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 176,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 177,
+          "type": "birth"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 68,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 86,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 98,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 101,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 116,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 122,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 141,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 142,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 146,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 149,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 151,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 152,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 155,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 6,
+          "instance_id": 157,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 178,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 179,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 180,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 181,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 182,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 183,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 184,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 185,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 186,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 187,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 188,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 189,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 190,
+          "type": "birth"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 42,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 124,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 125,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 147,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 150,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 153,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 161,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 162,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 164,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 172,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 173,
+          "type": "disappearance"
+        },
+        {
+          "frame_index": 7,
+          "instance_id": 174,
+          "type": "disappearance"
+        }
+      ],
+      "track_fragmentations": 70,
+      "truth_events": [
+        {
+          "frame_index": 2,
+          "instance_id": 148,
+          "type": "birth"
+        },
+        {
+          "frame_index": 5,
+          "instance_id": 75,
+          "type": "disappearance"
+        }
+      ]
+    }
+  ],
+  "total_track_fragmentations": 473
+}

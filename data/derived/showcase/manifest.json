@@ -2002,9 +2002,9 @@
   "excluded_primary_cases": [
     "empty-control"
   ],
-  "file_count": 662,
+  "file_count": 1241,
   "generated_by": "python -m fslab.pipeline showcase",
-  "hashed_file_count": 661,
+  "hashed_file_count": 1240,
   "method_count": 15,
   "methods": [
     "C1",
@@ -2025,14 +2025,14 @@
   ],
   "schema": "frothseg.showcase/v1",
   "temporal": {
-    "artifact_count": 216,
+    "artifact_count": 795,
     "complete": true,
     "frames_per_sequence": 8,
     "manifest_path": "showcase/temporal/manifest.json",
-    "manifest_sha256": "0b7c221ff42deb7d2dd658be98a2d3bb93a962da403edf663d128b1088825c8c",
-    "prediction_frame_count": 48,
-    "prediction_method_count": 2,
-    "prediction_sequence_count": 6,
+    "manifest_sha256": "28aa0910c13dfd6cf6b39f992da0b6bb5c0f137f4bd5a85d77ef8a5be521b38d",
+    "prediction_frame_count": 600,
+    "prediction_method_count": 15,
+    "prediction_sequence_count": 75,
     "sequence_count": 5
   }
 }

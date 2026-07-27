@@ -27,14 +27,20 @@ export interface TemporalPredictionFrame {
   frame_index: number;
   prediction_path: string;
   prediction_sha256: string;
-  overlay_path: string;
-  overlay_sha256: string;
 }
 
 export interface TemporalEvent {
   frame_index: number;
   instance_id: number;
   type: string;
+}
+
+/** Fetched on demand: the event logs are large and only one pair is ever on screen. */
+export interface TemporalEventLog {
+  case_id: string;
+  method_id: string;
+  truth_events: TemporalEvent[];
+  predicted_events: TemporalEvent[];
 }
 
 export interface TemporalPrediction {
@@ -45,9 +51,20 @@ export interface TemporalPrediction {
   evidence_path: string;
   evidence_sha256: string;
   metrics: TemporalSequenceMetrics;
-  truth_events: TemporalEvent[];
-  predicted_events: TemporalEvent[];
+  events_path: string;
+  events_sha256: string;
+  truth_event_count: number;
+  predicted_event_count: number;
   frames: TemporalPredictionFrame[];
+}
+
+/** A method that owns a video memory is handed its instance cohort on frame 0 and only has to
+ *  keep it. A framewise method must rediscover every instance on every frame. Ranking the two
+ *  against each other is meaningless, so the UI groups by mode and never merges them. */
+export const NATIVE_VIDEO_MODE = 'native_prompted_video_propagation';
+
+export function isNativeVideoMode(mode: string | undefined): boolean {
+  return mode === NATIVE_VIDEO_MODE;
 }
 
 export interface TemporalShowcaseSequence {
@@ -106,7 +123,7 @@ export function visibleStillTabs(source: StillSource, hasResult: boolean): Still
 export function availableSequenceViews(frame: TemporalShowcaseFrame): SequenceView[] {
   const views: SequenceView[] = ['source'];
   if (frame.truth_path) views.push('truth');
-  if (frame.prediction_path || frame.prediction_overlay_path) views.push('prediction');
-  if (frame.overlay_path) views.push('overlay');
+  if (frame.prediction_path) views.push('prediction');
+  if (frame.overlay_path || frame.prediction_path) views.push('overlay');
   return views;
 }

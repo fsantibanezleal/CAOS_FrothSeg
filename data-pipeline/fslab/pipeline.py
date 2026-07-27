@@ -213,10 +213,13 @@ def check() -> int:
                 or temporal.get("label_kind") != "ground_truth"
                 or temporal.get("sequence_count") != len(TEMPORAL_CASE_IDS)
                 or temporal.get("frames_per_sequence") != TEMPORAL_FRAMES
+                # 3 base artifacts per frame, 1 label file per prediction frame, 1 event log
+                # per (method, sequence) pair.
                 or temporal.get("artifact_count")
                 != (
                     len(TEMPORAL_CASE_IDS) * TEMPORAL_FRAMES * 3
-                    + len(expected_prediction_pairs) * TEMPORAL_FRAMES * 2
+                    + len(expected_prediction_pairs) * TEMPORAL_FRAMES
+                    + len(expected_prediction_pairs)
                 )
                 or temporal.get("prediction_method_count")
                 != len(TEMPORAL_PREDICTION_SOURCES)
@@ -282,17 +285,45 @@ def check() -> int:
                         if isinstance(relative_path, str):
                             expected_showcase_paths.add(relative_path)
                 for prediction in sequence.get("predictions", []):
-                    if (
-                        not isinstance(prediction.get("truth_events"), list)
-                        or not isinstance(prediction.get("predicted_events"), list)
-                        or set(TEMPORAL_METRIC_FIELDS)
-                        - set(prediction.get("metrics", {}))
-                    ):
+                    if set(TEMPORAL_METRIC_FIELDS) - set(prediction.get("metrics", {})):
                         print(
                             "  DRIFT temporal identity/event evidence: "
                             f"{prediction.get('method_id')}/{sequence.get('case_id')}"
                         )
                         mismatches += 1
+                    # Event logs are published beside their frames rather than inlined in the
+                    # manifest; verify the file the manifest points at, not an inline array.
+                    events_relative = prediction.get("events_path")
+                    events_path = (
+                        DERIVED / events_relative
+                        if isinstance(events_relative, str)
+                        else None
+                    )
+                    if (
+                        events_path is None
+                        or not events_path.is_file()
+                        or hashlib.sha256(events_path.read_bytes()).hexdigest()
+                        != prediction.get("events_sha256")
+                    ):
+                        print(
+                            "  DRIFT temporal event log: "
+                            f"{prediction.get('method_id')}/{sequence.get('case_id')}"
+                        )
+                        mismatches += 1
+                    else:
+                        events = json.loads(events_path.read_text(encoding="utf-8"))
+                        if (
+                            len(events.get("truth_events", []))
+                            != prediction.get("truth_event_count")
+                            or len(events.get("predicted_events", []))
+                            != prediction.get("predicted_event_count")
+                        ):
+                            print(
+                                "  DRIFT temporal event counts: "
+                                f"{prediction.get('method_id')}/{sequence.get('case_id')}"
+                            )
+                            mismatches += 1
+                        expected_showcase_paths.add(events_relative)
                     evidence_relative = prediction.get("evidence_path")
                     evidence_path = (
                         DERIVED / evidence_relative
@@ -322,37 +353,26 @@ def check() -> int:
                         )
                         mismatches += 1
                     for frame in prediction_frames:
-                        for name in ("prediction", "overlay"):
-                            relative_path = frame.get(f"{name}_path")
-                            expected_sha256 = frame.get(f"{name}_sha256")
-                            path = (
-                                DERIVED / relative_path
-                                if isinstance(relative_path, str)
-                                else None
-                            )
-                            if path is None or not path.is_file():
-                                print(
-                                    f"  MISSING temporal {name}: {relative_path}"
-                                )
-                                mismatches += 1
-                            elif (
-                                hashlib.sha256(path.read_bytes()).hexdigest()
-                                != expected_sha256
-                            ):
-                                print(
-                                    f"  DRIFT temporal {name}: {relative_path}"
-                                )
-                                mismatches += 1
-                            elif (
-                                name == "prediction"
-                                and not decode_label_runs(path.read_bytes()).any()
-                            ):
-                                print(
-                                    f"  EMPTY temporal prediction: {relative_path}"
-                                )
-                                mismatches += 1
-                            if isinstance(relative_path, str):
-                                expected_showcase_paths.add(relative_path)
+                        # Only label runs are published; the prediction overlay is composited
+                        # in the browser from source + labels.
+                        relative_path = frame.get("prediction_path")
+                        expected_sha256 = frame.get("prediction_sha256")
+                        path = (
+                            DERIVED / relative_path
+                            if isinstance(relative_path, str)
+                            else None
+                        )
+                        if path is None or not path.is_file():
+                            print(f"  MISSING temporal prediction: {relative_path}")
+                            mismatches += 1
+                        elif hashlib.sha256(path.read_bytes()).hexdigest() != expected_sha256:
+                            print(f"  DRIFT temporal prediction: {relative_path}")
+                            mismatches += 1
+                        elif not decode_label_runs(path.read_bytes()).any():
+                            print(f"  EMPTY temporal prediction: {relative_path}")
+                            mismatches += 1
+                        if isinstance(relative_path, str):
+                            expected_showcase_paths.add(relative_path)
         actual_showcase_paths = {
             path.relative_to(DERIVED).as_posix()
             for path in showcase_path.parent.rglob("*")

@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 
 from fslab.model_registry import METHODS
+from fslab.temporal import FRAMES, FRAMEWISE_MODE, NATIVE_VIDEO_MODE, SEQUENCE_IDS
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -46,54 +47,53 @@ def test_unified_benchmark_covers_every_registered_method():
         assert method["compute"]["model_artifact_bytes"] >= 0
 
 
-def test_temporal_evidence_covers_tracking_and_official_video_propagation():
-    tracked = json.loads(
-        (ROOT / "data/derived/temporal/unet-watershed-v2.json").read_text(encoding="utf-8")
-    )
+def test_every_registered_method_has_complete_temporal_evidence():
+    """The sequence lane covers the whole ladder, not a favoured subset.
+
+    A method that cannot be run over the sequences does not get to be quietly absent: the file
+    has to exist, name itself, cover all five sequences at eight frames, and every published
+    artifact has to hash to what the report claims.
+    """
+    for method in METHODS:
+        report_path = ROOT / f"data/derived/temporal/{method.slug}.json"
+        assert report_path.is_file(), f"{method.id}: no temporal evidence"
+        report = json.loads(report_path.read_text(encoding="utf-8"))
+        assert report["method_id"] == method.id
+        assert report["frames_per_sequence"] == FRAMES
+        assert report["sequence_count"] == len(SEQUENCE_IDS)
+        assert {row["condition_id"] for row in report["sequences"]} == set(SEQUENCE_IDS)
+        for key in ("mean_idf1", "mean_hota", "mean_frame_coverage", "mean_id_switch_rate"):
+            assert key in report, f"{method.id}: missing {key}"
+        expected_mode = (
+            NATIVE_VIDEO_MODE if method.id == "L7" else FRAMEWISE_MODE
+        )
+        assert report["prediction_kind"] == expected_mode
+        for row in report["sequences"]:
+            assert len(row["frame_artifacts"]) == FRAMES
+            assert {a["frame_index"] for a in row["frame_artifacts"]} == set(range(FRAMES))
+            assert isinstance(row["truth_events"], list)
+            assert isinstance(row["predicted_events"], list)
+            for artifact in row["frame_artifacts"]:
+                path = report_path.parent / artifact["prediction_path"]
+                assert path.is_file(), f"{method.id}/{row['condition_id']}: {path} missing"
+                assert _sha256(path) == artifact["prediction_sha256"]
+
+
+def test_official_video_propagation_keeps_its_upstream_provenance():
+    """L7 is the one method with a non-comparable protocol; pin its identity and its mode."""
     video = json.loads(
-        (ROOT / "data/derived/temporal/sam2-1-hiera-tiny.json").read_text(encoding="utf-8")
-    )
-    assert tracked["sequence_count"] >= 5
-    assert tracked["frames_per_sequence"] >= 8
-    assert "mean_idf1" in tracked
-    assert "mean_hota" in tracked
-    assert "mean_flow_epe_px" in tracked
-    assert tracked["method_id"] == "L1"
-    assert tracked["prediction_kind"] == (
-        "framewise_segmentation_with_iou_identity_association"
-    )
-    assert len(tracked["sequences"]) == 5
-    assert all(len(sequence["frame_artifacts"]) == 8 for sequence in tracked["sequences"])
-    assert all(
-        isinstance(sequence["truth_events"], list)
-        and isinstance(sequence["predicted_events"], list)
-        for sequence in tracked["sequences"]
+        (ROOT / "data/derived/temporal/sam2_1.json").read_text(encoding="utf-8")
     )
     assert video["upstream_commit"] == "2b90b9f5ceec907a1c18123530e92e794ad901a4"
     assert video["method_id"] == "L7"
-    assert video["prediction_kind"] == "native_prompted_video_propagation"
+    assert video["prediction_kind"] == NATIVE_VIDEO_MODE
     assert video["checkpoint_sha256"] == (
         "7402e0d864fa82708a20fbd15bc84245c2f26dff0eb43a4b5b93452deb34be69"
     )
-    assert video["frames"] >= 8
-    assert video["prompted_objects"] >= 12
-    assert len(video["frame_artifacts"]) == 8
-    assert isinstance(video["truth_events"], list)
-    assert isinstance(video["predicted_events"], list)
-    assert "idf1" in video["temporal_metrics"]
-    assert "hota" in video["temporal_metrics"]
-    assert "flow_epe_px" in video["temporal_metrics"]
-    for report_path, report in (
-        (ROOT / "data/derived/temporal/unet-watershed-v2.json", tracked),
-        (ROOT / "data/derived/temporal/sam2-1-hiera-tiny.json", video),
-    ):
-        rows = report.get("sequences", [report])
-        for row in rows:
-            for artifact in row["frame_artifacts"]:
-                for name in ("prediction", "overlay"):
-                    path = report_path.parent / artifact[f"{name}_path"]
-                    assert path.is_file()
-                    assert _sha256(path) == artifact[f"{name}_sha256"]
+    assert video["sequence_count"] == len(SEQUENCE_IDS)
+    for row in video["sequences"]:
+        assert row["prompted_objects"] >= 8
+        assert 0.0 <= row["mean_identity_iou"] <= 1.0
 
 
 def test_release_inventory_is_complete_and_honest():
@@ -105,10 +105,10 @@ def test_release_inventory_is_complete_and_honest():
     assert len(report["methods"]) == 15
     assert report["method_benchmark"]["beyond_sota_claim"] is False
     temporal = {row["method_id"]: row for row in report["temporal_evidence"]}
-    assert temporal["L1"]["prediction_sequence_count"] == 5
-    assert temporal["L1"]["prediction_frame_count"] == 40
-    assert temporal["L7"]["prediction_sequence_count"] == 1
-    assert temporal["L7"]["prediction_frame_count"] == 8
+    assert set(temporal) == {method.id for method in METHODS}
+    for method_id, row in temporal.items():
+        assert row["prediction_sequence_count"] == len(SEQUENCE_IDS), method_id
+        assert row["prediction_frame_count"] == len(SEQUENCE_IDS) * FRAMES, method_id
 
 
 def test_browser_classical_twins_pass_predeclared_cross_language_gate():

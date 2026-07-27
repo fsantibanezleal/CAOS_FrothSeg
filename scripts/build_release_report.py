@@ -14,6 +14,8 @@ sys.path.insert(0, str(ROOT / "data-pipeline"))
 
 from fslab.model_registry import METHODS  # noqa: E402
 from fslab.showcase import decode_label_runs  # noqa: E402
+from fslab.temporal import FRAMES as TEMPORAL_FRAME_COUNT  # noqa: E402
+from fslab.temporal import SEQUENCE_IDS as TEMPORAL_SEQUENCE_IDS  # noqa: E402
 
 MODEL_RUNS = {
     "unet_watershed": "models/unet-watershed-v2/run.json",
@@ -242,73 +244,58 @@ def build() -> dict:
             "docs_path": method.docs_path,
         })
 
-    temporal_paths = [
-        "data/derived/temporal/unet-watershed-v2.json",
-        "data/derived/temporal/sam2-1-hiera-tiny.json",
-    ]
+    # Every registered method owes temporal evidence over every canonical sequence. Derived from
+    # the registry rather than hand-listed, so a new method cannot join the ladder and quietly
+    # skip the sequence lane.
     temporal = []
-    for relative in temporal_paths:
+    for method in METHODS:
+        relative = f"data/derived/temporal/{method.slug}.json"
         path = ROOT / relative
         if not path.exists():
             errors.append(f"missing temporal evidence: {relative}")
             continue
         document = _load(relative)
-        if "sam2" in relative:
-            values = document.get("temporal_metrics", {})
-            prediction_rows = [document]
-            expected_method_id = "L7"
-        else:
-            sequences = document.get("sequences", [])
-            values = sequences[0] if sequences else {}
-            prediction_rows = sequences
-            expected_method_id = "L1"
+        prediction_rows = document.get("sequences", [])
+        values = prediction_rows[0] if prediction_rows else {}
         missing_temporal = sorted(REQUIRED_TEMPORAL_METRICS - values.keys())
         if missing_temporal:
             errors.append(
                 f"incomplete temporal metrics in {relative}: {', '.join(missing_temporal)}"
             )
-        if document.get("method_id") != expected_method_id:
+        if document.get("method_id") != method.id:
             errors.append(f"temporal method id mismatch in {relative}")
-        expected_rows = 1 if expected_method_id == "L7" else 5
-        if len(prediction_rows) != expected_rows:
-            errors.append(
-                f"incomplete temporal prediction sequence inventory in {relative}"
-            )
+        if len(prediction_rows) != len(TEMPORAL_SEQUENCE_IDS):
+            errors.append(f"incomplete temporal prediction sequence inventory in {relative}")
+        observed_sequences = {row.get("condition_id") for row in prediction_rows}
+        if observed_sequences != set(TEMPORAL_SEQUENCE_IDS):
+            errors.append(f"temporal sequence coverage mismatch in {relative}")
         prediction_frame_count = 0
         for row in prediction_rows:
             frame_artifacts = row.get("frame_artifacts", [])
             if (
-                len(frame_artifacts) != 8
+                len(frame_artifacts) != TEMPORAL_FRAME_COUNT
                 or {frame.get("frame_index") for frame in frame_artifacts}
-                != set(range(8))
+                != set(range(TEMPORAL_FRAME_COUNT))
                 or not isinstance(row.get("truth_events"), list)
                 or not isinstance(row.get("predicted_events"), list)
             ):
                 errors.append(f"incomplete temporal prediction/event evidence in {relative}")
             prediction_frame_count += len(frame_artifacts)
             for artifact in frame_artifacts:
-                for name in ("prediction", "overlay"):
-                    artifact_relative = artifact.get(f"{name}_path")
-                    artifact_path = (
-                        path.parent / artifact_relative
-                        if isinstance(artifact_relative, str)
-                        else None
-                    )
-                    if (
-                        artifact_path is None
-                        or not artifact_path.is_file()
-                        or _sha(artifact_path) != artifact.get(f"{name}_sha256")
-                    ):
-                        errors.append(
-                            f"missing or stale temporal {name} artifact in {relative}"
-                        )
-                    elif (
-                        name == "prediction"
-                        and not decode_label_runs(artifact_path.read_bytes()).any()
-                    ):
-                        errors.append(
-                            f"empty temporal prediction artifact in {relative}"
-                        )
+                artifact_relative = artifact.get("prediction_path")
+                artifact_path = (
+                    path.parent / artifact_relative
+                    if isinstance(artifact_relative, str)
+                    else None
+                )
+                if (
+                    artifact_path is None
+                    or not artifact_path.is_file()
+                    or _sha(artifact_path) != artifact.get("prediction_sha256")
+                ):
+                    errors.append(f"missing or stale temporal prediction artifact in {relative}")
+                elif not decode_label_runs(artifact_path.read_bytes()).any():
+                    errors.append(f"empty temporal prediction artifact in {relative}")
         temporal.append({
             "path": relative,
             "sha256": _sha(path),
@@ -317,8 +304,14 @@ def build() -> dict:
             "prediction_kind": document.get("prediction_kind"),
             "prediction_sequence_count": len(prediction_rows),
             "prediction_frame_count": prediction_frame_count,
+            "mean_hota": document.get("mean_hota"),
+            "mean_idf1": document.get("mean_idf1"),
             "metrics": {key: values.get(key) for key in sorted(REQUIRED_TEMPORAL_METRICS)},
         })
+    if len(temporal) != len(METHODS):
+        errors.append(
+            f"temporal lane covers {len(temporal)} of {len(METHODS)} registered methods"
+        )
 
     source_registry_path = ROOT / "manifests/source-registry.json"
     accepted_real_sources = []

@@ -10,6 +10,7 @@ from fslab import pipeline
 from fslab import showcase as showcase_module
 from fslab.model_registry import METHODS
 from fslab.registry import list_cases
+from fslab.temporal import FRAMEWISE_MODE, NATIVE_VIDEO_MODE
 from fslab.showcase import (
     PRIMARY_EXCLUDED_CASE_IDS,
     TEMPORAL_CASE_IDS,
@@ -18,6 +19,18 @@ from fslab.showcase import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
+
+#: Files the still lane publishes: fixed by the 12 primary cases x 15 methods contract.
+STILL_SHOWCASE_FILES = 445
+#: One (method, sequence) pair per registered method per canonical sequence.
+PREDICTION_PAIRS = len(METHODS) * len(TEMPORAL_CASE_IDS)
+#: 3 base artifacts per frame (source, truth, overlay), 1 label file per prediction frame,
+#: and 1 event log per pair.
+TEMPORAL_ARTIFACTS = (
+    len(TEMPORAL_CASE_IDS) * TEMPORAL_FRAMES * 3
+    + PREDICTION_PAIRS * TEMPORAL_FRAMES
+    + PREDICTION_PAIRS
+)
 
 
 def test_showcase_manifest_covers_every_registered_method_and_case() -> None:
@@ -47,8 +60,11 @@ def test_showcase_manifest_covers_every_registered_method_and_case() -> None:
     assert document["benchmark_case_count"] == len(list_cases()) == 13
     assert document["excluded_primary_cases"] == ["empty-control"]
     assert document["artifact_count"] == len(expected_pairs) == 180
-    assert document["file_count"] == 662
-    assert document["hashed_file_count"] == 661
+    # Derived from the contract rather than snapshotted: the still lane ships a fixed set of
+    # per-case files, and the temporal lane ships whatever the full method x sequence matrix
+    # comes to. Stating it this way makes a coverage regression fail with a readable diff.
+    assert document["file_count"] == STILL_SHOWCASE_FILES + TEMPORAL_ARTIFACTS + 1
+    assert document["hashed_file_count"] == STILL_SHOWCASE_FILES + TEMPORAL_ARTIFACTS
     assert observed_pairs == expected_pairs
     assert not any(path.parts[-2] == "empty-control" for path in path.parent.rglob("*"))
 
@@ -79,10 +95,10 @@ def test_temporal_showcase_has_real_hashed_prediction_identity_and_event_evidenc
     assert temporal["label_kind"] == "ground_truth"
     assert temporal["sequence_count"] == len(TEMPORAL_CASE_IDS) == 5
     assert temporal["frames_per_sequence"] == TEMPORAL_FRAMES == 8
-    assert temporal["prediction_method_count"] == 2
-    assert temporal["prediction_sequence_count"] == 6
-    assert temporal["prediction_frame_count"] == 48
-    assert temporal["artifact_count"] == 216
+    assert temporal["prediction_method_count"] == len(METHODS) == 15
+    assert temporal["prediction_sequence_count"] == PREDICTION_PAIRS == 75
+    assert temporal["prediction_frame_count"] == PREDICTION_PAIRS * TEMPORAL_FRAMES == 600
+    assert temporal["artifact_count"] == TEMPORAL_ARTIFACTS
     assert temporal["complete"] is True
     assert {sequence["case_id"] for sequence in temporal["sequences"]} == set(
         TEMPORAL_CASE_IDS
@@ -100,10 +116,10 @@ def test_temporal_showcase_has_real_hashed_prediction_identity_and_event_evidenc
                 assert hashlib.sha256(path.read_bytes()).hexdigest() == frame[
                     f"{name}_sha256"
                 ]
-        expected_methods = {"L1", "L7"} if sequence["case_id"] == "motion-fast" else {"L1"}
-        assert {prediction["method_id"] for prediction in sequence["predictions"]} == (
-            expected_methods
-        )
+        # Every registered method owes a prediction on every sequence. A subset is a gap.
+        assert {prediction["method_id"] for prediction in sequence["predictions"]} == {
+            method.id for method in METHODS
+        }
         for prediction in sequence["predictions"]:
             assert len(prediction["frames"]) == TEMPORAL_FRAMES
             assert set(prediction["metrics"]) >= {
@@ -114,19 +130,28 @@ def test_temporal_showcase_has_real_hashed_prediction_identity_and_event_evidenc
                 "event_recall",
                 "event_f1",
             }
-            assert isinstance(prediction["truth_events"], list)
-            assert isinstance(prediction["predicted_events"], list)
+            # Event logs are published beside their frames, not inlined: keeping all 75 of them
+            # in the manifest put 10.4 MB of birth/death records in front of every visitor.
+            assert isinstance(prediction["truth_event_count"], int)
+            assert isinstance(prediction["predicted_event_count"], int)
+            events_path = root / prediction["events_path"]
+            assert events_path.is_file()
+            assert hashlib.sha256(events_path.read_bytes()).hexdigest() == prediction[
+                "events_sha256"
+            ]
+            events = json.loads(events_path.read_text(encoding="utf-8"))
+            assert len(events["truth_events"]) == prediction["truth_event_count"]
+            assert len(events["predicted_events"]) == prediction["predicted_event_count"]
             evidence_path = root / prediction["evidence_path"]
             assert hashlib.sha256(evidence_path.read_bytes()).hexdigest() == prediction[
                 "evidence_sha256"
             ]
             for frame in prediction["frames"]:
-                for name in ("prediction", "overlay"):
-                    path = root / frame[f"{name}_path"]
-                    assert path.is_file()
-                    assert hashlib.sha256(path.read_bytes()).hexdigest() == frame[
-                        f"{name}_sha256"
-                    ]
+                path = root / frame["prediction_path"]
+                assert path.is_file()
+                assert hashlib.sha256(path.read_bytes()).hexdigest() == frame[
+                    "prediction_sha256"
+                ]
                 labels = decode_label_runs(
                     (root / frame["prediction_path"]).read_bytes()
                 )
@@ -151,14 +176,18 @@ def test_temporal_showcase_has_real_hashed_prediction_identity_and_event_evidenc
             )
     availability = {row["method_id"]: row for row in temporal["method_availability"]}
     assert set(availability) == {method.id for method in METHODS}
-    assert availability["L1"]["available_sequence_ids"] == sorted(TEMPORAL_CASE_IDS)
-    assert availability["L7"]["available_sequence_ids"] == ["motion-fast"]
+    for method in METHODS:
+        row = availability[method.id]
+        assert row["status"] == "available", f"{method.id} is not published"
+        assert row["available_sequence_ids"] == sorted(TEMPORAL_CASE_IDS)
+    # The one method with a different protocol stays labelled as such, because its identity
+    # metrics are not comparable with the framewise lane and must never be ranked against it.
+    assert availability["L7"]["mode"] == NATIVE_VIDEO_MODE
+    assert availability["L7"]["identity_contract"] == "native_persistent_ids"
     assert all(
-        row["status"] == "not_precomputed"
-        and row["identity_contract"] == "none"
-        and row["reason"]
+        row["mode"] == FRAMEWISE_MODE
         for method_id, row in availability.items()
-        if method_id not in {"L1", "L7"}
+        if method_id != "L7"
     )
 
 
@@ -185,11 +214,15 @@ def test_showcase_manifest_hashes_every_output_file_without_orphans() -> None:
         for name in ("source", "truth", "overlay")
     )
     expected.update(
-        frame[f"{name}_path"]
+        frame["prediction_path"]
         for sequence in temporal["sequences"]
         for prediction in sequence["predictions"]
         for frame in prediction["frames"]
-        for name in ("prediction", "overlay")
+    )
+    expected.update(
+        prediction["events_path"]
+        for sequence in temporal["sequences"]
+        for prediction in sequence["predictions"]
     )
     actual = {
         path.relative_to(root).as_posix()
@@ -198,8 +231,12 @@ def test_showcase_manifest_hashes_every_output_file_without_orphans() -> None:
     }
 
     assert actual == expected
-    assert len(actual) == showcase["hashed_file_count"] == 661
-    assert len(actual) + 1 == showcase["file_count"] == 662
+    assert len(actual) == showcase["hashed_file_count"] == (
+        STILL_SHOWCASE_FILES + TEMPORAL_ARTIFACTS
+    )
+    assert len(actual) + 1 == showcase["file_count"] == (
+        STILL_SHOWCASE_FILES + TEMPORAL_ARTIFACTS + 1
+    )
 
 
 def test_registered_showcase_stage_uses_caller_controlled_roots(
@@ -273,8 +310,6 @@ def test_temporal_publisher_rejects_missing_prediction_artifact(
                 "frame_index": 0,
                 "prediction_path": "missing.rle",
                 "prediction_sha256": "0" * 64,
-                "overlay_path": "missing.png",
-                "overlay_sha256": "0" * 64,
             },
             output_root=tmp_path / "stage",
             public_root=tmp_path / "showcase",

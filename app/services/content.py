@@ -45,9 +45,13 @@ def load_named_document(name: str) -> dict | None:
 
 
 def load_temporal(method_id: str) -> dict | None:
-    names = {
-        "unet-watershed-v2": "unet-watershed-v2.json",
-        "sam2-1-hiera-tiny": "sam2-1-hiera-tiny.json",
-    }
-    name = names.get(method_id)
-    return _load_json(_derived() / "temporal" / name) if name else None
+    """Serve a temporal report by method slug.
+
+    The allowlist is the registry itself, so adding a method to the ladder exposes its evidence
+    without a second list to forget, while an arbitrary path still cannot reach the filesystem.
+    """
+    from fslab.model_registry import BY_SLUG
+
+    if method_id not in BY_SLUG:
+        return None
+    return _load_json(_derived() / "temporal" / f"{method_id}.json")

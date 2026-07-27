@@ -658,13 +658,148 @@
   ],
   "temporal_evidence": [
     {
-      "path": "data/derived/temporal/unet-watershed-v2.json",
-      "sha256": "a3d82a7b8b076071109afc76bed73ed218b408047a6c6c3ab7312b2928fe1a55",
+      "path": "data/derived/temporal/otsu_cc.json",
+      "sha256": "78283167b7fb291d0f1e36f3b30c2acb8ef6b8c18ccfeba900f16ddee28f5d33",
+      "schema": "frothseg.temporal-benchmark/v1",
+      "method_id": "C1",
+      "prediction_kind": "framewise_segmentation_with_iou_identity_association",
+      "prediction_sequence_count": 5,
+      "prediction_frame_count": 40,
+      "mean_hota": 0.34084754501133685,
+      "mean_idf1": 0.2878132672987792,
+      "metrics": {
+        "event_precision": 0.011235955056179775,
+        "event_recall": 1.0,
+        "flow_epe_px": 1.2055905335317614,
+        "hota": 0.49895225387779907,
+        "idf1": 0.4398530762167126,
+        "track_fragmentations": 60
+      }
+    },
+    {
+      "path": "data/derived/temporal/watershed_immersion.json",
+      "sha256": "7466690825657fb36846c21545be56ad55b4a7c1ddd6356909d6d0b8bc89c99c",
+      "schema": "frothseg.temporal-benchmark/v1",
+      "method_id": "C2",
+      "prediction_kind": "framewise_segmentation_with_iou_identity_association",
+      "prediction_sequence_count": 5,
+      "prediction_frame_count": 40,
+      "mean_hota": 0.1496966789235732,
+      "mean_idf1": 0.08418534836655303,
+      "metrics": {
+        "event_precision": 0.00021675517502980384,
+        "event_recall": 1.0,
+        "flow_epe_px": 1.5731919046084875,
+        "hota": 0.1529148118196912,
+        "idf1": 0.07405803378085751,
+        "track_fragmentations": 81
+      }
+    },
+    {
+      "path": "data/derived/temporal/watershed_hmax.json",
+      "sha256": "fe9c5c56f1ad4eb889d3416193ecc7b525768b10ff9f89e305079cda43210249",
+      "schema": "frothseg.temporal-benchmark/v1",
+      "method_id": "C3",
+      "prediction_kind": "framewise_segmentation_with_iou_identity_association",
+      "prediction_sequence_count": 5,
+      "prediction_frame_count": 40,
+      "mean_hota": 0.43467541601557247,
+      "mean_idf1": 0.3732236209067536,
+      "metrics": {
+        "event_precision": 0.0008718395815170009,
+        "event_recall": 1.0,
+        "flow_epe_px": 1.4179231485133488,
+        "hota": 0.5610600627049316,
+        "idf1": 0.5080321285140562,
+        "track_fragmentations": 84
+      }
+    },
+    {
+      "path": "data/derived/temporal/watershed_dt.json",
+      "sha256": "4ea9bc533ca906d7657abc07fdf71a08db8f4d56d32719aa3adb90c2659ef589",
+      "schema": "frothseg.temporal-benchmark/v1",
+      "method_id": "C4",
+      "prediction_kind": "framewise_segmentation_with_iou_identity_association",
+      "prediction_sequence_count": 5,
+      "prediction_frame_count": 40,
+      "mean_hota": 0.6309262468545833,
+      "mean_idf1": 0.6123250053281629,
+      "metrics": {
+        "event_precision": 0.006622516556291391,
+        "event_recall": 1.0,
+        "flow_epe_px": 0.8316318208125753,
+        "hota": 0.801097533108742,
+        "idf1": 0.7855227882037533,
+        "track_fragmentations": 47
+      }
+    },
+    {
+      "path": "data/derived/temporal/watershed_hmin.json",
+      "sha256": "ce82cb3e6c2d7a3ace863e36016e1f76f1acb3c6b2d71b8f3c72917a36806089",
+      "schema": "frothseg.temporal-benchmark/v1",
+      "method_id": "C5",
+      "prediction_kind": "framewise_segmentation_with_iou_identity_association",
+      "prediction_sequence_count": 5,
+      "prediction_frame_count": 40,
+      "mean_hota": 0.4509948938669325,
+      "mean_idf1": 0.41372742738558743,
+      "metrics": {
+        "event_precision": 0.006557377049180328,
+        "event_recall": 1.0,
+        "flow_epe_px": 1.2375329198136293,
+        "hota": 0.6700769320152217,
+        "idf1": 0.6387120928491202,
+        "track_fragmentations": 69
+      }
+    },
+    {
+      "path": "data/derived/temporal/slic_merge.json",
+      "sha256": "366ff8d6d7496a6b001af3584960ca8102a31f6418245bc3cd3c27d2eaeb2060",
+      "schema": "frothseg.temporal-benchmark/v1",
+      "method_id": "C6",
+      "prediction_kind": "framewise_segmentation_with_iou_identity_association",
+      "prediction_sequence_count": 5,
+      "prediction_frame_count": 40,
+      "mean_hota": 0.26343418710480304,
+      "mean_idf1": 0.1810204552638647,
+      "metrics": {
+        "event_precision": 0.00019755037534571315,
+        "event_recall": 1.0,
+        "flow_epe_px": 2.343092990878331,
+        "hota": 0.3128273536829143,
+        "idf1": 0.20533092387621413,
+        "track_fragmentations": 113
+      }
+    },
+    {
+      "path": "data/derived/temporal/valley_edge.json",
+      "sha256": "8a6ab70f8f709169a4a83e353128ea0de4af9457de56bc211be9721cad910f14",
+      "schema": "frothseg.temporal-benchmark/v1",
+      "method_id": "C7",
+      "prediction_kind": "framewise_segmentation_with_iou_identity_association",
+      "prediction_sequence_count": 5,
+      "prediction_frame_count": 40,
+      "mean_hota": 0.5965830728100999,
+      "mean_idf1": 0.5723509731893389,
+      "metrics": {
+        "event_precision": 0.007722007722007722,
+        "event_recall": 1.0,
+        "flow_epe_px": 0.9513951552787006,
+        "hota": 0.8263749241356174,
+        "idf1": 0.8106469002695418,
+        "track_fragmentations": 86
+      }
+    },
+    {
+      "path": "data/derived/temporal/unet_watershed.json",
+      "sha256": "e3b5a6efcc3b90b43a5618f8ee2e32a82c41643735b3ce46b2e328c625e7f40b",
       "schema": "frothseg.temporal-benchmark/v1",
       "method_id": "L1",
       "prediction_kind": "framewise_segmentation_with_iou_identity_association",
       "prediction_sequence_count": 5,
       "prediction_frame_count": 40,
+      "mean_hota": 0.8791710965407467,
+      "mean_idf1": 0.8710495323350532,
       "metrics": {
         "event_precision": 0.012048192771084338,
         "event_recall": 1.0,
@@ -675,20 +810,136 @@
       }
     },
     {
-      "path": "data/derived/temporal/sam2-1-hiera-tiny.json",
-      "sha256": "0e0fa8c6207195bd13b006c82d2ac0ee827d8aab8a4c2dd43f9ff46fc148097d",
-      "schema": "frothseg.sam2-video-benchmark/v1",
+      "path": "data/derived/temporal/deep_marker_watershed.json",
+      "sha256": "c54df0b6f9f014131ba5f3aa4a3aa1dc9f421ea2063cccdaec69694b3b17732f",
+      "schema": "frothseg.temporal-benchmark/v1",
+      "method_id": "L2",
+      "prediction_kind": "framewise_segmentation_with_iou_identity_association",
+      "prediction_sequence_count": 5,
+      "prediction_frame_count": 40,
+      "mean_hota": 0.823152399372935,
+      "mean_idf1": 0.80822570384863,
+      "metrics": {
+        "event_precision": 0.00784313725490196,
+        "event_recall": 1.0,
+        "flow_epe_px": 0.9011941489535386,
+        "hota": 0.8800147903956571,
+        "idf1": 0.870625,
+        "track_fragmentations": 20
+      }
+    },
+    {
+      "path": "data/derived/temporal/gc_fsegnet.json",
+      "sha256": "ff59c96c3ad2e5853b77a336f7cb37b9650703f458ceaab7d1f116f6c1fc16f6",
+      "schema": "frothseg.temporal-benchmark/v1",
+      "method_id": "L3",
+      "prediction_kind": "framewise_segmentation_with_iou_identity_association",
+      "prediction_sequence_count": 5,
+      "prediction_frame_count": 40,
+      "mean_hota": 0.8062387498596209,
+      "mean_idf1": 0.7890482842940604,
+      "metrics": {
+        "event_precision": 0.012738853503184714,
+        "event_recall": 1.0,
+        "flow_epe_px": 0.80094995906324,
+        "hota": 0.9010252448210316,
+        "idf1": 0.8924252068746021,
+        "track_fragmentations": 22
+      }
+    },
+    {
+      "path": "data/derived/temporal/stardist_2d.json",
+      "sha256": "ca891d0f444f42fe026da659d2b6deb1c015c4a649b27e22784f609020769bc3",
+      "schema": "frothseg.temporal-benchmark/v1",
+      "method_id": "L4",
+      "prediction_kind": "framewise_segmentation_with_iou_identity_association",
+      "prediction_sequence_count": 5,
+      "prediction_frame_count": 40,
+      "mean_hota": 0.6676013398293937,
+      "mean_idf1": 0.6378593728215749,
+      "metrics": {
+        "event_precision": 0.005194805194805195,
+        "event_recall": 1.0,
+        "flow_epe_px": 2.047520992831968,
+        "hota": 0.7667563657225144,
+        "idf1": 0.7520633872565203,
+        "track_fragmentations": 48
+      }
+    },
+    {
+      "path": "data/derived/temporal/cellpose_sam.json",
+      "sha256": "3d6c144968bb8e49832f809b84f9883ef262fc9b60c2a99cf469ed0ed7aa8d69",
+      "schema": "frothseg.temporal-benchmark/v1",
+      "method_id": "L5",
+      "prediction_kind": "framewise_segmentation_with_iou_identity_association",
+      "prediction_sequence_count": 5,
+      "prediction_frame_count": 40,
+      "mean_hota": 0.9129474313164831,
+      "mean_idf1": 0.9100172878480313,
+      "metrics": {
+        "event_precision": 0.02564102564102564,
+        "event_recall": 0.5,
+        "flow_epe_px": 0.23245439402585896,
+        "hota": 0.964868888018941,
+        "idf1": 0.9649578195976638,
+        "track_fragmentations": 8
+      }
+    },
+    {
+      "path": "data/derived/temporal/yolo_froth_seg.json",
+      "sha256": "f64e84bb147cb975c8c111d9498ba93a2c723ba9e0bc441336d5706297b75c57",
+      "schema": "frothseg.temporal-benchmark/v1",
+      "method_id": "L6",
+      "prediction_kind": "framewise_segmentation_with_iou_identity_association",
+      "prediction_sequence_count": 5,
+      "prediction_frame_count": 40,
+      "mean_hota": 0.7690909070969989,
+      "mean_idf1": 0.762092778431479,
+      "metrics": {
+        "event_precision": 0.00749063670411985,
+        "event_recall": 1.0,
+        "flow_epe_px": 0.7603083532899603,
+        "hota": 0.8519148634684957,
+        "idf1": 0.8470198675496688,
+        "track_fragmentations": 52
+      }
+    },
+    {
+      "path": "data/derived/temporal/sam2_1.json",
+      "sha256": "68ce564ae15ccfe7a2da437b7368f44d528ac77a4a059fcfffe9814bad1a36a4",
+      "schema": "frothseg.sam2-video-benchmark/v2",
       "method_id": "L7",
       "prediction_kind": "native_prompted_video_propagation",
-      "prediction_sequence_count": 1,
-      "prediction_frame_count": 8,
+      "prediction_sequence_count": 5,
+      "prediction_frame_count": 40,
+      "mean_hota": 1.0,
+      "mean_idf1": 1.0,
       "metrics": {
         "event_precision": 1.0,
         "event_recall": 1.0,
-        "flow_epe_px": 0.8938401729822241,
+        "flow_epe_px": 0.2187265233092636,
         "hota": 1.0,
         "idf1": 1.0,
         "track_fragmentations": 0
+      }
+    },
+    {
+      "path": "data/derived/temporal/lamellastar.json",
+      "sha256": "e24770ccd25cabc8316f4cb2bbf4d00117333cd95585e14597757879df467a31",
+      "schema": "frothseg.temporal-benchmark/v1",
+      "method_id": "N1",
+      "prediction_kind": "framewise_segmentation_with_iou_identity_association",
+      "prediction_sequence_count": 5,
+      "prediction_frame_count": 40,
+      "mean_hota": 0.8432426756700728,
+      "mean_idf1": 0.8341897810559363,
+      "metrics": {
+        "event_precision": 0.021739130434782608,
+        "event_recall": 1.0,
+        "flow_epe_px": 0.7110911103640746,
+        "hota": 0.9256351773102576,
+        "idf1": 0.9226753670473083,
+        "track_fragmentations": 17
       }
     }
   ],

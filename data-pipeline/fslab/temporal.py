@@ -1,4 +1,9 @@
-"""Temporal association and consistency metrics for froth instance sequences."""
+"""Temporal association and consistency metrics for froth instance sequences.
+
+This module also holds the constants that define the sequence lane, because both the bake
+(:mod:`fslab.temporal_bake`) and the publisher (:mod:`fslab.showcase`) need them and neither may
+import the other.
+"""
 
 from __future__ import annotations
 
@@ -6,6 +11,35 @@ from dataclasses import dataclass
 
 import numpy as np
 from scipy.optimize import linear_sum_assignment
+
+#: The canonical sequences. Each isolates a different way identity breaks over time: nominal
+#: transport, dense fine bubbles, moving specular highlights, fast advection, and topological
+#: change through bursting and coalescence.
+SEQUENCE_IDS: tuple[str, ...] = (
+    "poly-normal",
+    "fine-froth",
+    "glare-storm",
+    "motion-fast",
+    "bursting",
+)
+
+FRAMES = 8
+
+#: Association threshold for the framewise lane.
+IOU_ASSOCIATION_THRESHOLD = 0.25
+
+#: A method with no temporal model: it segments each frame independently and identities are
+#: assigned afterwards. Identity scores measure mask stability, not a tracker the method owns.
+FRAMEWISE_MODE = "framewise_segmentation_with_iou_identity_association"
+FRAMEWISE_PROTOCOL = (
+    "independent per-frame inference, followed by greedy IoU identity association"
+)
+
+#: A method that carries its own memory across frames and is prompted once. It is handed the
+#: instance cohort on frame 0 and only has to keep it, so its identity metrics are NOT comparable
+#: to the framewise lane and must never be ranked against it.
+NATIVE_VIDEO_MODE = "native_prompted_video_propagation"
+NATIVE_VIDEO_PROTOCOL = "first-frame ground-truth mask prompts; forward propagation"
 
 
 def _overlap(previous: np.ndarray, current: np.ndarray):

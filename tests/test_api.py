@@ -38,6 +38,10 @@ def test_method_and_case_endpoints():
 
 
 def test_temporal_endpoints_are_allowlisted():
-    assert get("/api/temporal/unet-watershed-v2").status_code == 200
-    assert get("/api/temporal/sam2-1-hiera-tiny").status_code == 200
+    from fslab.model_registry import METHODS
+
+    # Every registered method serves its temporal evidence; nothing outside the registry does.
+    for method in METHODS:
+        assert get(f"/api/temporal/{method.slug}").status_code == 200, method.id
     assert get("/api/temporal/../../release-report.json").status_code == 404
+    assert get("/api/temporal/not-a-method").status_code == 404

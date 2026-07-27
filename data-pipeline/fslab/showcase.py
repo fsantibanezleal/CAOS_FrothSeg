@@ -23,6 +23,14 @@ from .model_registry import METHODS as REGISTERED_METHODS
 from .registry import list_cases
 from .science.froth_gen import CASES, generate_sequence
 from .science.segment import METHODS
+from .temporal import (
+    FRAMES,
+    FRAMEWISE_MODE,
+    FRAMEWISE_PROTOCOL,
+    NATIVE_VIDEO_MODE,
+    NATIVE_VIDEO_PROTOCOL,
+    SEQUENCE_IDS,
+)
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -47,30 +55,32 @@ CLASSICAL_IDS = {
     "C7": "valley_edge",
 }
 
-TEMPORAL_CASE_IDS = (
-    "poly-normal",
-    "fine-froth",
-    "glare-storm",
-    "motion-fast",
-    "bursting",
-)
-TEMPORAL_FRAMES = 8
+TEMPORAL_CASE_IDS = SEQUENCE_IDS
+TEMPORAL_FRAMES = FRAMES
 PRIMARY_EXCLUDED_CASE_IDS = ("empty-control",)
 
-TEMPORAL_PREDICTION_SOURCES = {
-    "L1": {
-        "report_path": "temporal/unet-watershed-v2.json",
-        "mode": "framewise_segmentation_with_iou_identity_association",
-        "protocol": "L1 inference on every frame, followed by Hungarian IoU association",
-        "required_cases": TEMPORAL_CASE_IDS,
-    },
-    "L7": {
-        "report_path": "temporal/sam2-1-hiera-tiny.json",
-        "mode": "native_prompted_video_propagation",
-        "protocol": "first-frame ground-truth mask prompts; forward propagation",
-        "required_cases": ("motion-fast",),
-    },
-}
+
+def _temporal_prediction_sources() -> dict[str, dict]:
+    """Every registered method publishes temporal evidence over every canonical sequence.
+
+    Derived from the registry rather than hand-listed, so a new method cannot be added to the
+    ladder and silently skip the sequence lane. L7 is the one method with its own mode: it owns
+    a video memory and is prompted, so it is published under `native_prompted_video_propagation`
+    and must not be ranked against the framewise rows.
+    """
+    sources: dict[str, dict] = {}
+    for method in REGISTERED_METHODS:
+        native = method.id == "L7"
+        sources[method.id] = {
+            "report_path": f"temporal/{method.slug}.json",
+            "mode": NATIVE_VIDEO_MODE if native else FRAMEWISE_MODE,
+            "protocol": NATIVE_VIDEO_PROTOCOL if native else FRAMEWISE_PROTOCOL,
+            "required_cases": TEMPORAL_CASE_IDS,
+        }
+    return sources
+
+
+TEMPORAL_PREDICTION_SOURCES = _temporal_prediction_sources()
 
 TEMPORAL_METRIC_FIELDS = (
     "frames",
@@ -404,6 +414,25 @@ def bake_temporal(
                     f"{method_id}/{case_id}: missing temporal metrics "
                     f"{sorted(missing_metrics)}"
                 )
+            # Event logs are large and only one (sequence, method) pair is ever on screen.
+            # Inlining all 75 of them put 10.4 MB of birth/death records into a manifest that
+            # every visitor downloads, 97% of its weight. They are published beside their
+            # prediction frames and fetched when the Events view asks for them.
+            events_path = (
+                output_root / "temporal" / case_id / "predictions" / method_id / "events.json"
+            )
+            events_path.parent.mkdir(parents=True, exist_ok=True)
+            with events_path.open("w", encoding="utf-8", newline="\n") as handle:
+                handle.write(json.dumps(
+                    {
+                        "case_id": case_id,
+                        "method_id": method_id,
+                        "truth_events": row["truth_events"],
+                        "predicted_events": row["predicted_events"],
+                    },
+                    indent=2,
+                    sort_keys=True,
+                ))
             predictions.append(
                 {
                     "method_id": method_id,
@@ -414,8 +443,10 @@ def bake_temporal(
                     "evidence_path": report["path"].relative_to(derived_root).as_posix(),
                     "evidence_sha256": sha256(report["path"]),
                     "metrics": metrics,
-                    "truth_events": row["truth_events"],
-                    "predicted_events": row["predicted_events"],
+                    "events_path": _public_reference(events_path, output_root, public_root),
+                    "events_sha256": sha256(events_path),
+                    "truth_event_count": len(row["truth_events"]),
+                    "predicted_event_count": len(row["predicted_events"]),
                     "frames": published_frames,
                 }
             )
@@ -437,8 +468,10 @@ def bake_temporal(
         for case_id in config["required_cases"]
     }
     method_availability = _temporal_method_availability(reports)
+    # 3 base artifacts per frame (source, truth, overlay); 1 label file per prediction frame
+    # plus 1 event log per published (sequence, method) pair.
     base_artifact_count = sum(len(sequence["frames"]) * 3 for sequence in sequences)
-    prediction_artifact_count = prediction_frame_count * 2
+    prediction_artifact_count = prediction_frame_count + len(observed_prediction_pairs)
     artifact_count = base_artifact_count + prediction_artifact_count
     manifest = {
         "schema": "frothseg.temporal-showcase/v2",
@@ -478,30 +511,20 @@ def _load_temporal_reports(derived_root: Path) -> dict[str, dict]:
             raise ValueError(f"{report_path}: temporal method id mismatch")
         if document.get("prediction_kind") != config["mode"]:
             raise ValueError(f"{report_path}: temporal prediction mode mismatch")
-        if method_id == "L1":
-            rows = {
-                row["condition_id"]: {
-                    "metrics": {
-                        field: row[field]
-                        for field in TEMPORAL_METRIC_FIELDS
-                        if field in row
-                    },
-                    "truth_events": row.get("truth_events"),
-                    "predicted_events": row.get("predicted_events"),
-                    "frame_artifacts": row.get("frame_artifacts"),
-                }
-                for row in document.get("sequences", [])
+        # Every report, framewise or native-video, publishes the same per-sequence shape.
+        rows = {
+            row["condition_id"]: {
+                "metrics": {
+                    field: row[field]
+                    for field in TEMPORAL_METRIC_FIELDS
+                    if field in row
+                },
+                "truth_events": row.get("truth_events"),
+                "predicted_events": row.get("predicted_events"),
+                "frame_artifacts": row.get("frame_artifacts"),
             }
-        else:
-            condition_id = document.get("condition_id")
-            rows = {
-                condition_id: {
-                    "metrics": document.get("temporal_metrics"),
-                    "truth_events": document.get("truth_events"),
-                    "predicted_events": document.get("predicted_events"),
-                    "frame_artifacts": document.get("frame_artifacts"),
-                }
-            }
+            for row in document.get("sequences", [])
+        }
         required_cases = set(config["required_cases"])
         if set(rows) != required_cases:
             raise ValueError(
@@ -522,23 +545,93 @@ def _load_temporal_reports(derived_root: Path) -> dict[str, dict]:
             "slug": methods[method_id].slug,
             "mode": config["mode"],
             "protocol": document.get("protocol", config["protocol"]),
-            "model_provenance": (
-                {
-                    "checkpoint_sha256": document["checkpoint_sha256"],
-                    "device": document["device"],
-                }
-                if method_id == "L1"
-                else {
-                    "model_id": document["model_id"],
-                    "upstream_commit": document["upstream_commit"],
-                    "checkpoint_sha256": document["checkpoint_sha256"],
-                    "checkpoint_bytes": document["checkpoint_bytes"],
-                    "device": document["device"],
-                }
-            ),
+            "model_provenance": {
+                key: document[key]
+                for key in (
+                    "model_id",
+                    "upstream_commit",
+                    "checkpoint_sha256",
+                    "checkpoint_bytes",
+                    "device",
+                    "association_threshold",
+                )
+                if key in document
+            },
             "sequences": rows,
         }
     return reports
+
+
+def verify_temporal_prediction(
+    prediction: dict,
+    *,
+    case_id: str,
+    derived_root: Path,
+) -> tuple[list[str], set[str]]:
+    """Validate one published (sequence, method) prediction row.
+
+    Three validators check this contract: the pipeline's ``--check`` drift gate,
+    ``scripts/check_artifacts.py`` and ``scripts/check_product_completeness.py``. They used to
+    carry three copies of the logic, and when the published shape changed only one of them was
+    updated. They now share this function, so the contract is stated once.
+
+    Returns the errors found and the set of derived-relative paths the row claims to publish.
+    """
+    method_id = prediction.get("method_id")
+    label = f"{method_id}/{case_id}"
+    errors: list[str] = []
+    paths: set[str] = set()
+
+    if set(TEMPORAL_METRIC_FIELDS) - set(prediction.get("metrics", {})):
+        errors.append(f"incomplete temporal metrics: {label}")
+
+    def _checked(relative: object, expected_sha256: object, kind: str) -> Path | None:
+        if not isinstance(relative, str):
+            errors.append(f"missing temporal {kind} path: {label}")
+            return None
+        path = derived_root / relative
+        if not path.is_file() or sha256(path) != expected_sha256:
+            errors.append(f"missing or stale temporal {kind}: {label}")
+            return None
+        paths.add(relative)
+        return path
+
+    events_path = _checked(
+        prediction.get("events_path"), prediction.get("events_sha256"), "event log"
+    )
+    if events_path is not None:
+        events = json.loads(events_path.read_text(encoding="utf-8"))
+        if (
+            len(events.get("truth_events", [])) != prediction.get("truth_event_count")
+            or len(events.get("predicted_events", [])) != prediction.get("predicted_event_count")
+        ):
+            errors.append(f"temporal event counts disagree with the log: {label}")
+
+    evidence_relative = prediction.get("evidence_path")
+    if isinstance(evidence_relative, str):
+        evidence_path = derived_root / evidence_relative
+        if (
+            not evidence_path.is_file()
+            or sha256(evidence_path) != prediction.get("evidence_sha256")
+        ):
+            errors.append(f"missing or stale temporal source evidence: {label}")
+    else:
+        errors.append(f"missing temporal source evidence path: {label}")
+
+    frames = prediction.get("frames", [])
+    if (
+        len(frames) != TEMPORAL_FRAMES
+        or {frame.get("frame_index") for frame in frames} != set(range(TEMPORAL_FRAMES))
+    ):
+        errors.append(f"incomplete temporal prediction frames: {label}")
+    for frame in frames:
+        path = _checked(
+            frame.get("prediction_path"), frame.get("prediction_sha256"), "prediction"
+        )
+        if path is not None and not decode_label_runs(path.read_bytes()).any():
+            errors.append(f"empty temporal prediction: {label}/{frame.get('frame_index')}")
+
+    return errors, paths
 
 
 def _publish_prediction_frame(
@@ -561,10 +654,10 @@ def _publish_prediction_frame(
     )
     target_root.mkdir(parents=True, exist_ok=True)
     published = {"frame_index": frame_index}
-    for source_name, target_name in (
-        ("prediction", "labels.rle"),
-        ("overlay", "overlay.png"),
-    ):
+    # Only the label runs are published. The prediction overlay is source + labels composited,
+    # which the browser already does on a canvas for the raster views; shipping 600 pre-rendered
+    # PNGs of it cost 63 MB of the bundle for no information the client did not already have.
+    for source_name, target_name in (("prediction", "labels.rle"),):
         relative_path = artifact.get(f"{source_name}_path")
         expected_sha256 = artifact.get(f"{source_name}_sha256")
         if not isinstance(relative_path, str) or not isinstance(expected_sha256, str):

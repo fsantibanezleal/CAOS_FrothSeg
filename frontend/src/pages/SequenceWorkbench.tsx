@@ -1,14 +1,15 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react';
 import { artifactUrl, loadTemporalShowcase } from '../api/artifacts';
 import type { TemporalBenchmarkDoc, TemporalSequenceMetrics } from '../lib/contract.types';
 import { decodeShowcaseLabels, type DecodedShowcaseLabels } from '../lib/showcaseLabels';
 import {
-  availableSequenceViews, type SequenceView, type TemporalShowcaseFrame,
+  availableSequenceViews, isNativeVideoMode, type SequenceView, type TemporalEvent,
+  type TemporalEventLog, type TemporalPrediction, type TemporalShowcaseFrame,
   type TemporalShowcaseManifest,
 } from '../lib/workbench';
 
-type SequenceTab = 'replay' | 'tracking' | 'events' | 'provenance';
+type SequenceTab = 'replay' | 'tracking' | 'events' | 'compare' | 'provenance';
 
 export function SequenceWorkbench({
   es,
@@ -28,6 +29,8 @@ export function SequenceWorkbench({
   const [speed, setSpeed] = useState(2);
   const [view, setView] = useState<SequenceView>('overlay');
   const [tab, setTab] = useState<SequenceTab>('replay');
+  const [eventLog, setEventLog] = useState<TemporalEventLog | null>(null);
+  const [eventError, setEventError] = useState('');
 
   useEffect(() => {
     let cancelled = false;
@@ -42,22 +45,31 @@ export function SequenceWorkbench({
   const sequence = manifest?.sequences[sequenceIndex] ?? null;
   const frames = sequence?.frames ?? [];
   const frame = frames[frameIndex] ?? null;
-  const predictions = sequence?.predictions ?? [];
+  // Framewise and native-video predictions answer different questions, so they are offered as
+  // two labelled groups and never merged into one ranking.
+  const predictions = useMemo(() => sequence?.predictions ?? [], [sequence]);
+  const framewisePredictions = useMemo(
+    () => predictions.filter((item) => !isNativeVideoMode(item.mode)),
+    [predictions],
+  );
+  const nativePredictions = useMemo(
+    () => predictions.filter((item) => isNativeVideoMode(item.mode)),
+    [predictions],
+  );
   const prediction = predictions[predictionIndex] ?? null;
   const predictionFrame = prediction?.frames.find((item) => item.frame_index === frameIndex) ?? null;
   const displayFrame = frame ? {
     ...frame,
     prediction_path: predictionFrame?.prediction_path ?? null,
     prediction_sha256: predictionFrame?.prediction_sha256 ?? null,
-    prediction_overlay_path: predictionFrame?.overlay_path ?? null,
   } : null;
   const metrics = prediction?.metrics
     ?? temporal?.sequences.find((row) => row.condition_id === sequence?.case_id)
     ?? null;
   const views = displayFrame ? availableSequenceViews(displayFrame) : [];
   const tabs: SequenceTab[] = metrics
-    ? ['replay', 'tracking', 'events', 'provenance']
-    : ['replay', 'provenance'];
+    ? ['replay', 'tracking', 'events', 'compare', 'provenance']
+    : ['replay', 'compare', 'provenance'];
 
   useEffect(() => {
     if (!playing || frames.length < 2) return undefined;
@@ -91,6 +103,26 @@ export function SequenceWorkbench({
       setView(views.includes('overlay') ? 'overlay' : views[0]);
     }
   }, [view, views]);
+
+  // The event logs live beside their prediction frames rather than in the manifest, so only the
+  // pair the reader actually opened is downloaded.
+  useEffect(() => {
+    const path = prediction?.events_path;
+    setEventLog(null);
+    setEventError('');
+    if (!path || tab !== 'events') return undefined;
+    let cancelled = false;
+    fetch(artifactUrl(path))
+      .then((response) => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return response.json() as Promise<TemporalEventLog>;
+      })
+      .then((document) => { if (!cancelled) setEventLog(document); })
+      .catch((reason) => {
+        if (!cancelled) setEventError(String(reason instanceof Error ? reason.message : reason));
+      });
+    return () => { cancelled = true; };
+  }, [prediction?.events_path, tab]);
 
   if (!manifest || !sequence || !frame) {
     return (
@@ -134,18 +166,42 @@ export function SequenceWorkbench({
         </label>
         {predictions.length > 0 && (
           <label className="fs-ctl">
-            {es ? `predicción (${predictions.length} disponible${predictions.length === 1 ? '' : 's'})` : `prediction (${predictions.length} available)`}
+            {es ? `método (${predictions.length} disponibles)` : `method (${predictions.length} available)`}
             <select
               className="fs-sel"
               value={predictionIndex}
               onChange={(event) => setPredictionIndex(Number(event.target.value))}
               aria-label={es ? 'Método temporal precalculado' : 'Precomputed temporal method'}
             >
-              {predictions.map((item, index) => (
-                <option key={item.method_id} value={index}>{item.method_id} · {temporalMethodLabel(item.method_id)}</option>
-              ))}
+              <optgroup label={es
+                ? 'Segmentación por cuadro + asociación IoU'
+                : 'Per-frame segmentation + IoU association'}>
+                {framewisePredictions.map((item) => (
+                  <option key={item.method_id} value={predictions.indexOf(item)}>
+                    {item.method_id} · {temporalMethodLabel(item.method_id, item.method_slug)}
+                  </option>
+                ))}
+              </optgroup>
+              {nativePredictions.length > 0 && (
+                <optgroup label={es
+                  ? 'Propagación de video con prompt (no comparable)'
+                  : 'Prompted video propagation (not comparable)'}>
+                  {nativePredictions.map((item) => (
+                    <option key={item.method_id} value={predictions.indexOf(item)}>
+                      {item.method_id} · {temporalMethodLabel(item.method_id, item.method_slug)}
+                    </option>
+                  ))}
+                </optgroup>
+              )}
             </select>
           </label>
+        )}
+        {prediction && isNativeVideoMode(prediction.mode) && (
+          <p className="fs-note">
+            {es
+              ? 'Este método recibe las máscaras exactas del primer cuadro y solo debe conservarlas. Sus métricas de identidad no son comparables con los métodos que redescubren cada instancia en cada cuadro; use la IoU de identidad.'
+              : 'This method is given the exact first-frame masks and only has to keep them. Its identity metrics are not comparable with methods that rediscover every instance on every frame; read the identity IoU instead.'}
+          </p>
         )}
         <div className="fs-sequence-facts">
           <div><span>{es ? 'cuadros' : 'frames'}</span><strong>{frames.length}</strong></div>
@@ -266,9 +322,23 @@ export function SequenceWorkbench({
         {tab === 'events' && metrics && (
           <EventEvidence
             metrics={metrics}
-            truthEvents={prediction?.truth_events ?? []}
-            predictedEvents={prediction?.predicted_events ?? []}
+            truthEvents={eventLog?.truth_events ?? []}
+            predictedEvents={eventLog?.predicted_events ?? []}
+            loading={!eventLog && !eventError}
+            error={eventError}
             frameIndex={frameIndex}
+            es={es}
+          />
+        )}
+        {tab === 'compare' && (
+          <SequenceComparison
+            framewise={framewisePredictions}
+            native={nativePredictions}
+            selectedMethodId={prediction?.method_id}
+            onSelect={(methodId) => {
+              const index = predictions.findIndex((item) => item.method_id === methodId);
+              if (index >= 0) { setPredictionIndex(index); setTab('replay'); }
+            }}
             es={es}
           />
         )}
@@ -304,9 +374,20 @@ function SequenceFrame({
     return <img src={artifactUrl(frame.source_path)} alt={es ? `Cuadro fuente de ${label}` : `${label} source frame`} />;
   }
   if (view === 'overlay') {
-    const path = frame.prediction_overlay_path || frame.overlay_path;
-    return path
-      ? <img src={artifactUrl(path)} alt={es ? `Superposición de ${label}` : `${label} overlay`} />
+    // Composited here rather than fetched: the prediction overlay is source + labels, and
+    // shipping it as 600 pre-rendered PNGs cost 63 MB for pixels the client can draw itself.
+    const labelPath = frame.prediction_path || frame.truth_path;
+    if (labelPath) {
+      return (
+        <InstanceRaster
+          path={labelPath}
+          sourcePath={frame.source_path}
+          ariaLabel={es ? `Superposición de ${label}` : `${label} overlay`}
+        />
+      );
+    }
+    return frame.overlay_path
+      ? <img src={artifactUrl(frame.overlay_path)} alt={es ? `Superposición de ${label}` : `${label} overlay`} />
       : null;
   }
   const path = view === 'truth' ? frame.truth_path : frame.prediction_path;
@@ -317,9 +398,20 @@ function SequenceFrame({
   return <img src={artifactUrl(path)} alt={`${sequenceViewLabel(view, frame, es)} · ${label}`} />;
 }
 
-function InstanceRaster({ path, ariaLabel }: { path: string; ariaLabel: string }) {
+/** Paints instance labels. With `sourcePath` it composites them over the grey frame, which is
+ *  what the "source + prediction" view is; without it, labels are drawn on a dark field. */
+function InstanceRaster({
+  path,
+  sourcePath,
+  ariaLabel,
+}: {
+  path: string;
+  sourcePath?: string;
+  ariaLabel: string;
+}) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [decoded, setDecoded] = useState<DecodedShowcaseLabels | null>(null);
+  const [source, setSource] = useState<HTMLImageElement | null>(null);
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -337,17 +429,33 @@ function InstanceRaster({ path, ariaLabel }: { path: string; ariaLabel: string }
   }, [path]);
 
   useEffect(() => {
+    if (!sourcePath) { setSource(null); return undefined; }
+    let cancelled = false;
+    const image = new Image();
+    image.onload = () => { if (!cancelled) setSource(image); };
+    image.src = artifactUrl(sourcePath);
+    return () => { cancelled = true; };
+  }, [sourcePath]);
+
+  useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas || !decoded) return;
+    if (sourcePath && !source) return;
     canvas.width = decoded.width;
     canvas.height = decoded.height;
     const context = canvas.getContext('2d');
     if (!context) return;
-    const image = context.createImageData(decoded.width, decoded.height);
+    if (source) {
+      context.drawImage(source, 0, 0, decoded.width, decoded.height);
+    }
+    const image = source
+      ? context.getImageData(0, 0, decoded.width, decoded.height)
+      : context.createImageData(decoded.width, decoded.height);
     for (let index = 0; index < decoded.labels.length; index += 1) {
       const instance = decoded.labels[index];
       const offset = index * 4;
       if (instance === 0) {
+        if (source) continue;
         image.data[offset] = 5;
         image.data[offset + 1] = 16;
         image.data[offset + 2] = 22;
@@ -356,13 +464,20 @@ function InstanceRaster({ path, ariaLabel }: { path: string; ariaLabel: string }
       }
       const hue = (instance * 0.61803398875) % 1;
       const [red, green, blue] = hslToRgb(hue, 0.72, 0.58);
-      image.data[offset] = red;
-      image.data[offset + 1] = green;
-      image.data[offset + 2] = blue;
+      if (source) {
+        // Keep the froth texture readable underneath the identity colour.
+        image.data[offset] = Math.round(image.data[offset] * 0.45 + red * 0.55);
+        image.data[offset + 1] = Math.round(image.data[offset + 1] * 0.45 + green * 0.55);
+        image.data[offset + 2] = Math.round(image.data[offset + 2] * 0.45 + blue * 0.55);
+      } else {
+        image.data[offset] = red;
+        image.data[offset + 1] = green;
+        image.data[offset + 2] = blue;
+      }
       image.data[offset + 3] = 255;
     }
     context.putImageData(image, 0, 0);
-  }, [decoded]);
+  }, [decoded, source, sourcePath]);
 
   if (error) return <div className="fs-sequence-frame-error">{error}</div>;
   return <canvas ref={canvasRef} role="img" aria-label={ariaLabel} />;
@@ -408,16 +523,118 @@ function TrackingEvidence({
   );
 }
 
+/** Cross-method comparison for one sequence: the point of baking every method is that the
+ *  behaviours can be put side by side. Grouped by prediction mode, never merged. */
+function SequenceComparison({
+  framewise,
+  native,
+  selectedMethodId,
+  onSelect,
+  es,
+}: {
+  framewise: TemporalPrediction[];
+  native: TemporalPrediction[];
+  selectedMethodId?: string;
+  onSelect: (methodId: string) => void;
+  es: boolean;
+}) {
+  const ranked = [...framewise].sort((a, b) => b.metrics.hota - a.metrics.hota);
+  return (
+    <div className="fs-evidence-panel">
+      <header>
+        <span>{es ? 'Comparación en esta secuencia' : 'Comparison on this sequence'}</span>
+        <h3>{es
+          ? 'Cada método sobre los mismos ocho cuadros'
+          : 'Every method over the same eight frames'}</h3>
+        <p>
+          {es
+            ? 'Todos los métodos se ejecutaron cuadro a cuadro con el mismo protocolo y recibieron identidades por asociación IoU. La tabla ordena por HOTA, que equilibra detección y asociación. Seleccione una fila para reproducirla.'
+            : 'Every method ran frame by frame under the same protocol and received identities by IoU association. The table is ordered by HOTA, which balances detection and association. Pick a row to replay it.'}
+        </p>
+      </header>
+      <div style={{ overflowX: 'auto' }}>
+        <table className="fs-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>{es ? 'método' : 'method'}</th>
+              <th className="num">HOTA</th>
+              <th className="num">IDF1</th>
+              <th className="num">{es ? 'cobertura' : 'coverage'}</th>
+              <th className="num">{es ? 'cambios ID' : 'ID switches'}</th>
+              <th className="num">{es ? 'fragment.' : 'fragments'}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {ranked.map((item) => (
+              <tr key={item.method_id} className={item.method_id === selectedMethodId ? 'fs-selected-row' : undefined}>
+                <td className="mono">{item.method_id}</td>
+                <th>
+                  <button className="fs-method-pick" onClick={() => onSelect(item.method_id)}>
+                    {temporalMethodLabel(item.method_id, item.method_slug)}
+                  </button>
+                </th>
+                <td className="num">{item.metrics.hota.toFixed(3)}</td>
+                <td className="num">{item.metrics.idf1.toFixed(3)}</td>
+                <td className="num">{(item.metrics.mean_frame_coverage * 100).toFixed(1)}%</td>
+                <td className="num">{item.metrics.id_switches ?? 'n/a'}</td>
+                <td className="num">{item.metrics.track_fragmentations}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {native.length > 0 && (
+        <>
+          <p className="fs-note">
+            {es
+              ? 'Los métodos siguientes no aparecen en la tabla anterior porque responden otra pregunta: reciben las máscaras exactas del primer cuadro y solo deben conservarlas. Ordenarlos junto a los demás sugeriría una ventaja que el protocolo les regala.'
+              : 'The methods below are kept out of that table because they answer a different question: they are given the exact first-frame masks and only have to keep them. Ranking them alongside the rest would credit them with an advantage the protocol hands them.'}
+          </p>
+          <table className="fs-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>{es ? 'método' : 'method'}</th>
+                <th>{es ? 'protocolo' : 'protocol'}</th>
+                <th className="num">{es ? 'cobertura' : 'coverage'}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {native.map((item) => (
+                <tr key={item.method_id}>
+                  <td className="mono">{item.method_id}</td>
+                  <th>
+                    <button className="fs-method-pick" onClick={() => onSelect(item.method_id)}>
+                      {temporalMethodLabel(item.method_id, item.method_slug)}
+                    </button>
+                  </th>
+                  <td className="fs-hint small">{item.protocol}</td>
+                  <td className="num">{(item.metrics.mean_frame_coverage * 100).toFixed(1)}%</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
+      )}
+    </div>
+  );
+}
+
 function EventEvidence({
   metrics,
   truthEvents,
   predictedEvents,
+  loading,
+  error,
   frameIndex,
   es,
 }: {
   metrics: TemporalSequenceMetrics;
-  truthEvents: Array<{ frame_index: number; instance_id: number; type: string }>;
-  predictedEvents: Array<{ frame_index: number; instance_id: number; type: string }>;
+  truthEvents: TemporalEvent[];
+  predictedEvents: TemporalEvent[];
+  loading: boolean;
+  error: string;
   frameIndex: number;
   es: boolean;
 }) {
@@ -447,18 +664,27 @@ function EventEvidence({
           <tr><th>{es ? 'falsos negativos' : 'false negatives'}</th><td className="num">{metrics.event_false_negatives ?? 'n/a'}</td></tr>
         </tbody>
       </table>
-      <div className="fs-event-columns">
-        <article>
-          <span>{es ? `Referencia · cuadro ${frameIndex + 1}` : `Truth · frame ${frameIndex + 1}`}</span>
-          <strong>{truthAtFrame.length}</strong>
-          <p>{eventSummary(truthAtFrame, es)}</p>
-        </article>
-        <article>
-          <span>{es ? `Predicción · cuadro ${frameIndex + 1}` : `Prediction · frame ${frameIndex + 1}`}</span>
-          <strong>{predictedAtFrame.length}</strong>
-          <p>{eventSummary(predictedAtFrame, es)}</p>
-        </article>
-      </div>
+      {error && <p className="fs-note">{error}</p>}
+      {loading && (
+        <p className="fs-hint">
+          <span className="fs-spinner" aria-hidden="true" />{' '}
+          {es ? 'Cargando el registro de eventos de este par' : 'Loading this pair’s event log'}
+        </p>
+      )}
+      {!loading && !error && (
+        <div className="fs-event-columns">
+          <article>
+            <span>{es ? `Referencia · cuadro ${frameIndex + 1}` : `Truth · frame ${frameIndex + 1}`}</span>
+            <strong>{truthAtFrame.length}</strong>
+            <p>{eventSummary(truthAtFrame, es)}</p>
+          </article>
+          <article>
+            <span>{es ? `Predicción · cuadro ${frameIndex + 1}` : `Prediction · frame ${frameIndex + 1}`}</span>
+            <strong>{predictedAtFrame.length}</strong>
+            <p>{eventSummary(predictedAtFrame, es)}</p>
+          </article>
+        </div>
+      )}
     </div>
   );
 }
@@ -533,10 +759,26 @@ function sequenceDescription(caseId: string, es: boolean): string {
   return descriptions[caseId]?.[es ? 1 : 0] ?? '';
 }
 
-function temporalMethodLabel(methodId: string): string {
-  if (methodId === 'L1') return 'Boundary/distance U-Net';
-  if (methodId === 'L7') return 'SAM 2.1 video propagation';
-  return methodId;
+const TEMPORAL_METHOD_LABELS: Record<string, string> = {
+  C1: 'Otsu + connected components',
+  C2: 'Gradient immersion watershed',
+  C3: 'Marker-controlled watershed',
+  C4: 'Distance-transform watershed',
+  C5: 'H-minima watershed',
+  C6: 'SLIC + RAG merge',
+  C7: 'Lamella-valley watershed',
+  L1: 'Boundary/distance U-Net',
+  L2: 'Deep-marker watershed',
+  L3: 'GC-FSegNet',
+  L4: 'StarDist 2D',
+  L5: 'Cellpose-SAM',
+  L6: 'YOLO froth segmentation',
+  L7: 'SAM 2.1 video propagation',
+  N1: 'LamellaStar',
+};
+
+function temporalMethodLabel(methodId: string, slug?: string): string {
+  return TEMPORAL_METHOD_LABELS[methodId] ?? slug ?? methodId;
 }
 
 function sequenceViewLabel(
@@ -560,6 +802,7 @@ function sequenceTabLabel(tab: SequenceTab, es: boolean): string {
   if (tab === 'replay') return es ? 'Reproducción' : 'Replay';
   if (tab === 'tracking') return es ? 'Seguimiento' : 'Tracking';
   if (tab === 'events') return es ? 'Eventos' : 'Events';
+  if (tab === 'compare') return es ? 'Comparar métodos' : 'Compare methods';
   return es ? 'Proveniencia' : 'Provenance';
 }
 
