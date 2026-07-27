@@ -39,6 +39,24 @@ All numbers are synthetic controlled-benchmark results, not plant accuracy.
 See `data/derived/method-benchmark.json` and
 `data/derived/release-report.json` for the machine-readable evidence.
 
+### The sequence lane
+
+Every registered method is also run over five eight-frame sequences with exact,
+persistent instance ids: 75 published (method, sequence) pairs and 600 prediction
+frames, with no cell allowed to be missing. Framewise methods segment each frame
+independently and receive identities afterwards by IoU association; SAM 2.1 carries
+its own memory and is prompted once with the exact first-frame masks.
+
+Those two protocols answer different questions and are never ranked against each
+other. SAM 2.1 scores IDF1 and HOTA of 1.000 on every sequence because it is handed
+twelve identities and asked whether it still has twelve; its honest number is the mean
+identity IoU, 0.898. Framewise leader on nominal transport is Cellpose-SAM at HOTA
+0.965, then LamellaStar 0.926 and boundary U-Net 0.923, down to marker-less immersion
+watershed at 0.153 with 370 identity switches over eight frames.
+
+There is no video anywhere in this repository and no module decodes video. A sequence
+is a stack of PNG frames. See `docs/temporal/02_the-full-method-matrix.md`.
+
 ## Data and compute pipeline
 
 The learned-data manifest defines 384 samples across 16 condition families:
