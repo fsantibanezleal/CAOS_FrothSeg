@@ -120,7 +120,8 @@ def main() -> int:
 
     if not stopped_early:
         for run_id, config in ENSEMBLE_RUNS:
-            output = work_root / f"{run_id}.json"
+            # evaluate_ensemble treats --output as a DIRECTORY and writes run.json inside it.
+            output = work_root / run_id
             print(f"[{run_id}] evaluating ensemble")
             command = [PYTHON, "-m", "fslab.learning.evaluate_ensemble"]
             for member in config["members"]:
@@ -133,8 +134,8 @@ def main() -> int:
                 "--device", args.device,
             ]
             _run(command)
-            document = json.loads(output.read_text(encoding="utf-8"))
-            mean_ap = float(document["mean_ap"])
+            document = json.loads((output / "run.json").read_text(encoding="utf-8"))
+            mean_ap = float(document["evaluation"]["mean_ap"])
             results.append({"id": run_id, **{
                 key: value for key, value in config.items() if key != "members"
             }, "members": list(config["members"]), "mean_ap": mean_ap})
