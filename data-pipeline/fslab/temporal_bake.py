@@ -32,7 +32,7 @@ import numpy as np
 from .model_registry import METHODS
 from .science.froth_gen import CASES, generate_sequence
 from .science.segment import METHODS as CLASSICAL_METHODS
-from .showcase import encode_label_runs, preview, sha256
+from .showcase import encode_label_runs, sha256
 from .temporal import (
     FRAMES,
     FRAMEWISE_MODE,

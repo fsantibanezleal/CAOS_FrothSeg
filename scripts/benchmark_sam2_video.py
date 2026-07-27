@@ -25,7 +25,7 @@ from PIL import Image
 
 from fslab.foundation.sam2_1 import MODEL_ID, UPSTREAM_COMMIT
 from fslab.science.froth_gen import CASES, generate_sequence
-from fslab.showcase import encode_label_runs, preview, sha256
+from fslab.showcase import encode_label_runs, sha256
 from fslab.temporal import identity_events, temporal_metrics
 from fslab.temporal_bake import SEQUENCE_IDS
 

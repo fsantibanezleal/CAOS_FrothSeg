@@ -141,13 +141,27 @@ def test_n1_preregistered_selection_and_single_test_are_reproducible():
     assert evidence["protocol"]["test_access_before_each_selection"] is False
     assert evidence["protocol"]["final_test_evaluations"] == 2
     assert evidence["dataset"]["reserve_groups"] == 0
-    assert len(evidence["studies"]) == 2
-    assert all(len(study["validation_results"]) == 6 for study in evidence["studies"])
-    latest = evidence["studies"][-1]
-    winner = max(latest["validation_results"], key=lambda row: row["mean_ap"])
-    assert winner["id"] == evidence["selection"]["id"] == "c24-e80-s20260727"
-    assert winner["mean_ap"] == evidence["selection"]["validation_mean_ap"]
-    assert latest["finalist_gate"]["passed"] is True
+    assert len(evidence["studies"]) == 3
+    # Every study publishes every configuration it ran, winners and losers alike, and each
+    # one's declared winner must be the configuration that actually scored highest.
+    for study in evidence["studies"]:
+        assert len(study["validation_results"]) >= 6, study["id"]
+        best = max(study["validation_results"], key=lambda row: row["mean_ap"])
+        selected = study.get("selected")
+        if isinstance(selected, str):
+            assert best["id"] == selected, study["id"]
+        # v1 predates the finalist gate; every study that declares one must pass it.
+        if "finalist_gate" in study:
+            assert study["finalist_gate"]["passed"] is True, study["id"]
+
+    # The top-level selection/comparison blocks describe the checkpoint actually shipped as
+    # N1, which is still the v2 single model. They must not drift to describe a study winner
+    # that has not been promoted.
+    v2 = evidence["studies"][1]
+    assert evidence["selection"]["id"] == "c24-e80-s20260727"
+    assert max(v2["validation_results"], key=lambda row: row["mean_ap"])["mean_ap"] == (
+        evidence["selection"]["validation_mean_ap"]
+    )
     assert evidence["comparison"]["clears_controlled_bar"] is True
     assert evidence["comparison"]["exceeds_measured_leader"] is False
 
