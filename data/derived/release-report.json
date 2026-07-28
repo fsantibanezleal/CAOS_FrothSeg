@@ -3,8 +3,7 @@
   "version": "0.4.0",
   "complete": false,
   "errors": [
-    "no accepted licensed real held-out source with imported samples and calibration",
-    "version/tag mismatch: expected v0.04.000, latest is v0.03.000"
+    "no accepted licensed real held-out source with imported samples and calibration"
   ],
   "branch_policy": "existing develop branch; no worktree",
   "dataset": {
@@ -18,13 +17,13 @@
   },
   "method_benchmark": {
     "path": "data/derived/method-benchmark.json",
-    "sha256": "1fbddeecedcf3f827f1d2b62cef53e2096ff58fd93ad477a39780925b7bd08ec",
+    "sha256": "711fe3c94d3b259baa2ecbeb0f3dce74f48dfa25fb4934689b413553f2e79d54",
     "method_count": 15,
     "implemented_count": 15,
     "leader": {
-      "id": "L5",
-      "slug": "cellpose_sam",
-      "mean_ap": 0.5098906249999999
+      "id": "N1",
+      "slug": "lamellastar",
+      "mean_ap": 0.51859375
     },
     "beyond_sota_claim": false,
     "coverage": {
@@ -618,40 +617,40 @@
       "tier": "frontier",
       "implementation_state": "implemented",
       "quality_status": "passes-current-bar",
-      "test_mean_ap": 0.490359375,
-      "test_mean_boundary_fscore": 0.9826265625,
-      "test_mean_bsd_wasserstein": 0.9242031249999999,
+      "test_mean_ap": 0.51859375,
+      "test_mean_boundary_fscore": 0.987625,
+      "test_mean_bsd_wasserstein": 0.871671875,
       "test_cell_count": 64,
       "test_micro": {
         "association_iou": 0.5,
         "nGt": 17846,
-        "nPred": 14328,
-        "tp": 12496,
-        "fp": 1832,
-        "fn": 5350,
-        "merges": 2539,
-        "splits": 478,
-        "instance_precision": 0.8721384701284198,
-        "instance_recall": 0.700212932870111,
-        "instance_f1": 0.7767762789830298
+        "nPred": 15513,
+        "tp": 13785,
+        "fp": 1728,
+        "fn": 4061,
+        "merges": 2250,
+        "splits": 539,
+        "instance_precision": 0.8886095532778959,
+        "instance_recall": 0.7724420038103776,
+        "instance_f1": 0.8264636230102821
       },
       "compute": {
         "hardware_lane": "gpu",
         "device": "NVIDIA GeForce RTX 4070 Laptop GPU",
-        "mean_inference_ms": 72.81107692307693,
-        "p95_inference_ms": 200.02519999999947,
-        "peak_memory_mib": 266.5,
+        "mean_inference_ms": 98.82907692307693,
+        "p95_inference_ms": 201.91939999999963,
+        "peak_memory_mib": 36.5,
         "peak_memory_metric": "cuda-peak-allocated",
-        "model_artifact_bytes": 1637944,
-        "model_artifact_sha256": "ef2a6ad69983a5b60948d1dbea285111c3722e442d61c9edafcae5629352f734",
+        "model_artifact_bytes": 4910780,
+        "model_artifact_sha256": "4fcbc593ec0bcbf69718c3ae480d90d4b0319c0c9698cb97aee434118b5525a8",
         "model_artifact_committed": true,
-        "training_duration_seconds": 305.437,
+        "training_duration_seconds": 15.548,
         "run_manifest": "models/lamellastar-v1/run.json"
       },
-      "canonical_mean_ap": 0.48966666666666664,
+      "canonical_mean_ap": 0.5353333333333333,
       "run": {
         "path": "models/lamellastar-v1/run.json",
-        "sha256": "4cf1470f3c808746919cf1a0a4e905f0fe7a1c9279ed72f6c835a1870afe791c"
+        "sha256": "ea07d97c14a3517b31479b59d2265d1478efbe3ed9b94a6813614705b5f9f658"
       },
       "docs_path": "docs/frameworks/14_lamellastar/README.md"
     }
@@ -925,21 +924,21 @@
     },
     {
       "path": "data/derived/temporal/lamellastar.json",
-      "sha256": "e24770ccd25cabc8316f4cb2bbf4d00117333cd95585e14597757879df467a31",
+      "sha256": "8497b33d7b4feb1263f777cc2d821cf797d402fb0787433804f4b266c51e99dd",
       "schema": "frothseg.temporal-benchmark/v1",
       "method_id": "N1",
       "prediction_kind": "framewise_segmentation_with_iou_identity_association",
       "prediction_sequence_count": 5,
       "prediction_frame_count": 40,
-      "mean_hota": 0.8432426756700728,
-      "mean_idf1": 0.8341897810559363,
+      "mean_hota": 0.9167196163739378,
+      "mean_idf1": 0.912520165234801,
       "metrics": {
-        "event_precision": 0.021739130434782608,
+        "event_precision": 0.031746031746031744,
         "event_recall": 1.0,
-        "flow_epe_px": 0.7110911103640746,
-        "hota": 0.9256351773102576,
-        "idf1": 0.9226753670473083,
-        "track_fragmentations": 17
+        "flow_epe_px": 0.528032371211265,
+        "hota": 0.960746135572232,
+        "idf1": 0.9616368286445013,
+        "track_fragmentations": 6
       }
     }
   ],
@@ -1006,6 +1005,6 @@
       "use-cases"
     ],
     "expected_tag": "v0.04.000",
-    "latest_tag": "v0.03.000"
+    "latest_tag": "v0.04.000"
   }
 }
