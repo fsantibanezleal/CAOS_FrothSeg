@@ -19,7 +19,7 @@ def main() -> None:
     parser.add_argument("--annotations", type=Path, required=True)
     parser.add_argument("--images", type=Path, required=True)
     parser.add_argument("--metadata", type=Path, required=True)
-    parser.add_argument("--source-id", default="roboflow-froth-rk6ka")
+    parser.add_argument("--source-id", required=True, help="a source_id from manifests/source-registry.json")
     parser.add_argument(
         "--registry",
         type=Path,

@@ -31,9 +31,9 @@ fix and upgrade when a non-vulnerable current release exists.
 
 - `data/raw/`, local calibration overlays, credentials, large checkpoints, and
   run logs are ignored.
-- `scripts/fetch_roboflow_froth.py` reads a scoped API key from the environment,
-  never prints or persists it, hashes the archive, and blocks ZIP path
-  traversal.
+- No dataset fetcher ships with a credential path. The Roboflow fetcher was removed on
+  2026-07-28 with its source; any future fetcher must read its credential from the
+  environment only and must never persist it into provenance.
 - `scripts/import_real_coco.py` rejects missing licenses, missing grouping,
   absent physical calibration, leakage, and unreviewed annotations.
 - Release evidence contains source identifiers, hashes, metrics, and review

@@ -44,7 +44,6 @@ def check_development() -> list[str]:
         "data-pipeline/fslab/pipeline.py",
         "data-pipeline/fslab/showcase.py",
         "scripts/check_artifacts.py",
-        "scripts/fetch_roboflow_froth.py",
         "scripts/import_real_coco.py",
         "scripts/validate_classical_live_parity.py",
         "tests/test_dataset_splits.py",

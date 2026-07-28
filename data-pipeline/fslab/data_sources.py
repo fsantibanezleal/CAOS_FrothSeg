@@ -24,8 +24,12 @@ class DataSource:
     #: verified against the publisher rather than assumed, so the question is not reopened.
     license_verification: dict | None = None
     #: The one external input a source is waiting on, named precisely. "Needs real data" is
-    #: not actionable; "needs ROBOFLOW_API_KEY" is.
+    #: not actionable; naming the exact missing input is.
     blocked_on: dict | None = None
+    #: For an evaluated but unadopted candidate: what adopting it would prove, and what it
+    #: still could not prove. Kept on the record so a scope decision is a decision rather
+    #: than a default, and so the next reader does not repeat the search.
+    adoption_status: dict | None = None
 
 
 def load_source_registry(path: Path) -> dict[str, DataSource]:

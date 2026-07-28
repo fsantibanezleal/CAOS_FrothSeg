@@ -944,7 +944,7 @@
   ],
   "classical_live_parity": {
     "path": "verification/classical-live-parity.json",
-    "sha256": "0f8df1458284e96b2e0317160ecb98144b67d923890cc701573380538dd41066",
+    "sha256": "541576c5763bc20507aa0b8c9573689f44abb246d3227bd77dff60caf9d71c78",
     "accepted_methods": [
       "otsu_cc",
       "watershed_dt",

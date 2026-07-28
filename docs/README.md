@@ -49,14 +49,14 @@ from the data reality of this domain (see `research-tools-and-data`, `sam-verifi
   controlled harness, clearly labelled synthetic; it is never reported as concentrator accuracy. The
   glare / motion-blur / defocus cases are deliberate negative controls where methods are supposed to fail,
   and SAM is run at its standard auto-generator defaults (it is not tuned to the synthetic set).
-- **Real froth is governed separately.** FrothSeg ships no real images in git.
-  The source registry includes the public, CC-BY-NC-SA-4.0 Roboflow Froth
-  instance dataset as a fetchable candidate. Its export requires a Roboflow API
-  key, and its annotations do not establish physical scale, acquisition groups,
-  or independent review. The release lane therefore requires a local fetch,
-  traceable `mm_per_px`, leakage-safe grouping, and accepted annotation review
-  before any real held-out claim. User uploads remain qualitative unless they
-  enter that governed lane.
+- **Real froth is governed separately, and none is committed.** Searched again on
+  2026-07-28: no openly licensed, real, per-bubble-annotated froth dataset exists in public
+  repositories. The candidates are unlicensed (Kaggle reports no licence at all),
+  non-commercial, or paywalled, and Zenodo returns no froth segmentation dataset. Froth
+  imagery is operational plant data and plants do not publish it. A genuine froth accuracy
+  claim therefore needs owned, annotated frames. Whatever the source, the release lane
+  requires traceable `mm_per_px`, leakage-safe grouping, and accepted annotation review
+  before any real held-out claim; user uploads stay qualitative unless they enter that lane.
 
 **What is committed vs fetched vs kept out of git:**
 
