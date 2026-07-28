@@ -1,81 +1,127 @@
-# FrothSeg, flotation-froth bubble segmentation and bubble-size distribution
+# FrothSeg · full flotation-froth instance-segmentation product
 
-[![CI](https://img.shields.io/github/actions/workflow/status/fsantibanezleal/CAOS_FrothSeg/ci.yml?branch=main&label=CI)](https://github.com/fsantibanezleal/CAOS_FrothSeg/actions)
+[![CI](https://img.shields.io/github/actions/workflow/status/fsantibanezleal/CAOS_FrothSeg/ci.yml?branch=develop&label=CI)](https://github.com/fsantibanezleal/CAOS_FrothSeg/actions)
 [![License](https://img.shields.io/github/license/fsantibanezleal/CAOS_FrothSeg)](LICENSE)
-[![Version](https://img.shields.io/github/v/tag/fsantibanezleal/CAOS_FrothSeg?label=version&sort=semver)](https://github.com/fsantibanezleal/CAOS_FrothSeg/tags)
 
-**In-browser bubble segmentation of flotation froth.** A SAM-family foundation model (SlimSAM / MobileSAM) runs
-zero-shot, with no froth training labels, as an automatic mask generator via transformers.js and onnxruntime-web
-(WebGPU when a real GPU is present, single-threaded WASM otherwise), producing the per-bubble instance masks, the
-**bubble-size distribution (BSD)** (D10/D50/D90, the Sauter mean d32) and a froth-state read-out. A classical
-floor (scikit-image watershed and SLIC) runs as the cited baseline. Part of the **Faena** mining-analytics hub
-(flotation lane); the froth-CV flagship.
+FrothSeg is an offline-first scientific repository for flotation-froth bubble
+instance segmentation and bubble-size distribution analysis. It contains the
+data generator and split contracts, seven classical methods, seven
+learned/foundation methods, one frontier experiment, CUDA training, calibration,
+inference, evaluation, ONNX export, temporal tracking, artifact validation,
+internal wiki, and a companion web workbench.
 
-The froth surface is a fast, non-invasive proxy for metallurgical state (grade, recovery, reagent dosing, air
-rate). The hard CV problem is instance segmentation of densely packed, touching, translucent, specular bubbles,
-and the field's blocker is the scarcity of labelled froth data. FrothSeg answers both: a zero-shot foundation
-segmenter that needs no labels, and an honest benchmark where every mask metric is computed against synthetic
-froth whose per-bubble ground truth is known exactly.
+The website is not the whole product. It replays selected precomputed evidence
+and provides bounded live evaluation through seven TypeScript classical methods
+and a legacy lightweight SlimSAM lane. Full training and research inference stay
+offline, where the required runtimes and GPU are available.
 
-## Status
+## Release evidence
 
-**Live** (v0.2.0). The App is a real workbench: pick a synthetic sample (with exact ground truth) or upload a
-real froth photo; the segmenter runs in the browser and reports the masks, the BSD and the froth state, with
-live controls (prompt-grid density, predicted-IoU and stability thresholds, an illumination-flatten and deglare
-front-end). Deep docs live in [docs/](docs/); the plan of record is the management repo
-(`wip/mining-analytics-hub/products/frothseg/`).
+Version 0.04.000 implements all 15 registered methods:
 
-Verified offline against the exact synthetic ground truth (grid 32, same mask AP + BSD-Wasserstein the classical
-floor uses): mean SAM AP 0.365 vs the classical floor 0.262, SAM winning 10 of 13 cases, dramatically under glare
-(0.407 vs 0.081). The classical floor stays complementary under heavy motion or defocus blur, so the App offers
-both. Synthetic AP is a controlled benchmark, never reported as real-plant accuracy.
+| Tier | IDs | Implementations |
+|---|---|---|
+| Classical | C1-C7 | Otsu+CC, immersion watershed, marker watershed, distance watershed, H-minima watershed, SLIC+RAG, lamella-valley watershed |
+| Domain learned | L1-L4, L6 | boundary U-Net, deep-marker watershed, GC-FSegNet, official StarDist 2D, official Ultralytics YOLO segmentation |
+| Foundation | L5, L7 | official Cellpose-SAM `cpsam_v2`, official SAM 2.1 image and video |
+| Research | N1 | LamellaStar four-head research model |
 
-## The two data contracts
+The primary comparison uses 64 untouched test images whose latent geometry
+groups are isolated from training, validation, and calibration. Cellpose-SAM,
+fine-tuned for two complete passes over all 192 training images, is the current
+leader at mask AP 0.5099, AP50 0.8238, and PQ 0.7227. LamellaStar reaches AP
+0.4904 after two preregistered studies, making it the measured runner-up without
+exceeding Cellpose-SAM. Boundary U-Net follows at AP 0.4153. The repository
+reports the LamellaStar gain as an internal improvement without a superiority
+claim.
 
-1. **Ingestion contract, raw froth image to pipeline.** `data-pipeline/fslab/io/contract.py` (`validate_image`)
-   is the bring-your-own-froth gate: a frame is accepted only if it is a real, usable image (size, dynamic range),
-   rejected with a reason otherwise, and flagged (glare, low contrast, under-exposure) so the UI and the deglare
-   front-end react. The browser mirrors the same thresholds (`frontend/src/lib/imageGate.ts`).
-2. **Artifact contract, pipeline to web.** Each synthetic case ships `frame.png`, `masks.json` (COCO-RLE ground
-   truth), `bsd.csv`, `benchmark.json` and a manifest recording every artifact's byte size and sha256, re-verified
-   in CI (`scripts/check_artifacts.py`) so a silent drift fails the build. A TS mirror of the schema fails the web
-   build on drift.
+All numbers are synthetic controlled-benchmark results, not plant accuracy.
+See `data/derived/method-benchmark.json` and
+`data/derived/release-report.json` for the machine-readable evidence.
 
-## Quickstart
+### The sequence lane
 
-```bash
-# 1. reproducible pipeline env (.venv-pipeline + pinned CV stack)
-./scripts/setup.sh                 # scripts/setup.ps1 on Windows
+Every registered method is also run over five eight-frame sequences with exact,
+persistent instance ids: 75 published (method, sequence) pairs and 600 prediction
+frames, with no cell allowed to be missing. Framewise methods segment each frame
+independently and receive identities afterwards by IoU association; SAM 2.1 carries
+its own memory and is prompted once with the exact first-frame masks.
 
-# 2. bake the synthetic benchmark over every case -> data/derived/synth/ + manifests/
-./scripts/precompute.sh            # scripts/precompute.ps1
+Those two protocols answer different questions and are never ranked against each
+other. SAM 2.1 scores IDF1 and HOTA of 1.000 on every sequence because it is handed
+twelve identities and asked whether it still has twelve; its honest number is the mean
+identity IoU, 0.898. Framewise leader on nominal transport is Cellpose-SAM at HOTA
+0.965, then LamellaStar 0.926 and boundary U-Net 0.923, down to marker-less immersion
+watershed at 0.153 with 370 identity switches over eight frames.
 
-# 3. tests (determinism, both contracts, mask AP, TS/Python parity)
-PYTHONPATH=data-pipeline .venv-pipeline/Scripts/python.exe -m pytest
+There is no video anywhere in this repository and no module decodes video. A sequence
+is a stack of PNG frames. See `docs/temporal/02_the-full-method-matrix.md`.
 
-# 4. the SPA (the live SAM segmenter)
-cd frontend && npm install && npm run dev
+## Data and compute pipeline
 
-# 5. (optional) verify the live SAM core offline against the ground truth
-cd frontend && npx tsx scripts/verify_sam.ts poly-normal glare-storm --grid 32
-PYTHONPATH=data-pipeline .venv-pipeline/Scripts/python.exe scripts/score_sam.py
+The learned-data manifest defines 384 samples across 16 condition families:
+192 training, 64 validation, 64 calibration, and 64 untouched test samples.
+Each latent geometry group has two independently rendered appearance variants;
+group isolation prevents appearance twins from leaking across splits.
+
+The complete flow is:
+
+1. generate exact labelled stills or persistent-ID temporal sequences;
+2. materialize a checksum-pinned local dataset cache;
+3. train or load the method's official pretrained checkpoint;
+4. calibrate post-processing only on the calibration split;
+5. evaluate once on the untouched test split;
+6. run the separate 13-case canonical diagnostic;
+7. export checkpoints, portable ONNX where applicable, masks, run manifests,
+   temporal evidence, and the unified release report;
+8. copy only compact evidence into the static companion website.
+
+## Reproduce
+
+```powershell
+./scripts/setup.ps1
+./.venv-gpu/Scripts/python.exe scripts/check_cuda.py
+./.venv-gpu/Scripts/python.exe scripts/build_learned_manifest.py
+./.venv-gpu/Scripts/python.exe scripts/build_learned_cache.py
+
+./.venv-gpu/Scripts/python.exe -m fslab.learning.train_unet --help
+./.venv-gpu/Scripts/python.exe -m fslab.learning.train_multitask --help
+./.venv-gpu/Scripts/python.exe scripts/train_yolo_seg.py --help
+
+./.venv-gpu/Scripts/python.exe scripts/build_method_benchmark.py
+./.venv-gpu/Scripts/python.exe scripts/build_release_report.py
+
+./.venv-gpu/Scripts/python.exe -m pytest
+./.venv-gpu/Scripts/python.exe -m ruff check .
+./.venv-gpu/Scripts/python.exe scripts/check_artifacts.py
+./.venv-gpu/Scripts/python.exe scripts/check_product_completeness.py --profile release
+Set-Location frontend
+npm test
+npm run build
 ```
 
-## Structure
-
-See [STRUCTURE.md](STRUCTURE.md) for the full tree and [docs/](docs/) for the navigable wiki (theory, the SAM
-auto-mask method, the classical floor, the data contracts, the framework cards). Versioning: `X.XX.XXX` display
-form, tags per release, `0.x` while the froth-state layer uses proxy labels ([CHANGELOG.md](CHANGELOG.md)).
+Detailed commands, method provenance, limitations, architecture, contracts, and
+result interpretation are indexed in [docs/](docs/README.md). The product plan
+of record remains in the CAOS management repository.
 
 ## Honest limits
 
-No public per-bubble froth ground truth exists, so mask metrics are computed on synthetic froth and say so;
-real-plant claims are qualitative. The synthetic generator is stress-tested (glare, merges, defocus, motion) so
-highlight-seeded methods cannot win artificially, and the SAM defaults are the standard auto-generator values
-(not tuned to the synthetic set). The froth-state read-out is a heuristic proxy from the literature (Aldrich et
-al. 2010), not a calibrated plant setpoint. Real froth enters the product only through the upload lane; the SAM
-model is fetched from the Hugging Face hub at runtime (Apache-2.0), not committed.
+- No third-party real images are committed. The source registry contains a
+  licensed public 88-image instance candidate, but real release claims remain
+  blocked until it is fetched, independently reviewed, physically calibrated,
+  grouped without leakage, and evaluated through the governed offline lane.
+  Current exact metrics therefore use the controlled synthetic harness.
+- Cellpose-SAM and SAM2 checkpoints are checksum-recorded external model assets;
+  their very large upstream weights are not duplicated in git.
+- Native Windows TensorFlow does not expose CUDA for StarDist. Its official
+  graph trained on CPU; WSL2/Linux is the supported GPU path.
+- The lightweight browser SlimSAM result is retained as a legacy interactive
+  lane and is not presented as the strongest method.
+- Froth-state readouts remain literature-based proxies, not calibrated plant
+  setpoints.
 
 ## License
 
-MIT, see [LICENSE](LICENSE) and [ATTRIBUTION.md](ATTRIBUTION.md).
+The in-repository code is Apache-2.0. Individual engines and checkpoints retain their
+upstream licenses; consult [ATTRIBUTION.md](ATTRIBUTION.md) and each framework
+card before redistribution or deployment.

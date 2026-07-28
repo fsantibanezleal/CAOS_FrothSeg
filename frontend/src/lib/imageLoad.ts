@@ -1,7 +1,7 @@
 // Browser image loading + conversion for the segmenter. Loads a sample URL or an uploaded File, exposes the
 // grayscale [0,1] array the deglare front-end + CONTRACT-1 gate operate on, and builds the RawImage the SAM
 // processor consumes. Downscales very large uploads so a phone photo does not blow up the point-grid decode.
-import { RawImage } from '@huggingface/transformers';
+import type { RawImage } from '@huggingface/transformers';
 
 export interface LoadedImage {
   gray: Float32Array; // row-major [0,1]
@@ -32,7 +32,14 @@ export async function loadImage(src: string | File): Promise<LoadedImage> {
 }
 
 /** Grayscale [0,1] -> a 3-channel RawImage (SAM expects RGB; we replicate the gray channel). */
-export function grayToRawImage(gray: Float32Array, width: number, height: number): RawImage {
+export async function grayToRawImage(
+  gray: Float32Array,
+  width: number,
+  height: number,
+): Promise<RawImage> {
+  // Keep the 20+ MB ONNX/WASM research runtime out of the initial web route.
+  // It is fetched only after the user explicitly runs the legacy SlimSAM lane.
+  const { RawImage } = await import('@huggingface/transformers');
   const data = new Uint8Array(width * height * 3);
   for (let i = 0; i < gray.length; i++) {
     const v = Math.max(0, Math.min(255, Math.round(gray[i] * 255)));

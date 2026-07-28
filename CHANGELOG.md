@@ -1,5 +1,75 @@
 # Changelog
 
+## [0.04.000] · UNRELEASED (work 2026-07-25 to 2026-07-27)
+
+Not tagged. The release gate (`scripts/build_release_report.py`) reports
+`complete: false`, blocked on "no accepted licensed real held-out source with imported
+samples and calibration". Everything below is on `develop`; `main` is still at
+v0.03.000.
+
+### Added (2026-07-27): the temporal lane covers the whole ladder
+
+- Every registered method now has precomputed temporal evidence on every canonical
+  sequence: 15 methods x 5 sequences x 8 frames, 75 pairs, 600 prediction frames. It
+  was L1 on five sequences and L7 on one; the other thirteen were `not_precomputed`.
+- New `fslab/temporal_bake.py` gives each method a per-frame predictor (classical
+  callables, the U-Net, the shared multitask head for L2/L3/N1, StarDist, Cellpose-SAM,
+  YOLO) and assigns identities by IoU association. The generic path reproduces the
+  previously published L1 numbers exactly, which is what validates it.
+- SAM 2.1 video propagation now covers all five sequences instead of `motion-fast` alone.
+- The two prediction modes are kept apart everywhere. L7 is handed the exact first-frame
+  masks and only has to keep them, so its IDF1 and HOTA are 1.000 by construction; its
+  honest number is the identity IoU (0.898). The mode travels with every row, the method
+  picker groups by it, and the comparison table separates them with the reason stated.
+- New Compare methods view: every method on the selected sequence ordered by HOTA with
+  ID switches and fragmentations, and a row picker that replays the chosen method.
+- Payload: the showcase manifest carried every event log inline (10.4 MB, 97% of its
+  weight, downloaded by every visitor). Event logs moved beside their frames and are
+  fetched on demand; the manifest went from 22 MB to 321 KB. 600 pre-rendered prediction
+  overlays were dropped in favour of compositing source + labels on the canvas, which cut
+  63 MB. The derived temporal payload went from 113 MB to 51 MB.
+- The three validators that check this contract each held their own copy of the logic,
+  which is why only one was updated when the shape changed. They now share
+  `fslab.showcase.verify_temporal_prediction`, and the release gate derives its
+  expectations from the registry so a new method cannot skip the sequence lane.
+
+### Fixed (2026-07-27 audit)
+
+- The App export panel printed `python -m fslab.pipeline infer --input <image-or-video>
+  --method ... --output-root ...`. No such subcommand, no such flags, and the repository
+  decodes no video anywhere. The panel now prints the command that exists and states
+  plainly that per-file inference does not exist yet and that video is not read.
+- Sequence replay started playing on mount. It now starts paused and stops when the tab
+  is hidden, so a background tab does not advance frames and decode rasters.
+- The sequence stage was 16/9 while the canonical frames are square, so it pillarboxed
+  each 256 x 256 frame into a 813 x 459 box and used 56% of its own width. The stage now
+  matches the source aspect and the frame fills it.
+- Version drift. `VERSION` held the semver form `0.4.0` instead of the display form
+  `0.04.000` required by ADR-0068, the release report hardcoded the version instead of
+  reading `VERSION`, the footer rendered `v0.4.0`, and `app/__init__.py` still carried
+  the template's `0.01.000`. `VERSION` is now the single source and the report fails on
+  any disagreement between it, `pyproject.toml`, `frontend/package.json` and
+  `fslab.__version__`.
+- Added `scripts/check_template_residue.py` (ADR-0057), missing since instantiation, and
+  wired it into CI. It caught template text in `.vscode/settings.json`.
+
+### Rebuilt
+
+- Replaced the browser-only product framing with a complete offline-first
+  processing, training, inference, calibration, evaluation, export, temporal,
+  visualization, and release-evidence pipeline.
+- Implemented and evaluated the full C1-C7, L1-L7, N1 method registry.
+- Added a leakage-resistant 384-sample v2 dataset with latent-group isolation,
+  appearance twins, validation, calibration, and untouched test splits.
+- Trained all trainable methods and ran foundation models on the available RTX
+  4070 CUDA device; added portable ONNX artifacts and parity reports where
+  applicable.
+- Added official Cellpose-SAM, StarDist, Ultralytics YOLO segmentation, and
+  Meta SAM2.1 image/video integrations with upstream provenance and checksums.
+- Added exact-ID temporal tracking and SAM2 video propagation evidence.
+- Added a unified method benchmark, release inventory, expanded framework wiki,
+  and companion-web comparison matrix. No beyond-SOTA claim is made.
+
 All notable changes to this product. Format: `X.XX.XXX` (display) · see `fslab.__version__`. Keep `0.x`
 while on mock/synthetic data. Tag every release.
 

@@ -1,0 +1,22 @@
+{
+  "schema": "frothseg.onnx-parity/v1",
+  "method": "gc_fsegnet",
+  "opset": 18,
+  "input": [
+    1,
+    1,
+    192,
+    192
+  ],
+  "max_abs_error": 4.76837158203125e-06,
+  "absolute_tolerance": 3e-05,
+  "passed": true,
+  "onnx": {
+    "path": "model.onnx",
+    "bytes": 779882,
+    "sha256": "2fe38152ae536654c521092e8abd55d8c6edb51b47a708320e62c589a552396f"
+  },
+  "providers": [
+    "CPUExecutionProvider"
+  ]
+}

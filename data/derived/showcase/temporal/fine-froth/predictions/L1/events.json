@@ -1,0 +1,2218 @@
+{
+  "case_id": "fine-froth",
+  "method_id": "L1",
+  "predicted_events": [
+    {
+      "frame_index": 1,
+      "instance_id": 518,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 519,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 520,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 521,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 522,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 523,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 524,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 525,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 526,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 527,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 528,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 529,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 530,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 531,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 532,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 533,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 534,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 535,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 536,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 537,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 538,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 539,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 540,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 541,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 542,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 543,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 544,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 545,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 546,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 547,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 548,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 549,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 550,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 551,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 552,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 553,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 554,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 555,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 556,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 557,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 558,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 559,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 37,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 80,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 88,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 136,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 154,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 202,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 234,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 329,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 379,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 387,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 393,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 396,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 403,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 407,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 416,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 439,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 440,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 446,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 448,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 450,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 452,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 455,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 462,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 467,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 476,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 477,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 482,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 501,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 502,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 504,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 508,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 510,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 511,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 512,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 514,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 515,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 516,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 517,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 560,
+      "type": "birth"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 561,
+      "type": "birth"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 562,
+      "type": "birth"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 563,
+      "type": "birth"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 564,
+      "type": "birth"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 565,
+      "type": "birth"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 566,
+      "type": "birth"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 567,
+      "type": "birth"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 568,
+      "type": "birth"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 569,
+      "type": "birth"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 570,
+      "type": "birth"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 571,
+      "type": "birth"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 572,
+      "type": "birth"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 573,
+      "type": "birth"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 574,
+      "type": "birth"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 575,
+      "type": "birth"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 576,
+      "type": "birth"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 577,
+      "type": "birth"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 578,
+      "type": "birth"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 579,
+      "type": "birth"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 580,
+      "type": "birth"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 581,
+      "type": "birth"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 582,
+      "type": "birth"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 583,
+      "type": "birth"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 584,
+      "type": "birth"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 585,
+      "type": "birth"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 586,
+      "type": "birth"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 587,
+      "type": "birth"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 5,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 56,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 94,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 197,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 266,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 270,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 317,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 347,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 400,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 415,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 447,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 520,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 524,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 525,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 527,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 531,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 532,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 534,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 540,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 549,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 554,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 555,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 556,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 557,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 558,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 559,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 588,
+      "type": "birth"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 589,
+      "type": "birth"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 590,
+      "type": "birth"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 591,
+      "type": "birth"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 592,
+      "type": "birth"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 593,
+      "type": "birth"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 594,
+      "type": "birth"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 595,
+      "type": "birth"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 596,
+      "type": "birth"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 597,
+      "type": "birth"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 598,
+      "type": "birth"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 599,
+      "type": "birth"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 600,
+      "type": "birth"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 601,
+      "type": "birth"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 602,
+      "type": "birth"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 603,
+      "type": "birth"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 604,
+      "type": "birth"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 605,
+      "type": "birth"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 606,
+      "type": "birth"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 607,
+      "type": "birth"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 608,
+      "type": "birth"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 609,
+      "type": "birth"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 610,
+      "type": "birth"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 611,
+      "type": "birth"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 22,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 51,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 68,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 187,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 255,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 293,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 315,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 345,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 444,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 475,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 495,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 509,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 518,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 528,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 543,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 545,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 551,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 552,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 560,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 564,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 568,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 571,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 576,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 577,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 579,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 581,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 582,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 583,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 585,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 586,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 587,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 612,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 613,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 614,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 615,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 616,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 617,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 618,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 619,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 620,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 621,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 622,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 623,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 624,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 625,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 626,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 627,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 628,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 629,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 630,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 631,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 632,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 633,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 634,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 635,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 636,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 637,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 638,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 639,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 640,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 641,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 642,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 643,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 644,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 645,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 646,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 647,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 87,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 100,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 132,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 150,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 282,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 318,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 349,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 371,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 409,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 463,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 468,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 490,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 500,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 529,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 535,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 537,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 544,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 546,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 548,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 550,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 562,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 573,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 584,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 588,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 596,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 597,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 600,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 601,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 606,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 608,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 609,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 610,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 611,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 648,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 649,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 650,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 651,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 652,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 653,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 654,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 655,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 656,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 657,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 658,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 659,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 660,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 661,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 662,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 663,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 664,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 665,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 666,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 667,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 668,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 669,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 670,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 671,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 672,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 673,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 674,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 675,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 676,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 677,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 678,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 679,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 50,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 70,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 156,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 210,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 224,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 257,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 344,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 374,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 378,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 410,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 418,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 441,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 469,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 483,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 488,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 513,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 530,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 538,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 563,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 566,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 592,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 598,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 604,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 605,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 607,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 612,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 616,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 618,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 621,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 626,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 628,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 630,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 632,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 639,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 640,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 641,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 642,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 643,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 644,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 645,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 646,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 647,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 680,
+      "type": "birth"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 681,
+      "type": "birth"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 682,
+      "type": "birth"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 683,
+      "type": "birth"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 684,
+      "type": "birth"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 685,
+      "type": "birth"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 686,
+      "type": "birth"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 687,
+      "type": "birth"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 688,
+      "type": "birth"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 689,
+      "type": "birth"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 690,
+      "type": "birth"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 691,
+      "type": "birth"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 692,
+      "type": "birth"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 693,
+      "type": "birth"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 694,
+      "type": "birth"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 695,
+      "type": "birth"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 696,
+      "type": "birth"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 697,
+      "type": "birth"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 698,
+      "type": "birth"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 699,
+      "type": "birth"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 700,
+      "type": "birth"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 701,
+      "type": "birth"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 702,
+      "type": "birth"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 703,
+      "type": "birth"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 704,
+      "type": "birth"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 705,
+      "type": "birth"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 706,
+      "type": "birth"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 241,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 256,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 295,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 346,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 485,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 489,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 497,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 574,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 578,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 619,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 620,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 631,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 637,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 648,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 649,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 660,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 663,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 669,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 675,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 676,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 678,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 679,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 707,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 708,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 709,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 710,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 711,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 712,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 713,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 714,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 715,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 716,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 717,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 718,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 719,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 720,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 721,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 722,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 723,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 724,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 725,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 726,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 727,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 728,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 729,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 730,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 731,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 732,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 733,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 734,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 148,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 235,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 277,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 533,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 547,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 591,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 599,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 635,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 650,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 657,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 665,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 673,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 674,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 680,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 681,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 682,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 683,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 684,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 687,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 689,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 691,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 693,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 694,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 695,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 697,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 699,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 701,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 702,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 703,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 704,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 705,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 706,
+      "type": "disappearance"
+    }
+  ],
+  "truth_events": [
+    {
+      "frame_index": 1,
+      "instance_id": 337,
+      "type": "birth"
+    }
+  ]
+}

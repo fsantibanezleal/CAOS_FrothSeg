@@ -1,0 +1,21 @@
+{
+  "schema": "frothseg.onnx-parity/v1",
+  "method": "unet_watershed",
+  "opset": 18,
+  "input": [
+    1,
+    1,
+    96,
+    96
+  ],
+  "max_abs_error": 7.62939453125e-06,
+  "passed": true,
+  "onnx": {
+    "path": "model.onnx",
+    "bytes": 123164,
+    "sha256": "53568c7526d9604c8badb94440a80823b266cf3b0d26d735d03f337808b815d3"
+  },
+  "providers": [
+    "CPUExecutionProvider"
+  ]
+}

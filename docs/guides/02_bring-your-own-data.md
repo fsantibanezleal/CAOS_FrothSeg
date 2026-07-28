@@ -1,19 +1,54 @@
 # Guide, bring your own froth
 
-The product's real capability is live segmentation of real froth you provide, not just the baked synthetic cases.
-Public per-bubble froth masks are legally request-only (`research-tools-and-data-2026-07-09`), so FrothSeg does
-not ship a redistributable real dataset; instead it segments the froth photo or frame you upload, live, with a
-SAM-class foundation model. The door is **CONTRACT 1**, the image gate.
+Bring-your-own data is one input route into the full product, not the whole
+product.
+FrothSeg does not commit third-party real images. A licensed public instance
+dataset exists in Roboflow Universe, while site data is commonly private. Both
+enter through the same governed offline contract; an ad-hoc upload remains a
+bounded qualitative path. The door is **CONTRACT 1**, the image gate.
 
 ## What this is, and what it is not
 
-- It **is** a real inference path: upload a froth image in the App, the browser runs the SAM auto-mask generator
-  on it (WebGPU, WASM fallback), and you get per-bubble instance masks, the bubble-size distribution (BSD), and a
-  froth-state read-out, all client-side, no server.
+- It **is** a bounded exploratory path: upload a froth image, select C1, C3, C4,
+  or legacy SlimSAM, and inspect masks and BSD client-side. These are the four
+  upload methods with accepted browser evidence.
 - It is **not** a place to obtain a mask-AP number for your image. AP requires per-bubble ground truth, which a
   real froth photo does not have. The AP read-out only exists for the synthetic samples, where the exact GT is
   known (`frontend/src/sam/score.ts`, mirrored to `fslab.science.segment.mask_ap`).
-- It is **not** a training step. SAM is zero-shot; there are no froth labels and nothing is fitted to your image.
+- It is **not** the training or release path. Governed datasets are ingested
+  offline, assigned splits, trained, calibrated, evaluated, and exported there.
+
+## Acquire and register the public real candidate
+
+The source `roboflow-froth-rk6ka` contains 88 real froth images with bubble
+instance annotations under CC-BY-NC-SA-4.0. Roboflow requires an account API key
+for dataset export. Keep that key outside the repository:
+
+```powershell
+$env:ROBOFLOW_API_KEY = '<scoped key>'
+./.venv-gpu/Scripts/python.exe scripts/fetch_roboflow_froth.py
+```
+
+The fetcher writes only to ignored `data/raw/`, rejects overwrite, verifies the
+archive hash, blocks path-traversal members, and records source/license
+provenance without persisting the credential.
+
+Roboflow annotations alone are not release evidence. Create a
+`frothseg.real-metadata/v1` JSON overlay keyed by `file_name`; every row must
+provide a leakage-safe `group_id` and a traceable positive `mm_per_px`. The
+document must also contain an independently accepted `annotation_review` with a
+named reviewer. Then validate and export the derived manifest:
+
+```powershell
+./.venv-gpu/Scripts/python.exe scripts/import_real_coco.py `
+  --annotations data/raw/roboflow-froth-rk6ka/train/_annotations.coco.json `
+  --images data/raw/roboflow-froth-rk6ka/train `
+  --metadata data/local/roboflow-froth-metadata.json
+```
+
+Raw images and local review material stay out of git; the derived manifest
+contains local URIs, split assignments, counts, provenance, and review state.
+The release gate remains closed until this evidence exists.
 
 ## CONTRACT 1: the image gate (accept / reject / flag)
 
@@ -56,10 +91,14 @@ offers both methods and lets you compare.
 
 | capability | on a real upload | on a synthetic sample |
 |---|---|---|
-| SAM instance segmentation (masks, count) | yes, live in-browser | yes, live in-browser |
+| C1/C3/C4 or SlimSAM instance segmentation (masks, count) | yes, live in-browser | yes, live in-browser |
 | BSD (d10 / d50 / d90 / d32, % fines) | yes | yes |
 | froth-state read-out (class + health gauge) | yes, a labelled heuristic proxy | yes |
 | mask AP / BSD Wasserstein vs GT | no (no ground truth exists) | yes (exact GT known) |
+
+C2, C5, C6, C7, and L1-L7/N1 do not run on an uploaded frame in the static
+website. Export the prepared command from the workbench to run those methods
+through the offline pipeline.
 
 The froth-state read-out (`frontend/src/sam/frothState.ts`) is a heuristic proxy grounded in the froth-vision
 literature (Aldrich et al. 2010: BSD + froth class as soft sensors), not a calibrated plant setpoint. It is

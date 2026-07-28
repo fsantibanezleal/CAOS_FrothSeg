@@ -1,6 +1,6 @@
-# Framework card, the SAM automatic mask generator (the product method)
+# Framework card, legacy browser SAM automatic mask generator
 
-The live core of FrothSeg. It runs a SAM-family foundation model as an **automatic mask generator**: no user
+The bounded browser lane runs a SAM-family model as an **automatic mask generator**: no user
 clicks, no froth training labels. A dense grid of point prompts sweeps the image, the confident and stable
 masks survive a filter, duplicates are removed by non-maximum suppression, and the kept masks become a disjoint
 instance-label map plus a bubble-size distribution (BSD). This card is the algorithm; the runtime it sits on is
@@ -23,7 +23,7 @@ WASM fallback) and in Node (onnxruntime-node) for the offline verification harne
   legally constrained and scarce.
 - **Not a real-plant accuracy claim.** The only place mask accuracy is measured is the synthetic Laguerre-foam
   harness, where exact ground-truth masks exist. Synthetic AP is a controlled measurement, not plant AP. The
-  real capability is live segmentation of froth the user uploads.
+  upload path is exploratory and does not replace offline evaluation.
 - **Not infallible on blur.** Even a foundation model merges and splits touching translucent bubbles, and when
   motion blur or defocus removes the promptable structure the confident-mask count collapses (25 and 37 masks
   on the motion-fast and defocus controls, against roughly 197 and 170 ground-truth instances). On those cases
@@ -138,7 +138,7 @@ user-visible.
 
 ## Applying it to other froth
 
-- **Uploads are the real capability.** Point the segmenter at any froth image or extracted frame the user
+- **Uploads are a bounded capability.** Point the segmenter at a froth image or extracted frame the user
   brings; nothing about the method assumes a shipped case. The OpenCV deglare and illumination-flatten
   front-end helps real glare before the grid is decoded, which is exactly where SAM already beats the floor.
 - **Set a pixel/mm scale for physical sizes.** The BSD is in pixels by default; entering a px/mm scale

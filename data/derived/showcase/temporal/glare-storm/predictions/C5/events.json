@@ -1,0 +1,22 @@
+{
+  "case_id": "glare-storm",
+  "method_id": "C5",
+  "predicted_events": [
+    {
+      "frame_index": 1,
+      "instance_id": 1,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 3,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 3,
+      "type": "disappearance"
+    }
+  ],
+  "truth_events": []
+}

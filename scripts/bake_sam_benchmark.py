@@ -8,6 +8,7 @@ run is model-dependent), not a sha-checked CONTRACT-2 artifact, so it is written
 """
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 from pathlib import Path
@@ -19,10 +20,6 @@ sys.path.insert(0, str(ROOT / "data-pipeline"))
 
 from fslab.science.froth_gen import CASES, generate  # noqa: E402
 from fslab.science.segment import bsd_wasserstein, mask_ap  # noqa: E402
-
-SAM_DIR = ROOT / "verification" / "sam"
-BENCH = ROOT / "data" / "derived" / "synth"
-OUT = ROOT / "data" / "derived" / "sam_benchmark.json"
 
 # case -> category (mirror the App registry labels)
 CATEGORY = {c.name: cat for c, cat in [
@@ -49,20 +46,28 @@ def _gt_d32(gt: np.ndarray) -> float | None:
     return round(float((d ** 3).sum() / (d ** 2).sum()), 2)
 
 
-def _floor_best(case_id: str):
-    bpath = BENCH / case_id / "benchmark.json"
-    methods = json.loads(bpath.read_text(encoding="utf-8"))["methods"]
-    scored = [m for m in methods if m.get("ap") is not None]
-    if not scored:
-        return None, None
-    best = max(scored, key=lambda m: m["ap"])
-    return best["method"], best["ap"]
-
-
 def main() -> int:
-    dumps = sorted(SAM_DIR.glob("*.json"))
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--input",
+        type=Path,
+        default=ROOT / "verification/sam",
+        help="directory containing browser SAM label dumps",
+    )
+    parser.add_argument(
+        "--benchmark-root",
+        type=Path,
+        default=ROOT / "data/derived/synth",
+    )
+    parser.add_argument(
+        "--output",
+        type=Path,
+        default=ROOT / "data/derived/sam_benchmark.json",
+    )
+    args = parser.parse_args()
+    dumps = sorted(args.input.glob("*.json"))
     if not dumps:
-        print(f"no SAM dumps in {SAM_DIR}; run frontend/scripts/verify_sam.ts first")
+        print(f"no SAM dumps in {args.input}; run frontend/scripts/verify_sam.ts first")
         return 1
     model = json.loads(dumps[0].read_text(encoding="utf-8")).get("model", "unknown")
     cases = []
@@ -73,7 +78,13 @@ def main() -> int:
         pred = np.asarray(j["labels"], dtype=np.int32).reshape(j["height"], j["width"])
         gt = _gt(cid)
         ap = mask_ap(pred, gt)
-        fmethod, fap = _floor_best(cid)
+        bpath = args.benchmark_root / cid / "benchmark.json"
+        methods = json.loads(bpath.read_text(encoding="utf-8"))["methods"]
+        scored = [method for method in methods if method.get("ap") is not None]
+        best = max(scored, key=lambda item: item["ap"]) if scored else None
+        fmethod, fap = (
+            (best["method"], best["ap"]) if best is not None else (None, None)
+        )
         gt_ids = int(len(np.unique(gt[gt > 0])))
         rec = {
             "case_id": cid, "category": CATEGORY.get(cid, "uncategorized"),
@@ -102,9 +113,10 @@ def main() -> int:
         },
         "cases": cases,
     }
-    OUT.write_text(json.dumps(doc, indent=1), encoding="utf-8")
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    args.output.write_text(json.dumps(doc, indent=1), encoding="utf-8")
     s = doc["summary"]
-    print(f"baked {OUT} : {s['n_cases']} cases, mean SAM AP {s['mean_sam_ap']} vs floor {s['mean_floor_ap']} "
+    print(f"baked {args.output} : {s['n_cases']} cases, mean SAM AP {s['mean_sam_ap']} vs floor {s['mean_floor_ap']} "
           f"(delta {s['delta']}), SAM wins {s['sam_wins']}/{s['n_cases']}")
     return 0
 

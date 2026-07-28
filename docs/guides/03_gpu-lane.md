@@ -1,16 +1,45 @@
-# Guide, the GPU lane (dormant for FrothSeg)
+# GPU lane: offline training and foundation-model inference
 
-**FrothSeg has no GPU precompute lane. There is nothing to run here.**
+FrothSeg has a mandatory offline CUDA lane. It trains the learned models, runs
+foundation-model inference, calibrates thresholds on validation families, exports
+deployable artifacts, and bakes benchmark results. None of that work belongs in
+the browser or in the production deployment.
 
-The template keeps a GPU lane for products whose offline engine genuinely needs CUDA (large DEM, big Monte-Carlo,
-heavy model training). FrothSeg does not:
+## Reproducible environment
 
-- The offline pipeline is a pure-CPU synthetic generator + classical floor (scipy, scikit-image, OpenCV) that
-  runs in seconds per case. No CUDA is involved. See [01_precompute-pipeline.md](01_precompute-pipeline.md).
-- The only heavy compute is the SAM-class segmenter, and it runs **in the browser on the user's GPU** via WebGPU
-  (onnxruntime-web, WASM-SIMD fallback), not on a server or a precompute box. The offline SAM verification even
-  runs on CPU (onnxruntime-node). See [03_verify-sam.md](03_verify-sam.md).
+On an NVIDIA host, run:
 
-So `requirements-gpu.txt` stays a dormant, commented placeholder. If a future FrothSeg method ever needs an
-offline CUDA step (for example distilling a custom student), activate this lane then and document the engine
-under `docs/frameworks/<tool>/`. Until then, ignore it.
+```powershell
+./scripts/setup.ps1
+./.venv-gpu/Scripts/python.exe scripts/check_cuda.py
+```
+
+The GPU requirements pin `torch==2.13.0+cu126` and
+`torchvision==0.28.0+cu126` from PyTorch's CUDA 12.6 wheel index. The smoke
+check requires the CUDA-qualified wheel, a visible device, and a real matrix
+operation. It exits non-zero instead of silently falling back to CPU.
+
+The validated workstation target is an NVIDIA GeForce RTX 4070 Laptop GPU with
+8 GiB VRAM. Training commands must support bounded batch sizes, deterministic
+seeds, checkpoints, resume, and machine-readable run manifests.
+
+## Lane boundary
+
+- `.venv-pipeline`: CPU generation, classical C1-C7 baselines, artifact
+  validation, and inexpensive evaluation.
+- `.venv-gpu`: L1-L7 and N1 training/inference/export, including official
+  foundation-model inference. Heavy work happens here and is baked to versioned
+  artifacts.
+- `.venv`: thin web/runtime tooling only.
+
+The companion website reads committed benchmark summaries and compact model
+artifacts. It may offer a deliberately bounded live evaluation path when the
+method and hardware make that valid, but it never recomputes the benchmark,
+trains a model, or downloads a multi-gigabyte research stack during deployment.
+
+## Verification
+
+Every GPU run records the model/method id, data split manifest, seed,
+hyperparameters, package versions, device, checkpoint lineage, calibration
+choice, metrics, and artifact checksums. A result without that provenance is
+not eligible for the comparison table or release gate.

@@ -5,7 +5,8 @@ exactly (public per-bubble froth masks are legally request-only, so a synthetic 
 ground truth). Each case carries a category (control, size regime, stress, transient), its generator params, an
 expected band (what a froth-vision expert should see), and a real|synthetic flag; the App shows one selected
 case, while Experiments/Benchmark summarize across categories. These are labelled synthetic everywhere and are
-not real-plant accuracy: the product's real capability is live SAM-class segmentation of real (uploaded) froth.
+not real-plant accuracy. Real-froth use enters through governed ingestion or
+bounded client-side upload, without accuracy claims when ground truth is absent.
 Start with the category taxonomy in **[cases/README.md](cases/README.md)**, then the full coverage matrix, the
 verified SAM AP vs the classical floor AP, the geometry + scoring maths, and the data contract in
 **[cases/01_coverage.md](cases/01_coverage.md)**.

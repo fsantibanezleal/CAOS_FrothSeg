@@ -1,4 +1,4 @@
-"""Config from environment (stdlib; no extra deps for the dormant lane). Only used when the backend is active."""
+"""Environment configuration for the optional read-only evidence API."""
 from __future__ import annotations
 
 import os

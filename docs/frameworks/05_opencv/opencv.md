@@ -107,7 +107,7 @@ export function preprocess(gray: Float32Array, w: number, h: number, o: DeglareO
 - **Stage `generate`** (`froth_gen.render`): `cv2.filter2D` produces the motion-blur case. **Input**: the rendered
   grayscale frame. **Output**: the blurred grayscale frame. Purely a stressor; the ground-truth masks are unchanged
   (the blur is on the appearance, not the geometry), which is what makes it a fair "hard case" for the segmenters.
-- **Browser (front-end)**: `deglare.ts` runs before the live segmenter on real, uploaded frames; the flatten and
+- **Browser (front-end)**: `deglare.ts` runs before a bounded live engine on real, uploaded frames; the flatten and
   deglare toggles are user-visible, and the CONTRACT-1 flags decide when to apply them. This helps the real-glare
   path; motion and defocus remain the classical floor's territory (see the SAM verification).
 

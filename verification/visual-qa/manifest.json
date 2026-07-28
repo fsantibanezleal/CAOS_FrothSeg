@@ -1,0 +1,79 @@
+{
+  "schema": "frothseg.visual-qa/v1",
+  "verified_on": "2026-07-26",
+  "base_url": "local production preview",
+  "themes": [
+    "light",
+    "dark"
+  ],
+  "routes": [
+    "/",
+    "/introduction",
+    "/methodology",
+    "/implementation",
+    "/experiments",
+    "/benchmark"
+  ],
+  "route_theme_cells": 12,
+  "checks_per_cell": [
+    "expected h1 rendered",
+    "no error boundary",
+    "no broken image",
+    "no document horizontal overflow"
+  ],
+  "app_panels": {
+    "count": 13,
+    "still_view_count": 9,
+    "sequence_tab_count": 4,
+    "all_rendered": true,
+    "canonical_cases": 12,
+    "benchmark_cases": 13,
+    "precomputed_methods": 15,
+    "method_case_artifacts": 180,
+    "temporal_prediction_methods": 2,
+    "temporal_prediction_sequences": 6,
+    "temporal_prediction_frames": 48,
+    "error_boundaries": 0,
+    "horizontal_overflow": 0
+  },
+  "responsive_cells": [
+    {
+      "route": "/",
+      "viewport_css_px": "390x844",
+      "horizontal_overflow": 0
+    },
+    {
+      "route": "/benchmark",
+      "viewport_css_px": "390x844",
+      "horizontal_overflow": 0
+    }
+  ],
+  "methodology_tabs": {
+    "count": 8,
+    "all_rendered": true
+  },
+  "architecture_tabs": {
+    "count": 8,
+    "all_rendered": true,
+    "inline_svg_per_tab": true
+  },
+  "interaction_checks": {
+    "all_15_methods_on_selected_case": "passed",
+    "all_12_presentation_cases_on_selected_method": "passed",
+    "all_9_still_analysis_views": "passed",
+    "decoded_label_overlay": "passed",
+    "synthetic_ground_truth_ap": "passed",
+    "upload_four_method_restriction": "passed",
+    "five_eight_frame_sequences": "passed",
+    "temporal_predictions": "passed",
+    "tracking_events_and_provenance": "passed"
+  },
+  "lazy_runtime_checks": {
+    "slimsam_not_selected": true,
+    "transformers_runtime_requests": 0,
+    "onnx_wasm_requests": 0,
+    "model_weight_requests": 0
+  },
+  "browser_console_errors": 0,
+  "result": "passed"
+}

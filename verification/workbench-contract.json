@@ -1,0 +1,47 @@
+{
+  "schema": "frothseg.workbench-verification/v1",
+  "verified_on": "2026-07-26",
+  "route": "/",
+  "canonical_case_count": 12,
+  "benchmark_case_count": 13,
+  "precomputed_method_count": 15,
+  "precomputed_method_case_artifacts": 180,
+  "view_count": 10,
+  "views": [
+    "segmentation",
+    "boundary-error",
+    "size-distribution",
+    "morphometry",
+    "confidence-calibration",
+    "froth-state",
+    "temporal",
+    "provenance",
+    "export",
+    "method-comparison"
+  ],
+  "upload_interactive_methods": [
+    "C1",
+    "C3",
+    "C4",
+    "SlimSAM"
+  ],
+  "canonical_precomputed_methods": [
+    "C1", "C2", "C3", "C4", "C5", "C6", "C7",
+    "L1", "L2", "L3", "L4", "L5", "L6", "L7", "N1"
+  ],
+  "temporal_prediction_methods": ["L1", "L7"],
+  "temporal_prediction_sequences": 6,
+  "temporal_prediction_frames": 48,
+  "browser_checks": {
+    "all_15_methods_switch_on_precomputed_cases": "passed",
+    "all_12_presentation_cases_switch": "passed",
+    "all_9_still_views_use_decoded_labels": "passed",
+    "canonical_ground_truth_ap": "passed",
+    "upload_restricted_to_four_interactive_methods": "passed",
+    "five_sequences_have_eight_frames": "passed",
+    "temporal_predictions": "passed",
+    "tracking_events_and_provenance": "passed",
+    "six_routes_render": "passed",
+    "console_errors": 0
+  }
+}

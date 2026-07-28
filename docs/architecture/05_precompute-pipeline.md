@@ -1,103 +1,80 @@
-# The staged precompute pipeline
+# Offline processing, training, and inference pipelines
 
-`data-pipeline/fslab/pipeline.py` orchestrates the froth offline pipeline: for each synthetic case it renders a
-scene with exact per-bubble ground truth, scores the classical floor against that truth, and writes the committed
-artifacts plus a manifest. The stage names and signatures are frozen (ADR-0057); the per-product rework is the
-science inside them.
+Offline compute is the product core. The web never substitutes for it.
 
-**What this is.** The benchmark-harness lane: the only place FrothSeg has exact per-bubble labels, so the only
-place a segmenter can be scored with real mask metrics. It bakes the artifacts the web replays and the
-classical-floor numbers the live SAM core is compared against.
+## Data pipeline
 
-**What this is not.** It is not the product. The product is live SAM-class segmentation of real (uploaded) froth,
-which runs in the browser and is measured live in JS, never here. Public per-bubble froth masks are legally
-request-only, so the committed cases are synthetic and labelled synthetic everywhere; synthetic mask AP is not
-real-plant AP.
+1. `froth_gen.generate` creates an image and exact instance labels.
+2. `froth_gen.generate_sequence` creates time-varying frames with persistent
+   identity labels.
+3. `datasets.build_learned_dataset` expands 16 condition families into 384
+   samples with independent geometry and appearance seeds.
+4. `build_learned_manifest.py` writes split membership and provenance.
+5. `build_learned_cache.py` materializes the local NPZ cache and checksum
+   metadata. The cache is reproducible but intentionally not committed.
 
-## The stages
+The split unit is the latent geometry group, never the rendered image.
 
-| Stage | Module | Does |
-|---|---|---|
-| ingest (CONTRACT 1) | `stages/ingest.py` | apply the bring-your-own-froth image gate to a real frame (accept / reject with a reason / flag glare and low contrast). Not part of the synthetic all-cases run, since synthetic scenes are ground truth by construction. |
-| generate | `stages/generate.py` | render one synthetic froth scene: a grayscale image plus the exact `int32` instance map and the BSD ground truth (`science/froth_gen.py`). |
-| benchmark | `stages/benchmark.py` | run every classical floor method on the scene and score it against the exact GT: instance mask AP@[.5:.95] plus BSD Wasserstein-1 (`science/segment.py`). |
-| export (CONTRACT 2) | `stages/export.py` | encode the scene into `frame.png`, `masks.json` (COCO-RLE), `bsd.csv`, `benchmark.json`, `card.json`, and write the authoritative manifest with per-artifact sha256 and the lane verdict. |
+## Classical pipeline
 
-`pipeline.precompute(case_id, seed)` chains generate, then benchmark, then export. `run_all` iterates every case
-and writes the flat `data/derived/manifests/index.json` inventory. Run it with:
+`fslab.pipeline` runs generation, C1-C7 benchmarking, and CONTRACT-2 export for
+the 13 canonical cases. Each output has exact ground truth, COCO-RLE masks,
+bubble-size distribution, per-method results, and SHA-256 references.
 
-```
-python -m fslab.pipeline              # all cases
-python -m fslab.pipeline poly-normal  # one case
-python -m fslab.pipeline --check      # re-verify committed artifacts vs a fresh run (CONTRACT-2 check)
+## Learned-model pipeline
+
+The shared lifecycle is:
+
+```text
+train split -> validation monitoring -> calibration-only thresholds
+           -> untouched test -> canonical diagnostic -> portable export
 ```
 
-Outputs land under `data/derived/synth/<case>/` (the five artifacts) and `data/derived/manifests/<case>.json`
-plus `index.json`.
+- L1 uses `train_unet`, `infer_unet`, and `export_unet`.
+- L2, L3, and N1 use the distinct graphs in `multitask_models` with the shared
+  `train_multitask`, `infer_multitask`, and `export_multitask` harness.
+- L4 uses the official StarDist graph and serialization.
+- L6 exports exact polygons and trains the official Ultralytics segmentation
+  model.
 
-## generate: the synthetic froth model
+CUDA is mandatory for PyTorch and Ultralytics training. A CPU fallback is an
+error. Native Windows TensorFlow is the documented exception for StarDist
+because current upstream Windows wheels do not expose CUDA; WSL2/Linux is the
+supported GPU path.
 
-`science/froth_gen.py` renders physically-flavoured froth with the proper CV stack (`scipy.ndimage`,
-`scikit-image`, OpenCV), never hand-rolled numpy for operations these libraries do correctly. A case is a pure
-function of `(spec, seed)`; all randomness comes from a seeded `numpy.random.Generator`.
+## Foundation pipeline
 
-**Geometry, the Laguerre (power) diagram.** Centres are packed by random sequential adsorption with log-normal
-radii, and each pixel is assigned to the site of minimum power distance:
+- L5 loads official Cellpose `cpsam_v2`, records its external checkpoint SHA,
+  runs CUDA batch inference, and emits common instance metrics.
+- L7 pins official `facebookresearch/sam2`, runs automatic image masks on CUDA,
+  and separately evaluates video propagation from exact first-frame prompts.
 
-$$\mathrm{cell}(p) = \arg\min_i \left( \lVert p - c_i \rVert^2 - r_i^2 \right)$$
+Large upstream checkpoints remain in their official caches. Their identifiers,
+sizes, hashes, parameters, versions, and device evidence are committed.
 
-The power (Laguerre) diagram is the standard dry-foam tessellation: cells meet at curved Plateau borders, the
-dark junctions real froth shows (Weaire and Hutzler 1999; Aurenhammer 1987). The radii are drawn log-normal so
-the Sauter mean diameter is controllable. Since $d_{32} = \langle d^3\rangle/\langle d^2\rangle = \exp(\mu +
-\tfrac{5}{2}\sigma^2)$ for a log-normal, the generator sets $\mu = \ln d_{32} - \tfrac{5}{2}\sigma^2$ to hit a
-target $d_{32}$.
+## Showcase pipeline
 
-**Appearance.** A base grey darkened at cell boundaries using the exact Euclidean distance transform
-(`scipy.ndimage.distance_transform_edt` of the boundary set), plus a per-bubble specular highlight that is
-deliberately jittered and sometimes dropped so highlight-seeded watershed cannot win artificially, plus per-case
-stressors: a glare lobe, horizontal motion blur (`cv2.filter2D`), Gaussian defocus (`scipy.ndimage.gaussian_filter`),
-and additive sensor noise.
+After every method has produced canonical labels,
+`python -m fslab.pipeline showcase` runs `fslab.showcase`. It converts each
+registered method's labels into a compact run-length label raster and a
+boundary-overlay preview for every canonical case. The manifest records exactly
+15 methods, 13 cases, and 195 method-case artifact pairs, with SHA-256 for each
+analysis raster and preview. This stage is the explicit bridge from
+authoritative offline inference to the ten-view companion workbench.
 
-**BSD ground truth.** From the rendered instance areas, each bubble's equivalent diameter is the diameter of the
-circle of equal area, and the distribution is summarised by percentiles and the surface-weighted Sauter mean:
+The showcase stage performs no model inference. It fails when a learned result
+is missing, and it never replaces the originating labels in the method-specific
+inference directory.
 
-$$d_{\mathrm{eq}} = 2\sqrt{A/\pi} \qquad d_{32} = \frac{\sum_i d_i^{\,3}}{\sum_i d_i^{\,2}}$$
+## Evaluation and release
 
-The case set is 13 coverage-axis points (`CASES`): a monodisperse and an empty positive/negative control, the
-nominal polydisperse case, fine and coarse froth, and the stressors (glare, watery, motion blur, defocus, high
-load, sensor noise, bursting, edge framing). Each carries the labels a froth-vision expert should see.
-
-## benchmark: the classical floor
-
-`science/segment.py` implements the honest, cited baselines the foundation model must beat, all in scikit-image:
-
-- `watershed_dt`: Otsu foreground, exact distance-transform markers, marker-controlled watershed (Meyer 1994;
-  Vincent and Soille 1991). The generic floor.
-- `watershed_hmax`: highlight-seeded, the classic industrial trick (bright specular h-maxima are the markers).
-  Robust on clean specular froth, collapses under glare, which is the honest failure the glare control exposes.
-- `slic_merge`: SLIC superpixels merged by mean intensity (Achanta et al. 2012), texture-aware.
-
-Each method's prediction is scored against the exact GT with `mask_ap` (greedy IoU matching, mean over IoU
-thresholds .5:.05:.95) and `bsd_wasserstein` (Wasserstein-1 between the predicted and true diameter
-distributions). The metrics are defined once and reused for the live SAM core, so the comparison is fair. See
-[model evaluation](06_model-evaluation.md) for the equations and the verified numbers.
-
-## export: CONTRACT 2 and the lane
-
-`stages/export.py` writes the five artifacts, computes each one's byte size and sha256, and builds the manifest
-(`core/manifest.py`, schema `frothseg.manifest/v1`, generator `laguerre-power-diagram/v1`). The manifest is a
-pure function of `(spec, seed)`: no wall-clock, so a re-run does not dirty git.
-
-The export stage classifies the case lane by measurement (`core/gate.py`). The synthetic GT and classical
-benchmark are baked offline because scipy, scikit-image, and OpenCV are not Pyodide-safe and the frames are full
-images, so the [gate](03_the-gate.md) marks the case `precompute` and the SPA replays the committed artifact. The
-live capability is separate: the browser SAM-class segmenter (`frontend/src/sam`, onnxruntime-web with WebGPU,
-WASM fallback) runs on `frame.png` or an upload and is timed live in JS, not in this pipeline.
-
-## Applying it to other data
-
-The synthetic generator is only for exact GT; it is not how you point FrothSeg at real froth. A real frame enters
-through `stages/ingest.py` (CONTRACT 1): it is validated, and if accepted the browser SAM core segments it and
-computes the same BSD reduction. Because the offline benchmark and the live browser BSD use the identical
-`d_{\mathrm{eq}} = 2\sqrt{A/\pi}` reduction, numbers measured live on an upload are directly comparable to the
-baked synthetic ground truth. The contracts are documented in [the two data contracts](08_data-contracts.md).
+`build_method_benchmark.py` joins all 15 implementations into the
+`frothseg.method-benchmark/v2` browser/release contract. It retains every one
+of the 15 x 64 = 960 held-out method-case cells, macro and micro aggregates,
+runtime, peak-memory measurement, hardware lane, model size/hash, and run
+provenance. `build_release_report.py` inventories those cells, every model run,
+browser parity, temporal report, and showcase coverage.
+`check_product_completeness.py
+--profile development` rejects incomplete matrices or compute evidence;
+`--profile release` additionally enforces the governed real-data and version
+gates.

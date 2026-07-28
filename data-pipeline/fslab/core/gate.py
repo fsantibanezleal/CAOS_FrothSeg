@@ -19,7 +19,10 @@ def classify_lane(*, pure_python: bool, wheels: set[str], run_ms: float, trace_b
     if extra:
         live = False
         reasons.append(f"wheels not Pyodide-safe: {sorted(extra)}")
-    if run_ms > RUN_MS_GATE:
+    # Runtime only decides a workload that has not already failed a structural
+    # live-lane requirement. This keeps precompute manifests deterministic:
+    # machine speed cannot add or remove a redundant reason.
+    if live and run_ms > RUN_MS_GATE:
         live = False
         reasons.append(f"runtime exceeds the {RUN_MS_GATE:.0f}ms budget")
     if trace_bytes > TRACE_BYTES_GATE:

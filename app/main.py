@@ -1,5 +1,4 @@
-"""DORMANT FastAPI app factory (ADR-0057). Serves the committed artifacts read-only (+ optionally the built SPA).
-Run only when the backend lane is activated:  uvicorn app.main:app --reload"""
+"""Read-only FrothSeg evidence API."""
 from __future__ import annotations
 
 from fastapi import FastAPI
@@ -8,11 +7,12 @@ from fastapi.middleware.gzip import GZipMiddleware
 
 from .config import Settings, origins
 from .routers import content
+from fslab import __version__
 
 
 def create_app() -> FastAPI:
     s = Settings()
-    app = FastAPI(title="product (dormant API)", version="0.01.000")
+    app = FastAPI(title="FrothSeg evidence API", version=__version__)
     app.add_middleware(GZipMiddleware, minimum_size=1024)
     app.add_middleware(
         CORSMiddleware,
@@ -25,7 +25,7 @@ def create_app() -> FastAPI:
     @app.get("/health")
     @app.get("/healthz")
     def health() -> dict:
-        return {"status": "ok"}
+        return {"status": "ok", "version": __version__}
 
     return app
 

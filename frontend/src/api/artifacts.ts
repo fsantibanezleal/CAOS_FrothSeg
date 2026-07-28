@@ -1,7 +1,8 @@
 // Fetch the committed CONTRACT-2 artifacts (copied into public/data by copy-data.mjs). The web loads these for
-// the baked benchmark + the synthetic samples the App runs the live segmenter on; live inference itself is
+// the baked benchmark + the synthetic samples the App runs bounded live tools on; live inference itself is
 // in-browser (src/sam), no backend.
-import type { BenchmarkDoc, CaseCard, CaseIndex, CaseManifest, MasksDoc, SamBenchmarkDoc } from '../lib/contract.types';
+import type { BenchmarkDoc, CaseCard, CaseIndex, CaseManifest, LearnedBenchmarkDoc, MasksDoc, MethodBenchmarkDoc, SamBenchmarkDoc, TemporalBenchmarkDoc } from '../lib/contract.types';
+import type { TemporalShowcaseManifest } from '../lib/workbench';
 
 const base = import.meta.env.BASE_URL;
 
@@ -20,3 +21,13 @@ export const loadCard = (caseId: string): Promise<CaseCard> => getJSON<CaseCard>
 export const loadMasks = (caseId: string): Promise<MasksDoc> => getJSON<MasksDoc>(`synth/${caseId}/masks.json`);
 export const loadBenchmark = (caseId: string): Promise<BenchmarkDoc> => getJSON<BenchmarkDoc>(`synth/${caseId}/benchmark.json`);
 export const loadSamBenchmark = (): Promise<SamBenchmarkDoc> => getJSON<SamBenchmarkDoc>('sam_benchmark.json');
+export const loadLearnedBenchmark = (): Promise<LearnedBenchmarkDoc> =>
+  getJSON<LearnedBenchmarkDoc>('learned/unet-watershed-v2/benchmark.json');
+export const loadMethodBenchmark = (): Promise<MethodBenchmarkDoc> =>
+  getJSON<MethodBenchmarkDoc>('method-benchmark.json');
+/** L1's temporal report. Reports are keyed by method slug; the old `unet-watershed-v2.json`
+ *  path 404'd after the bake was generalised over the registry. */
+export const loadTemporalBenchmark = (): Promise<TemporalBenchmarkDoc> =>
+  getJSON<TemporalBenchmarkDoc>('temporal/unet_watershed.json');
+export const loadTemporalShowcase = (): Promise<TemporalShowcaseManifest> =>
+  getJSON<TemporalShowcaseManifest>('showcase/temporal/manifest.json');

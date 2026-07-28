@@ -1,0 +1,51 @@
+{
+  "schema": "frothseg.external-method-feasibility/v1",
+  "method": "Meta SAM 3.1",
+  "disposition": "blocked-not-evaluated",
+  "method_identity": "Additional official offline foundation candidate; not a LamellaStar substitution.",
+  "official_sources": {
+    "repository": "https://github.com/facebookresearch/sam3",
+    "repository_head": "46957e47805eaa273f4aa7bbbd25a88bca9108ce",
+    "release_notes": "https://github.com/facebookresearch/sam3/blob/main/RELEASE_SAM3p1.md",
+    "training_guide": "https://github.com/facebookresearch/sam3/blob/main/README_TRAIN.md",
+    "checkpoint": "https://huggingface.co/facebook/sam3.1",
+    "license": "https://github.com/facebookresearch/sam3/blob/main/LICENSE"
+  },
+  "official_capabilities": {
+    "parameters": 848000000,
+    "image": "Text, exemplar, point, box, and mask prompted instance segmentation.",
+    "video": "Prompted multi-object segmentation and tracking with Object Multiplex.",
+    "finetuning": "Official Hydra pipeline supports custom datasets and local single-GPU execution."
+  },
+  "runtime_requirements": {
+    "python": "3.12 or newer",
+    "pytorch": "2.7 or newer",
+    "cuda": "12.6 or newer",
+    "checkpoint_bytes": 3500000000,
+    "checkpoint_access": "Gated; terms must be accepted and download authenticated."
+  },
+  "local_audit": {
+    "gpu": "NVIDIA GeForce RTX 4070 Laptop GPU",
+    "vram_mib": 8188,
+    "python": "3.12.10",
+    "pytorch": "2.13.0+cu126",
+    "cuda_runtime": "12.6",
+    "sam3_package_installed": false,
+    "transformers_package_installed": false,
+    "checkpoint_cached": false,
+    "huggingface_cli_available": false
+  },
+  "blockers": [
+    "Authorized access to the gated official checkpoint is unavailable in this environment.",
+    "The 3.5 GB checkpoint and 848M-parameter detector/tracker require an isolated runtime and empirical 8 GB VRAM smoke test.",
+    "The custom SAM license requires explicit provenance and redistribution review."
+  ],
+  "required_next_steps": [
+    "Obtain authorized checkpoint access without committing credentials.",
+    "Create an isolated runtime pinned to the recorded official repository commit.",
+    "Run one calibration-split image in bfloat16 to measure VRAM before full evaluation.",
+    "Implement the fixed FrothSeg split adapter and freeze the prompt policy using train, validation, and calibration only.",
+    "Evaluate the untouched test exactly once only after the method is frozen.",
+    "Register SAM 3.1 only after weights, inference, metrics, compute, license, and canonical artifacts exist."
+  ]
+}

@@ -1,0 +1,117 @@
+{
+  "case_id": "motion-fast",
+  "method_id": "C1",
+  "predicted_events": [
+    {
+      "frame_index": 1,
+      "instance_id": 9,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 10,
+      "type": "birth"
+    },
+    {
+      "frame_index": 1,
+      "instance_id": 4,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 11,
+      "type": "birth"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 12,
+      "type": "birth"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 13,
+      "type": "birth"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 14,
+      "type": "birth"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 15,
+      "type": "birth"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 3,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 9,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 11,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 16,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 17,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 18,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 12,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 15,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 16,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 19,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 20,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 5,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 8,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 17,
+      "type": "disappearance"
+    }
+  ],
+  "truth_events": []
+}

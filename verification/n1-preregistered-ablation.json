@@ -1,0 +1,360 @@
+{
+  "schema": "frothseg.n1-preregistered-ablation/v2",
+  "dataset": {
+    "path": "data/cache/learned-v2-192.npz",
+    "sha256": "55b1ddd92237eca931ac242a662e05e97562a9cf749cf71b8f4b96229ba4340e",
+    "samples": 384,
+    "group_unit": "latent geometry group",
+    "splits": {
+      "train": {
+        "samples": 192,
+        "groups": 96
+      },
+      "validation": {
+        "samples": 64,
+        "groups": 32
+      },
+      "calibration": {
+        "samples": 64,
+        "groups": 32
+      },
+      "test": {
+        "samples": 64,
+        "groups": 32
+      }
+    },
+    "reserve_groups": 0
+  },
+  "protocol": {
+    "selection_metric": "validation mean_ap",
+    "postprocessing_split": "calibration",
+    "test_access_before_each_selection": false,
+    "final_test_evaluations": 2,
+    "claim_reference_mean_ap": 0.5098906249999999
+  },
+  "studies": [
+    {
+      "id": "n1-width-seed-study-v1",
+      "validation_results": [
+        {
+          "id": "c16-e24-s20260725",
+          "mean_ap": 0.37209375
+        },
+        {
+          "id": "c24-e24-s20260725",
+          "mean_ap": 0.46848437499999995
+        },
+        {
+          "id": "c32-e24-s20260725",
+          "mean_ap": 0.45159375
+        },
+        {
+          "id": "c24-e40-s20260725",
+          "mean_ap": 0.44609374999999996
+        },
+        {
+          "id": "c24-e40-s20260726",
+          "mean_ap": 0.45215625000000004
+        },
+        {
+          "id": "c24-e40-s20260727",
+          "mean_ap": 0.4765625
+        }
+      ],
+      "selected": "c24-e40-s20260727",
+      "untouched_test_mean_ap": 0.471671875
+    },
+    {
+      "id": "n1-refinement-study-v2",
+      "validation_results": [
+        {
+          "id": "ensemble-probmean-e40-seeds-25-27",
+          "kind": "probability ensemble",
+          "mean_ap": 0.48035937500000003
+        },
+        {
+          "id": "ensemble-logitmean-e40-seeds-25-27",
+          "kind": "logit ensemble",
+          "mean_ap": 0.48246875
+        },
+        {
+          "id": "tta-d4-c24-e40-s20260727",
+          "kind": "D4 test-time augmentation",
+          "mean_ap": 0.46862499999999996
+        },
+        {
+          "id": "ensemble-probmean-tta-d4-e40-seeds-25-27",
+          "kind": "probability ensemble with D4 test-time augmentation",
+          "mean_ap": 0.475296875
+        },
+        {
+          "id": "c24-e80-s20260727",
+          "kind": "continued optimization",
+          "mean_ap": 0.49982812500000007
+        },
+        {
+          "id": "c24-e60-aug-s20260727",
+          "kind": "geometric and photometric training augmentation",
+          "mean_ap": 0.47154687500000003
+        }
+      ],
+      "selected": "c24-e80-s20260727",
+      "finalist_gate": {
+        "minimum_validation_mean_ap_exclusive": 0.4765625,
+        "observed_validation_mean_ap": 0.49982812500000007,
+        "minimum_worst_condition_mean_ap": 0.075,
+        "observed_worst_condition_mean_ap": 0.08275,
+        "maximum_conditions_degraded_by_more_than_0_03": 4,
+        "observed_conditions_degraded_by_more_than_0_03": 0,
+        "passed": true
+      },
+      "untouched_test": {
+        "split": "test",
+        "n": 64,
+        "mean_ap": 0.490359375,
+        "mean_ap50": 0.789109375,
+        "mean_pq": 0.7089218749999999,
+        "mean_brier": 0.01246525,
+        "mean_ece": 0.008822421875
+      }
+    },
+    {
+      "id": "n1-long-schedule-and-ensemble-study-v3",
+      "preregistration": "CAOS_MANAGE wip/frothseg/n1-study-v3-preregistration-2026-07-27.md, committed before any run",
+      "hypothesis": "the gap to Cellpose-SAM is an under-training deficit that a longer schedule closes",
+      "hypothesis_outcome": "refuted",
+      "validation_results": [
+        {
+          "id": "ensemble-logitmean-e120-seeds-25-26-27",
+          "kind": "ensemble",
+          "members": [
+            "c24-e120-s20260725",
+            "c24-e120-s20260726",
+            "c24-e120-s20260727"
+          ],
+          "mode": "logit-mean",
+          "tta": "none",
+          "mean_ap": 0.524
+        },
+        {
+          "id": "c24-e120-s20260727",
+          "kind": "single",
+          "base_channels": 24,
+          "epochs": 120,
+          "seed": 20260727,
+          "mean_ap": 0.523859375
+        },
+        {
+          "id": "ensemble-logitmean-tta-d4-e120-seeds-25-26-27",
+          "kind": "ensemble",
+          "members": [
+            "c24-e120-s20260725",
+            "c24-e120-s20260726",
+            "c24-e120-s20260727"
+          ],
+          "mode": "logit-mean",
+          "tta": "d4",
+          "mean_ap": 0.51271875
+        },
+        {
+          "id": "c24-e160-s20260727",
+          "kind": "single",
+          "base_channels": 24,
+          "epochs": 160,
+          "seed": 20260727,
+          "mean_ap": 0.5126875
+        },
+        {
+          "id": "c24-e120-s20260725",
+          "kind": "single",
+          "base_channels": 24,
+          "epochs": 120,
+          "seed": 20260725,
+          "mean_ap": 0.49565624999999996
+        },
+        {
+          "id": "c32-e120-s20260727",
+          "kind": "single",
+          "base_channels": 32,
+          "epochs": 120,
+          "seed": 20260727,
+          "mean_ap": 0.49449999999999994
+        },
+        {
+          "id": "c24-e120-s20260726",
+          "kind": "single",
+          "base_channels": 24,
+          "epochs": 120,
+          "seed": 20260726,
+          "mean_ap": 0.48642187500000006
+        }
+      ],
+      "seed_variance": {
+        "configuration": "c24-e120",
+        "seeds": [
+          "c24-e120-s20260725",
+          "c24-e120-s20260726",
+          "c24-e120-s20260727"
+        ],
+        "mean_aps": [
+          0.49566,
+          0.48642,
+          0.52386
+        ],
+        "spread": 0.03744,
+        "mean": 0.50198,
+        "note": "The seed spread exceeds the gap this study set out to close. Averaged over seeds, e120 is worth about 0.002 over e80, so the apparent monotone e24/e40/e80/e120 trend was one seed measured at each length. A single-seed comparison on this dataset cannot resolve a difference below about 0.03."
+      },
+      "selected": "ensemble-logitmean-e120-seeds-25-26-27",
+      "selection_rule": "highest validation mean_ap, no tiebreak, fixed before any run",
+      "finalist_gate": {
+        "minimum_validation_mean_ap_exclusive": 0.49982812500000007,
+        "observed_validation_mean_ap": 0.524,
+        "minimum_worst_condition_mean_ap": 0.075,
+        "observed_worst_condition_mean_ap": 0.12025,
+        "observed_worst_condition": "microbubble-cloud",
+        "maximum_conditions_degraded_by_more_than_0_03": 4,
+        "observed_conditions_degraded_by_more_than_0_03": 2,
+        "degraded_conditions": [
+          {
+            "condition_id": "bursting",
+            "delta": 0.04075
+          },
+          {
+            "condition_id": "coarse-froth",
+            "delta": 0.03625
+          }
+        ],
+        "reference_run": {
+          "id": "REF-c24-e80-s20260727",
+          "note": "The v2 winner retrained on the validation split to obtain the per-condition reference, which no stored artifact carried. It reproduced the published validation mean_ap exactly, which independently confirms the training path is deterministic.",
+          "validation_mean_ap": 0.49982812500000007,
+          "published_record_mean_ap": 0.49982812500000007
+        },
+        "passed": true
+      },
+      "untouched_test": {
+        "split": "test",
+        "n": 64,
+        "mean_ap": 0.51859375,
+        "mean_ap50": 0.82790625,
+        "mean_pq": 0.735859375,
+        "mean_boundary_fscore": 0.987625,
+        "evaluation_index": 3,
+        "note": "the third and only final test evaluation spent in this study"
+      },
+      "outcome": {
+        "exceeds_measured_leader": true,
+        "cellpose_sam_mean_ap": 0.5098906249999999,
+        "margin_over_leader": 0.008703,
+        "published_n1_mean_ap": 0.490359375,
+        "gain_over_published_n1": 0.028234,
+        "wins_on": [
+          "mean_ap",
+          "mean_ap50",
+          "mean_pq",
+          "mean_boundary_fscore"
+        ],
+        "margin_versus_noise": {
+          "single_model_seed_spread": 0.03744,
+          "margin_over_leader": 0.008703,
+          "note": "The margin over the leader is smaller than the single-model seed spread measured in this same study. Ensembling suppresses that variance by construction, but only one ensemble draw was evaluated, so ensemble-to-ensemble stability is unmeasured. The result wins on four metrics that are not perfectly correlated, which strengthens it, and it remains a leaderboard result on one synthetic benchmark against a generically pretrained Cellpose-SAM checkpoint."
+        },
+        "claim": "On this controlled synthetic benchmark the three-seed LamellaStar ensemble exceeds Cellpose-SAM on mask AP, AP50, PQ and boundary F-score under a pre-registered protocol with one test evaluation. This is a benchmark result, not a state-of-the-art claim, and beyond_sota_claim stays false."
+      },
+      "publication_status": {
+        "promoted": false,
+        "published_n1_checkpoint": "models/lamellastar-v1 (c24-e80-s20260727, single model)",
+        "note": "The winner is a three-member ensemble and has not been promoted to the published N1. Promotion would change the product's headline result and requires republishing three checkpoints and rebaking the still and temporal evidence for N1. Recorded here as a measured result pending that decision."
+      }
+    }
+  ],
+  "selection": {
+    "id": "c24-e80-s20260727",
+    "base_channels": 24,
+    "epochs": 80,
+    "seed": 20260727,
+    "augmentation": "none",
+    "validation_mean_ap": 0.49982812500000007,
+    "calibration": {
+      "mean_ap": 0.4964375,
+      "foreground_threshold": 0.6,
+      "boundary_threshold": 0.65,
+      "marker_threshold": 0.25,
+      "min_distance": 3,
+      "center_weight": 0.75
+    }
+  },
+  "untouched_test": {
+    "split": "test",
+    "n": 64,
+    "mean_ap": 0.490359375,
+    "mean_ap50": 0.789109375,
+    "mean_pq": 0.7089218749999999,
+    "mean_brier": 0.01246525,
+    "mean_ece": 0.008822421875
+  },
+  "canonical_diagnostic": {
+    "n_cases": 13,
+    "mean_ap": 0.48966666666666664,
+    "mean_ap50": 0.795,
+    "mean_pq": 0.7185
+  },
+  "comparison": {
+    "controlled_bar_mean_ap": 0.3,
+    "previous_n1_mean_ap": 0.471671875,
+    "absolute_gain_over_previous_n1": 0.018687500000000003,
+    "cellpose_sam_mean_ap": 0.5098906249999999,
+    "gap_to_measured_leader": 0.01953124999999989,
+    "clears_controlled_bar": true,
+    "exceeds_measured_leader": false,
+    "claim": "Measured internal improvement; Cellpose-SAM remains the leader; no superiority claim."
+  },
+  "deferred_candidates": [
+    {
+      "id": "sam3.1-official",
+      "status": "blocked-not-evaluated",
+      "reason": "Official checkpoint access is gated and unavailable in this environment; package and license integration are not present."
+    },
+    {
+      "id": "cellpose-sam-lamellastar-fusion",
+      "status": "future-protocol-only",
+      "reason": "No untouched reserve groups remain after the two preregistered N1 studies. Fusion selection now would reuse observed evidence and is therefore prohibited."
+    }
+  ],
+  "compute": {
+    "device": "NVIDIA GeForce RTX 4070 Laptop GPU",
+    "device_total_vram_mib": 8188,
+    "training_peak_allocated_mib": 920.6,
+    "final_evaluation_peak_allocated_mib": 266.5,
+    "continued_training_and_validation_seconds": 602.573,
+    "final_calibration_and_test_seconds": 305.437
+  },
+  "artifacts": {
+    "checkpoint": {
+      "path": "models/lamellastar-v1/checkpoint.pt",
+      "sha256": "32a8c16bed39e34cf7a45578c8cf69f4821e88b1b518fe1ae4ac49ebb550a48a"
+    },
+    "weights": {
+      "path": "models/lamellastar-v1/weights.npz",
+      "sha256": "ef2a6ad69983a5b60948d1dbea285111c3722e442d61c9edafcae5629352f734"
+    },
+    "onnx": {
+      "path": "models/lamellastar-v1/model.onnx",
+      "sha256": "54abaf08a262adf2c6cdfa824faf4265b62ba7af849f3ba7e588c5a4ff2b00f0",
+      "parity_max_abs_error": 5.340576171875e-05,
+      "parity_mean_abs_error": 3.489675009404891e-06,
+      "parity_absolute_tolerance": 6e-05,
+      "parity_mean_absolute_tolerance": 5e-06,
+      "parity_passed": true
+    },
+    "run_manifest": {
+      "path": "models/lamellastar-v1/run.json",
+      "sha256": "4cf1470f3c808746919cf1a0a4e905f0fe7a1c9279ed72f6c835a1870afe791c"
+    },
+    "canonical_benchmark": {
+      "path": "data/derived/learned/lamellastar-v1/benchmark.json",
+      "sha256": "4653ddbb490ce9ad5cb38997865c6ec3606119e783b9fdd7dcbbda0fa779813a"
+    }
+  }
+}

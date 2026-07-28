@@ -147,6 +147,117 @@ export interface SamBenchmarkDoc {
   cases: SamCaseScore[];
 }
 
+export interface LearnedCaseScore extends FloorScore {
+  case_id: string;
+  pq: number | null;
+  inference_ms: number;
+  mask_path: string;
+}
+
+export interface LearnedBenchmarkDoc {
+  schema: string;
+  method: string;
+  checkpoint_sha256: string;
+  split: string;
+  n_cases: number;
+  mean_ap: number;
+  mean_ap50: number;
+  mean_pq: number;
+  cases: LearnedCaseScore[];
+}
+
+export interface MethodMetricSummary {
+  split: string;
+  n?: number;
+  n_cases?: number;
+  mean_ap: number;
+  mean_ap50: number;
+  mean_pq: number | null;
+  mean_boundary_fscore?: number;
+  mean_brier?: number;
+  mean_ece?: number;
+  mean_bsd_wasserstein?: number;
+  mean_count_relative_error?: number;
+  mean_d32_relative_error?: number;
+  mean_inference_ms?: number;
+  p95_inference_ms?: number;
+  robustness_by_condition?: Record<string, {
+    n: number;
+    mean_ap: number;
+    delta_ap_from_global: number;
+  }>;
+  micro?: {
+    nGt: number;
+    nPred: number;
+    tp: number;
+    fp: number;
+    fn: number;
+    instance_precision: number;
+    instance_recall: number;
+    instance_f1: number;
+  };
+  cases?: Array<{
+    sample_id: string;
+    condition_id: string;
+    group_id: string;
+    ap: number;
+    ap50: number;
+    pq: number;
+  }>;
+}
+
+export interface MethodBenchmarkRow {
+  id: string;
+  slug: string;
+  name: string;
+  tier: 'classical' | 'domain-sota' | 'foundation' | 'frontier';
+  lane: string;
+  engine: string;
+  state: 'implemented' | 'missing';
+  quality_status: 'passes-current-bar' | 'below-current-bar' | 'not-evaluated';
+  test: MethodMetricSummary | null;
+  canonical: MethodMetricSummary | null;
+  canonical_cases: Array<{ case_id: string; ap: number | null }>;
+  compute: {
+    hardware_lane: 'cpu' | 'gpu';
+    device: string;
+    mean_inference_ms: number;
+    p95_inference_ms: number | null;
+    peak_memory_mib: number;
+    peak_memory_metric: string;
+    model_artifact_bytes: number;
+    model_artifact_sha256?: string | null;
+    model_artifact_committed?: boolean;
+    training_duration_seconds?: number | null;
+  };
+  docs_path: string;
+}
+
+export interface MethodBenchmarkDoc {
+  schema: 'frothseg.method-benchmark/v2';
+  dataset_schema: string;
+  canonical_case_count: number;
+  method_count: number;
+  implemented_count: number;
+  missing_count: number;
+  coverage: {
+    expected_methods: number;
+    expected_test_samples: number;
+    expected_cells: number;
+    observed_cells: number;
+    condition_count: number;
+    complete: boolean;
+    errors: string[];
+  };
+  current_bar: {
+    metric: string;
+    threshold: number;
+    leader: { id: string; slug: string; mean_ap: number } | null;
+    beyond_sota_claim: boolean;
+  };
+  methods: MethodBenchmarkRow[];
+}
+
 export interface CaseIndexEntry {
   case_id: string;
   category: string;
@@ -159,4 +270,42 @@ export interface CaseIndex {
   generator: string;
   n_cases: number;
   cases: CaseIndexEntry[];
+}
+
+export interface TemporalSequenceMetrics {
+  condition_id: string;
+  frames: number;
+  matched_gt_instances?: number;
+  false_positive_instances?: number;
+  false_negative_instances?: number;
+  id_switches?: number;
+  id_switch_rate: number;
+  mean_frame_coverage: number;
+  id_precision?: number;
+  id_recall?: number;
+  idf1: number;
+  detection_accuracy?: number;
+  association_accuracy?: number;
+  hota: number;
+  track_fragmentations: number;
+  event_true_positives?: number;
+  event_false_positives?: number;
+  event_false_negatives?: number;
+  event_precision: number;
+  event_recall: number;
+  event_f1?: number;
+  flow_epe_px: number | null;
+}
+
+export interface TemporalBenchmarkDoc {
+  schema: string;
+  method: string;
+  device: string;
+  mean_idf1: number;
+  mean_hota: number;
+  total_track_fragmentations: number;
+  mean_event_precision: number;
+  mean_event_recall: number;
+  mean_flow_epe_px: number;
+  sequences: TemporalSequenceMetrics[];
 }

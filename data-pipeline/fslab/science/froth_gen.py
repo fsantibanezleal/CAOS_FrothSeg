@@ -19,7 +19,7 @@ Determinism: a case is a pure function of (spec, seed); all randomness from a se
 """
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace as dataclass_replace
 
 import cv2
 import numpy as np
@@ -31,6 +31,7 @@ class FrothSpec:
     """One synthetic froth case, a coverage-axis point with a fixed seed (plan section 3e)."""
     name: str
     seed: int
+    appearance_seed: int | None = None
     h: int = 256
     w: int = 256
     d32_px: float = 26.0
@@ -97,8 +98,10 @@ def laguerre_labels(spec: FrothSpec, sites: np.ndarray) -> np.ndarray:
 
 def render(spec: FrothSpec, sites: np.ndarray, lab: np.ndarray) -> np.ndarray:
     """Grey froth [0,1] (H,W): base + Plateau-border darkening (EXACT EDT) + specular highlights + stressors."""
-    rng = np.random.default_rng(spec.seed + 1)
+    rng = np.random.default_rng(spec.appearance_seed if spec.appearance_seed is not None else spec.seed + 1)
     h, w = spec.h, spec.w
+    if spec.empty:
+        return np.zeros((h, w), dtype=np.float64)
     img = np.full((h, w), 0.62 - 0.18 * spec.load, dtype=np.float64)
     if len(sites):
         # distance to the nearest cell boundary via the exact Euclidean distance transform of the interiors
@@ -154,6 +157,79 @@ def generate(spec: FrothSpec) -> dict:
     lab = laguerre_labels(spec, sites)
     img = render(spec, sites, lab)
     return dict(spec=spec, sites=sites, labels=lab, image=img, bsd=bsd(lab))
+
+
+def generate_sequence(
+    spec: FrothSpec,
+    *,
+    frames: int = 8,
+    displacement_px: float = 3.0,
+) -> list[dict]:
+    """Generate a deterministic short sequence with persistent instance ids.
+
+    Geometry is sampled once. Each frame applies a smooth sub-bubble displacement
+    and a distinct appearance seed, so tracking is evaluated against exact,
+    persistent ids rather than frame-wise rematched synthetic masks.
+    """
+    if frames < 2:
+        raise ValueError("a temporal sequence requires at least two frames")
+    sites = pack_bubbles(spec)
+    birth_index = len(sites) - 1 if spec.name.startswith("bursting") and len(sites) else None
+    disappearance_index = len(sites) // 2 if spec.name.startswith("bursting") and len(sites) > 1 else None
+    out: list[dict] = []
+    previous_sites: dict[int, np.ndarray] = {}
+    for frame_index in range(frames):
+        phase = 2.0 * np.pi * frame_index / frames
+        moved = sites.copy()
+        if len(moved):
+            moved[:, 0] += displacement_px * np.sin(phase)
+            moved[:, 1] += displacement_px * 0.55 * np.cos(phase)
+        frame_spec = dataclass_replace(
+            spec,
+            name=f"{spec.name}-f{frame_index:03d}",
+            appearance_seed=spec.seed + 500_000 + frame_index,
+        )
+        active_indices = list(range(len(moved)))
+        events: list[dict[str, int | str]] = []
+        if birth_index is not None and frame_index < max(1, frames // 3):
+            active_indices.remove(birth_index)
+        elif birth_index is not None and frame_index == max(1, frames // 3):
+            events.append({"type": "birth", "instance_id": birth_index + 1})
+        if disappearance_index is not None and frame_index >= max(2, 2 * frames // 3):
+            active_indices.remove(disappearance_index)
+            if frame_index == max(2, 2 * frames // 3):
+                events.append({
+                    "type": "coalescence",
+                    "instance_id": disappearance_index + 1,
+                })
+        active_sites = moved[active_indices]
+        local_labels = laguerre_labels(frame_spec, active_sites)
+        labels = np.zeros_like(local_labels)
+        for local_id, original_index in enumerate(active_indices, start=1):
+            labels[local_labels == local_id] = original_index + 1
+        image = render(frame_spec, active_sites, labels)
+        flow_by_instance: dict[str, list[float]] = {}
+        current_sites: dict[int, np.ndarray] = {
+            original_index + 1: moved[original_index, :2]
+            for original_index in active_indices
+        }
+        for instance_id in previous_sites.keys() & current_sites.keys():
+            delta = current_sites[instance_id] - previous_sites[instance_id]
+            flow_by_instance[str(instance_id)] = [float(delta[0]), float(delta[1])]
+        out.append(
+            {
+                "spec": frame_spec,
+                "frame_index": frame_index,
+                "sites": active_sites,
+                "labels": labels,
+                "image": image,
+                "bsd": bsd(labels),
+                "flow_by_instance_px": flow_by_instance,
+                "events": events,
+            }
+        )
+        previous_sites = current_sites
+    return out
 
 
 CASES: tuple[FrothSpec, ...] = (

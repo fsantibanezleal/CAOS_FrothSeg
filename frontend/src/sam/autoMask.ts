@@ -1,7 +1,8 @@
 // The SAM-class automatic mask generator for flotation froth: run a SAM-family foundation model (SlimSAM /
 // MobileSAM via @huggingface/transformers) with a dense grid of point prompts, keep the confident + stable
 // masks, dedupe by NMS, and reduce to an instance-label map + bubble-size distribution. Zero-shot: NO froth
-// training labels. This is the product's live core; it runs in the browser on WebGPU (WASM fallback) and in
+// training labels. This is a bounded legacy browser interaction, not the authoritative product benchmark; it runs
+// in the browser on WebGPU (WASM fallback) and in
 // Node (onnxruntime-node) for the offline verification harness, sharing this exact code.
 //
 // Algorithm = the standard SamAutomaticMaskGenerator (Kirillov et al. 2023, SAM): the image is encoded once,

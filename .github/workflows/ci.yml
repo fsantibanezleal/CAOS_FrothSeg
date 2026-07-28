@@ -16,15 +16,38 @@ jobs:
           python-version: "3.12"
           cache: pip
       - name: Install (offline lane + dev + editable pkg)
-        run: pip install -r data-pipeline/requirements.txt -r requirements-dev.txt -e .
+        run: |
+          pip install -r requirements-precompute.txt -r requirements-api.txt -r requirements-dev.txt -e .
+          pip install torch==2.13.0+cpu --index-url https://download.pytorch.org/whl/cpu
       - name: Lint
-        run: ruff check data-pipeline tests
+        run: ruff check scripts data-pipeline tests
       - name: Tests
-        run: pytest
-      - name: Pipeline smoke (regenerate one case)
-        run: python -m fslab.pipeline poly-normal
+        run: python -m pytest
+      - name: Pipeline smoke (sandboxed; canonical artifacts are read-only)
+        run: python -m fslab.pipeline poly-normal --output "${{ runner.temp }}/frothseg-smoke"
+      - name: Showcase smoke (sandboxed; canonical artifacts are read-only)
+        run: >-
+          python -m fslab.pipeline showcase
+          --input data/derived
+          --output "${{ runner.temp }}/frothseg-showcase-smoke"
       - name: CONTRACT 2 · manifests <-> artifacts consistent (no drift)
         run: python scripts/check_artifacts.py
+      - name: Regenerate and verify canonical + showcase contracts
+        run: python -m fslab.pipeline --check
+      - name: Scientific product development gate
+        run: python scripts/check_product_completeness.py --profile development
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Frontend install, tests, audit, and production build
+        working-directory: frontend
+        run: |
+          npm ci
+          npm test -- --run
+          npm audit --omit=dev --audit-level=critical
+          npm run build
 
   guards:
     runs-on: ubuntu-latest
@@ -36,11 +59,22 @@ jobs:
           # a real .env must never be tracked (only .env.example)
           if git ls-files | grep -qE '(^|/)\.env(\..+)?$' && ! git ls-files | grep -qx '.env.example'; then
             echo "::error::a real .env is tracked (only .env.example may be)"; fail=1; fi
-          # venvs / native binaries / heavy model blobs must never be tracked
-          if git ls-files | grep -qiE '(^|/)\.?venv|\.(dll|so|dylib|pt|pth)$'; then
-            echo "::error::a venv or native/heavy binary is tracked (recreate from requirements; keep models small/LFS)"; fail=1; fi
+          # venvs and native binaries must never be tracked
+          if git ls-files | grep -qiE '(^|/)\.?venv|\.(dll|so|dylib)$'; then
+            echo "::error::a venv or native binary is tracked"; fail=1; fi
+          # compact release checkpoints are allowed only in models/ and capped at 25 MiB
+          while IFS= read -r artifact; do
+            case "$artifact" in
+              models/*) ;;
+              *) echo "::error::model artifact outside models/: $artifact"; fail=1; continue ;;
+            esac
+            bytes=$(git cat-file -s "HEAD:$artifact")
+            if [ "$bytes" -gt 26214400 ]; then
+              echo "::error::model artifact exceeds 25 MiB: $artifact ($bytes bytes)"; fail=1
+            fi
+          done < <(git ls-files | grep -iE '\.(pt|pth|h5)$' || true)
           # raw/heavy data must never be tracked · commit only compact derived artifacts under data/derived/
-          if git ls-files | grep -qiE '\.(parquet|h5|hdf5|nc|mat|npy)$'; then
+          if git ls-files | grep -qiE '\.(parquet|hdf5|nc|mat|npy)$'; then
             echo "::error::raw/heavy data tracked · commit only compact derived artifacts (data/derived/)"; fail=1; fi
           # no leaked local machine paths in tracked sources
           if git grep -nF 'D:\_Repos' -- . ':!.github' >/dev/null 2>&1; then
@@ -52,3 +86,5 @@ jobs:
           python-version: "3.12"
       - name: Content standards (no em-dash / emoji in tracked content, ADR-0067)
         run: python scripts/check_content_standards.py
+      - name: Template residue (instantiation left no example-lab / placeholder text, ADR-0057)
+        run: python scripts/check_template_residue.py

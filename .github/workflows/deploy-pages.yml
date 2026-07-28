@@ -4,6 +4,15 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      validation_profile:
+        description: "Validation profile (development publishes an explicitly incomplete evidence report)"
+        required: true
+        default: development
+        type: choice
+        options:
+          - development
+          - release
 
 permissions:
   contents: read
@@ -22,10 +31,14 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Regenerate artifacts (fresh deterministic replay outputs)
+      - name: Verify the committed scientific artifacts
+        env:
+          VALIDATION_PROFILE: ${{ github.event_name == 'workflow_dispatch' && inputs.validation_profile || 'release' }}
         run: |
-          pip install -r data-pipeline/requirements.txt -e .
-          python -m fslab.pipeline all
+          pip install -r requirements-precompute.txt -e .
+          python -m fslab.pipeline --check
+          python scripts/check_artifacts.py
+          python scripts/check_product_completeness.py --profile "$VALIDATION_PROFILE"
       - uses: actions/setup-node@v4
         with:
           node-version: "20"

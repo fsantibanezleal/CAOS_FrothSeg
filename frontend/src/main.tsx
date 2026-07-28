@@ -1,8 +1,10 @@
-import { StrictMode } from 'react';
+import { StrictMode, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { CircleDot } from 'lucide-react';
-import { AppShell, applyTheme, readTheme, CitationsProvider, type ShellConfig } from '@fasl-work/caos-app-shell';
+import {
+  AppShell, applyTheme, readTheme, CitationsProvider, useShellLang, type ShellConfig,
+} from '@fasl-work/caos-app-shell';
 import '@fasl-work/caos-app-shell/styles.css';
 import './frothseg.css';
 import 'katex/dist/katex.min.css';
@@ -18,6 +20,25 @@ import Benchmark from './pages/Benchmark';
 
 applyTheme(readTheme());
 
+// Vite fingerprints lazy chunks. If a deployment replaces the bundle while a
+// tab is open, reload the new index once instead of surfacing a stale-chunk
+// import error to the segmentation workbench.
+const PRELOAD_RECOVERY_KEY = 'frothseg:preload-recovery';
+window.setTimeout(() => sessionStorage.removeItem(PRELOAD_RECOVERY_KEY), 10_000);
+window.addEventListener('vite:preloadError', (event) => {
+  event.preventDefault();
+  if (sessionStorage.getItem(PRELOAD_RECOVERY_KEY) !== location.pathname) {
+    sessionStorage.setItem(PRELOAD_RECOVERY_KEY, location.pathname);
+    location.reload();
+  }
+});
+
+/** `0.4.0` (npm semver) -> `0.04.000` (the padded display form the CHANGELOG and tags use). */
+function displayVersion(semver: string): string {
+  const [major = '0', minor = '0', patch = '0'] = semver.split('.');
+  return `${major}.${minor.padStart(2, '0')}.${patch.padStart(3, '0')}`;
+}
+
 const config: ShellConfig = {
   product: { name: 'FrothSeg', mark: <CircleDot size={18} aria-hidden="true" /> },
   routes: [
@@ -29,19 +50,37 @@ const config: ShellConfig = {
     { path: '/benchmark', en: 'Benchmark', es: 'Benchmark' },
   ],
   links: { github: 'https://github.com/fsantibanezleal/CAOS_FrothSeg' },
-  version: pkg.version,
+  // The shell footer takes the display form X.XX.XXX (ADR-0068); package.json carries the semver
+  // form with zeros dropped. Derive one from the other so the footer cannot drift from the manifest.
+  version: displayVersion(pkg.version),
   architecture,
   footer: {
     provenance: {
-      en: 'Live: SAM-class model (SlimSAM, Apache-2.0) via transformers.js + WebGPU. Benchmark: synthetic froth (Laguerre foam), exact masks.',
-      es: 'En vivo: modelo SAM (SlimSAM, Apache-2.0) vía transformers.js + WebGPU. Benchmark: espuma sintética (espuma de Laguerre), máscaras exactas.',
+      en: 'Repository: complete processing, training, inference, evaluation, and export pipelines. Site: verified result exploration and four local-image methods.',
+      es: 'Repositorio: pipelines completos de procesamiento, entrenamiento, inferencia, evaluación y exportación. Sitio: resultados verificados y cuatro métodos para imágenes locales.',
     },
     disclaimer: {
-      en: 'Static site; segmentation runs in your browser, no backend. Synthetic AP is a controlled benchmark, not real-plant accuracy.',
-      es: 'Sitio estático; la segmentación se ejecuta en el navegador, sin backend. El AP sintético es un benchmark controlado, no exactitud de planta real.',
+      en: 'The website replays precomputed evidence and offers light interaction. Synthetic AP is controlled evidence, not plant accuracy.',
+      es: 'La web reproduce evidencia precalculada y ofrece interacción liviana. El AP sintético es evidencia controlada, no exactitud de planta.',
     },
   },
 };
+
+function ShellLicenseCorrection() {
+  const lang = useShellLang();
+  useEffect(() => {
+    document.documentElement.lang = lang;
+    const node = document.querySelector(
+      '.footer-meta a[href*="github"] + span + .faint',
+    );
+    if (node) {
+      node.textContent = lang === 'es'
+        ? 'Licencia Apache-2.0 · código abierto'
+        : 'Apache-2.0 licensed · open source';
+    }
+  }, [lang]);
+  return null;
+}
 
 const el = document.getElementById('root');
 if (el) {
@@ -50,6 +89,7 @@ if (el) {
       <BrowserRouter>
         <CitationsProvider items={CITATIONS}>
           <AppShell config={config}>
+            <ShellLicenseCorrection />
             <Routes>
               <Route path="/" element={<Tool />} />
               <Route path="/introduction" element={<Introduction />} />

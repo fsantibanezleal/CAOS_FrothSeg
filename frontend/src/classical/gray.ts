@@ -161,7 +161,8 @@ export function blackTophat(gray: Float32Array, w: number, h: number, radius: nu
 }
 
 /** Morphological reconstruction by dilation of `marker` under `maskImg` (marker <= maskImg), iterative
- *  raster/anti-raster sweeps (Vincent 1993), converged for our image sizes in a few passes. */
+ *  raster/anti-raster sweeps (Vincent 1993). The 8-neighbour footprint intentionally matches
+ *  `skimage.morphology.reconstruction`'s 2-D default. */
 export function reconstructByDilation(marker: Float32Array, maskImg: Float32Array, w: number, h: number): Float32Array {
   const r = Float32Array.from(marker);
   let changed = true;
@@ -173,6 +174,8 @@ export function reconstructByDilation(marker: Float32Array, maskImg: Float32Arra
       let m = r[i];
       if (x > 0) m = Math.max(m, r[i - 1]);
       if (y > 0) m = Math.max(m, r[i - w]);
+      if (x > 0 && y > 0) m = Math.max(m, r[i - w - 1]);
+      if (x < w - 1 && y > 0) m = Math.max(m, r[i - w + 1]);
       const val = Math.min(m, maskImg[i]);
       if (val > r[i]) { r[i] = val; changed = true; }
     }
@@ -181,6 +184,8 @@ export function reconstructByDilation(marker: Float32Array, maskImg: Float32Arra
       let m = r[i];
       if (x < w - 1) m = Math.max(m, r[i + 1]);
       if (y < h - 1) m = Math.max(m, r[i + w]);
+      if (x < w - 1 && y < h - 1) m = Math.max(m, r[i + w + 1]);
+      if (x > 0 && y < h - 1) m = Math.max(m, r[i + w - 1]);
       const val = Math.min(m, maskImg[i]);
       if (val > r[i]) { r[i] = val; changed = true; }
     }
@@ -194,12 +199,10 @@ export function hMaxima(gray: Float32Array, w: number, h: number, hVal: number):
   const marker = new Float32Array(gray.length);
   for (let i = 0; i < gray.length; i++) marker[i] = gray[i] - hVal;
   const rec = reconstructByDilation(marker, gray, w, h);
-  // At an isolated dome PEAK deeper than h the reconstruction sits exactly h below f, while on flanks and on
-  // sub-h relief f - rec falls toward 0 (a dome riding a taller connected dome reconstructs to its own height and
-  // vanishes). Marking f - rec >= h/2 therefore keeps one compact plateau per genuine h-deep maximum, the
-  // highlight-seeding semantics (one marker per specular spot), instead of smearing over the whole dome cap.
+  // The h-dome residue is binary at residue >= h. Float32 arithmetic requires a tiny tolerance, but using h/2
+  // would admit flanks and fragment a single highlight into hundreds of false markers.
   const out = new Uint8Array(gray.length);
-  const cut = hVal * 0.5;
+  const cut = hVal - 2e-6;
   for (let i = 0; i < gray.length; i++) out[i] = gray[i] - rec[i] >= cut ? 1 : 0;
   return out;
 }
@@ -207,27 +210,29 @@ export function hMaxima(gray: Float32Array, w: number, h: number, hVal: number):
 /** Peaks of a height map: local maxima with a minimum separation, inside an optional mask. */
 export function peakLocalMax(height: Float32Array, w: number, h: number, minDistance: number, mask?: Uint8Array): Array<[number, number]> {
   const cand: Array<[number, number, number]> = [];
-  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+  // skimage.feature.peak_local_max uses a (2*d+1)^2 maximum filter and excludes a border of width d.
+  for (let y = minDistance; y < h - minDistance; y++) for (let x = minDistance; x < w - minDistance; x++) {
     const i = y * w + x;
     if (mask && !mask[i]) continue;
     const v = height[i];
     if (v <= 0) continue;
     let isMax = true;
-    for (let dy = -1; dy <= 1 && isMax; dy++) for (let dx = -1; dx <= 1; dx++) {
+    for (let dy = -minDistance; dy <= minDistance && isMax; dy++)
+      for (let dx = -minDistance; dx <= minDistance; dx++) {
       const nx = x + dx, ny = y + dy;
-      if (nx < 0 || ny < 0 || nx >= w || ny >= h) continue;
       if (height[ny * w + nx] > v) { isMax = false; break; }
     }
     if (isMax) cand.push([x, y, v]);
   }
   cand.sort((a, b) => b[2] - a[2]);
   const kept: Array<[number, number]> = [];
-  const md2 = minDistance * minDistance;
   for (const [x, y] of cand) {
     let ok = true;
     for (const [kx, ky] of kept) {
-      const dx = x - kx, dy = y - ky;
-      if (dx * dx + dy * dy < md2) { ok = false; break; }
+      if (Math.max(Math.abs(x - kx), Math.abs(y - ky)) < minDistance) {
+        ok = false;
+        break;
+      }
     }
     if (ok) kept.push([x, y]);
   }

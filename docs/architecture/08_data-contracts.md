@@ -70,9 +70,15 @@ every case.
 - `python -m fslab.pipeline --check` is a lighter self-check: it regenerates each case and confirms the committed
   `frame.png` sha256 and the masks instance count still match.
 
-The web loads only these committed artifacts for the baked benchmark and the synthetic samples; it never
-recomputes them. Live segmentation of an uploaded frame runs in the browser (`frontend/src/sam`, onnxruntime-web
-with WebGPU), not here.
+The cross-method replay layer lives under `data/derived/showcase/`.
+`python -m fslab.pipeline showcase` reads the originating label maps and emits a
+compact `labels.rle` plus `preview.png` for every registered method and canonical
+case. Its `frothseg.showcase/v1` manifest must contain 15 methods, 13 cases, and
+195 pairs; `tests/test_showcase.py` verifies coverage and hashes.
+
+The web loads only committed artifacts for the benchmark, canonical samples,
+and showcase; it never recomputes them. Live segmentation of an uploaded frame
+runs only through C1, C3, C4, or legacy SlimSAM in the browser, not here.
 
 **One recorded result sits outside CONTRACT 2.** `data/derived/sam_benchmark.json` (schema
 `frothseg.sam_benchmark/v1`) is the offline SAM-vs-floor sweep. Because the SAM run is model-dependent, it is a
