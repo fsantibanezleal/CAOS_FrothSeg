@@ -1467,83 +1467,83 @@
         },
         {
           "events_path": "showcase/temporal/poly-normal/predictions/N1/events.json",
-          "events_sha256": "02b290c7bcdd05d250948b581f8baf05c39733499be7f1089d27462e3ccce44e",
+          "events_sha256": "2a9864d888870e7e30ba04dcab7248beec0802f2efb2a50f65a3f0a5fac83e19",
           "evidence_path": "temporal/lamellastar.json",
-          "evidence_sha256": "e24770ccd25cabc8316f4cb2bbf4d00117333cd95585e14597757879df467a31",
+          "evidence_sha256": "8497b33d7b4feb1263f777cc2d821cf797d402fb0787433804f4b266c51e99dd",
           "frames": [
             {
               "frame_index": 0,
               "prediction_path": "showcase/temporal/poly-normal/000/predictions/N1/labels.rle",
-              "prediction_sha256": "9e07503a21e8b1118700d5415fc18e8cb532853a708903e769cee0f9da74fe0e"
+              "prediction_sha256": "5250fecc5728d40acc562abad545d8e5d5903e5322b4e4e46313031a79f5e347"
             },
             {
               "frame_index": 1,
               "prediction_path": "showcase/temporal/poly-normal/001/predictions/N1/labels.rle",
-              "prediction_sha256": "6de79920b4afeec51c7756384e225ef97c0401fea4f2281ca3949a5f2939372f"
+              "prediction_sha256": "f5fb6c464e44945daf4ce8328c1616228e3b81d30092c377081edde94c16f750"
             },
             {
               "frame_index": 2,
               "prediction_path": "showcase/temporal/poly-normal/002/predictions/N1/labels.rle",
-              "prediction_sha256": "7549afac0a7f1f9d007f39401b28d700b878ec93ded70a8aeecbb12f9368b846"
+              "prediction_sha256": "153cc3fd17f177b7188fc87396ec468c144b45a1938c056ebd6d036fd8985dbd"
             },
             {
               "frame_index": 3,
               "prediction_path": "showcase/temporal/poly-normal/003/predictions/N1/labels.rle",
-              "prediction_sha256": "7f9a4e0e50cca5c7899c0361156750ef8f186a102f068f616704734eae1b7ed9"
+              "prediction_sha256": "e2dc8f6cf4f260523f998124fe7e8ff9931420c7c95fcce8c78b0ac467004935"
             },
             {
               "frame_index": 4,
               "prediction_path": "showcase/temporal/poly-normal/004/predictions/N1/labels.rle",
-              "prediction_sha256": "a5b8440e74012b2d8ecda9bcd85027f87dd8f09f3f4a5ada70d4f53b41ddb29b"
+              "prediction_sha256": "a4067a374b825e7d706807c8704a04c12c438b438fd44c0c8e5abcbb83eac6c2"
             },
             {
               "frame_index": 5,
               "prediction_path": "showcase/temporal/poly-normal/005/predictions/N1/labels.rle",
-              "prediction_sha256": "0f381df8a29d776d795d52aa80b310a751ef3e6202a65ab287cf30cafbc866b2"
+              "prediction_sha256": "9ace8d16599a99f96ee239d07259efd4612a1545ce2653d25152e392aede2052"
             },
             {
               "frame_index": 6,
               "prediction_path": "showcase/temporal/poly-normal/006/predictions/N1/labels.rle",
-              "prediction_sha256": "7b5d9a98f2d11d871019aaaee5cd4e587e498f124fb546ad98ca775f037b302b"
+              "prediction_sha256": "ba46f87c50cdc7f7709cbefa3535406141c1942b7e0672ace079e32c37f89794"
             },
             {
               "frame_index": 7,
               "prediction_path": "showcase/temporal/poly-normal/007/predictions/N1/labels.rle",
-              "prediction_sha256": "3e5ab6497250f0d1e1fdebb28e8f1b25d91f682c3ed9c3c6eebe54611f7dee4f"
+              "prediction_sha256": "aafbadbe108494c480f31af9a757106d0333dfe8021eac28adc1232b94f38230"
             }
           ],
           "method_id": "N1",
           "method_slug": "lamellastar",
           "metrics": {
-            "association_accuracy": 0.9468351474532793,
-            "detection_accuracy": 0.9049098819142325,
-            "event_f1": 0.0425531914893617,
+            "association_accuracy": 0.9777223946414201,
+            "detection_accuracy": 0.9440646364201367,
+            "event_f1": 0.06153846153846154,
             "event_false_negatives": 0,
-            "event_false_positives": 90,
-            "event_precision": 0.021739130434782608,
+            "event_false_positives": 61,
+            "event_precision": 0.031746031746031744,
             "event_recall": 1.0,
             "event_true_positives": 2,
-            "false_negative_instances": 119,
+            "false_negative_instances": 56,
             "false_positive_instances": 34,
-            "flow_epe_px": 0.7110911103640746,
+            "flow_epe_px": 0.528032371211265,
             "frames": 8,
-            "hota": 0.9256351773102576,
-            "id_precision": 0.9489932885906041,
-            "id_recall": 0.8977777777777778,
-            "id_switch_rate": 0.007554945054945055,
-            "id_switches": 11,
-            "idf1": 0.9226753670473083,
-            "matched_gt_instances": 1456,
-            "mean_frame_coverage": 0.9244438257536518,
-            "track_fragmentations": 17
+            "hota": 0.960746135572232,
+            "id_precision": 0.9684481648422408,
+            "id_recall": 0.954920634920635,
+            "id_switch_rate": 0.003949967083607637,
+            "id_switches": 6,
+            "idf1": 0.9616368286445013,
+            "matched_gt_instances": 1519,
+            "mean_frame_coverage": 0.964447581062882,
+            "track_fragmentations": 6
           },
           "mode": "framewise_segmentation_with_iou_identity_association",
           "model_provenance": {
             "association_threshold": 0.25,
-            "checkpoint_sha256": "ef2a6ad69983a5b60948d1dbea285111c3722e442d61c9edafcae5629352f734",
+            "checkpoint_sha256": "4fcbc593ec0bcbf69718c3ae480d90d4b0319c0c9698cb97aee434118b5525a8",
             "device": "cuda"
           },
-          "predicted_event_count": 92,
+          "predicted_event_count": 63,
           "protocol": "independent per-frame inference, followed by greedy IoU identity association",
           "truth_event_count": 2
         }
@@ -2779,83 +2779,83 @@
         },
         {
           "events_path": "showcase/temporal/fine-froth/predictions/N1/events.json",
-          "events_sha256": "147233f16a1cf1c85d4be3d9a4c087175771623941c429a1460adfd02c68f858",
+          "events_sha256": "ce0e795ab62dbd19af79c116534b7262a53dcfa8adfd94342b528047dc510c6f",
           "evidence_path": "temporal/lamellastar.json",
-          "evidence_sha256": "e24770ccd25cabc8316f4cb2bbf4d00117333cd95585e14597757879df467a31",
+          "evidence_sha256": "8497b33d7b4feb1263f777cc2d821cf797d402fb0787433804f4b266c51e99dd",
           "frames": [
             {
               "frame_index": 0,
               "prediction_path": "showcase/temporal/fine-froth/000/predictions/N1/labels.rle",
-              "prediction_sha256": "f9389dd321822da92ad0577b19695f579b7939e05a68dd11f069441f0c803226"
+              "prediction_sha256": "667b3e2e7f5211c1ef2cc85061fad4b42dab7d721f91f64bba02c594d355a936"
             },
             {
               "frame_index": 1,
               "prediction_path": "showcase/temporal/fine-froth/001/predictions/N1/labels.rle",
-              "prediction_sha256": "316d928ba5f18f6f7d4bbd3b786eb262114717358ebe82002d87062b12f303cf"
+              "prediction_sha256": "43532759561a321d03a6f4e15b70da9ae892658c6784f62c8abf8e53f0d3e921"
             },
             {
               "frame_index": 2,
               "prediction_path": "showcase/temporal/fine-froth/002/predictions/N1/labels.rle",
-              "prediction_sha256": "46e89db1e4e14b178f4a9e2b5fcfb4c4ad9df15ab149029adb7ce6a86e6525b2"
+              "prediction_sha256": "129bb182edef6c2386c7825f328d3bb348167b3d9269ccc73bec04e1b886f80c"
             },
             {
               "frame_index": 3,
               "prediction_path": "showcase/temporal/fine-froth/003/predictions/N1/labels.rle",
-              "prediction_sha256": "adfeab8203fdbb98e909c7d431ff89a33c16052c851d4672bea788d8b97c45ad"
+              "prediction_sha256": "8c0de471a5319d1578506a47a503ae69a69ed23629b9261e98aa87767f7e260a"
             },
             {
               "frame_index": 4,
               "prediction_path": "showcase/temporal/fine-froth/004/predictions/N1/labels.rle",
-              "prediction_sha256": "0bcedb665a9836f6a82e8e9debd7efbfd7c5a39ab3a8990ee9895792281eff37"
+              "prediction_sha256": "3685582f5cb8e14f832b1896620d9697649ef3947e338b383e8e873671b80a7b"
             },
             {
               "frame_index": 5,
               "prediction_path": "showcase/temporal/fine-froth/005/predictions/N1/labels.rle",
-              "prediction_sha256": "94edd1c48ad946e58ab3e9f7758df0dee75e74c6d7f3152ef5526c9625b36429"
+              "prediction_sha256": "451981de3b8e2e3c1d5b54dc4a66ccfb7e47648cfcf07f34b4a7a617956f7525"
             },
             {
               "frame_index": 6,
               "prediction_path": "showcase/temporal/fine-froth/006/predictions/N1/labels.rle",
-              "prediction_sha256": "4a8d4b6e0c1f79d5e8c78a84c05709b1bd51e4a64d8c5e8aee44fd9f8768af51"
+              "prediction_sha256": "82207c73dfb2fd9e1a8fbd8d3ab9fe237c28457362e1b9b13dc469566d4925db"
             },
             {
               "frame_index": 7,
               "prediction_path": "showcase/temporal/fine-froth/007/predictions/N1/labels.rle",
-              "prediction_sha256": "59fcdeacd73288ca4a048a4a5b53e2e843e33d84bb7922d0b5919e50dbbd10be"
+              "prediction_sha256": "66b36d88667bf955f15d1cf1bbea5a92801c4fdbc490d57d71377186c7ad4251"
             }
           ],
           "method_id": "N1",
           "method_slug": "lamellastar",
           "metrics": {
-            "association_accuracy": 0.7885780406632037,
-            "detection_accuracy": 0.7199747155499368,
-            "event_f1": 0.00333889816360601,
+            "association_accuracy": 0.92931559642217,
+            "detection_accuracy": 0.8461862621154657,
+            "event_f1": 0.00816326530612245,
             "event_false_negatives": 0,
-            "event_false_positives": 597,
-            "event_precision": 0.0016722408026755853,
+            "event_false_positives": 243,
+            "event_precision": 0.004098360655737705,
             "event_recall": 1.0,
             "event_true_positives": 1,
-            "false_negative_instances": 1326,
+            "false_negative_instances": 727,
             "false_positive_instances": 3,
-            "flow_epe_px": 1.2309875795291645,
+            "flow_epe_px": 0.7292736434295543,
             "frames": 8,
-            "hota": 0.7534960189114582,
-            "id_precision": 0.8801169590643275,
-            "id_recall": 0.6346194391735188,
-            "id_switch_rate": 0.023412350014632717,
-            "id_switches": 80,
-            "idf1": 0.7374739679039569,
-            "matched_gt_instances": 3417,
-            "mean_frame_coverage": 0.7204309996125975,
-            "track_fragmentations": 219
+            "hota": 0.8867773626238328,
+            "id_precision": 0.9594426474247325,
+            "id_recall": 0.8129875606156441,
+            "id_switch_rate": 0.00846613545816733,
+            "id_switches": 34,
+            "idf1": 0.8801643460397169,
+            "matched_gt_instances": 4016,
+            "mean_frame_coverage": 0.8467217480971697,
+            "track_fragmentations": 80
           },
           "mode": "framewise_segmentation_with_iou_identity_association",
           "model_provenance": {
             "association_threshold": 0.25,
-            "checkpoint_sha256": "ef2a6ad69983a5b60948d1dbea285111c3722e442d61c9edafcae5629352f734",
+            "checkpoint_sha256": "4fcbc593ec0bcbf69718c3ae480d90d4b0319c0c9698cb97aee434118b5525a8",
             "device": "cuda"
           },
-          "predicted_event_count": 598,
+          "predicted_event_count": 244,
           "protocol": "independent per-frame inference, followed by greedy IoU identity association",
           "truth_event_count": 1
         }
@@ -4091,83 +4091,83 @@
         },
         {
           "events_path": "showcase/temporal/glare-storm/predictions/N1/events.json",
-          "events_sha256": "a9716e9408cb4f35d2a54e094a140d7bbf38bf607bff81205bff2ca1ec604741",
+          "events_sha256": "33c6c049384507df6d601d74d9d56ccd607528c7c307ba64075191ccb3121c2b",
           "evidence_path": "temporal/lamellastar.json",
-          "evidence_sha256": "e24770ccd25cabc8316f4cb2bbf4d00117333cd95585e14597757879df467a31",
+          "evidence_sha256": "8497b33d7b4feb1263f777cc2d821cf797d402fb0787433804f4b266c51e99dd",
           "frames": [
             {
               "frame_index": 0,
               "prediction_path": "showcase/temporal/glare-storm/000/predictions/N1/labels.rle",
-              "prediction_sha256": "b3d3bd54ef37706b66084cd2ed2ba7de2bf1a833db9755c899ad64bc1438e655"
+              "prediction_sha256": "876e707662ebbb63fdfc6974c4fe8bc0489813161fed456a3a75d223637a091c"
             },
             {
               "frame_index": 1,
               "prediction_path": "showcase/temporal/glare-storm/001/predictions/N1/labels.rle",
-              "prediction_sha256": "15ff67a91c76e700578fd313be41b6b514bb86fb2e6b0f920093509a720a6072"
+              "prediction_sha256": "067e590579071e5842eb0a29034fd5a660a5daa2f85f3941efb10b975c2d62a6"
             },
             {
               "frame_index": 2,
               "prediction_path": "showcase/temporal/glare-storm/002/predictions/N1/labels.rle",
-              "prediction_sha256": "07603f3031e0ffacee5704cac8553d28a0503959c6d8e5513f682d42b547d5d2"
+              "prediction_sha256": "8c6101a37818168266b59184b80fd19a3cd945df5dd44aeb00013d62a1f1ca2c"
             },
             {
               "frame_index": 3,
               "prediction_path": "showcase/temporal/glare-storm/003/predictions/N1/labels.rle",
-              "prediction_sha256": "693a3076a32016e5dc898daff1676b3487a1f79753c7095d7897aa0ffe1c61ee"
+              "prediction_sha256": "f607e9af66ebfb676efc9ad9feb93a66c5473f7f15c35a742bff871b7e3e2372"
             },
             {
               "frame_index": 4,
               "prediction_path": "showcase/temporal/glare-storm/004/predictions/N1/labels.rle",
-              "prediction_sha256": "548f30aa9b84e2f32999019ba9d35479a3371cd32b634575c453d00740d37db7"
+              "prediction_sha256": "3d3762396443caaa4f2de4cc3aee628eca2e10fb0f6a639d102e0c35ce703633"
             },
             {
               "frame_index": 5,
               "prediction_path": "showcase/temporal/glare-storm/005/predictions/N1/labels.rle",
-              "prediction_sha256": "e0bf7f247bd1b03f460f4471f9e984b2d5d1c420db8a4adb6d8598e4f0557e9b"
+              "prediction_sha256": "a05e991813976b91b70a34317c23c17afb0933480069967ee68d1143081c6b29"
             },
             {
               "frame_index": 6,
               "prediction_path": "showcase/temporal/glare-storm/006/predictions/N1/labels.rle",
-              "prediction_sha256": "5fc6e3319885b6aae0f2b6ef683c8c641b5db0d4b7a8e2ea886fa91a75f03803"
+              "prediction_sha256": "86f945a7b8ec4870f714a6b4ad2a09cfb29488f42cacb70989f14d5b752a3601"
             },
             {
               "frame_index": 7,
               "prediction_path": "showcase/temporal/glare-storm/007/predictions/N1/labels.rle",
-              "prediction_sha256": "c5a956117c395404824803a642c0c3d7686e35f890b7c96869349f44bb5d99d9"
+              "prediction_sha256": "8d6a361db802727e57badbc2c1da3f8352da1031763b993fd512c945ad526b95"
             }
           ],
           "method_id": "N1",
           "method_slug": "lamellastar",
           "metrics": {
-            "association_accuracy": 0.8252245451944018,
-            "detection_accuracy": 0.8131127450980392,
+            "association_accuracy": 0.9301221297580519,
+            "detection_accuracy": 0.875,
             "event_f1": 0.0,
             "event_false_negatives": 0,
-            "event_false_positives": 275,
+            "event_false_positives": 190,
             "event_precision": 0.0,
             "event_recall": 0.0,
             "event_true_positives": 0,
-            "false_negative_instances": 249,
-            "false_positive_instances": 56,
-            "flow_epe_px": 1.333978401006963,
+            "false_negative_instances": 134,
+            "false_positive_instances": 72,
+            "flow_epe_px": 0.8707344561065042,
             "frames": 8,
-            "hota": 0.8191462599959185,
-            "id_precision": 0.8655097613882863,
-            "id_recall": 0.7595177664974619,
-            "id_switch_rate": 0.0052750565184626974,
-            "id_switches": 7,
-            "idf1": 0.8090571138898276,
-            "matched_gt_instances": 1327,
-            "mean_frame_coverage": 0.842005076142132,
-            "track_fragmentations": 72
+            "hota": 0.9021401573692944,
+            "id_precision": 0.9141347424042272,
+            "id_recall": 0.8781725888324873,
+            "id_switch_rate": 0.004160887656033287,
+            "id_switches": 6,
+            "idf1": 0.8957928802588997,
+            "matched_gt_instances": 1442,
+            "mean_frame_coverage": 0.9149746192893401,
+            "track_fragmentations": 28
           },
           "mode": "framewise_segmentation_with_iou_identity_association",
           "model_provenance": {
             "association_threshold": 0.25,
-            "checkpoint_sha256": "ef2a6ad69983a5b60948d1dbea285111c3722e442d61c9edafcae5629352f734",
+            "checkpoint_sha256": "4fcbc593ec0bcbf69718c3ae480d90d4b0319c0c9698cb97aee434118b5525a8",
             "device": "cuda"
           },
-          "predicted_event_count": 275,
+          "predicted_event_count": 190,
           "protocol": "independent per-frame inference, followed by greedy IoU identity association",
           "truth_event_count": 0
         }
@@ -5403,83 +5403,83 @@
         },
         {
           "events_path": "showcase/temporal/motion-fast/predictions/N1/events.json",
-          "events_sha256": "5f6da1dee6bbd64e14e073e65ab3ba9eb2b5c98212e85cc11301e22333aa1c88",
+          "events_sha256": "c4ef0cfb5ef000b7a433e1d8b96ce8dc800c0e20e0112174be3b8d11e3817a2e",
           "evidence_path": "temporal/lamellastar.json",
-          "evidence_sha256": "e24770ccd25cabc8316f4cb2bbf4d00117333cd95585e14597757879df467a31",
+          "evidence_sha256": "8497b33d7b4feb1263f777cc2d821cf797d402fb0787433804f4b266c51e99dd",
           "frames": [
             {
               "frame_index": 0,
               "prediction_path": "showcase/temporal/motion-fast/000/predictions/N1/labels.rle",
-              "prediction_sha256": "f606a5546a933e366d138eb81790c27639dd90d28931add85b5004c3cccaf4c3"
+              "prediction_sha256": "f2e8a19a63674855fde9f84257f94d4536c8d7bbb07f5119ecac09f123001f00"
             },
             {
               "frame_index": 1,
               "prediction_path": "showcase/temporal/motion-fast/001/predictions/N1/labels.rle",
-              "prediction_sha256": "9d62f4e00ef697ba70c850a8e2363d2d46dd6c2d858102cbfb6fae5f55d34bd6"
+              "prediction_sha256": "89a6a62278dadbba00c95ff83ba7d50450a615757015d9122a55e81b7d64da08"
             },
             {
               "frame_index": 2,
               "prediction_path": "showcase/temporal/motion-fast/002/predictions/N1/labels.rle",
-              "prediction_sha256": "a995be30ca225b119e95dc57f5560bbb31b96152f0173abf5143ec4abf4dadb2"
+              "prediction_sha256": "eee36a24f01943558a7256da56bbeecc8a0fcdb54af8fa90b3d7091e919d652c"
             },
             {
               "frame_index": 3,
               "prediction_path": "showcase/temporal/motion-fast/003/predictions/N1/labels.rle",
-              "prediction_sha256": "5dd85cfd87b1c7948b0603d15e818e24a6f4749ccd9398e33da4cd7058b28c14"
+              "prediction_sha256": "bec17a321c6bff65ef298b917e7dc1b9b551bf6d9a44483e0c036855c45aaa99"
             },
             {
               "frame_index": 4,
               "prediction_path": "showcase/temporal/motion-fast/004/predictions/N1/labels.rle",
-              "prediction_sha256": "3bbe291f2d039026aba5183736df45dd9cd3f053c71646e9b5db87795485a089"
+              "prediction_sha256": "f05fc825d798db4cc66d8930960cf8305baf151bc2957db5efc6d2e249e60ac0"
             },
             {
               "frame_index": 5,
               "prediction_path": "showcase/temporal/motion-fast/005/predictions/N1/labels.rle",
-              "prediction_sha256": "16887238edbd2532c3effd7f2f68a6a6b3762996933c373eb10e9b0a102d270e"
+              "prediction_sha256": "faa2ea9965bc83a707e62a9fa38cc9b6b8d5d3ca8b83165dcac40ff9d02f65c6"
             },
             {
               "frame_index": 6,
               "prediction_path": "showcase/temporal/motion-fast/006/predictions/N1/labels.rle",
-              "prediction_sha256": "20683f777ecd41913806e048c40ef5c4663bd1b2854222f9bafb6f3d8e0037db"
+              "prediction_sha256": "324dad4ef5f3341a970240c5b9e731117bcdbb8eceefa9d7ac8469680f9f24e4"
             },
             {
               "frame_index": 7,
               "prediction_path": "showcase/temporal/motion-fast/007/predictions/N1/labels.rle",
-              "prediction_sha256": "4dbffa61e6280de735bba5b67fb710dd3e3259333bde61d752388a60f7f50ce2"
+              "prediction_sha256": "7394ea09d511091970c3674bf4e44df15807b8ca29197edfc328ccb0a6cb014e"
             }
           ],
           "method_id": "N1",
           "method_slug": "lamellastar",
           "metrics": {
-            "association_accuracy": 0.8327758239953368,
-            "detection_accuracy": 0.754601226993865,
+            "association_accuracy": 0.9295849619790754,
+            "detection_accuracy": 0.8530312308634416,
             "event_f1": 0.0,
             "event_false_negatives": 0,
-            "event_false_positives": 225,
+            "event_false_positives": 136,
             "event_precision": 0.0,
             "event_recall": 0.0,
             "event_true_positives": 0,
-            "false_negative_instances": 346,
-            "false_positive_instances": 54,
-            "flow_epe_px": 1.4565217485563036,
+            "false_negative_instances": 183,
+            "false_positive_instances": 57,
+            "flow_epe_px": 0.9064508678990254,
             "frames": 8,
-            "hota": 0.7927254623119584,
-            "id_precision": 0.8738317757009346,
-            "id_recall": 0.7119289340101523,
-            "id_switch_rate": 0.015447154471544716,
-            "id_switches": 19,
-            "idf1": 0.7846153846153846,
-            "matched_gt_instances": 1230,
-            "mean_frame_coverage": 0.7804568527918782,
-            "track_fragmentations": 59
+            "hota": 0.8904858248782831,
+            "id_precision": 0.9206896551724137,
+            "id_recall": 0.8470812182741116,
+            "id_switch_rate": 0.007896625987078248,
+            "id_switches": 11,
+            "idf1": 0.8823529411764706,
+            "matched_gt_instances": 1393,
+            "mean_frame_coverage": 0.8838832487309645,
+            "track_fragmentations": 25
           },
           "mode": "framewise_segmentation_with_iou_identity_association",
           "model_provenance": {
             "association_threshold": 0.25,
-            "checkpoint_sha256": "ef2a6ad69983a5b60948d1dbea285111c3722e442d61c9edafcae5629352f734",
+            "checkpoint_sha256": "4fcbc593ec0bcbf69718c3ae480d90d4b0319c0c9698cb97aee434118b5525a8",
             "device": "cuda"
           },
-          "predicted_event_count": 225,
+          "predicted_event_count": 136,
           "protocol": "independent per-frame inference, followed by greedy IoU identity association",
           "truth_event_count": 0
         }
@@ -6715,83 +6715,83 @@
         },
         {
           "events_path": "showcase/temporal/bursting/predictions/N1/events.json",
-          "events_sha256": "2faab9d70966e43866edc7dd36daee1c9b745aaa5478746eb1017264c07754cc",
+          "events_sha256": "6eb47b18f3525df773220ab19987c66f7a52864801a51dde118942ca47d6b425",
           "evidence_path": "temporal/lamellastar.json",
-          "evidence_sha256": "e24770ccd25cabc8316f4cb2bbf4d00117333cd95585e14597757879df467a31",
+          "evidence_sha256": "8497b33d7b4feb1263f777cc2d821cf797d402fb0787433804f4b266c51e99dd",
           "frames": [
             {
               "frame_index": 0,
               "prediction_path": "showcase/temporal/bursting/000/predictions/N1/labels.rle",
-              "prediction_sha256": "e7b6e7307bf06028cef5a365e1c92e1ba2e9165d2c85173890f20c2f9479e844"
+              "prediction_sha256": "85ed76358c5668fb98558ede41e27537c6ca045e6b616ba60d62edd7f13e3f44"
             },
             {
               "frame_index": 1,
               "prediction_path": "showcase/temporal/bursting/001/predictions/N1/labels.rle",
-              "prediction_sha256": "0c11a3dc4d3efc68adc45f0b61005a817e4f36442c942d2d8034a8c965aa3d69"
+              "prediction_sha256": "c200d93cc82ce8ef097a3510b67e297b68781789fbb37c4a945b255b08d5040a"
             },
             {
               "frame_index": 2,
               "prediction_path": "showcase/temporal/bursting/002/predictions/N1/labels.rle",
-              "prediction_sha256": "29047e1241d806113bad4a0319a9450ca9971b8805b05fa3d9f90b5e75d90435"
+              "prediction_sha256": "0214dfbbee2708980a946b96bc1440bea0947fa8bacfea856389a28b61cb409f"
             },
             {
               "frame_index": 3,
               "prediction_path": "showcase/temporal/bursting/003/predictions/N1/labels.rle",
-              "prediction_sha256": "c9790d8319898f14c0ab45ae667c268ed1205a34466953c65c3f054df297b340"
+              "prediction_sha256": "45cd5a7bdebb0a6f1a2cd25ab225064a55bbf3807fafcc6d28e25896452d8725"
             },
             {
               "frame_index": 4,
               "prediction_path": "showcase/temporal/bursting/004/predictions/N1/labels.rle",
-              "prediction_sha256": "a48e5d82ce231cfeee7dfff5a9b962229b2da602c2f60859bc48bd4b7e9dff19"
+              "prediction_sha256": "2ac1ecd8be903ef004d0b47cda47f0d9b16c4f2ff9a57d05c259819e6e2cf75c"
             },
             {
               "frame_index": 5,
               "prediction_path": "showcase/temporal/bursting/005/predictions/N1/labels.rle",
-              "prediction_sha256": "7a1af2a3cac554c87075c882fedb7446f27bbf0818516f12187a0f1f486cebdb"
+              "prediction_sha256": "0b5812ac7a3d56cc79199dbb7b8a5aa1ae84d82b041aa6675d58d5617cfdfd1d"
             },
             {
               "frame_index": 6,
               "prediction_path": "showcase/temporal/bursting/006/predictions/N1/labels.rle",
-              "prediction_sha256": "bf9dcaa5d90235bc00a4dfffc9594b2f26c1e4ab4e9537a4e56068cc7271a520"
+              "prediction_sha256": "7ee9a18fd797be9abfa8cce43ff427f6c6bdafe7ed80b6b78a47b5122895e410"
             },
             {
               "frame_index": 7,
               "prediction_path": "showcase/temporal/bursting/007/predictions/N1/labels.rle",
-              "prediction_sha256": "7216ebac1d1755950b985bbb608098938b6a264986475ba9ad70e63a9fabc1ba"
+              "prediction_sha256": "6815dea4ca201b9f773433ea93c1996e58002a4ad84cf15bc14858c3806d7c56"
             }
           ],
           "method_id": "N1",
           "method_slug": "lamellastar",
           "metrics": {
-            "association_accuracy": 0.9455972967600874,
-            "detection_accuracy": 0.9052631578947369,
-            "event_f1": 0.030303030303030304,
+            "association_accuracy": 0.9735660726458271,
+            "detection_accuracy": 0.9142628205128205,
+            "event_f1": 0.039603960396039604,
             "event_false_negatives": 0,
-            "event_false_positives": 128,
-            "event_precision": 0.015384615384615385,
+            "event_false_positives": 97,
+            "event_precision": 0.020202020202020204,
             "event_recall": 1.0,
             "event_true_positives": 2,
-            "false_negative_instances": 61,
-            "false_positive_instances": 56,
-            "flow_epe_px": 0.7884704221717692,
+            "false_negative_instances": 38,
+            "false_positive_instances": 69,
+            "flow_epe_px": 0.6161936191540173,
             "frames": 8,
-            "hota": 0.9252104598207714,
-            "id_precision": 0.9190800681431005,
-            "id_recall": 0.9151823579304496,
-            "id_switch_rate": 0.005366726296958855,
-            "id_switches": 6,
-            "idf1": 0.9171270718232044,
-            "matched_gt_instances": 1118,
-            "mean_frame_coverage": 0.948272890237176,
-            "track_fragmentations": 21
+            "hota": 0.9434486014260466,
+            "id_precision": 0.9305785123966942,
+            "id_recall": 0.9550466497031382,
+            "id_switch_rate": 0.007887817703768623,
+            "id_switches": 9,
+            "idf1": 0.942653830054416,
+            "matched_gt_instances": 1141,
+            "mean_frame_coverage": 0.9677732579518294,
+            "track_fragmentations": 3
           },
           "mode": "framewise_segmentation_with_iou_identity_association",
           "model_provenance": {
             "association_threshold": 0.25,
-            "checkpoint_sha256": "ef2a6ad69983a5b60948d1dbea285111c3722e442d61c9edafcae5629352f734",
+            "checkpoint_sha256": "4fcbc593ec0bcbf69718c3ae480d90d4b0319c0c9698cb97aee434118b5525a8",
             "device": "cuda"
           },
-          "predicted_event_count": 130,
+          "predicted_event_count": 99,
           "protocol": "independent per-frame inference, followed by greedy IoU identity association",
           "truth_event_count": 2
         }

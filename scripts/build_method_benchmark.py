@@ -350,7 +350,16 @@ def build() -> dict:
                 "slug": leader["slug"],
                 "mean_ap": leader["test"]["mean_ap"],
             } if leader else None,
+            # Stays False even now that N1 leads this table. The two are different claims:
+            # leading a synthetic in-repo benchmark against a Cellpose-SAM checkpoint given a
+            # two-pass fine-tuning budget is a leaderboard result. A beyond-SOTA claim would
+            # need real licensed froth data, a properly tuned baseline, and more than one
+            # ensemble draw (the study-v3 margin is smaller than the seed spread it measured).
             "beyond_sota_claim": False,
+            "leader_note": (
+                "Leads this controlled synthetic benchmark. Not a state-of-the-art claim; "
+                "see verification/n1-preregistered-ablation.json for the limits."
+            ),
         },
         "methods": rows,
     }

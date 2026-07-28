@@ -157,14 +157,14 @@
     },
     {
       "analysis_path": "showcase/N1/bursting/labels.rle",
-      "analysis_sha256": "b07fcd290f0f80f760ab5d99febe738bbdcf6d33dfe1cb9b988613d0544613b2",
+      "analysis_sha256": "f3d213bc4ee34c83aa3da35e0f7c3f577134d57bedf28f9851c75cea6178a3cb",
       "case_id": "bursting",
       "labels_path": "learned/lamellastar-v1/cases/bursting/instances.png",
       "labels_scope": "derived",
-      "labels_sha256": "8eb3f1444a9c89b17ddcdfc77a657e2d13b615d68be6d1a98b41b9bd114a1e1b",
+      "labels_sha256": "87a120e3272fef77b34797ccabe2c3cd6b1aa8810be5ca90be510f0c87fd7961",
       "method_id": "N1",
       "preview_path": "showcase/N1/bursting/preview.png",
-      "preview_sha256": "e76c2d569ae8f0b52b48b6c2c7c3c9433cfe7dae60fc87a9000390116b624e5d"
+      "preview_sha256": "cdff2b17e90250d500d22adadcb53f11cd3bc9dd040cb980548176f5929d60d4"
     },
     {
       "analysis_path": "showcase/C1/coarse-froth/labels.rle",
@@ -322,14 +322,14 @@
     },
     {
       "analysis_path": "showcase/N1/coarse-froth/labels.rle",
-      "analysis_sha256": "322d33045f8d287313d8d2025c13056bfea0490e97c0c8102118f168e24674cb",
+      "analysis_sha256": "9180f7498fc806ff4d8344e4c2f40e9b29e5be29259402e3a48cecf07bd7606e",
       "case_id": "coarse-froth",
       "labels_path": "learned/lamellastar-v1/cases/coarse-froth/instances.png",
       "labels_scope": "derived",
-      "labels_sha256": "2390baba776c0f34e3cdfea5568fd56191f537321a5e5b42c223bebf1702aee9",
+      "labels_sha256": "93be7c0f7a235bc04b35025164ab61eebb323372e0c284db9fcf5d7abd1640b3",
       "method_id": "N1",
       "preview_path": "showcase/N1/coarse-froth/preview.png",
-      "preview_sha256": "c1b99ec45701a3ce3bb697ebc1e3d9faeae4edab378a5e22c255eccb1c7af891"
+      "preview_sha256": "beab6233d0298071d7dd9f9477a58a70cb105545e40fe869c6b47510e1340d74"
     },
     {
       "analysis_path": "showcase/C1/defocus/labels.rle",
@@ -487,14 +487,14 @@
     },
     {
       "analysis_path": "showcase/N1/defocus/labels.rle",
-      "analysis_sha256": "64683777a1e729e373eda819f27df2ade6910b5304a0dcb50da3ab19661d223b",
+      "analysis_sha256": "340cb653e2e4fea195b290db2b1672abdc89191acab56af2bad8be45c33b4cb0",
       "case_id": "defocus",
       "labels_path": "learned/lamellastar-v1/cases/defocus/instances.png",
       "labels_scope": "derived",
-      "labels_sha256": "64eafa1ef66d92e2fed2981f74da375c7a0a6484518ca9cd8a20664c4f69f24e",
+      "labels_sha256": "327b98e3d0ee3843099ed54f34cf929073599d3fb1f7e468f3c361ae901a8c4e",
       "method_id": "N1",
       "preview_path": "showcase/N1/defocus/preview.png",
-      "preview_sha256": "810195fa4420dce90502a18f53ae1362e9a9cd245fc52d05750d3a9a7088b1c5"
+      "preview_sha256": "73b218d7c0ccc6c99e2e5e33ccd84901f9549ffb0c261acd02409594fd7ec450"
     },
     {
       "analysis_path": "showcase/C1/edge-framing/labels.rle",
@@ -652,14 +652,14 @@
     },
     {
       "analysis_path": "showcase/N1/edge-framing/labels.rle",
-      "analysis_sha256": "cd40e0701ec264396167bd104539304befbcd7bcd85cac3facbf229b3f8053a9",
+      "analysis_sha256": "bb7c2829bbc70a311eb12912bdc0d462bbff80141b3b03f9692e7899207567ff",
       "case_id": "edge-framing",
       "labels_path": "learned/lamellastar-v1/cases/edge-framing/instances.png",
       "labels_scope": "derived",
-      "labels_sha256": "ba80f382845b5212df75e9b31e2f7506a4572ee4025163e0af796a5a47840c20",
+      "labels_sha256": "a177e82a6762d77d18ec642d12a48fba22605280ad0aaebe4f92eea1430d78fe",
       "method_id": "N1",
       "preview_path": "showcase/N1/edge-framing/preview.png",
-      "preview_sha256": "10a9ef2d036d513cc55495e44ea53381fba0ae8dc3f075ef919eeac1e89efaa9"
+      "preview_sha256": "f2e17c313b1fcf122495e4a17b79169ee91ce4022798e59a35aa8d736727ecb1"
     },
     {
       "analysis_path": "showcase/C1/fine-froth/labels.rle",
@@ -817,14 +817,14 @@
     },
     {
       "analysis_path": "showcase/N1/fine-froth/labels.rle",
-      "analysis_sha256": "1f38b151d5fa7881c44abaead8e14cd4e5286b50491207b6587104e9932e37f4",
+      "analysis_sha256": "e3f905d5e97bf6c357e10e0def2bcb1e2a326f716810f0f506d277afe01ee255",
       "case_id": "fine-froth",
       "labels_path": "learned/lamellastar-v1/cases/fine-froth/instances.png",
       "labels_scope": "derived",
-      "labels_sha256": "7819b885e172500c13c9fc026088298a9a5b3597dc6b1a114de3d341d76ff79c",
+      "labels_sha256": "067014d85a812ffd815f3b4081274e80bdcb7f0366c6cc24a247608537a08900",
       "method_id": "N1",
       "preview_path": "showcase/N1/fine-froth/preview.png",
-      "preview_sha256": "b70a4c1f8d176d0669517330b14f50b15b5fa0dcc37c0019836e6a4e72ea4bf1"
+      "preview_sha256": "a4714a5aacabd544c05f400f72c6bde201d9ef4bee43814a2c5fdc9694ca75a6"
     },
     {
       "analysis_path": "showcase/C1/glare-storm/labels.rle",
@@ -982,14 +982,14 @@
     },
     {
       "analysis_path": "showcase/N1/glare-storm/labels.rle",
-      "analysis_sha256": "237f20f68a65f0f41d62f0798b4ea4eb01c81e1a66322a6bef6c05a94a84fd84",
+      "analysis_sha256": "991776a90c49b62c3e3a3248688ee90b4b58f22910863f105b26c2d5e820c053",
       "case_id": "glare-storm",
       "labels_path": "learned/lamellastar-v1/cases/glare-storm/instances.png",
       "labels_scope": "derived",
-      "labels_sha256": "869b2fc53526e434674fd86c641d0ecd127c7733fe723c88ab732df91b7101fd",
+      "labels_sha256": "cf39b5ba7098b750cc75008fb84c78b405b051dd819cc2731bc2b71e3c021478",
       "method_id": "N1",
       "preview_path": "showcase/N1/glare-storm/preview.png",
-      "preview_sha256": "4ea2c4b910fc5a20ad9dd68a08241706b575694646d7819adf52a79e666e4bab"
+      "preview_sha256": "f13792ca2f4124e41f7e874a40ef263e9f41cab7774ec722a943e37977e214e1"
     },
     {
       "analysis_path": "showcase/C1/high-load/labels.rle",
@@ -1147,14 +1147,14 @@
     },
     {
       "analysis_path": "showcase/N1/high-load/labels.rle",
-      "analysis_sha256": "2ee29e4698bcec2a2ecd16d9255a69b8c721a0f48fda7aa61f0a865a02d00ef1",
+      "analysis_sha256": "816210574160bfcae2670fe2168b4229b9f0f3ca8089496818763d6fa3565dd3",
       "case_id": "high-load",
       "labels_path": "learned/lamellastar-v1/cases/high-load/instances.png",
       "labels_scope": "derived",
-      "labels_sha256": "ad9f0adf0715b35658f877979e3f0475218ae4d608d3c8d38d8c5f6911dd3dce",
+      "labels_sha256": "4fd43de25f2f4341f5134b9df7110e1b0d6f3213edeeedd2cb2d4d7ff4c535fc",
       "method_id": "N1",
       "preview_path": "showcase/N1/high-load/preview.png",
-      "preview_sha256": "2b4631547d6e79c8c32cdaf8a80fcddcfb893b3e41c09454877c7f58fdd693bb"
+      "preview_sha256": "41b6a0dbd8583cc0e008b0886a4ff1188cc2dab0728cd0f4ec0b1faeb6a297fb"
     },
     {
       "analysis_path": "showcase/C1/low-light-noise/labels.rle",
@@ -1312,14 +1312,14 @@
     },
     {
       "analysis_path": "showcase/N1/low-light-noise/labels.rle",
-      "analysis_sha256": "48116c0ff114215715dfc09bfcc6983be23a16e2f2b0b6ca2077a70e5f6721db",
+      "analysis_sha256": "236dd718672dd4130f480a103cb7fd9fe9418022d35ee330ab0ce3cf618d5f00",
       "case_id": "low-light-noise",
       "labels_path": "learned/lamellastar-v1/cases/low-light-noise/instances.png",
       "labels_scope": "derived",
-      "labels_sha256": "251e060a09f9e22caf7fe84df5f69c705b654c1e8120ba9b5ce6f9feed014378",
+      "labels_sha256": "e9c5b53a55a63aaeae1f1c627e6ff2edfc0a2239dcfe09dfeb1b2ddaa8694085",
       "method_id": "N1",
       "preview_path": "showcase/N1/low-light-noise/preview.png",
-      "preview_sha256": "6707bf260db031059502d8c9f03bf940d41979220cd0c6c9889b58715bcb4a3f"
+      "preview_sha256": "e79af2ec7b228a65346d3dedf4e085c1b469241f03ead43a91d76cab97f9a850"
     },
     {
       "analysis_path": "showcase/C1/mono-clean/labels.rle",
@@ -1477,14 +1477,14 @@
     },
     {
       "analysis_path": "showcase/N1/mono-clean/labels.rle",
-      "analysis_sha256": "015ec660087a98b2abd4b508d81151eb671bab6753a3ccc9d2ee469b6639ab14",
+      "analysis_sha256": "c29ee990da346c0f91029e71b350235b82a4c22a6942e0a39db3a3d0c8731971",
       "case_id": "mono-clean",
       "labels_path": "learned/lamellastar-v1/cases/mono-clean/instances.png",
       "labels_scope": "derived",
-      "labels_sha256": "a9b046e3ca07809dc17779d3af7abefaa2cbe288af95927970d4aab1816e0808",
+      "labels_sha256": "09abbf45427d8d4f33787256503fcbd6e67896b962f3ec775ad19638822f5ea6",
       "method_id": "N1",
       "preview_path": "showcase/N1/mono-clean/preview.png",
-      "preview_sha256": "f52bb26de9f46febcc0d5e688d26b6936f641886a85dad026bc3a23dab2a6c03"
+      "preview_sha256": "364f9b712899b280a60fb75d0d73d044d6921b7c923ade2317fb13e2a4d4d137"
     },
     {
       "analysis_path": "showcase/C1/motion-fast/labels.rle",
@@ -1642,14 +1642,14 @@
     },
     {
       "analysis_path": "showcase/N1/motion-fast/labels.rle",
-      "analysis_sha256": "5c0c4a05660a7545396cd4b8c4dcc070ca8e31421adbc42d14115a4b4e0448c7",
+      "analysis_sha256": "317eac23427b62278999ab47f0a26b78b2dc4c8a4cc50418664a9f6fc1808356",
       "case_id": "motion-fast",
       "labels_path": "learned/lamellastar-v1/cases/motion-fast/instances.png",
       "labels_scope": "derived",
-      "labels_sha256": "f065fc229a702211a4014e39c0e8a837ce498c769590c956980f50c668533a92",
+      "labels_sha256": "44aea26fe84fe372dea5e05f0d4f0eefef8efef8808381e1877c449b11335ea6",
       "method_id": "N1",
       "preview_path": "showcase/N1/motion-fast/preview.png",
-      "preview_sha256": "459509b33caf50d016b3676dc3ff31e5e4498daf143fa1e86d9f4fc8bbc51daf"
+      "preview_sha256": "2bd0235b8ee59156c9cb68c804c58ef852a0f3ac2d70fcf004e9eca1904c793d"
     },
     {
       "analysis_path": "showcase/C1/poly-normal/labels.rle",
@@ -1807,14 +1807,14 @@
     },
     {
       "analysis_path": "showcase/N1/poly-normal/labels.rle",
-      "analysis_sha256": "24fe0a6e431a482a79114b6746b5983f739d8ac509290714b0350d09b9c6df06",
+      "analysis_sha256": "d0b22692dac25bacd5de4db2c91cadb81e779299dfebc56a20b4aa596f913f4a",
       "case_id": "poly-normal",
       "labels_path": "learned/lamellastar-v1/cases/poly-normal/instances.png",
       "labels_scope": "derived",
-      "labels_sha256": "d0a157ca97cad1a15eb02467526b114f4ea01aa294897bcdc09639e02251c06d",
+      "labels_sha256": "fb7487a0bcad9fe127523f6fda5d2fa5de722a50a66fa4d8c8869490bff32323",
       "method_id": "N1",
       "preview_path": "showcase/N1/poly-normal/preview.png",
-      "preview_sha256": "8cad615d2eadc640b881e49d93afa0e3a0baa913c69ec7fe1cb225f9fbc97611"
+      "preview_sha256": "3ee06636e9fae787c88ad5e4064a7f6b29bfc3ff76baf196c7678c9bea24d71f"
     },
     {
       "analysis_path": "showcase/C1/watery/labels.rle",
@@ -1972,14 +1972,14 @@
     },
     {
       "analysis_path": "showcase/N1/watery/labels.rle",
-      "analysis_sha256": "8f4a38a54e8f2db2513c599ce63e2f231e24424215f20d034fef7c1da1cf98e2",
+      "analysis_sha256": "058527ef8f6310aab86dc8ef232201172b3be145c750563c2049494de988eb64",
       "case_id": "watery",
       "labels_path": "learned/lamellastar-v1/cases/watery/instances.png",
       "labels_scope": "derived",
-      "labels_sha256": "2fcbd980d8da4694ba5723cf3832883429ac928a9b67496346b79092f480b159",
+      "labels_sha256": "f791cebe8b15ff76f3e402a997d67b09d0acb998919d61f7d1fcf3282db6afe5",
       "method_id": "N1",
       "preview_path": "showcase/N1/watery/preview.png",
-      "preview_sha256": "7f09683e057f6554dbc90285f593a9f1637db7c0a27e837a41578e076bf78aa5"
+      "preview_sha256": "605138dcc1ea97c51a6b06edd3c0128996b022753103ca4ba511292cede5e3b4"
     }
   ],
   "benchmark_case_count": 13,
@@ -2029,7 +2029,7 @@
     "complete": true,
     "frames_per_sequence": 8,
     "manifest_path": "showcase/temporal/manifest.json",
-    "manifest_sha256": "28aa0910c13dfd6cf6b39f992da0b6bb5c0f137f4bd5a85d77ef8a5be521b38d",
+    "manifest_sha256": "d1671ebdb18be04243de28640b6c9f123bce8db4121fd24297fe14a8efc3a252",
     "prediction_frame_count": 600,
     "prediction_method_count": 15,
     "prediction_sequence_count": 75,

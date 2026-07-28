@@ -165,6 +165,59 @@ def _multitask_predictor(model_dir: Path, device: str) -> tuple[Predictor, str]:
     return predict, digest
 
 
+def _ensemble_multitask_predictor(model_dir: Path, device: str) -> tuple[Predictor, str]:
+    """N1 ships as a logit-mean ensemble, so its temporal evidence has to come from the
+    ensemble too. Averaging in logit space before the sigmoid matches
+    :mod:`fslab.learning.evaluate_ensemble` and the promotion bake."""
+    import torch
+    from skimage.transform import resize
+
+    from .learning.multitask_models import build_model, probabilities_to_instances
+
+    manifest = json.loads((model_dir / "run.json").read_text(encoding="utf-8"))
+    calibration = manifest["calibration"]
+    training_size = 192
+    loaded = []
+    for member in manifest["members"]:
+        weights_path = model_dir / member["weights"]["path"]
+        digest = hashlib.sha256(weights_path.read_bytes()).hexdigest()
+        if digest != member["weights"]["sha256"]:
+            raise ValueError(f"{weights_path}: member checksum mismatch")
+        model = build_model(member["config"]["method"], int(member["config"]["base_channels"]))
+        archive = np.load(weights_path)
+        model.load_state_dict({key: torch.from_numpy(archive[key]) for key in archive.files})
+        model.to(device).eval()
+        loaded.append(model)
+
+    def predict(image: np.ndarray) -> np.ndarray:
+        small = resize(
+            image, (training_size, training_size),
+            order=1, preserve_range=True, anti_aliasing=True,
+        ).astype(np.float32)
+        tensor = torch.from_numpy(small)[None, None].to(device)
+        with torch.inference_mode():
+            logits = np.stack([model(tensor)[0].cpu().numpy() for model in loaded])
+        probabilities_small = 1.0 / (1.0 + np.exp(-logits.mean(axis=0)))
+        probabilities = np.stack([
+            resize(channel, image.shape, order=1, preserve_range=True)
+            for channel in probabilities_small
+        ])
+        scale = max(image.shape) / training_size
+        return np.asarray(
+            probabilities_to_instances(
+                probabilities,
+                foreground_threshold=calibration["foreground_threshold"],
+                boundary_threshold=calibration["boundary_threshold"],
+                marker_threshold=calibration["marker_threshold"],
+                min_distance=max(1, int(round(calibration["min_distance"] * scale))),
+                center_weight=calibration.get("center_weight", 0.5),
+            ),
+            dtype=np.int32,
+        )
+
+    return predict, manifest["inference_weights"]["sha256"]
+
+
 def _stardist_predictor(model_dir: Path) -> tuple[Predictor, str]:
     from csbdeep.utils import normalize
     from stardist.models import StarDist2D
@@ -237,7 +290,9 @@ def frame_predictor(method_id: str, *, device: str = "cuda") -> tuple[Predictor,
         return _classical_predictor(method.slug)
     if method_id == "L1":
         return _unet_predictor(MODEL_DIRS[method_id], device)
-    if method_id in {"L2", "L3", "N1"}:
+    if method_id == "N1":
+        return _ensemble_multitask_predictor(MODEL_DIRS[method_id], device)
+    if method_id in {"L2", "L3"}:
         return _multitask_predictor(MODEL_DIRS[method_id], device)
     if method_id == "L4":
         return _stardist_predictor(MODEL_DIRS[method_id])

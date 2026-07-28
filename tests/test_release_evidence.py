@@ -21,7 +21,7 @@ def test_unified_benchmark_covers_every_registered_method():
     assert report["method_count"] == len(METHODS) == 15
     assert report["implemented_count"] == 15
     assert report["missing_count"] == 0
-    assert report["current_bar"]["leader"]["slug"] == "cellpose_sam"
+    assert report["current_bar"]["leader"]["slug"] == "lamellastar"
     assert report["current_bar"]["beyond_sota_claim"] is False
     assert report["coverage"] == {
         "expected_methods": 15,
@@ -139,7 +139,8 @@ def test_n1_preregistered_selection_and_single_test_are_reproducible():
     )
     assert evidence["schema"] == "frothseg.n1-preregistered-ablation/v2"
     assert evidence["protocol"]["test_access_before_each_selection"] is False
-    assert evidence["protocol"]["final_test_evaluations"] == 2
+    # One per study: v1, v2, and the v3 ensemble promoted on 2026-07-28.
+    assert evidence["protocol"]["final_test_evaluations"] == len(evidence["studies"]) == 3
     assert evidence["dataset"]["reserve_groups"] == 0
     assert len(evidence["studies"]) == 3
     # Every study publishes every configuration it ran, winners and losers alike, and each
@@ -154,27 +155,48 @@ def test_n1_preregistered_selection_and_single_test_are_reproducible():
         if "finalist_gate" in study:
             assert study["finalist_gate"]["passed"] is True, study["id"]
 
-    # The top-level selection/comparison blocks describe the checkpoint actually shipped as
-    # N1, which is still the v2 single model. They must not drift to describe a study winner
-    # that has not been promoted.
-    v2 = evidence["studies"][1]
-    assert evidence["selection"]["id"] == "c24-e80-s20260727"
-    assert max(v2["validation_results"], key=lambda row: row["mean_ap"])["mean_ap"] == (
-        evidence["selection"]["validation_mean_ap"]
+    # The top-level blocks must describe the checkpoint actually shipped as N1. Since the
+    # 2026-07-28 promotion that is the study-v3 three-seed ensemble, so the record and the
+    # model directory have to agree about which model the product runs.
+    latest = evidence["studies"][-1]
+    assert evidence["selection"]["id"] == latest["selected"]
+    assert evidence["selection"]["kind"] == "ensemble"
+    assert evidence["untouched_test"]["mean_ap"] == latest["untouched_test"]["mean_ap"]
+    assert latest["publication_status"]["promoted"] is True
+
+    run = json.loads(
+        (ROOT / "models/lamellastar-v1/run.json").read_text(encoding="utf-8")
     )
+    assert run["kind"] == "ensemble"
+    assert run["evaluation"]["mean_ap"] == evidence["untouched_test"]["mean_ap"]
+    assert [m["seed"] for m in run["members"]] == evidence["selection"]["members"]
+    assert run["onnx"]["all_passed"] is True
+    for member in run["members"]:
+        path = ROOT / "models/lamellastar-v1" / member["weights"]["path"]
+        assert path.is_file()
+        assert _sha256(path) == member["weights"]["sha256"]
+
+    # N1 leading the table is a leaderboard result, never a beyond-SOTA claim.
     assert evidence["comparison"]["clears_controlled_bar"] is True
-    assert evidence["comparison"]["exceeds_measured_leader"] is False
+    assert evidence["comparison"]["exceeds_measured_leader"] is True
+    benchmark_bar = json.loads(
+        (ROOT / "data/derived/method-benchmark.json").read_text(encoding="utf-8")
+    )["current_bar"]
+    assert benchmark_bar["leader"]["id"] == "N1"
+    assert benchmark_bar["beyond_sota_claim"] is False
 
     benchmark = json.loads(
         (ROOT / "data/derived/method-benchmark.json").read_text(encoding="utf-8")
     )
     n1 = next(method for method in benchmark["methods"] if method["id"] == "N1")
     assert n1["test"]["mean_ap"] == evidence["untouched_test"]["mean_ap"]
-    assert (
-        benchmark["current_bar"]["leader"]["mean_ap"]
-        == evidence["comparison"]["cellpose_sam_mean_ap"]
-    )
-    for artifact in evidence["artifacts"].values():
-        path = ROOT / artifact["path"]
+    # N1 is the leader since the promotion, so the table's leader row is N1's own number and
+    # the Cellpose-SAM figure it is compared against is L5's row, not the leader row.
+    assert benchmark["current_bar"]["leader"]["mean_ap"] == n1["test"]["mean_ap"]
+    cellpose = next(method for method in benchmark["methods"] if method["id"] == "L5")
+    assert cellpose["test"]["mean_ap"] == evidence["comparison"]["cellpose_sam_mean_ap"]
+    assert n1["test"]["mean_ap"] > cellpose["test"]["mean_ap"]
+    for artifact in evidence["artifacts"]["members"] + evidence["artifacts"]["onnx"]:
+        path = ROOT / "models/lamellastar-v1" / artifact["path"]
         assert path.is_file()
         assert _sha256(path) == artifact["sha256"]
