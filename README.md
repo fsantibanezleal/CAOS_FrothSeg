@@ -24,16 +24,39 @@ Version 0.04.000 implements all 15 registered methods:
 | Classical | C1-C7 | Otsu+CC, immersion watershed, marker watershed, distance watershed, H-minima watershed, SLIC+RAG, lamella-valley watershed |
 | Domain learned | L1-L4, L6 | boundary U-Net, deep-marker watershed, GC-FSegNet, official StarDist 2D, official Ultralytics YOLO segmentation |
 | Foundation | L5, L7 | official Cellpose-SAM `cpsam_v2`, official SAM 2.1 image and video |
-| Research | N1 | LamellaStar four-head research model |
+| Research | N1 | LamellaStar four-head research model, published as a three-seed logit-mean ensemble |
 
 The primary comparison uses 64 untouched test images whose latent geometry
-groups are isolated from training, validation, and calibration. Cellpose-SAM,
-fine-tuned for two complete passes over all 192 training images, is the current
-leader at mask AP 0.5099, AP50 0.8238, and PQ 0.7227. LamellaStar reaches AP
-0.4904 after two preregistered studies, making it the measured runner-up without
-exceeding Cellpose-SAM. Boundary U-Net follows at AP 0.4153. The repository
-reports the LamellaStar gain as an internal improvement without a superiority
-claim.
+groups are isolated from training, validation, and calibration.
+
+| rank | id | method | mean AP | AP50 | PQ |
+|---|---|---|---|---|---|
+| 1 | N1 | LamellaStar (three-seed ensemble) | **0.5186** | 0.8279 | 0.7359 |
+| 2 | L5 | Cellpose-SAM | 0.5099 | 0.8238 | 0.7227 |
+| 3 | L1 | Boundary/distance U-Net + watershed | 0.4153 | 0.6987 | 0.6559 |
+| 4 | L2 | Deep-marker watershed | 0.3247 | 0.5990 | 0.5694 |
+| 5 | L3 | GC-FSegNet | 0.3190 | 0.5958 | 0.5582 |
+
+LamellaStar is a logit-mean ensemble of three independently seeded members, selected
+on validation under a protocol fixed before any run and confirmed with a single
+evaluation on the untouched test split (`verification/n1-preregistered-ablation.json`).
+
+**This is a leaderboard result, not a state-of-the-art claim, and the repository does
+not make one.** Four reasons, all recorded with the evidence rather than omitted:
+
+1. The margin over Cellpose-SAM (+0.0087) is smaller than the single-model seed spread
+   measured in the same study (0.0374), and only one ensemble draw was evaluated, so
+   ensemble-to-ensemble stability is unmeasured.
+2. Every case is synthetic.
+3. Cellpose-SAM is a generic pretrained checkpoint given two fine-tuning passes. Beating
+   a lightly tuned baseline is not beating the method.
+4. `beyond_sota_claim` is `false` and stays `false`; it is a claim about the domain, not
+   about this table.
+
+The study that produced the ensemble also refuted its own hypothesis. The gap was
+supposed to be an under-training deficit; it is not. Averaged over seeds, training from
+80 to 120 epochs is worth about 0.002. What works is ensembling, because it suppresses
+the seed variance that made the earlier single-run comparisons unreliable.
 
 All numbers are synthetic controlled-benchmark results, not plant accuracy.
 See `data/derived/method-benchmark.json` and

@@ -7,6 +7,32 @@ Not tagged. The release gate (`scripts/build_release_report.py`) reports
 samples and calibration". Everything below is on `develop`; `main` is still at
 v0.03.000.
 
+### Changed (2026-07-28): LamellaStar ships as a three-seed ensemble and leads the benchmark
+
+- The published N1 is now the logit-mean ensemble of three independently seeded e120
+  members, replacing the single e80 checkpoint. Test mean AP moves 0.4904 to **0.5186**,
+  ahead of Cellpose-SAM's 0.5099, and it also leads on AP50 (0.8279), PQ (0.7359) and
+  boundary F-score (0.9876).
+- Every piece of N1 evidence was regenerated from the ensemble rather than inherited:
+  canonical 13-case inference (mean AP 0.5353), the temporal bake over all five sequences
+  (HOTA 0.843 to 0.917), per-member ONNX with a parity report each, and the
+  benchmark/showcase/release rebuild.
+- `models/lamellastar-v1/` now holds `members/seed-<n>/` plus `onnx/seed-<n>.onnx`. The
+  single-model `checkpoint.pt`, `weights.npz`, `model.onnx` and `onnx-parity.json` are
+  removed because they are no longer what the product runs. An ensemble has no single
+  inference artifact, so the run manifest records the digest of the member digests.
+- Selection followed the study-v3 pre-registration, fixed before any run: winner by
+  validation mean AP, three finalist-gate criteria, one evaluation on the untouched test
+  split. The study's stated hypothesis was refuted on the way there. The gap was supposed
+  to be an under-training deficit; averaged over seeds, 80 to 120 epochs is worth about
+  0.002. The seed spread (0.0374) is nearly twice the gap that was being chased, which
+  means several single-seed conclusions in studies v1 and v2 were weaker than recorded.
+  What works is ensembling, precisely because it suppresses that variance.
+- **`beyond_sota_claim` stays `false`.** Leading this table is a leaderboard result on
+  synthetic data against a two-pass fine-tuned Cellpose-SAM, with a margin smaller than
+  the measured seed spread and only one ensemble draw evaluated. The benchmark now carries
+  a `leader_note` saying so at the point of the claim.
+
 ### Added (2026-07-27): the temporal lane covers the whole ladder
 
 - Every registered method now has precomputed temporal evidence on every canonical

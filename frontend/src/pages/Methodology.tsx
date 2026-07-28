@@ -243,8 +243,8 @@ function Learned({ es }: { es: boolean }) {
         : 'N1 combines signals made informative by froth physics: lamella valley, interior distance, center, and temporal consistency. Its variants are selected on validation and the finalist is compared without altering the reference leader.'}</p>
       <Callout variant="honest" title={es ? 'Resultado actual' : 'Current result'}>
         {es
-          ? 'Cellpose-SAM lidera el test controlado con AP 0,510. LamellaStar alcanza AP 0,490 tras dos estudios preregistrados. No existe una afirmación de superioridad porque N1 no excede al líder bajo el mismo protocolo.'
-          : 'Cellpose-SAM leads the controlled test at AP 0.510. LamellaStar reaches AP 0.490 after two preregistered studies. There is no superiority claim because N1 does not exceed the leader under the same protocol.'}
+          ? 'LamellaStar lidera el test controlado con AP 0,519 tras tres estudios preregistrados; Cellpose-SAM queda en 0,510. Se publica como ensamble de tres semillas. No hay afirmación de estado del arte: el margen es menor que la dispersión entre semillas medida, el banco es sintético y la línea base tuvo dos pasadas de ajuste.'
+          : 'LamellaStar leads the controlled test at AP 0.519 after three preregistered studies; Cellpose-SAM follows at 0.510. It is published as a three-seed ensemble. There is no state-of-the-art claim: the margin is smaller than the measured seed spread, the benchmark is synthetic, and the baseline had a two-pass fine-tuning budget.'}
       </Callout>
       <Refs ids={['ronneberger2015unet', 'schmidt2018stardist', 'stringer2021cellpose', 'redmon2016yolo', 'ravi2024sam2', 'zhu2025gcfsegnet', 'fan2024parallel']} label="Refs" />
     </div>

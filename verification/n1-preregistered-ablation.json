@@ -29,7 +29,7 @@
     "selection_metric": "validation mean_ap",
     "postprocessing_split": "calibration",
     "test_access_before_each_selection": false,
-    "final_test_evaluations": 2,
+    "final_test_evaluations": 3,
     "claim_reference_mean_ap": 0.5098906249999999
   },
   "studies": [
@@ -263,36 +263,51 @@
         "claim": "On this controlled synthetic benchmark the three-seed LamellaStar ensemble exceeds Cellpose-SAM on mask AP, AP50, PQ and boundary F-score under a pre-registered protocol with one test evaluation. This is a benchmark result, not a state-of-the-art claim, and beyond_sota_claim stays false."
       },
       "publication_status": {
-        "promoted": false,
-        "published_n1_checkpoint": "models/lamellastar-v1 (c24-e80-s20260727, single model)",
-        "note": "The winner is a three-member ensemble and has not been promoted to the published N1. Promotion would change the product's headline result and requires republishing three checkpoints and rebaking the still and temporal evidence for N1. Recorded here as a measured result pending that decision."
+        "promoted": true,
+        "promoted_on": "2026-07-28",
+        "published_n1_checkpoint": "models/lamellastar-v1 (three-seed logit-mean ensemble, e120)",
+        "note": "Promoted on Felipe instruction. All N1 evidence was regenerated from the ensemble: canonical inference, temporal predictions, per-member ONNX with parity, and the benchmark/showcase/release rebuild. N1 is now the benchmark leader."
       }
     }
   ],
   "selection": {
-    "id": "c24-e80-s20260727",
+    "id": "ensemble-logitmean-e120-seeds-25-26-27",
+    "kind": "ensemble",
+    "mode": "logit-mean",
+    "members": [
+      20260725,
+      20260726,
+      20260727
+    ],
     "base_channels": 24,
-    "epochs": 80,
-    "seed": 20260727,
+    "epochs": 120,
     "augmentation": "none",
-    "validation_mean_ap": 0.49982812500000007,
+    "validation_mean_ap": 0.524,
     "calibration": {
-      "mean_ap": 0.4964375,
+      "split": "calibration",
+      "n_groups": 32,
+      "mean_ap": 0.53184375,
       "foreground_threshold": 0.6,
       "boundary_threshold": 0.65,
-      "marker_threshold": 0.25,
+      "marker_threshold": 0.15,
       "min_distance": 3,
-      "center_weight": 0.75
+      "center_weight": 0.5
+    },
+    "supersedes": {
+      "id": "c24-e80-s20260727",
+      "kind": "single",
+      "test_mean_ap": 0.490359375
     }
   },
   "untouched_test": {
     "split": "test",
     "n": 64,
-    "mean_ap": 0.490359375,
-    "mean_ap50": 0.789109375,
-    "mean_pq": 0.7089218749999999,
-    "mean_brier": 0.01246525,
-    "mean_ece": 0.008822421875
+    "mean_ap": 0.51859375,
+    "mean_ap50": 0.82790625,
+    "mean_pq": 0.735859375,
+    "mean_boundary_fscore": 0.987625,
+    "evaluation_index": 3,
+    "note": "the third and only final test evaluation spent in this study"
   },
   "canonical_diagnostic": {
     "n_cases": 13,
@@ -302,13 +317,19 @@
   },
   "comparison": {
     "controlled_bar_mean_ap": 0.3,
-    "previous_n1_mean_ap": 0.471671875,
-    "absolute_gain_over_previous_n1": 0.018687500000000003,
+    "previous_n1_mean_ap": 0.490359375,
+    "absolute_gain_over_previous_n1": 0.028234,
     "cellpose_sam_mean_ap": 0.5098906249999999,
-    "gap_to_measured_leader": 0.01953124999999989,
+    "margin_over_cellpose_sam": 0.008703,
     "clears_controlled_bar": true,
-    "exceeds_measured_leader": false,
-    "claim": "Measured internal improvement; Cellpose-SAM remains the leader; no superiority claim."
+    "exceeds_measured_leader": true,
+    "also_leads_on": [
+      "mean_ap50",
+      "mean_pq",
+      "mean_boundary_fscore"
+    ],
+    "single_model_seed_spread": 0.03744,
+    "claim": "On this controlled synthetic benchmark the published three-seed LamellaStar ensemble leads Cellpose-SAM on mask AP, AP50, PQ and boundary F-score, selected under a protocol fixed before any run and confirmed with one test evaluation. It is a leaderboard result on synthetic data against a two-pass fine-tuned baseline, the margin is smaller than the single-model seed spread measured in the same study, and only one ensemble draw was evaluated. It is not a state-of-the-art claim and beyond_sota_claim stays false."
   },
   "deferred_candidates": [
     {
@@ -331,30 +352,51 @@
     "final_calibration_and_test_seconds": 305.437
   },
   "artifacts": {
-    "checkpoint": {
-      "path": "models/lamellastar-v1/checkpoint.pt",
-      "sha256": "32a8c16bed39e34cf7a45578c8cf69f4821e88b1b518fe1ae4ac49ebb550a48a"
+    "run": {
+      "path": "models/lamellastar-v1/run.json"
     },
-    "weights": {
-      "path": "models/lamellastar-v1/weights.npz",
-      "sha256": "ef2a6ad69983a5b60948d1dbea285111c3722e442d61c9edafcae5629352f734"
-    },
-    "onnx": {
-      "path": "models/lamellastar-v1/model.onnx",
-      "sha256": "54abaf08a262adf2c6cdfa824faf4265b62ba7af849f3ba7e588c5a4ff2b00f0",
-      "parity_max_abs_error": 5.340576171875e-05,
-      "parity_mean_abs_error": 3.489675009404891e-06,
-      "parity_absolute_tolerance": 6e-05,
-      "parity_mean_absolute_tolerance": 5e-06,
-      "parity_passed": true
-    },
-    "run_manifest": {
-      "path": "models/lamellastar-v1/run.json",
-      "sha256": "4cf1470f3c808746919cf1a0a4e905f0fe7a1c9279ed72f6c835a1870afe791c"
-    },
+    "members": [
+      {
+        "seed": 20260725,
+        "path": "members/seed-20260725/weights.npz",
+        "sha256": "996d4d911724d59287ceb084273559028276895973f9c4aa94682002eed7dba8"
+      },
+      {
+        "seed": 20260726,
+        "path": "members/seed-20260726/weights.npz",
+        "sha256": "d9b4ef87ac34da77bd9737e798602908b0724267901361d819318674cba2fafe"
+      },
+      {
+        "seed": 20260727,
+        "path": "members/seed-20260727/weights.npz",
+        "sha256": "2829f56c141ec86d98a905a6ff6ca92162e269dd4ba5719d70687bd505895c4e"
+      }
+    ],
+    "onnx": [
+      {
+        "seed": 20260725,
+        "path": "onnx/seed-20260725.onnx",
+        "sha256": "31216846d835ecb54b1bd1e9b055949ebf2527511a45194e493349d03ac11692",
+        "parity_passed": true
+      },
+      {
+        "seed": 20260726,
+        "path": "onnx/seed-20260726.onnx",
+        "sha256": "4d7e12a05062651762a07655aebf35be76bd9a0343444a688316f9debe69243a",
+        "parity_passed": true
+      },
+      {
+        "seed": 20260727,
+        "path": "onnx/seed-20260727.onnx",
+        "sha256": "80b31e77dc7dfab9f3fbcb9e2f8b54747ee6383fcb49724f8a873991be47283d",
+        "parity_passed": true
+      }
+    ],
     "canonical_benchmark": {
-      "path": "data/derived/learned/lamellastar-v1/benchmark.json",
-      "sha256": "4653ddbb490ce9ad5cb38997865c6ec3606119e783b9fdd7dcbbda0fa779813a"
+      "path": "data/derived/learned/lamellastar-v1/benchmark.json"
+    },
+    "temporal": {
+      "path": "data/derived/temporal/lamellastar.json"
     }
   }
 }
