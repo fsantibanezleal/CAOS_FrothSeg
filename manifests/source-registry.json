@@ -21,7 +21,14 @@
       "redistribution": "link-only-until-license-review",
       "url": "https://universe.roboflow.com/froth-tmvvu/froth-rk6ka",
       "scoreable": true,
-      "calibration_required": true
+      "calibration_required": true,
+      "blocked_on": {
+        "checked_on": "2026-07-28",
+        "requirement": "ROBOFLOW_API_KEY",
+        "detail": "scripts/fetch_roboflow_froth.py reads the key only from the ROBOFLOW_API_KEY environment variable. No Roboflow credential exists in the CAOS_MANAGE vault (credentials/providers/ has no roboflow entry). This is the single external input standing between the repository and a real held-out lane.",
+        "licence_is_usable": true,
+        "licence_note": "CC-BY-NC-SA-4.0 permits non-commercial research use with attribution and share-alike. Redistribution stays link-only until a licence review clears it."
+      }
     },
     {
       "source_id": "kaggle-froth-bubbles",
@@ -32,7 +39,13 @@
       "redistribution": "forbidden",
       "url": "https://www.kaggle.com/datasets/obobojk/froth-bubbles",
       "scoreable": false,
-      "calibration_required": false
+      "calibration_required": false,
+      "license_verification": {
+        "checked_on": "2026-07-28",
+        "method": "Kaggle public dataset metadata API, GET /api/v1/datasets/view/obobojk/froth-bubbles",
+        "reported_license": "Unknown",
+        "conclusion": "The publisher attached no licence, so there is no grant to rely on. This source can never be accepted into the scored lane regardless of credentials: the obstacle is the missing licence, not access. Do not re-investigate."
+      }
     }
   ]
 }

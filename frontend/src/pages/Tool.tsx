@@ -630,13 +630,13 @@ export default function Tool() {
                   scale_px_per_mm: scale,
                   labels: Array.from(result.labels),
                 })}>{es ? 'Descargar JSON de instancia' : 'Download instance JSON'}</button>
-                <pre className="fs-command">python -m fslab.pipeline all --output runs/local</pre>
+                <pre className="fs-command">python -m fslab.pipeline infer --input &lt;image-or-frame-directory&gt; --method {source === 'sample' ? showcaseMethodId : liveMethodRegistryId(method)} --output runs/local --px-per-mm &lt;scale&gt;</pre>
                 <p className="fs-hint">{es
-                  ? 'El archivo contiene la máscara mostrada. El comando reproduce el horneado canónico completo (13 casos, 15 métodos) en un directorio de trabajo; no se envían datos a un servicio web.'
-                  : 'The file contains the mask shown here. The command reproduces the complete canonical bake (13 cases, 15 methods) into a sandbox directory; data is not sent to a web service.'}</p>
+                  ? 'El archivo contiene la máscara mostrada. El comando ejecuta cualquiera de los 14 métodos sin prompt sobre una imagen propia o un directorio de cuadros; los datos no salen de su máquina.'
+                  : 'The file contains the mask shown here. The command runs any of the 14 unprompted methods over your own image, or a directory of frames; the data never leaves your machine.'}</p>
                 <p className="fs-note">{es
-                  ? 'Todavía no existe un comando de inferencia por archivo. El repositorio ejecuta métodos sobre los casos registrados y sobre secuencias de imágenes; no decodifica video.'
-                  : 'A per-file inference command does not exist yet. The repository runs methods over registered cases and over image sequences; it does not decode video.'}</p>
+                  ? 'Devuelve máscaras y descriptores de tamaño, nunca una exactitud: una imagen propia no tiene anotación contra la cual medir. Añada --associate para asignar identidades a un directorio de cuadros. No decodifica video; extraiga los cuadros primero.'
+                  : 'It returns masks and size descriptors, never an accuracy: your own image has no annotation to measure against. Add --associate to assign identities across a directory of frames. It does not decode video; extract the frames first.'}</p>
               </div>
             </PanelBoundary>
           )}
@@ -729,6 +729,21 @@ function caseLabel(caseId: string, category: string, es: boolean): string {
     watery: ['Thin and watery froth', 'Espuma delgada y acuosa'],
   };
   return labels[caseId]?.[es ? 1 : 0] ?? category;
+}
+
+/** The browser lane names engines by slug; the CLI names them by registry id. SlimSAM has no
+ *  registry entry, so its nearest offline equivalent is offered instead of an invalid id. */
+function liveMethodRegistryId(method: 'sam' | ClassicalMethod): string {
+  const ids: Record<ClassicalMethod, string> = {
+    otsu_cc: 'C1',
+    watershed_immersion: 'C2',
+    watershed_hmax: 'C3',
+    watershed_dt: 'C4',
+    watershed_hmin: 'C5',
+    slic_merge: 'C6',
+    valley_edge: 'C7',
+  };
+  return method === 'sam' ? 'L5' : ids[method];
 }
 
 function classicalMethodNote(method: ClassicalMethod, es: boolean): string {

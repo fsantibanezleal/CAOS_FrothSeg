@@ -20,6 +20,12 @@ class DataSource:
     url: str
     scoreable: bool
     calibration_required: bool
+    #: What was checked, when, and what it settled. Present once a licence claim has been
+    #: verified against the publisher rather than assumed, so the question is not reopened.
+    license_verification: dict | None = None
+    #: The one external input a source is waiting on, named precisely. "Needs real data" is
+    #: not actionable; "needs ROBOFLOW_API_KEY" is.
+    blocked_on: dict | None = None
 
 
 def load_source_registry(path: Path) -> dict[str, DataSource]:

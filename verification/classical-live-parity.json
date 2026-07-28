@@ -16,7 +16,7 @@
     },
     "offline": {
       "path": "data-pipeline/fslab/science/segment.py",
-      "sha256": "83337322c328dec8147b4c615a4a73ebca375ec57116eeec4d7f5b4d4ff65929"
+      "sha256": "b10f1c0a6349a2535ed27b084bae8275911ad4004a382c4572464ab4b850eda7"
     }
   },
   "accepted_methods": [
