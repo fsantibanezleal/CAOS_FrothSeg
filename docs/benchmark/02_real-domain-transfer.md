@@ -72,6 +72,73 @@ The release error therefore still reads *no accepted licensed real FROTH held-ou
 it will keep reading that until real froth exists, no matter how much adjacent evidence
 accumulates.
 
+## Result
+
+64 real held-out images, 4,979 annotated nuclei, froth-fitted settings applied unchanged.
+No method failed to run.
+
+| id | method | real AP | froth AP | delta |
+|---|---|---|---|---|
+| L5 | Cellpose-SAM | **0.709** | 0.510 | **+0.199** |
+| C1 | Otsu + connected components | 0.339 | 0.065 | +0.274 |
+| C5 | H-minima watershed | 0.264 | 0.133 | +0.131 |
+| C4 | Distance-transform watershed | 0.256 | 0.198 | +0.059 |
+| C7 | Lamella-valley watershed | 0.193 | 0.167 | +0.026 |
+| C3 | Marker-controlled watershed | 0.182 | 0.103 | +0.079 |
+| L6 | YOLO froth segmentation | 0.144 | 0.293 | -0.149 |
+| **N1** | **LamellaStar** | **0.125** | **0.519** | **-0.394** |
+| L3 | GC-FSegNet | 0.110 | 0.319 | -0.209 |
+| L1 | Boundary/distance U-Net | 0.094 | 0.415 | -0.322 |
+| C6 | SLIC + RAG merge | 0.084 | 0.019 | +0.065 |
+| L2 | Deep-marker watershed | 0.042 | 0.325 | -0.283 |
+| L4 | StarDist 2D | 0.012 | 0.112 | -0.100 |
+| C2 | Gradient immersion watershed | 0.000 | 0.017 | -0.017 |
+
+Grouped by tier, the pattern is unambiguous:
+
+| tier | mean delta |
+|---|---|
+| classical (7 methods) | **+0.088** |
+| in-repo trained (6 methods) | **-0.243** |
+| foundation, never trained here (L5) | **+0.199** |
+
+**The synthetic ranking does not transfer.** N1 LamellaStar leads the froth benchmark at 0.519
+and falls to eighth at 0.125 on real images, a drop of 0.394. Every model trained on the 192
+synthetic samples degrades. Every classical method, which has no learned prior to overfit,
+improves. The single method that was never trained in this repository is the only learned
+method that improves, and it becomes the clear leader at 0.709.
+
+### What this does and does not say about N1
+
+It would be easy to read this as "N1 is bad" and equally easy to read it as "the ranking is
+worthless". Both are wrong, and the second caveat matters as much as the first.
+
+**What it fairly supports:** N1's advantage over Cellpose-SAM on the froth benchmark is
+domain-specific and does not survive a change of domain. Anyone reading the +0.009 froth margin
+as evidence of a generally better segmenter is overreading it. The froth ranking is a statement
+about the generator, and this is the measurement that shows how much of it is.
+
+**What it does not support:** the conclusion that Cellpose-SAM is better *on froth*. BBBC038 is
+cell microscopy, which is Cellpose-SAM's pretraining domain. It is playing at home. N1, L1, L2
+and L3 are froth specialists trained on 192 froth images and then handed a different imaging
+modality with their froth thresholds intact; degradation is the expected outcome, not a defect
+revealed. A fair reading is that this test measures **robustness to domain shift**, and on that
+axis the pretrained generalist wins and the small specialists lose, which is what the literature
+would predict.
+
+The honest summary is narrow and worth stating exactly: **the froth leaderboard is a
+generator-specific result, and nothing in this repository yet demonstrates that any method is
+good at real froth.** That remains true until real froth data exists.
+
+### The classical improvement is informative too
+
+C1, plain Otsu plus connected components, is the second-best method here at 0.339 after scoring
+0.065 on froth. That is not because it became better; it is because nuclei are an easier
+instance problem than froth. They are sparser, rounder, higher contrast, and rarely share a
+boundary the way packed bubbles do. It is a useful reminder of how much of the froth benchmark's
+difficulty is intrinsic to froth, and a warning against reading any absolute number here as
+transferable to a flotation cell.
+
 ## Reproducing
 
 ```powershell
