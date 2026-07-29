@@ -1,4 +1,6 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { Tabs } from '@fasl-work/caos-app-shell';
+import { PanelBoundary } from '../viz/PanelBoundary';
 import { ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react';
 import { artifactUrl, loadTemporalShowcase } from '../api/artifacts';
 import type { TemporalSequenceMetrics } from '../lib/contract.types';
@@ -233,29 +235,9 @@ export function SequenceStage({ lane, es }: { lane: SequenceLane; es: boolean })
   }
 
   // Same shape as the still lane: ONE auto row of tab chrome, then a `minmax(0, 1fr)` body.
-  // Rendered as a bare fragment the six replay children became six implicit rows of
-  // `.fs-stage-col` and the frame hung 41px past the stage at 1280x800.
-  return (
-      <>
-        <div className="fs-tabrow">
-        <div className="fs-tabs" role="tablist" aria-label={es ? 'Análisis de secuencia' : 'Sequence analysis'}>
-          {tabs.map((item) => (
-            <button
-              key={item}
-              type="button"
-              role="tab"
-              aria-selected={tab === item}
-              className={`fs-tab${tab === item ? ' on' : ''}`}
-              onClick={() => setTab(item)}
-            >
-              {sequenceTabLabel(item, es)}
-            </button>
-          ))}
-        </div>
-        </div>
-
-        <div className="fs-stage-body">
-        {tab === 'replay' && (
+  // ADR-0016 6: the shell's Tabs primitive, same as the still lane and the reference app.
+  const panels: Record<SequenceTab, ReactNode> = {
+    replay: (
           <div className="fs-replay">
             <div className="fs-sequence-toolbar">
               <div className="fs-view-picker" role="group" aria-label={es ? 'Vista del cuadro' : 'Frame view'}>
@@ -278,6 +260,7 @@ export function SequenceStage({ lane, es }: { lane: SequenceLane; es: boolean })
               )}
             </div>
 
+            <div className="fs-replay-stage">
             <div className="fs-sequence-stage">
               <SequenceFrame frame={displayFrame ?? frame} view={view} es={es} label={displayLabel} />
               <div className="fs-sequence-stamp">
@@ -289,15 +272,6 @@ export function SequenceStage({ lane, es }: { lane: SequenceLane; es: boolean })
                   rows they consumed 117px of an 508px stage and shrank the square instrument to
                   7.5% of the viewport; overlaid, the frame keeps the whole free height and the
                   controls stay where the eye already is. Same HUD pattern as focus mode. */}
-              {metrics && (
-                <div className="fs-kpis fs-sequence-summary">
-                  <SequenceKpi value={`${(metrics.mean_frame_coverage * 100).toFixed(1)}%`} label={es ? 'cobertura' : 'coverage'} />
-                  <SequenceKpi value={metrics.idf1.toFixed(3)} label="IDF1" />
-                  <SequenceKpi value={metrics.hota.toFixed(3)} label="HOTA" />
-                  <SequenceKpi value={`${(metrics.id_switch_rate * 100).toFixed(2)}%`} label={es ? 'cambios de ID' : 'ID switches'} />
-                </div>
-              )}
-
               <div className="fs-sequence-timeline">
               <button
                 type="button"
@@ -341,13 +315,46 @@ export function SequenceStage({ lane, es }: { lane: SequenceLane; es: boolean })
               </label>
               </div>
             </div>
-          </div>
-        )}
 
-        {tab === 'tracking' && metrics && (
-          <TrackingEvidence metrics={metrics} methodId={prediction?.method_id} es={es} />
-        )}
-        {tab === 'events' && metrics && (
+            {/* The frame is square; on a wide stage the remainder used to be empty background.
+                It carries the per-frame evidence now, so the replay reads as an instrument and
+                not as a picture with margins (ADR-0071 8). */}
+            <aside className="fs-companion">
+              <div className="fs-companion-plot">
+                <div className="fs-panel-t">{es ? 'Este cuadro' : 'This frame'}</div>
+                <table className="fs-table">
+                  <tbody>
+                    <tr><th>{es ? 'cuadro' : 'frame'}</th><td className="num">{frameIndex + 1} / {frames.length}</td></tr>
+                    <tr><th>{es ? 'vista' : 'view'}</th><td>{sequenceViewLabel(view, displayFrame ?? frame, es, prediction?.method_id)}</td></tr>
+                    <tr><th>{es ? 'metodo' : 'method'}</th><td className="mono">{prediction?.method_id ?? '--'}</td></tr>
+                    <tr><th>{es ? 'artefacto' : 'artifact'}</th><td className="mono">{(displayFrame?.prediction_sha256 ?? displayFrame?.truth_sha256 ?? '').slice(0, 10) || '--'}</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              {metrics && (
+                <div className="fs-companion-plot">
+                  <div className="fs-panel-t">{es ? 'Sobre la secuencia' : 'Across the sequence'}</div>
+                  <table className="fs-table">
+                    <tbody>
+                      <tr><th>{es ? 'cobertura media' : 'mean coverage'}</th><td className="num">{(metrics.mean_frame_coverage * 100).toFixed(1)}%</td></tr>
+                      <tr><th>IDF1</th><td className="num">{metrics.idf1.toFixed(3)}</td></tr>
+                      <tr><th>HOTA</th><td className="num">{metrics.hota.toFixed(3)}</td></tr>
+                      <tr><th>{es ? 'cambios de ID' : 'ID switches'}</th><td className="num">{(metrics.id_switch_rate * 100).toFixed(2)}%</td></tr>
+                    </tbody>
+                  </table>
+                  <p className="fs-hint small">{isNativeVideoMode(prediction?.method_id ?? '')
+                    ? (es ? 'Protocolo de propagacion nativa: no se ordena junto al protocolo por cuadro.' : 'Native propagation protocol: not ranked against the framewise protocol.')
+                    : (es ? 'Protocolo por cuadro con asociacion por IoU.' : 'Framewise protocol with IoU association.')}</p>
+                </div>
+              )}
+            </aside>
+            </div>
+          </div>
+        ),
+    tracking: metrics ? (
+      <TrackingEvidence metrics={metrics} methodId={prediction?.method_id} es={es} />
+    ) : null,
+    events: metrics ? (
           <EventEvidence
             metrics={metrics}
             truthEvents={eventLog?.truth_events ?? []}
@@ -357,8 +364,8 @@ export function SequenceStage({ lane, es }: { lane: SequenceLane; es: boolean })
             frameIndex={frameIndex}
             es={es}
           />
-        )}
-        {tab === 'compare' && (
+    ) : null,
+    compare: (
           <SequenceComparison
             framewise={framewisePredictions}
             native={nativePredictions}
@@ -369,8 +376,8 @@ export function SequenceStage({ lane, es }: { lane: SequenceLane; es: boolean })
             }}
             es={es}
           />
-        )}
-        {tab === 'provenance' && (
+    ),
+    provenance: (
           <SequenceProvenance
             manifest={manifest}
             frame={displayFrame ?? frame}
@@ -381,9 +388,20 @@ export function SequenceStage({ lane, es }: { lane: SequenceLane; es: boolean })
             evidenceSha={prediction?.evidence_sha256 ?? null}
             es={es}
           />
-        )}
-        </div>
-      </>
+    ),
+  };
+
+  return (
+    <Tabs
+      key={sequence.case_id}
+      initial={tab}
+      ariaLabel={es ? 'Analisis de secuencia' : 'Sequence analysis'}
+      tabs={tabs.map((item) => ({
+        id: item,
+        label: sequenceTabLabel(item, es),
+        content: <PanelBoundary key={item} label={item}>{panels[item]}</PanelBoundary>,
+      }))}
+    />
   );
 }
 

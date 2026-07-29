@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Maximize2 } from 'lucide-react';
-import { useShellLang } from '@fasl-work/caos-app-shell';
+import { SubTabs, Tabs, useShellLang, type TabDef } from '@fasl-work/caos-app-shell';
 import {
   artifactUrl, loadIndex, loadMasks, loadMethodBenchmark,
 } from '../api/artifacts';
@@ -30,7 +30,6 @@ import {
   type StillTab, type WorkbenchSource,
 } from '../lib/workbench';
 import { SequenceControls, SequenceStage, useSequenceLane } from './SequenceWorkbench';
-import { useViewportFit } from '../lib/useViewportFit';
 
 type Tab = StillTab;
 
@@ -74,7 +73,6 @@ export default function Tool() {
   const [searchParams] = useSearchParams();
   // The sequence lane's state lives here so its controls can share the single rail.
   const lane = useSequenceLane(es);
-  useViewportFit();
 
   const restoredCase = searchParams.get('case');
   const restoredRef = useRef(false);
@@ -272,7 +270,6 @@ export default function Tool() {
   const primaryCases = useMemo(() => primaryShowcaseCases(index?.cases ?? []), [index]);
   const groups = stillGroups(source === 'sample' ? 'canonical' : 'upload', Boolean(result));
   const activeGroup = groupOfTab(tab);
-  const groupTabs = groups.find((g) => g.id === activeGroup)?.tabs ?? [];
   const liveComparison = useMemo(() => {
     if (!analysisFrame || !result) return [];
     return LIVE_CLASSICAL_METHODS.map((candidate) => {
@@ -287,9 +284,286 @@ export default function Tool() {
   const sequenceMode = workbenchSource === 'sequence';
   const focusCase = sequenceMode ? (lane.sequence?.case_id ?? sampleId) : sampleId;
 
+
+  /* ADR-0016 6 and ADR-0017 1.1: the App composes the shell's Tabs primitive. It does not
+     define its own tab strip. The reference app does exactly this in its own Tool.tsx, and the
+     hand-rolled `.fs-tab` strip that used to live here was the violation Felipe rejected. */
+  const busy = status === 'running' || status === 'loading-model';
+  const pending = (showFrame: boolean) => (
+    <>
+      {source === 'sample' && !result && (
+            <div className="fs-panel fs-result-loading">
+              <span className="fs-spinner" aria-hidden="true" />
+              <div>
+                <strong>{es ? 'Cargando el artefacto seleccionado' : 'Loading the selected artifact'}</strong>
+                <p>{es ? 'La vista se habilitará con la misma máscara precalculada, sin recomputar el método.' : 'This view will use the same precomputed mask without rerunning the method.'}</p>
+              </div>
+            </div>)}
+      {source === 'upload' && !result && !busy && (
+            <div className="fs-panel">
+              {frameUrl && showFrame && <img className="fs-frame-preview" src={frameUrl} alt={es ? 'cuadro de espuma' : 'froth frame'} />}
+              <p className="fs-hint" style={{ marginTop: frameUrl && showFrame ? '0.6rem' : 0 }}>{frameUrl
+                ? (es ? 'Cuadro seleccionado. Elija uno de los cuatro métodos interactivos para segmentarlo. Los 15 métodos evaluados están disponibles en Resultados precalculados.' : 'Selected frame. Choose one of the four interactive methods to segment it. All 15 evaluated methods are available under Precomputed results.')
+                : (es ? 'Seleccione una fuente y un método interactivo.' : 'Select a source and an interactive method.')}</p>
+            </div>)}
+      {busy && (
+            <div className="fs-panel"><p className="fs-hint"><span className="fs-spinner" /> {status === 'loading-model' ? (es ? 'descargando el modelo SAM...' : 'downloading the SAM model...') : (es ? `segmentando, ${progress}%` : `segmenting, ${progress}%`)}</p></div>)}
+    </>
+  );
+
+  const stillPanels: Record<StillTab, ReactNode> = {
+    segment: (
+      <>
+        {source === 'sample' && !result && (
+            <PanelBoundary label="precomputed instance segmentation">
+              <div className="fs-panel">
+                <div className="fs-panel-t">{showcaseMethod ? `${showcaseMethod.id} · ${showcaseMethod.name}` : showcaseMethodId}</div>
+                <img
+                  className="fs-frame-preview"
+                  src={artifactUrl(`showcase/${showcaseMethodId}/${sampleId}/preview.png`)}
+                  alt={es ? `resultado precalculado ${showcaseMethodId} para ${sampleId}` : `precomputed ${showcaseMethodId} result for ${sampleId}`}
+                />
+                {showcaseMethod?.test && (
+                  <div className="fs-kpis" style={{ marginTop: '0.7rem' }}>
+                    <Kpi value={showcaseMethod.test.mean_ap.toFixed(3)} label="AP test" />
+                    <Kpi value={showcaseMethod.test.mean_ap50.toFixed(3)} label="AP50" />
+                    <Kpi value={showcaseMethod.test.mean_pq?.toFixed(3) ?? '--'} label="PQ" />
+                    <Kpi value={showcaseMethod.compute.mean_inference_ms.toFixed(1)} label="ms/image" />
+                  </div>
+                )}
+                <p className="fs-hint">{es ? 'Máscara de instancias generada por inferencia offline para este caso canónico. El navegador carga el artefacto validado y no vuelve a ejecutar el modelo.' : 'Instance mask generated by offline inference for this canonical case. The browser loads the validated artifact and does not rerun the model.'}</p>
+              </div>
+            </PanelBoundary>)}
+        {result && (
+            <PanelBoundary label="segment">
+              {/* ADR-0071 8: the instrument takes the majority of the surface. A square frame in a
+                  1220px stage cannot reach that on its own, since its ceiling is the stage HEIGHT
+                  squared, so the horizontal remainder carries the readouts and the size
+                  distribution instead of sitting empty. Measured before: 31% and two dead bands. */}
+              <div className="fs-segment-view">
+                <div className="fs-overlay-slot">
+                  <MaskOverlay baseUrl={frameUrl} labels={result.labels} width={result.width} height={result.height} pxPerMm={scale}
+                    caption={source === 'sample'
+                      ? (es ? 'Máscara de instancias precalculada para el caso canónico seleccionado. Pase el cursor para inspeccionar cada burbuja.' : 'Precomputed instance mask for the selected canonical case. Hover to inspect each bubble.')
+                      : method === 'sam'
+                        ? (es ? 'Burbujas segmentadas en la imagen cargada por SlimSAM. Pase el cursor para inspeccionar cada burbuja.' : 'Bubbles segmented in the uploaded image by SlimSAM. Hover to inspect each bubble.')
+                        : (es ? 'Burbujas segmentadas en la imagen cargada por el método clásico seleccionado.' : 'Bubbles segmented in the uploaded image by the selected classical method.')} />
+                </div>
+                <aside className="fs-companion">
+                  <div className="fs-kpis fs-kpis-stack">
+                    <div className="fs-kpi"><div className="fs-kpi-v">{result.nInstances}</div><div className="fs-kpi-l">{es ? 'burbujas' : 'bubbles'}</div></div>
+                    <div className="fs-kpi"><div className="fs-kpi-v">{result.bsd.d32 ?? '-'}</div><div className="fs-kpi-l">d32 (px)</div></div>
+                    <div className="fs-kpi"><div className="fs-kpi-v">{ap?.ap != null ? ap.ap.toFixed(3) : '--'}</div><div className="fs-kpi-l">{es ? 'AP vs verdad' : 'AP vs truth'}</div></div>
+                    <div className="fs-kpi"><div className="fs-kpi-v">{result.totalMs}<span style={{ fontSize: '0.7rem' }}>ms</span></div><div className="fs-kpi-l">{es ? 'tiempo' : 'time'}</div></div>
+                  </div>
+                  <div className="fs-companion-plot">
+                    <div className="fs-panel-t">{es ? 'Distribución de tamaño' : 'Size distribution'}</div>
+                    <BsdHistogram ariaLabel="bubble-size distribution" unit="px"
+                      series={gtDiams.length
+                        ? [{ label: source === 'sample' ? showcaseMethodId : result.model, diameters: diams }, { label: es ? 'verdad' : 'truth', diameters: gtDiams }]
+                        : [{ label: result.model, diameters: diams }]} />
+                  </div>
+                  {ap?.ap != null && <p className="fs-hint small">{source === 'sample' ? (es ? 'AP del artefacto precalculado respecto de la anotación sintética.' : 'Precomputed artifact AP against the synthetic annotation.') : (es ? 'AP de la máscara interactiva respecto de la anotación sintética.' : 'Interactive mask AP against the synthetic annotation.')} AP50 {ap.ap50} · {ap.nPred} {es ? 'predichas' : 'pred'} / {ap.nGt} GT</p>}
+                </aside>
+              </div>
+            </PanelBoundary>)}
+        {!result && pending(true)}
+      </>
+    ),
+    bsd: result ? (
+            <PanelBoundary label="bsd">
+              <>
+                <div className="fs-panel">
+                  <div className="fs-panel-t">{es ? 'Distribución de tamaño de burbuja' : 'Bubble-size distribution'}</div>
+                  <BsdHistogram ariaLabel="bubble-size distribution" unit={scale ? 'px' : 'px'}
+                    series={gtDiams.length ? [{ label: source === 'sample' ? showcaseMethodId : result.model, diameters: diams }, { label: es ? 'verdad' : 'truth', diameters: gtDiams }] : [{ label: result.model, diameters: diams }]} />
+                </div>
+                <BsdTable es={es} bsd={result.bsd} scale={scale} />
+              </>
+            </PanelBoundary>) : pending(false),
+    boundary: result ? (
+            <PanelBoundary label="boundary and error">
+              <div className="fs-panel">
+                <div className="fs-panel-t">{es ? 'Frontera y errores de instancia' : 'Boundary and instance errors'}</div>
+                <div className="fs-kpis">
+                  <Kpi value={boundaryPixels} label={es ? 'píxeles frontera' : 'boundary pixels'} />
+                  <Kpi value={ap?.nPred ?? result.nInstances} label={es ? 'predicciones' : 'predictions'} />
+                  <Kpi value={ap?.nGt ?? '--'} label={es ? 'instancias GT' : 'GT instances'} />
+                  <Kpi value={ap?.ap50?.toFixed(3) ?? '--'} label="AP50" />
+                </div>
+                <p className="fs-hint">{gt
+                  ? (es ? 'La verdad sintética permite contar fallas; la matriz canónica completa de merge, split, miss y spurious se calcula offline.' : 'Synthetic truth enables error counting; the complete canonical merge, split, miss, and spurious matrix is computed offline.')
+                  : (es ? 'Una carga real sin anotación no permite afirmar error de frontera. Exporta la máscara para anotarla y evaluarla offline.' : 'An unannotated real upload cannot support a boundary-error claim. Export the mask for annotation and offline evaluation.')}</p>
+              </div>
+            </PanelBoundary>) : pending(false),
+    morphometry: result ? (
+            <PanelBoundary label="morphometry">
+              <div className="fs-panel">
+                <div className="fs-panel-t">{es ? 'Morfometría del caso seleccionado' : 'Selected-case morphometry'}</div>
+                <BsdTable es={es} bsd={result.bsd} scale={scale} />
+                <p className="fs-hint">{scale
+                  ? (es ? 'Los diámetros se convierten con la escala suministrada; la escala no se estima ni se inventa.' : 'Diameters use the supplied scale; scale is neither estimated nor invented.')
+                  : (es ? 'Sin calibración física, los resultados permanecen honestamente en píxeles.' : 'Without physical calibration, outputs honestly remain in pixels.')}</p>
+              </div>
+            </PanelBoundary>) : pending(false),
+    confidence: result ? (
+            <PanelBoundary label="confidence and calibration">
+              <div className="fs-panel">
+                <div className="fs-panel-t">{es ? 'Confianza y calibración' : 'Confidence and calibration'}</div>
+                <table className="fs-table">
+                  <tbody>
+                    <tr><th>{es ? 'método' : 'method'}</th><td className="mono">{result.model}</td></tr>
+                    {source === 'sample' ? (
+                      <>
+                        <tr><th>{es ? 'AP del caso' : 'case AP'}</th><td className="num">{ap?.ap?.toFixed(3) ?? '--'}</td></tr>
+                        <tr><th>Brier ({es ? 'test, 64 casos' : 'test, 64 cases'})</th><td className="num">{showcaseMethod?.test?.mean_brier?.toFixed(4) ?? 'n/a'}</td></tr>
+                        <tr><th>ECE ({es ? 'test, 64 casos' : 'test, 64 cases'})</th><td className="num">{showcaseMethod?.test?.mean_ece?.toFixed(4) ?? 'n/a'}</td></tr>
+                      </>
+                    ) : (
+                      <>
+                        <tr><th>{es ? 'umbral IoU' : 'IoU threshold'}</th><td className="num">{method === 'sam' ? predIou.toFixed(2) : 'n/a'}</td></tr>
+                        <tr><th>{es ? 'estabilidad' : 'stability'}</th><td className="num">{method === 'sam' ? stability.toFixed(2) : 'deterministic'}</td></tr>
+                        <tr><th>{es ? 'anotación local' : 'local annotation'}</th><td>{gt ? (es ? 'AP disponible' : 'AP available') : (es ? 'no disponible' : 'unavailable')}</td></tr>
+                      </>
+                    )}
+                  </tbody>
+                </table>
+                <p className="fs-note">{source === 'sample'
+                  ? (es ? 'Brier y ECE solo se reportan para modelos que producen probabilidades; son métricas agregadas del test retenido, no del cuadro canónico.' : 'Brier and ECE are reported only for probability-producing models; they are held-out test aggregates, not canonical-frame values.')
+                  : (es ? 'Los umbrales de interfaz no representan incertidumbre calibrada.' : 'Interface thresholds do not represent calibrated uncertainty.')}</p>
+              </div>
+            </PanelBoundary>) : pending(false),
+    state: result && froth ? (
+            <PanelBoundary label="froth state">
+              <div className="fs-panel">
+                <div style={{ display: 'flex', gap: '1.2rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                  <Gauge value={froth.health} label={es ? 'estabilidad (proxy)' : 'stability (proxy)'} />
+                  <div style={{ flex: 1, minWidth: 240 }}>
+                    <div style={{ fontWeight: 700, fontSize: '1.05rem' }}>{froth.title}</div>
+                    <p className="fs-hint">{froth.summary}</p>
+                  </div>
+                </div>
+                <table className="fs-table" style={{ marginTop: '0.6rem' }}>
+                  <tbody>{froth.indicators.map((ind) => (
+                    <tr key={ind.label}><th>{ind.label}</th><td className="num">{ind.value}</td><td className="fs-hint small">{ind.note ?? ''}</td></tr>
+                  ))}</tbody>
+                </table>
+                {froth.notes.map((n, i) => <p key={i} className="fs-note" style={{ marginTop: '0.4rem' }}>{n}</p>)}
+              </div>
+            </PanelBoundary>) : pending(false),
+    compare: (
+      <>
+        {source === 'sample' && (
+            <PanelBoundary label="held-out method evaluation">
+              <div className="fs-panel">
+                <div className="fs-panel-t">{es ? 'Los 15 métodos · prueba retenida de 64 casos' : 'All 15 methods · 64-case held-out test'}</div>
+                <p className="fs-hint">{es ? 'Todos los resultados fueron generados offline con el mismo protocolo.' : 'Every result was generated offline under the same protocol.'}</p>
+                <div style={{ overflowX: 'auto' }}>
+                  <table className="fs-table">
+                    <thead><tr><th>ID</th><th>{es ? 'método' : 'method'}</th><th>{es ? 'familia' : 'family'}</th><th className="num">AP</th><th className="num">AP50</th><th className="num">PQ</th><th className="num">Boundary F</th><th className="num">ms/image</th></tr></thead>
+                    <tbody>
+                      {methodBenchmark?.methods.map((candidate) => (
+                        <tr key={candidate.id} className={candidate.id === showcaseMethodId ? 'fs-selected-row' : undefined}>
+                          <td className="mono">{candidate.id}</td>
+                          <th><button className="fs-method-pick" onClick={() => { setShowcaseMethodId(candidate.id); setTab('segment'); }}>{candidate.name}</button></th>
+                          <td>{methodFamily(candidate, es)}</td>
+                          <td className="num">{candidate.test?.mean_ap.toFixed(3) ?? '--'}</td>
+                          <td className="num">{candidate.test?.mean_ap50.toFixed(3) ?? '--'}</td>
+                          <td className="num">{candidate.test?.mean_pq?.toFixed(3) ?? '--'}</td>
+                          <td className="num">{candidate.test?.mean_boundary_fscore?.toFixed(3) ?? '--'}</td>
+                          <td className="num">{candidate.compute.mean_inference_ms.toFixed(1)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </PanelBoundary>)}
+        {source === 'upload' && result && (
+            <PanelBoundary label="compare">
+              <div className="fs-panel">
+                <div className="fs-panel-t">{es ? 'Cuatro métodos interactivos · imagen actual' : 'Four interactive methods · current image'}</div>
+                <p className="fs-hint">{es ? 'C1, C3 y C4 se calculan ahora. SlimSAM aparece con resultado solo cuando es el motor seleccionado; el navegador no simula métodos offline.' : 'C1, C3, and C4 are computed now. SlimSAM has a result only when selected; the browser does not imitate offline methods.'}</p>
+                <table className="fs-table" style={{ marginTop: '0.5rem' }}>
+                  <thead><tr><th>{es ? 'método' : 'method'}</th><th>{es ? 'ejecución' : 'execution'}</th><th className="num">{es ? 'instancias' : 'instances'}</th><th className="num">AP</th></tr></thead>
+                  <tbody>
+                    <tr>
+                      <th>SlimSAM zero-shot</th>
+                      <td>{method === 'sam' ? (es ? 'resultado actual' : 'current result') : (es ? 'seleccionar para ejecutar' : 'select to run')}</td>
+                      <td className="num">{method === 'sam' ? result.nInstances : '--'}</td>
+                      <td className="num">{method === 'sam' ? (ap?.ap?.toFixed(3) ?? '--') : '--'}</td>
+                    </tr>
+                    {LIVE_CLASSICAL_METHODS.map((candidate) => {
+                      const live = liveComparison.find((row) => row.id === candidate.id);
+                      return <tr key={candidate.id}>
+                        <th>{candidate.label}</th>
+                        <td>{es ? 'CPU · imagen actual' : 'CPU · current image'}</td>
+                        <td className="num">{live?.count ?? '--'}</td>
+                        <td className="num">{live?.ap?.toFixed(3) ?? '--'}</td>
+                      </tr>;
+                    })}
+                  </tbody>
+                </table>
+                <p className="fs-note">{es ? 'Los otros 11 métodos permanecen disponibles para los 12 casos precalculados y en Benchmark; no se ofrecen como ejecución sobre cargas.' : 'The other 11 methods remain available for all 12 precomputed cases and in Benchmark; they are not offered as upload execution.'}</p>
+              </div>
+            </PanelBoundary>)}
+        {source === 'upload' && !result && pending(false)}
+      </>
+    ),
+    provenance: result ? (
+            <PanelBoundary label="provenance">
+              <div className="fs-panel">
+                <div className="fs-panel-t">{es ? 'Proveniencia de la ejecución' : 'Run provenance'}</div>
+                <table className="fs-table"><tbody>
+                  <tr><th>{es ? 'fuente' : 'source'}</th><td className="mono">{source === 'sample' ? sampleId : uploadName}</td></tr>
+                  <tr><th>{es ? 'ejecución' : 'execution'}</th><td>{source === 'sample' ? (es ? 'inferencia offline precalculada' : 'precomputed offline inference') : method === 'sam' ? (es ? 'modelo de navegador, imagen actual' : 'browser model, current image') : (es ? 'método clásico, imagen actual' : 'classical method, current image')}</td></tr>
+                  <tr><th>{es ? 'método' : 'method'}</th><td className="mono">{result.model}</td></tr>
+                  <tr><th>{es ? 'dispositivo' : 'device'}</th><td className="mono">{device || result.device}</td></tr>
+                  <tr><th>{es ? 'preproceso' : 'preprocess'}</th><td>{[flatten && 'flatten', deglare && 'deglare'].filter(Boolean).join(', ') || 'none'}</td></tr>
+                  <tr><th>{es ? 'escala' : 'scale'}</th><td>{scale ? `${scale} px/mm` : 'not supplied'}</td></tr>
+                </tbody></table>
+              </div>
+            </PanelBoundary>) : pending(false),
+    export: result ? (
+            <PanelBoundary label="export">
+              <div className="fs-panel">
+                <div className="fs-panel-t">{es ? 'Exportar resultado y trabajo offline' : 'Export result and offline job'}</div>
+                <button className="chip on" onClick={() => exportResult({
+                  source: source === 'sample' ? sampleId : uploadName,
+                  method: result.model,
+                  width: result.width,
+                  height: result.height,
+                  bsd: result.bsd,
+                  scale_px_per_mm: scale,
+                  labels: Array.from(result.labels),
+                })}>{es ? 'Descargar JSON de instancia' : 'Download instance JSON'}</button>
+                <pre className="fs-command">python -m fslab.pipeline infer --input &lt;image-or-frame-directory&gt; --method {source === 'sample' ? showcaseMethodId : liveMethodRegistryId(method)} --output runs/local --px-per-mm &lt;scale&gt;</pre>
+                <p className="fs-hint">{es
+                  ? 'El archivo contiene la máscara mostrada. El comando ejecuta cualquiera de los 14 métodos sin prompt sobre una imagen propia o un directorio de cuadros; los datos no salen de su máquina.'
+                  : 'The file contains the mask shown here. The command runs any of the 14 unprompted methods over your own image, or a directory of frames; the data never leaves your machine.'}</p>
+                <p className="fs-note">{es
+                  ? 'Devuelve máscaras y descriptores de tamaño, nunca una exactitud: una imagen propia no tiene anotación contra la cual medir. Añada --associate para asignar identidades a un directorio de cuadros. No decodifica video; extraiga los cuadros primero.'
+                  : 'It returns masks and size descriptors, never an accuracy: your own image has no annotation to measure against. Add --associate to assign identities across a directory of frames. It does not decode video; extract the frames first.'}</p>
+              </div>
+            </PanelBoundary>) : pending(false),
+  };
+
+  /* ADR-0071 5: at most about six peers, each named for the QUESTION the user is asking, with
+     the views of the current group only. Nine flat nouns were a list, not an architecture. */
+  const stillTabs: TabDef[] = groups.map((group) => {
+    const views = group.tabs;
+    return {
+      id: group.id,
+      label: groupLabel(group.id, es),
+      content: views.length > 1
+        ? <SubTabs initial={views.includes(tab) ? tab : views[0]} ariaLabel={es ? 'Vista' : 'View'} tabs={views.map((v) => ({ id: v, label: label(v, es), content: stillPanels[v] }))} />
+        : stillPanels[views[0]],
+    };
+  });
+
   return (
-    <div className="page-body wide fs-app">
-      <aside className="fs-rail">
+    <div className="page-body fs-layout">
+      <aside className="fs-side">
         {/* ADR-0017 1.2: the source model is a control, so it belongs in the control rail,
             not in a full-width banner above the workbench. */}
         <div className="fs-rail-block">
@@ -410,296 +684,12 @@ export default function Tool() {
         {errMsg && <p className="fs-note">{errMsg}</p>}
       </aside>
 
-      <main className="fs-stage-col">
-        {sequenceMode ? <SequenceStage lane={lane} es={es} /> : (
-          <>
-            {groups.length > 0 && <div className="fs-tabrow">
-              <div className="fs-tabs" role="tablist" aria-label={es ? 'Análisis de imagen fija' : 'Still-image analysis'}>
-                {groups.map((group) => (
-                  <button
-                    key={group.id}
-                    role="tab"
-                    aria-selected={activeGroup === group.id}
-                    className={activeGroup === group.id ? 'fs-tab on' : 'fs-tab'}
-                    onClick={() => setTab(group.tabs[0])}
-                  >
-                    {groupLabel(group.id, es)}
-                  </button>
-                ))}
-              </div>
-              {groupTabs.length > 1 && <div className="fs-subtabs" role="tablist" aria-label={es ? 'Vista' : 'View'}>
-                {groupTabs.map((item) => (
-                  <button
-                    key={item}
-                    role="tab"
-                    aria-selected={tab === item}
-                    className={tab === item ? 'fs-subtab on' : 'fs-subtab'}
-                    onClick={() => setTab(item)}
-                  >
-                    {label(item, es)}
-                  </button>
-                ))}
-              </div>}
-            </div>}
-            <div className="fs-stage-body">
-          {source === 'sample' && tab === 'segment' && !result && (
-            <PanelBoundary label="precomputed instance segmentation">
-              <div className="fs-panel">
-                <div className="fs-panel-t">{showcaseMethod ? `${showcaseMethod.id} · ${showcaseMethod.name}` : showcaseMethodId}</div>
-                <img
-                  className="fs-frame-preview"
-                  src={artifactUrl(`showcase/${showcaseMethodId}/${sampleId}/preview.png`)}
-                  alt={es ? `resultado precalculado ${showcaseMethodId} para ${sampleId}` : `precomputed ${showcaseMethodId} result for ${sampleId}`}
-                />
-                {showcaseMethod?.test && (
-                  <div className="fs-kpis" style={{ marginTop: '0.7rem' }}>
-                    <Kpi value={showcaseMethod.test.mean_ap.toFixed(3)} label="AP test" />
-                    <Kpi value={showcaseMethod.test.mean_ap50.toFixed(3)} label="AP50" />
-                    <Kpi value={showcaseMethod.test.mean_pq?.toFixed(3) ?? '--'} label="PQ" />
-                    <Kpi value={showcaseMethod.compute.mean_inference_ms.toFixed(1)} label="ms/image" />
-                  </div>
-                )}
-                <p className="fs-hint">{es ? 'Máscara de instancias generada por inferencia offline para este caso canónico. El navegador carga el artefacto validado y no vuelve a ejecutar el modelo.' : 'Instance mask generated by offline inference for this canonical case. The browser loads the validated artifact and does not rerun the model.'}</p>
-              </div>
-            </PanelBoundary>
-          )}
-
-          {source === 'sample' && !result && tab !== 'segment' && tab !== 'compare' && (
-            <div className="fs-panel fs-result-loading">
-              <span className="fs-spinner" aria-hidden="true" />
-              <div>
-                <strong>{es ? 'Cargando el artefacto seleccionado' : 'Loading the selected artifact'}</strong>
-                <p>{es ? 'La vista se habilitará con la misma máscara precalculada, sin recomputar el método.' : 'This view will use the same precomputed mask without rerunning the method.'}</p>
-              </div>
-            </div>
-          )}
-
-          {source === 'upload' && !result && status !== 'running' && status !== 'loading-model' && (
-            <div className="fs-panel">
-              {frameUrl && tab === 'segment' && <img className="fs-frame-preview" src={frameUrl} alt={es ? 'cuadro de espuma' : 'froth frame'} />}
-              <p className="fs-hint" style={{ marginTop: frameUrl && tab === 'segment' ? '0.6rem' : 0 }}>{frameUrl
-                ? (es ? 'Cuadro seleccionado. Elija uno de los cuatro métodos interactivos para segmentarlo. Los 15 métodos evaluados están disponibles en Resultados precalculados.' : 'Selected frame. Choose one of the four interactive methods to segment it. All 15 evaluated methods are available under Precomputed results.')
-                : (es ? 'Seleccione una fuente y un método interactivo.' : 'Select a source and an interactive method.')}</p>
-            </div>
-          )}
-
-          {source === 'sample' && tab === 'compare' && (
-            <PanelBoundary label="held-out method evaluation">
-              <div className="fs-panel">
-                <div className="fs-panel-t">{es ? 'Los 15 métodos · prueba retenida de 64 casos' : 'All 15 methods · 64-case held-out test'}</div>
-                <p className="fs-hint">{es ? 'Todos los resultados fueron generados offline con el mismo protocolo.' : 'Every result was generated offline under the same protocol.'}</p>
-                <div style={{ overflowX: 'auto' }}>
-                  <table className="fs-table">
-                    <thead><tr><th>ID</th><th>{es ? 'método' : 'method'}</th><th>{es ? 'familia' : 'family'}</th><th className="num">AP</th><th className="num">AP50</th><th className="num">PQ</th><th className="num">Boundary F</th><th className="num">ms/image</th></tr></thead>
-                    <tbody>
-                      {methodBenchmark?.methods.map((candidate) => (
-                        <tr key={candidate.id} className={candidate.id === showcaseMethodId ? 'fs-selected-row' : undefined}>
-                          <td className="mono">{candidate.id}</td>
-                          <th><button className="fs-method-pick" onClick={() => { setShowcaseMethodId(candidate.id); setTab('segment'); }}>{candidate.name}</button></th>
-                          <td>{methodFamily(candidate, es)}</td>
-                          <td className="num">{candidate.test?.mean_ap.toFixed(3) ?? '--'}</td>
-                          <td className="num">{candidate.test?.mean_ap50.toFixed(3) ?? '--'}</td>
-                          <td className="num">{candidate.test?.mean_pq?.toFixed(3) ?? '--'}</td>
-                          <td className="num">{candidate.test?.mean_boundary_fscore?.toFixed(3) ?? '--'}</td>
-                          <td className="num">{candidate.compute.mean_inference_ms.toFixed(1)}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </PanelBoundary>
-          )}
-          {(status === 'running' || status === 'loading-model') && (
-            <div className="fs-panel"><p className="fs-hint"><span className="fs-spinner" /> {status === 'loading-model' ? (es ? 'descargando el modelo SAM...' : 'downloading the SAM model...') : (es ? `segmentando, ${progress}%` : `segmenting, ${progress}%`)}</p></div>
-          )}
-
-          {result && tab === 'segment' && (
-            <PanelBoundary label="segment">
-              <>
-                <div className="fs-kpis">
-                  <div className="fs-kpi"><div className="fs-kpi-v">{result.nInstances}</div><div className="fs-kpi-l">{es ? 'burbujas' : 'bubbles'}</div></div>
-                  <div className="fs-kpi"><div className="fs-kpi-v">{result.bsd.d32 ?? '-'}</div><div className="fs-kpi-l">d32 (px)</div></div>
-                  <div className="fs-kpi"><div className="fs-kpi-v">{ap?.ap != null ? ap.ap.toFixed(3) : '--'}</div><div className="fs-kpi-l">{es ? 'AP vs verdad' : 'AP vs truth'}</div></div>
-                  <div className="fs-kpi"><div className="fs-kpi-v">{result.totalMs}<span style={{ fontSize: '0.7rem' }}>ms</span></div><div className="fs-kpi-l">{es ? 'tiempo' : 'time'}</div></div>
-                </div>
-                <div className="fs-overlay-slot">
-                  <MaskOverlay baseUrl={frameUrl} labels={result.labels} width={result.width} height={result.height} pxPerMm={scale}
-                    caption={source === 'sample'
-                      ? (es ? 'Máscara de instancias precalculada para el caso canónico seleccionado. Pase el cursor para inspeccionar cada burbuja.' : 'Precomputed instance mask for the selected canonical case. Hover to inspect each bubble.')
-                      : method === 'sam'
-                        ? (es ? 'Burbujas segmentadas en la imagen cargada por SlimSAM. Pase el cursor para inspeccionar cada burbuja.' : 'Bubbles segmented in the uploaded image by SlimSAM. Hover to inspect each bubble.')
-                        : (es ? 'Burbujas segmentadas en la imagen cargada por el método clásico seleccionado.' : 'Bubbles segmented in the uploaded image by the selected classical method.')} />
-                </div>
-                {ap?.ap != null && <p className="fs-hint small">{source === 'sample' ? (es ? 'AP del artefacto precalculado respecto de la anotación sintética.' : 'Precomputed artifact AP against the synthetic annotation.') : (es ? 'AP de la máscara interactiva respecto de la anotación sintética.' : 'Interactive mask AP against the synthetic annotation.')} AP50 {ap.ap50} · {ap.nPred} {es ? 'predichas' : 'pred'} / {ap.nGt} GT</p>}
-              </>
-            </PanelBoundary>
-          )}
-
-          {result && tab === 'bsd' && (
-            <PanelBoundary label="bsd">
-              <>
-                <div className="fs-panel">
-                  <div className="fs-panel-t">{es ? 'Distribución de tamaño de burbuja' : 'Bubble-size distribution'}</div>
-                  <BsdHistogram ariaLabel="bubble-size distribution" unit={scale ? 'px' : 'px'}
-                    series={gtDiams.length ? [{ label: source === 'sample' ? showcaseMethodId : result.model, diameters: diams }, { label: es ? 'verdad' : 'truth', diameters: gtDiams }] : [{ label: result.model, diameters: diams }]} />
-                </div>
-                <BsdTable es={es} bsd={result.bsd} scale={scale} />
-              </>
-            </PanelBoundary>
-          )}
-
-          {result && tab === 'boundary' && (
-            <PanelBoundary label="boundary and error">
-              <div className="fs-panel">
-                <div className="fs-panel-t">{es ? 'Frontera y errores de instancia' : 'Boundary and instance errors'}</div>
-                <div className="fs-kpis">
-                  <Kpi value={boundaryPixels} label={es ? 'píxeles frontera' : 'boundary pixels'} />
-                  <Kpi value={ap?.nPred ?? result.nInstances} label={es ? 'predicciones' : 'predictions'} />
-                  <Kpi value={ap?.nGt ?? '--'} label={es ? 'instancias GT' : 'GT instances'} />
-                  <Kpi value={ap?.ap50?.toFixed(3) ?? '--'} label="AP50" />
-                </div>
-                <p className="fs-hint">{gt
-                  ? (es ? 'La verdad sintética permite contar fallas; la matriz canónica completa de merge, split, miss y spurious se calcula offline.' : 'Synthetic truth enables error counting; the complete canonical merge, split, miss, and spurious matrix is computed offline.')
-                  : (es ? 'Una carga real sin anotación no permite afirmar error de frontera. Exporta la máscara para anotarla y evaluarla offline.' : 'An unannotated real upload cannot support a boundary-error claim. Export the mask for annotation and offline evaluation.')}</p>
-              </div>
-            </PanelBoundary>
-          )}
-
-          {result && tab === 'morphometry' && (
-            <PanelBoundary label="morphometry">
-              <div className="fs-panel">
-                <div className="fs-panel-t">{es ? 'Morfometría del caso seleccionado' : 'Selected-case morphometry'}</div>
-                <BsdTable es={es} bsd={result.bsd} scale={scale} />
-                <p className="fs-hint">{scale
-                  ? (es ? 'Los diámetros se convierten con la escala suministrada; la escala no se estima ni se inventa.' : 'Diameters use the supplied scale; scale is neither estimated nor invented.')
-                  : (es ? 'Sin calibración física, los resultados permanecen honestamente en píxeles.' : 'Without physical calibration, outputs honestly remain in pixels.')}</p>
-              </div>
-            </PanelBoundary>
-          )}
-
-          {result && tab === 'confidence' && (
-            <PanelBoundary label="confidence and calibration">
-              <div className="fs-panel">
-                <div className="fs-panel-t">{es ? 'Confianza y calibración' : 'Confidence and calibration'}</div>
-                <table className="fs-table">
-                  <tbody>
-                    <tr><th>{es ? 'método' : 'method'}</th><td className="mono">{result.model}</td></tr>
-                    {source === 'sample' ? (
-                      <>
-                        <tr><th>{es ? 'AP del caso' : 'case AP'}</th><td className="num">{ap?.ap?.toFixed(3) ?? '--'}</td></tr>
-                        <tr><th>Brier ({es ? 'test, 64 casos' : 'test, 64 cases'})</th><td className="num">{showcaseMethod?.test?.mean_brier?.toFixed(4) ?? 'n/a'}</td></tr>
-                        <tr><th>ECE ({es ? 'test, 64 casos' : 'test, 64 cases'})</th><td className="num">{showcaseMethod?.test?.mean_ece?.toFixed(4) ?? 'n/a'}</td></tr>
-                      </>
-                    ) : (
-                      <>
-                        <tr><th>{es ? 'umbral IoU' : 'IoU threshold'}</th><td className="num">{method === 'sam' ? predIou.toFixed(2) : 'n/a'}</td></tr>
-                        <tr><th>{es ? 'estabilidad' : 'stability'}</th><td className="num">{method === 'sam' ? stability.toFixed(2) : 'deterministic'}</td></tr>
-                        <tr><th>{es ? 'anotación local' : 'local annotation'}</th><td>{gt ? (es ? 'AP disponible' : 'AP available') : (es ? 'no disponible' : 'unavailable')}</td></tr>
-                      </>
-                    )}
-                  </tbody>
-                </table>
-                <p className="fs-note">{source === 'sample'
-                  ? (es ? 'Brier y ECE solo se reportan para modelos que producen probabilidades; son métricas agregadas del test retenido, no del cuadro canónico.' : 'Brier and ECE are reported only for probability-producing models; they are held-out test aggregates, not canonical-frame values.')
-                  : (es ? 'Los umbrales de interfaz no representan incertidumbre calibrada.' : 'Interface thresholds do not represent calibrated uncertainty.')}</p>
-              </div>
-            </PanelBoundary>
-          )}
-
-          {result && tab === 'state' && froth && (
-            <PanelBoundary label="froth state">
-              <div className="fs-panel">
-                <div style={{ display: 'flex', gap: '1.2rem', alignItems: 'center', flexWrap: 'wrap' }}>
-                  <Gauge value={froth.health} label={es ? 'estabilidad (proxy)' : 'stability (proxy)'} />
-                  <div style={{ flex: 1, minWidth: 240 }}>
-                    <div style={{ fontWeight: 700, fontSize: '1.05rem' }}>{froth.title}</div>
-                    <p className="fs-hint">{froth.summary}</p>
-                  </div>
-                </div>
-                <table className="fs-table" style={{ marginTop: '0.6rem' }}>
-                  <tbody>{froth.indicators.map((ind) => (
-                    <tr key={ind.label}><th>{ind.label}</th><td className="num">{ind.value}</td><td className="fs-hint small">{ind.note ?? ''}</td></tr>
-                  ))}</tbody>
-                </table>
-                {froth.notes.map((n, i) => <p key={i} className="fs-note" style={{ marginTop: '0.4rem' }}>{n}</p>)}
-              </div>
-            </PanelBoundary>
-          )}
-
-          {result && tab === 'provenance' && (
-            <PanelBoundary label="provenance">
-              <div className="fs-panel">
-                <div className="fs-panel-t">{es ? 'Proveniencia de la ejecución' : 'Run provenance'}</div>
-                <table className="fs-table"><tbody>
-                  <tr><th>{es ? 'fuente' : 'source'}</th><td className="mono">{source === 'sample' ? sampleId : uploadName}</td></tr>
-                  <tr><th>{es ? 'ejecución' : 'execution'}</th><td>{source === 'sample' ? (es ? 'inferencia offline precalculada' : 'precomputed offline inference') : method === 'sam' ? (es ? 'modelo de navegador, imagen actual' : 'browser model, current image') : (es ? 'método clásico, imagen actual' : 'classical method, current image')}</td></tr>
-                  <tr><th>{es ? 'método' : 'method'}</th><td className="mono">{result.model}</td></tr>
-                  <tr><th>{es ? 'dispositivo' : 'device'}</th><td className="mono">{device || result.device}</td></tr>
-                  <tr><th>{es ? 'preproceso' : 'preprocess'}</th><td>{[flatten && 'flatten', deglare && 'deglare'].filter(Boolean).join(', ') || 'none'}</td></tr>
-                  <tr><th>{es ? 'escala' : 'scale'}</th><td>{scale ? `${scale} px/mm` : 'not supplied'}</td></tr>
-                </tbody></table>
-              </div>
-            </PanelBoundary>
-          )}
-
-          {result && tab === 'export' && (
-            <PanelBoundary label="export">
-              <div className="fs-panel">
-                <div className="fs-panel-t">{es ? 'Exportar resultado y trabajo offline' : 'Export result and offline job'}</div>
-                <button className="chip on" onClick={() => exportResult({
-                  source: source === 'sample' ? sampleId : uploadName,
-                  method: result.model,
-                  width: result.width,
-                  height: result.height,
-                  bsd: result.bsd,
-                  scale_px_per_mm: scale,
-                  labels: Array.from(result.labels),
-                })}>{es ? 'Descargar JSON de instancia' : 'Download instance JSON'}</button>
-                <pre className="fs-command">python -m fslab.pipeline infer --input &lt;image-or-frame-directory&gt; --method {source === 'sample' ? showcaseMethodId : liveMethodRegistryId(method)} --output runs/local --px-per-mm &lt;scale&gt;</pre>
-                <p className="fs-hint">{es
-                  ? 'El archivo contiene la máscara mostrada. El comando ejecuta cualquiera de los 14 métodos sin prompt sobre una imagen propia o un directorio de cuadros; los datos no salen de su máquina.'
-                  : 'The file contains the mask shown here. The command runs any of the 14 unprompted methods over your own image, or a directory of frames; the data never leaves your machine.'}</p>
-                <p className="fs-note">{es
-                  ? 'Devuelve máscaras y descriptores de tamaño, nunca una exactitud: una imagen propia no tiene anotación contra la cual medir. Añada --associate para asignar identidades a un directorio de cuadros. No decodifica video; extraiga los cuadros primero.'
-                  : 'It returns masks and size descriptors, never an accuracy: your own image has no annotation to measure against. Add --associate to assign identities across a directory of frames. It does not decode video; extract the frames first.'}</p>
-              </div>
-            </PanelBoundary>
-          )}
-
-          {source === 'upload' && result && tab === 'compare' && (
-            <PanelBoundary label="compare">
-              <div className="fs-panel">
-                <div className="fs-panel-t">{es ? 'Cuatro métodos interactivos · imagen actual' : 'Four interactive methods · current image'}</div>
-                <p className="fs-hint">{es ? 'C1, C3 y C4 se calculan ahora. SlimSAM aparece con resultado solo cuando es el motor seleccionado; el navegador no simula métodos offline.' : 'C1, C3, and C4 are computed now. SlimSAM has a result only when selected; the browser does not imitate offline methods.'}</p>
-                <table className="fs-table" style={{ marginTop: '0.5rem' }}>
-                  <thead><tr><th>{es ? 'método' : 'method'}</th><th>{es ? 'ejecución' : 'execution'}</th><th className="num">{es ? 'instancias' : 'instances'}</th><th className="num">AP</th></tr></thead>
-                  <tbody>
-                    <tr>
-                      <th>SlimSAM zero-shot</th>
-                      <td>{method === 'sam' ? (es ? 'resultado actual' : 'current result') : (es ? 'seleccionar para ejecutar' : 'select to run')}</td>
-                      <td className="num">{method === 'sam' ? result.nInstances : '--'}</td>
-                      <td className="num">{method === 'sam' ? (ap?.ap?.toFixed(3) ?? '--') : '--'}</td>
-                    </tr>
-                    {LIVE_CLASSICAL_METHODS.map((candidate) => {
-                      const live = liveComparison.find((row) => row.id === candidate.id);
-                      return <tr key={candidate.id}>
-                        <th>{candidate.label}</th>
-                        <td>{es ? 'CPU · imagen actual' : 'CPU · current image'}</td>
-                        <td className="num">{live?.count ?? '--'}</td>
-                        <td className="num">{live?.ap?.toFixed(3) ?? '--'}</td>
-                      </tr>;
-                    })}
-                  </tbody>
-                </table>
-                <p className="fs-note">{es ? 'Los otros 11 métodos permanecen disponibles para los 12 casos precalculados y en Benchmark; no se ofrecen como ejecución sobre cargas.' : 'The other 11 methods remain available for all 12 precomputed cases and in Benchmark; they are not offered as upload execution.'}</p>
-              </div>
-            </PanelBoundary>
-          )}
-            </div>
-          </>
-        )}
-      </main>
+      {/* ADR-0017 1.2: aside + 1fr main, mirroring the reference app rather than re-deriving. */}
+      <div className="fs-main">
+        {sequenceMode
+          ? <SequenceStage lane={lane} es={es} />
+          : <Tabs key={`${source}-${activeGroup}`} initial={activeGroup} tabs={stillTabs} ariaLabel={es ? 'Analisis de imagen fija' : 'Still-image analysis'} />}
+      </div>
     </div>
   );
 }
@@ -727,14 +717,17 @@ function BsdTable({ es, bsd, scale }: { es: boolean; bsd: SegResult['bsd']; scal
   );
 }
 
+/** ADR-0071 §5: a group is named for the QUESTION the user is asking, not for the noun of the
+ *  view inside it. The previous labels were nouns (Segmentation, Quality, Provenance), which is
+ *  a list of nine views wearing six names and makes the reader scan every one to find theirs. */
 function groupLabel(id: string, es: boolean): string {
   const labels: Record<string, [string, string]> = {
-    segmentation: ['Segmentation', 'Segmentación'],
-    size: ['Size distribution', 'Distribución'],
-    quality: ['Quality', 'Calidad'],
-    state: ['Froth state', 'Estado'],
-    compare: ['Compare', 'Comparar'],
-    provenance: ['Provenance', 'Proveniencia'],
+    segmentation: ['What did it find?', '¿Qué encontró?'],
+    size: ['How big are they?', '¿De qué tamaño son?'],
+    quality: ['How good is it?', '¿Qué tan bueno es?'],
+    state: ['What state is the froth in?', '¿En qué estado está la espuma?'],
+    compare: ['Which method wins?', '¿Qué método gana?'],
+    provenance: ['Where did this come from?', '¿De dónde viene esto?'],
   };
   return labels[id]?.[es ? 1 : 0] ?? id;
 }

@@ -6,6 +6,42 @@ On `develop`. The release gate still reports `complete: false`: BBBC038 satisfie
 real-data lane for the adjacent domain only, and the blocker is specifically a licensed
 real **froth** held-out source, which no search has yet found.
 
+### Rebuilt (2026-07-29, second pass): the App composes the shell instead of re-deriving it
+
+The first pass was built from memory of the ADRs rather than from the ADRs and the reference
+app, and it was rejected. ADR-0017 is explicit: "the reference app is CAOS_RotorVitals ...
+mirror it, do not re-derive." This pass mirrors it.
+
+- **The shell's `Tabs` primitive replaces the hand-rolled tab strip** in both lanes. ADR-0016
+  §6 and ADR-0017 §1.1 say to use the shell primitives and never redefine them; every doc page
+  in this repo already imported `SubTabs`, and the App was the one page that did not.
+- **The layout is the reference's**: `page-body fs-layout`, `aside` plus `1fr` main, and the five
+  CSS rules that make a workbench fill the viewport. The `useViewportFit` hook is deleted. It
+  measured the shell header and footer at runtime with a ResizeObserver and a MutationObserver
+  to work around a 48px footer margin that the reference simply sets to zero, and it was what
+  produced the dead band under the content.
+- **Tab groups are named for the question**, not the noun: "What did it find?", "How big are
+  they?", "How good is it?", "What state is the froth in?", "Which method wins?", "Where did
+  this come from?". Groups holding more than one view render the shell's `SubTabs` inside the
+  panel, so only the current group's views appear (ADR-0071 §5).
+- **The stage is two panes.** A square frame in a 1220px stage has a ceiling of the stage height
+  squared, so it cannot reach the ADR-0071 §8 majority on its own and the remainder was empty
+  background. The still lane now shows the mask beside its readouts and its size distribution;
+  the replay shows the frame beside its per-frame provenance and sequence metrics.
+- **Focus mode corrected to the ADR-0070 style spec**: the HUD is a vertical column at the left
+  edge below the label with the value read before its label, the exit control is at the
+  top-right of the stage, and the rail runs title and id, mode toggle, controls, provenance note
+  naming the models and their sources, then the scenario chips.
+
+Fixed in the same pass, all found by looking at rendered screenshots rather than at gate output:
+
+- In light theme the replay HUD values rendered dark-on-dark and the transport step arrows
+  white-on-white. Setting the colour on the KPI wrapper was not enough; the value and label
+  elements carry their own theme colours and won.
+- The replay's "view" row reported the scenario name, not the view.
+- A `display: flex` on `.tabpanel` outranked the shell's `[hidden]`, so all five sequence panels
+  rendered stacked at once and the frame was squeezed to 7% of the viewport.
+
 ### Added (2026-07-29): the App is a single-rail workbench and focus mode exists
 
 - The App route follows ADR-0017 §1.2 again: ONE control rail holding the analysis-source

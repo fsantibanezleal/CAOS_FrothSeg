@@ -191,19 +191,12 @@ export default function Focus() {
         <div className="fs-focus-railhead">
           <span>{es ? 'Escenario' : 'Scenario'}</span>
           <strong>{name}</strong>
+          <code>{sequence?.case_id}</code>
         </div>
 
-        <label className="fs-ctl">{es ? 'escenario' : 'scenario'}
-          <select
-            className="fs-sel"
-            value={sequence?.case_id ?? ''}
-            onChange={(e) => { setFrameIndex(0); setPlaying(false); navigate(`/focus/${e.target.value}`); }}
-          >
-            {manifest?.sequences.map((s) => (
-              <option key={s.case_id} value={s.case_id}>{scenarioName(s.case_id, es)}</option>
-            ))}
-          </select>
-        </label>
+        <button className="fs-focus-more" onClick={() => setAdvanced((v) => !v)}>
+          {advanced ? (es ? 'Menos detalle' : 'Less detail') : (es ? 'Mas detalle' : 'More detail')}
+        </button>
 
         {predictions.length > 0 && (
           <label className="fs-ctl">{es ? 'método' : 'method'}
@@ -232,11 +225,6 @@ export default function Focus() {
           </select>
         </label>
 
-        {/* ADR-0070 5: progressive disclosure inside the view, never split across tabs. */}
-        <button className="fs-focus-more" onClick={() => setAdvanced((v) => !v)}>
-          {advanced ? (es ? 'Menos detalle' : 'Less detail') : (es ? 'Más detalle' : 'More detail')}
-        </button>
-
         {advanced && metrics && (
           <div className="fs-focus-detail">
             <table className="fs-table">
@@ -255,6 +243,31 @@ export default function Focus() {
             )}
           </div>
         )}
+
+        {/* ADR-0070: "a provenance note naming the models and their sources". */}
+        <div className="fs-focus-prov">
+          <span>{es ? 'Proveniencia' : 'Provenance'}</span>
+          <p>{es
+            ? 'Cuadros y mascaras precalculados offline y servidos como artefactos verificados por sha256. El navegador no ejecuta el modelo.'
+            : 'Frames and masks are precomputed offline and served as sha256-verified artifacts. The browser does not run the model.'}</p>
+          {prediction && (
+            <p className="mono">{prediction.method_id} · {prediction.method_slug}
+              {prediction.model_provenance?.device ? ` · ${prediction.model_provenance.device}` : ''}</p>
+          )}
+        </div>
+
+        {/* ADR-0070: "then the scenario chips for switching". */}
+        <div className="fs-focus-chips">
+          {manifest?.sequences.map((s) => (
+            <button
+              key={s.case_id}
+              className={s.case_id === sequence?.case_id ? 'chip on' : 'chip'}
+              onClick={() => { setFrameIndex(0); setPlaying(false); navigate(`/focus/${s.case_id}`); }}
+            >
+              {scenarioName(s.case_id, es)}
+            </button>
+          ))}
+        </div>
 
         <p className="fs-hint small fs-focus-foot">{es
           ? 'Espacio reproduce, flechas avanzan cuadro, Esc vuelve a la App.'
