@@ -2,10 +2,12 @@
 
 Bring-your-own data is one input route into the full product, not the whole
 product.
-FrothSeg does not commit third-party real images. A licensed public instance
-dataset exists in Roboflow Universe, while site data is commonly private. Both
-enter through the same governed offline contract; an ad-hoc upload remains a
-bounded qualitative path. The door is **CONTRACT 1**, the image gate.
+FrothSeg does not commit third-party real images, and as of 2026-07-28 there is no
+openly licensed public froth instance dataset to point at either (see
+`manifests/source-registry.json`, `froth_source_search`). Site data is the realistic
+source and it is normally private. It enters through the governed offline contract
+below; an ad-hoc upload remains a bounded qualitative path. The door is **CONTRACT 1**,
+the image gate.
 
 ## What this is, and what it is not
 
@@ -18,32 +20,28 @@ bounded qualitative path. The door is **CONTRACT 1**, the image gate.
 - It is **not** the training or release path. Governed datasets are ingested
   offline, assigned splits, trained, calibrated, evaluated, and exported there.
 
-## Acquire and register the public real candidate
+## Register your own annotated frames
 
-The source `roboflow-froth-rk6ka` contains 88 real froth images with bubble
-instance annotations under CC-BY-NC-SA-4.0. Roboflow requires an account API key
-for dataset export. Keep that key outside the repository:
+There is no public froth dataset to fetch. The route to a real held-out lane is your own
+frames, annotated once, and that is a better route than a public one: the camera is known,
+the scale is real and measurable, and the licence is yours, so nothing downstream inherits
+a restriction. Fifty to a hundred frames from a single cell is enough to start.
 
-```powershell
-$env:ROBOFLOW_API_KEY = '<scoped key>'
-./.venv-gpu/Scripts/python.exe scripts/fetch_roboflow_froth.py
-```
+Export the annotations as COCO instance segmentation, then create a
+`frothseg.real-metadata/v1` JSON overlay keyed by `file_name`. Every row must provide a
+leakage-safe `group_id` (frames from one video or one shift share a group, so adjacent
+frames cannot straddle a split) and a traceable positive `mm_per_px`. The document must
+also carry an independently accepted `annotation_review` with a named reviewer, because
+the annotations become the ground truth that decides which method wins.
 
-The fetcher writes only to ignored `data/raw/`, rejects overwrite, verifies the
-archive hash, blocks path-traversal members, and records source/license
-provenance without persisting the credential.
-
-Roboflow annotations alone are not release evidence. Create a
-`frothseg.real-metadata/v1` JSON overlay keyed by `file_name`; every row must
-provide a leakage-safe `group_id` and a traceable positive `mm_per_px`. The
-document must also contain an independently accepted `annotation_review` with a
-named reviewer. Then validate and export the derived manifest:
+Register the source in `manifests/source-registry.json`, then validate and export:
 
 ```powershell
 ./.venv-gpu/Scripts/python.exe scripts/import_real_coco.py `
-  --annotations data/raw/roboflow-froth-rk6ka/train/_annotations.coco.json `
-  --images data/raw/roboflow-froth-rk6ka/train `
-  --metadata data/local/roboflow-froth-metadata.json
+  --source-id <your-source-id> `
+  --annotations <path>/_annotations.coco.json `
+  --images <path> `
+  --metadata data/local/<your>-metadata.json
 ```
 
 Raw images and local review material stay out of git; the derived manifest

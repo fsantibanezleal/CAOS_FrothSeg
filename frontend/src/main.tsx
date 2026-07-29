@@ -17,6 +17,7 @@ import Methodology from './pages/Methodology';
 import Implementation from './pages/Implementation';
 import Experiments from './pages/Experiments';
 import Benchmark from './pages/Benchmark';
+import Focus from './pages/Focus';
 
 applyTheme(readTheme());
 
@@ -66,17 +67,38 @@ const config: ShellConfig = {
   },
 };
 
+/** The shared shell hardcodes "MIT licensed" in its footer. This repository is Apache-2.0
+ *  (ADR-0065), so without a correction the footer states the wrong licence, which is a
+ *  factual error about a legal term rather than a cosmetic one.
+ *
+ *  The proper fix is a `license` field on ShellConfig; the shell has none today, and adding
+ *  one means publishing a shell version that all 16 CAOS products depend on. That is a
+ *  cross-product release, so it is tracked as BL-015 rather than done from here.
+ *
+ *  Until then this patches the DOM, and it matches on the TEXT rather than on a selector
+ *  chain. The previous version keyed off `.footer-meta a[href*="github"] + span + .faint`,
+ *  which any shell markup change would silently break, leaving the footer quietly asserting
+ *  MIT. Matching the text fails safe: if the shell stops saying "MIT licensed" there is
+ *  nothing to correct, and if it says it somewhere else this still finds it. */
+const LICENSE_TEXT = {
+  en: 'Apache-2.0 licensed · open source',
+  es: 'Licencia Apache-2.0 · código abierto',
+} as const;
+
 function ShellLicenseCorrection() {
   const lang = useShellLang();
   useEffect(() => {
     document.documentElement.lang = lang;
-    const node = document.querySelector(
-      '.footer-meta a[href*="github"] + span + .faint',
-    );
-    if (node) {
-      node.textContent = lang === 'es'
-        ? 'Licencia Apache-2.0 · código abierto'
-        : 'Apache-2.0 licensed · open source';
+    const correct = LICENSE_TEXT[lang === 'es' ? 'es' : 'en'];
+    const footer = document.querySelector('footer') ?? document.body;
+    const candidates = footer.querySelectorAll<HTMLElement>('span, p, div, small');
+    for (const node of candidates) {
+      // Only leaf nodes, so a wrapper containing the phrase is not flattened.
+      if (node.children.length > 0) continue;
+      const text = node.textContent ?? '';
+      if (/MIT\s+licensed|Licencia\s+MIT/i.test(text)) {
+        node.textContent = correct;
+      }
     }
   }, [lang]);
   return null;
@@ -88,7 +110,9 @@ if (el) {
     <StrictMode>
       <BrowserRouter>
         <CitationsProvider items={CITATIONS}>
-          <AppShell config={config}>
+          <Routes>
+            <Route path="/focus/:caseId" element={<Focus />} />
+            <Route path="*" element={<AppShell config={config}>
             <ShellLicenseCorrection />
             <Routes>
               <Route path="/" element={<Tool />} />
@@ -99,7 +123,8 @@ if (el) {
               <Route path="/benchmark" element={<Benchmark />} />
               <Route path="*" element={<Tool />} />
             </Routes>
-          </AppShell>
+          </AppShell>} />
+          </Routes>
         </CitationsProvider>
       </BrowserRouter>
     </StrictMode>,

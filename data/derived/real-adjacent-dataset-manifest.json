@@ -1,0 +1,479 @@
+{
+  "schema": "frothseg.real-dataset/v1",
+  "source_id": "bbbc038-dsb2018",
+  "domain": "adjacent",
+  "license": "CC0-1.0",
+  "source_url": "https://bbbc.broadinstitute.org/BBBC038",
+  "archive_sha256": "dcb6edc2690f137406638b2309581a71522c4dff19157d118453b448dcddcb68",
+  "split_seed": 20260728,
+  "sample_count": 670,
+  "scoreable_sample_count": 670,
+  "calibrated_sample_count": 0,
+  "calibration_note": "Microscopy nuclei carry no mm/px scale, so physical descriptors are not computed for this source. Size metrics stay in pixels.",
+  "splits": {
+    "test": 64,
+    "unused": 606
+  },
+  "grouping": {
+    "method": "height x width x coarse mean intensity",
+    "group_count": 21,
+    "test_group_count": 2,
+    "note": "BBBC038 ships no acquisition metadata. This proxy keeps near-duplicate fields of view from one experiment in the same split. It is a proxy, not ground truth about acquisition."
+  },
+  "annotation_review": {
+    "state": "accepted",
+    "reviewer": "Broad Bioimage Benchmark Collection (BBBC038v1 curation)",
+    "basis": "Annotations are the published, expert-curated BBBC038v1 masks used as the Data Science Bowl 2018 ground truth, not labels produced in this repository. Verified non-overlapping at ingest."
+  },
+  "scope": "Real dense-instance photographs, NOT froth. This source measures whether the method ladder generalises off the synthetic generator. It cannot support any statement about flotation accuracy, and the release gate treats it as adjacent-domain so it can never clear the froth requirement.",
+  "test_samples": [
+    {
+      "sample_id": "2dd3356f2dcf470aec4003800744dfec6490e75d88011e1d835f4f3d60f88e7a",
+      "group_id": "256x320-b5",
+      "height": 256,
+      "width": 320,
+      "instance_count": 117
+    },
+    {
+      "sample_id": "33a5b0ff232b425796ee6a9dd5b516ff9aad54ca723b4ec490bf5cd9b2e2a731",
+      "group_id": "256x320-b5",
+      "height": 256,
+      "width": 320,
+      "instance_count": 23
+    },
+    {
+      "sample_id": "4193474b2f1c72f735b13633b219d9cabdd43c21d9c2bb4dfc4809f104ba4c06",
+      "group_id": "256x320-b5",
+      "height": 256,
+      "width": 320,
+      "instance_count": 12
+    },
+    {
+      "sample_id": "45f059cf21d85ecfce0eb93260516f1e2443d210e9a52f9ae2271d604aa3fcc5",
+      "group_id": "256x320-b5",
+      "height": 256,
+      "width": 320,
+      "instance_count": 15
+    },
+    {
+      "sample_id": "4d14a3629b6af6de86d850be236b833a7bfcbf6d8665fd73c6dc339e06c14607",
+      "group_id": "256x320-b5",
+      "height": 256,
+      "width": 320,
+      "instance_count": 98
+    },
+    {
+      "sample_id": "52a6b8ae4c8e0a8a07a31b8e3f401d8811bf1942969c198e51dfcbd98520aa60",
+      "group_id": "256x320-b5",
+      "height": 256,
+      "width": 320,
+      "instance_count": 25
+    },
+    {
+      "sample_id": "65c8527c16a016191118e8adc3d307fe3a73d37cbe05597a95aebd75daf8d051",
+      "group_id": "256x320-b5",
+      "height": 256,
+      "width": 320,
+      "instance_count": 111
+    },
+    {
+      "sample_id": "6ab24e7e1f6c9fdd371c5edae1bbb20abeeb976811f8ab2375880b4483860f4d",
+      "group_id": "256x320-b5",
+      "height": 256,
+      "width": 320,
+      "instance_count": 20
+    },
+    {
+      "sample_id": "709e094e39629a9ca21e187f007b331074694e443db40289447c1111f7e267e7",
+      "group_id": "256x320-b5",
+      "height": 256,
+      "width": 320,
+      "instance_count": 22
+    },
+    {
+      "sample_id": "7798ca1ddb3133563e290c36228bc8f8f3c9f224e096f442ef0653856662d121",
+      "group_id": "256x320-b5",
+      "height": 256,
+      "width": 320,
+      "instance_count": 33
+    },
+    {
+      "sample_id": "853a4c67900c411abd04467f7bc7813d3c58a5f565c8b0807e13c6e6dea21344",
+      "group_id": "256x320-b5",
+      "height": 256,
+      "width": 320,
+      "instance_count": 18
+    },
+    {
+      "sample_id": "8f27ebc74164eddfe989a98a754dcf5a9c85ef599a1321de24bcf097df1814ca",
+      "group_id": "256x320-b5",
+      "height": 256,
+      "width": 320,
+      "instance_count": 13
+    },
+    {
+      "sample_id": "a31deaf0ac279d5f34fb2eca80cc2abce6ef30bd64e7aca40efe4b2ba8e9ad3d",
+      "group_id": "256x320-b5",
+      "height": 256,
+      "width": 320,
+      "instance_count": 87
+    },
+    {
+      "sample_id": "a5fe0b7412dd152c41f7afc34ffdf276d4261b6942fa6d36803648e90f2cfc06",
+      "group_id": "256x320-b5",
+      "height": 256,
+      "width": 320,
+      "instance_count": 30
+    },
+    {
+      "sample_id": "a7f6194ddbeaefb1da571226a97785d09ccafc5893ce3c77078d2040bccfcb77",
+      "group_id": "256x320-b5",
+      "height": 256,
+      "width": 320,
+      "instance_count": 83
+    },
+    {
+      "sample_id": "a7f767ca9770b160f234780e172aeb35a50830ba10dc49c526f4712451abe1d2",
+      "group_id": "256x320-b5",
+      "height": 256,
+      "width": 320,
+      "instance_count": 11
+    },
+    {
+      "sample_id": "c1afe66cd139f996fd984f5f2622903730ec2f1192d90608154f07f7ef6cdb4b",
+      "group_id": "256x320-b5",
+      "height": 256,
+      "width": 320,
+      "instance_count": 13
+    },
+    {
+      "sample_id": "e49fc2b4f1f39d481a6525225ab3f688be5c87f56884456ad54c953315efae83",
+      "group_id": "256x320-b5",
+      "height": 256,
+      "width": 320,
+      "instance_count": 69
+    },
+    {
+      "sample_id": "f952cc65376009cfad8249e53b9b2c0daaa3553e897096337d143c625c2df886",
+      "group_id": "256x320-b5",
+      "height": 256,
+      "width": 320,
+      "instance_count": 151
+    },
+    {
+      "sample_id": "12aeefb1b522b283819b12e4cfaf6b13c1264c0aadac3412b4edd2ace304cb40",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 124
+    },
+    {
+      "sample_id": "150b0ffa318c87b31d78af0e87d60390dbcd84b5f228a8c1fb3225cbe5df3e3f",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 198
+    },
+    {
+      "sample_id": "193ffaa5272d5c421ae02130a64d98ad120ec70e4ed97a72cdcd4801ce93b066",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 157
+    },
+    {
+      "sample_id": "212b858a66f0d23768b8e3e1357704fc2f4cf4bbe7eed8cd59b5d01031d553e6",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 100
+    },
+    {
+      "sample_id": "2c83c86dd4e5dacc024b55629375567fb8e320a82ef86f541cfe54764040fc25",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 24
+    },
+    {
+      "sample_id": "2d53d7ec0c579fffd6710c956288537d46c719a93c6a04ac0d6550f75a6a6493",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 7
+    },
+    {
+      "sample_id": "2dec81a678ddcac2b110acffe82427d857695180bd841e3f9736a554acf832af",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 25
+    },
+    {
+      "sample_id": "3477024fd843e46097840360f9cdee24b76bf5c593ed27a9aee7a5728a06aa51",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 23
+    },
+    {
+      "sample_id": "351771edfc5db5665ded8aa4940257276b6526663c76e3b60b92a52584d8943c",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 106
+    },
+    {
+      "sample_id": "3ebd2ab34ba86e515feb79ffdeb7fc303a074a98ba39949b905dbde3ff4b7ec0",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 138
+    },
+    {
+      "sample_id": "3f9fc8e63f87e8a56d3eaef7db26f1b6db874d19f12abd5a752821b78d47661e",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 156
+    },
+    {
+      "sample_id": "43cf6b2ec0b0745ac2b87b4d8780f62e9050d3f5d50a1fcefa42d166191e84c6",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 23
+    },
+    {
+      "sample_id": "449a9c32e53a37c8a86e01c199155c8da3958b631088e10f6fe43c2119defe51",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 58
+    },
+    {
+      "sample_id": "449f41710769584b5e4eca8ecb4c76d5272605f27da2949e6285de0860d2cbc0",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 34
+    },
+    {
+      "sample_id": "45c3bdef1819ba7029990e159f61543ed25781d13fb4dc5d4de52e803debd7d3",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 8
+    },
+    {
+      "sample_id": "4d09672bcf5a2661eea00891bbb8191225a06619a849aece37ad10d9dedbde3e",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 36
+    },
+    {
+      "sample_id": "4dbbb275960ab9e4ec2c66c8d3000f7c70c8dce5112df591b95db84e25efa6e9",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 183
+    },
+    {
+      "sample_id": "4e1c889de3764694d0dea41e5682fedb265eaf2cdbe72ff6c1f518747d709464",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 43
+    },
+    {
+      "sample_id": "4ee5850b63549794eb3ecd3d5f5673164ac16936e36ecc3700da886e3b616149",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 48
+    },
+    {
+      "sample_id": "5bb8508ff8ec8683fc6a8aa6bd470f6feb3af4eccdca07f51a1ebc9dad67cfb8",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 32
+    },
+    {
+      "sample_id": "5f9d29d6388c700f35a3c29fa1b1ce0c1cba6667d05fdb70bd1e89004dcf71ed",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 148
+    },
+    {
+      "sample_id": "6b61ab2e3ff0e2c7a55fd71e290b51e142555cf82bc7574fc27326735e8acbd1",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 158
+    },
+    {
+      "sample_id": "6f8197baf738986a1ec3b6ba92b567863d897a739376b7cec5599ad6cecafdfc",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 20
+    },
+    {
+      "sample_id": "6fe2df6de1d962b90146c822bcefc84d0d3d6926fdfbacd3acdc9de830ee5622",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 206
+    },
+    {
+      "sample_id": "700afb1cd830a808e3c6125749612e5d23fd9f9726049a9e0c2061997514e1a7",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 133
+    },
+    {
+      "sample_id": "79dfcbc9361edd3a1ffe81a5bdaa22a197ad1341f3fa64b86a646c2607d6b324",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 12
+    },
+    {
+      "sample_id": "7f2b154541166210f468d89bb0a7184f10e51168a181dbb8b686c14654ffa317",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 102
+    },
+    {
+      "sample_id": "8055957570d7b38f0acecdb56f3078a963a1a7307ca03fcca62212e0e95e5845",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 23
+    },
+    {
+      "sample_id": "8c3ef7aa7ed29b62a65b1c394d2b4a24aa3da25aebfdf3d29dbfc8ad1b08e95a",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 39
+    },
+    {
+      "sample_id": "8cdbdda8b3a64c97409c0160bcfb06eb8e876cedc3691aa63ca16dbafae6f948",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 92
+    },
+    {
+      "sample_id": "8d29c5a03e0560c8f9338e8eb7bccf47930149c8173f9ba4b9279fb87d86cf6d",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 38
+    },
+    {
+      "sample_id": "8efed2e62c919e6d70a2ab548b1a33014877fe8a23f177ef25a9dee25ffe8842",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 260
+    },
+    {
+      "sample_id": "9620c33d8ef2772dbc5bd152429f507bd7fafb27e12109003292b671e556b089",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 168
+    },
+    {
+      "sample_id": "a65bbfc5673e8053b6ce49f39c79cf3a846fe5cc46dd93105f74fb07cf44606d",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 134
+    },
+    {
+      "sample_id": "a891bbc89143bca7a717386144eb061ec2d599cba24681389bcb3a2fedb8ff8c",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 155
+    },
+    {
+      "sample_id": "a90cad45551d62c5cfa89517df8eb5e8f2f87f1a6e6678e606907afcbad91731",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 140
+    },
+    {
+      "sample_id": "afa272dc01825d4b929b3bfc79a10f68dd3c163c450d858b964d1ce0bc93e131",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 10
+    },
+    {
+      "sample_id": "b24ea5c268469a95ed155eeaf809e36030b78a2eb530a0cb2380cdc1ccdb7dd1",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 50
+    },
+    {
+      "sample_id": "b61d3fb0d0ebbee018346e0adeff9e9178f33aa95262779b3c196f93b4ace895",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 170
+    },
+    {
+      "sample_id": "c15c652c08153fb781a5349123ab8f80bb2a8680a41eb8e89e547ae01b7a5441",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 4
+    },
+    {
+      "sample_id": "da31f2aa8601afec5c45180a2c448cb9c4a8ec7b35e75190d6ba3588f69058c8",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 62
+    },
+    {
+      "sample_id": "da5f98f2b8a64eee735a398de48ed42cd31bf17a6063db46a9e0783ac13cd844",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 140
+    },
+    {
+      "sample_id": "e23e11414ee645b51081fb202d38b793f0c8ef2940f8228ded384899d21b02c2",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 199
+    },
+    {
+      "sample_id": "f01a9742c43a69f087700a43893f713878e537bae8e44f76b957f09519601ad6",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 28
+    },
+    {
+      "sample_id": "f4faa3a409014db1865074c5f66a0255f71ae3faba03265da0b3b91f68e8a8f0",
+      "group_id": "520x696-b1",
+      "height": 520,
+      "width": 696,
+      "instance_count": 14
+    }
+  ]
+}

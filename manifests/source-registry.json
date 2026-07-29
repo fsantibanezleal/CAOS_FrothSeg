@@ -10,18 +10,8 @@
       "redistribution": "generated-derived-evidence",
       "url": "https://github.com/fsantibanezleal/CAOS_FrothSeg",
       "scoreable": true,
-      "calibration_required": false
-    },
-    {
-      "source_id": "roboflow-froth-rk6ka",
-      "title": "Froth instance segmentation dataset",
-      "kind": "real-instance",
-      "license": "CC-BY-NC-SA-4.0",
-      "access": "external-terms-and-fetch-required",
-      "redistribution": "link-only-until-license-review",
-      "url": "https://universe.roboflow.com/froth-tmvvu/froth-rk6ka",
-      "scoreable": true,
-      "calibration_required": true
+      "calibration_required": false,
+      "domain": "froth"
     },
     {
       "source_id": "kaggle-froth-bubbles",
@@ -32,7 +22,45 @@
       "redistribution": "forbidden",
       "url": "https://www.kaggle.com/datasets/obobojk/froth-bubbles",
       "scoreable": false,
-      "calibration_required": false
+      "calibration_required": false,
+      "license_verification": {
+        "checked_on": "2026-07-28",
+        "method": "Kaggle public dataset metadata API, GET /api/v1/datasets/view/obobojk/froth-bubbles",
+        "reported_license": "Unknown",
+        "conclusion": "The publisher attached no licence, so there is no grant to rely on. This source can never be accepted into the scored lane regardless of credentials: the obstacle is the missing licence, not access. Do not re-investigate."
+      },
+      "domain": "froth"
+    },
+    {
+      "source_id": "bbbc038-dsb2018",
+      "title": "BBBC038v1 / Data Science Bowl 2018 nuclei instance segmentation",
+      "kind": "real-adjacent-domain",
+      "license": "CC0-1.0",
+      "access": "open-download-no-credential",
+      "redistribution": "unrestricted",
+      "url": "https://bbbc.broadinstitute.org/BBBC038",
+      "scoreable": true,
+      "calibration_required": false,
+      "license_verification": {
+        "checked_on": "2026-07-28",
+        "method": "primary source, bbbc.broadinstitute.org/BBBC038",
+        "reported_license": "CC0",
+        "quote": "the various contributors of the imagesets have waived all copyright and related or neighboring rights to BBBC038v1",
+        "conclusion": "Public domain. Nothing downstream inherits a restriction, which is why this was selected over every froth candidate."
+      },
+      "adoption_status": {
+        "state": "adopted-2026-07-28",
+        "role": "real-domain generalisation evidence only",
+        "what_it_proves": "Whether the method ladder survives real photographs at all. Every method had only ever been measured on the in-repo generator, so the whole comparison could have been an artefact of one generator's statistics.",
+        "what_it_cannot_prove": "Anything about froth. These are cell nuclei. The release gate treats domain 'adjacent' as unable to clear the froth requirement, by construction.",
+        "research": "CAOS_MANAGE wip/frothseg/real-data-source-search-2026-07-28.md"
+      },
+      "domain": "adjacent"
     }
-  ]
+  ],
+  "froth_source_search": {
+    "checked_on": "2026-07-28",
+    "conclusion": "No openly licensed, real, per-bubble-annotated froth dataset exists in public repositories. Every froth candidate is unlicensed (Kaggle), non-commercial (Roboflow, dropped on instruction), or paywalled (IEEE DataPort). Zenodo returns no froth segmentation dataset at all. Froth imagery is operational plant data and plants do not publish it.",
+    "consequence": "A genuine froth accuracy claim requires Felipe's own annotated frames. Fifty to a hundred from one cell, with a known camera and a real scale, beats any public alternative because the provenance and the licence are owned."
+  }
 }

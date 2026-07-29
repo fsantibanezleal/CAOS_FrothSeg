@@ -113,19 +113,35 @@ export function primaryShowcaseCases(cases: CaseIndexEntry[]): CaseIndexEntry[] 
   return cases.filter((entry) => !PRIMARY_SHOWCASE_EXCLUSIONS.has(entry.case_id));
 }
 
-const CANONICAL_TABS: StillTab[] = [
-  'segment', 'boundary', 'bsd', 'morphometry', 'confidence',
-  'state', 'provenance', 'export', 'compare',
+/** ADR-0071 5: at most about six sibling tabs, then group, and each group is named for the
+ *  QUESTION the reader is asking rather than for the widget it contains. Nine flat tabs meant
+ *  reading every label to find one view. */
+export interface StillTabGroup {
+  id: string;
+  tabs: StillTab[];
+}
+
+const STILL_GROUPS: StillTabGroup[] = [
+  { id: 'segmentation', tabs: ['segment'] },
+  { id: 'size', tabs: ['bsd', 'morphometry'] },
+  { id: 'quality', tabs: ['boundary', 'confidence'] },
+  { id: 'state', tabs: ['state'] },
+  { id: 'compare', tabs: ['compare'] },
+  { id: 'provenance', tabs: ['provenance', 'export'] },
 ];
 
-const UPLOAD_RESULT_TABS: StillTab[] = [
-  'segment', 'boundary', 'bsd', 'morphometry', 'confidence',
-  'state', 'provenance', 'export', 'compare',
-];
+export function stillGroups(source: StillSource, hasResult: boolean): StillTabGroup[] {
+  if (source === 'upload' && !hasResult) return [];
+  return STILL_GROUPS;
+}
+
+export function groupOfTab(tab: StillTab): string {
+  return STILL_GROUPS.find((group) => group.tabs.includes(tab))?.id ?? STILL_GROUPS[0].id;
+}
 
 export function visibleStillTabs(source: StillSource, hasResult: boolean): StillTab[] {
   if (source === 'upload' && !hasResult) return [];
-  return source === 'canonical' ? CANONICAL_TABS : UPLOAD_RESULT_TABS;
+  return STILL_GROUPS.flatMap((group) => group.tabs);
 }
 
 export function availableSequenceViews(frame: TemporalShowcaseFrame): SequenceView[] {

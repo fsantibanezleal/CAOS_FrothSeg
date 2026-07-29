@@ -22,7 +22,19 @@ from fslab.showcase import (  # noqa: E402
 
 
 def _sha256(path: Path) -> str:
+    """Raw-byte hash. Correct for artifacts (PNG, RLE, checkpoints) and wrong for text."""
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _source_sha256(path: Path) -> str:
+    """Hash a TEXT source with line endings normalised to LF.
+
+    `.gitattributes` stores sources with LF, but a Windows edit can leave CRLF in the working
+    tree. Hashing raw bytes made the parity check pass locally and fail in CI on a fresh LF
+    checkout, reported as "parity is stale" when nothing about the parity had changed. Never
+    use this for binary artifacts, where a CRLF byte pair is data rather than a line ending.
+    """
+    return hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
 
 
 def check_development() -> list[str]:
@@ -32,7 +44,6 @@ def check_development() -> list[str]:
         "data-pipeline/fslab/pipeline.py",
         "data-pipeline/fslab/showcase.py",
         "scripts/check_artifacts.py",
-        "scripts/fetch_roboflow_froth.py",
         "scripts/import_real_coco.py",
         "scripts/validate_classical_live_parity.py",
         "tests/test_dataset_splits.py",
@@ -309,7 +320,7 @@ def check_development() -> list[str]:
             errors.append("classical browser parity lacks all 16 conditions")
         for implementation in parity.get("implementations", {}).values():
             path = ROOT / implementation.get("path", "")
-            if not path.is_file() or _sha256(path) != implementation.get("sha256"):
+            if not path.is_file() or _source_sha256(path) != implementation.get("sha256"):
                 errors.append(
                     f"classical browser parity is stale for "
                     f"{implementation.get('path', '<missing path>')}"

@@ -32,7 +32,15 @@ ACCEPTANCE = {
 
 
 def sha256(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    """Hash a source file with line endings normalised to LF.
+
+    These are TEXT sources and `.gitattributes` stores them with LF. A Windows edit can leave
+    CRLF in the working tree, so hashing raw bytes made the recorded hash depend on which
+    machine ran the validator: it passed locally and failed in CI on a fresh LF checkout, with
+    a "parity is stale" message that had nothing to do with parity. Normalising first makes the
+    hash a property of the content.
+    """
+    return hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
 
 
 def build(cache_path: Path) -> dict:

@@ -412,7 +412,13 @@ def summarize_metric_rows(rows: list[dict], *, split: str) -> dict:
 
 def mask_ap(pred: np.ndarray, gt: np.ndarray, thresholds=np.arange(0.5, 1.0, 0.05)) -> dict:
     """Per-image instance mask AP: greedy IoU matching of predicted vs GT instances, averaged over IoU
-    thresholds .5:.05:.95 (the COCO-style summary). Returns AP, AP50, AP75, over/under-seg counts."""
+    thresholds .5:.05:.95.
+
+    NOT COCO AP. COCO ranks detections by confidence and integrates precision over recall; most
+    methods here produce no confidence (a watershed does not score its regions), so this uses the
+    definition Cellpose and StarDist report, AP(t) = TP / (TP + FP + FN) at each threshold. Only
+    the threshold sweep is COCO-style. Numbers are not comparable to a COCO leaderboard; see
+    docs/metrics/01_definitions.md. Returns AP, AP50, AP75, and the instance counts."""
     iou, _, pr_ids, gt_ids = _iou_matrix(pred, gt)
     if not gt_ids:
         return dict(ap=None, ap50=None, ap75=None, nGt=0, nPred=len(pr_ids))

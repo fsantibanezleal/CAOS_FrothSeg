@@ -139,16 +139,18 @@ export function MaskOverlay({ baseUrl, labels, width, height, pxPerMm, caption }
       </div>
       <div
         className="fs-overlay-view"
-        style={{ position: 'relative', overflow: 'hidden', width: '100%', aspectRatio: `${width} / ${height}`, cursor: drag.current ? 'grabbing' : 'grab' }}
+        // Sizing lives in CSS so the stage can cap it: a square image with width:100% in a
+        // 1224px column became 1224px tall and pushed the document past the viewport.
+        style={{ ['--fs-ar' as string]: `${width} / ${height}`, cursor: drag.current ? 'grabbing' : 'grab' }}
         onWheel={(e) => { const nz = Math.max(1, Math.min(8, zoom * (e.deltaY < 0 ? 1.15 : 0.87))); setZoom(nz); if (nz === 1) setPan({ x: 0, y: 0 }); }}
         onMouseDown={(e) => { drag.current = { x: e.clientX, y: e.clientY, px: pan.x, py: pan.y }; }}
         onMouseUp={() => { drag.current = null; }}
         onMouseMove={onMove}
         onMouseLeave={() => { setHover(null); drag.current = null; }}
       >
-        <div style={{ position: 'absolute', inset: 0, transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`, transformOrigin: '0 0' }}>
-          <canvas ref={baseRef} width={width} height={height} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', imageRendering: 'pixelated' }} />
-          <canvas ref={overRef} width={width} height={height} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', imageRendering: 'pixelated', opacity, mixBlendMode: 'normal' }} />
+        <div className="fs-overlay-zoom" style={{ transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`, transformOrigin: '0 0' }}>
+          <canvas ref={baseRef} width={width} height={height} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'contain', imageRendering: 'pixelated' }} />
+          <canvas ref={overRef} width={width} height={height} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'contain', imageRendering: 'pixelated', opacity, mixBlendMode: 'normal' }} />
         </div>
         {hover && (
           <div className="fs-tooltip" style={{ left: Math.min(hover.x + 12, width - 4), top: hover.y + 12 }}>

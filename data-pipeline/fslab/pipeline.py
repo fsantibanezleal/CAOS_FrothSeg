@@ -397,7 +397,12 @@ def check() -> int:
 
 def main() -> None:
     ap = argparse.ArgumentParser(prog="fslab.pipeline")
-    ap.add_argument("case", nargs="?", default="all", help="a case id, or 'all'")
+    ap.add_argument(
+        "case",
+        nargs="?",
+        default="all",
+        help="a case id, 'all', 'showcase', or 'infer' for a user-supplied file",
+    )
     ap.add_argument(
         "--input",
         type=Path,
@@ -409,7 +414,55 @@ def main() -> None:
         type=Path,
         help="sandbox output root; omit only for an intentional canonical release bake",
     )
+    ap.add_argument(
+        "--method",
+        help="method id for the 'infer' stage, e.g. N1, L5, C4",
+    )
+    ap.add_argument(
+        "--px-per-mm",
+        type=float,
+        help="physical scale for the 'infer' stage; without it descriptors stay in pixels",
+    )
+    ap.add_argument(
+        "--associate",
+        action="store_true",
+        help="'infer' stage: treat a directory of frames as a sequence and assign identities",
+    )
+    ap.add_argument("--device", default="cuda", help="device for the 'infer' stage")
     args = ap.parse_args()
+    if args.case == "infer":
+        import json
+
+        from .infer_file import infer_path
+
+        if not args.input or not args.method or not args.output:
+            ap.error("infer requires --input, --method and --output")
+        report = infer_path(
+            method_id=args.method,
+            target=args.input,
+            output_root=args.output,
+            device=args.device,
+            px_per_mm=args.px_per_mm,
+            associate=args.associate,
+        )
+        print(json.dumps({
+            key: report[key] for key in (
+                "method_id", "frame_count", "identity_association", "scored",
+                "inference_seconds",
+            )
+        }, indent=2))
+        for row in report["results"]:
+            descriptors = row["descriptors"]
+            print(
+                f"  {row['input']:28} {descriptors['count']:5d} instances"
+                + (
+                    f"  d50 {descriptors['d50']:.2f} {descriptors['unit']}"
+                    if descriptors["count"]
+                    else ""
+                )
+            )
+        print(f"-> {args.output}")
+        return
     if args.check:
         n = check()
         print("CONTRACT-2 check: clean" if n == 0 else f"CONTRACT-2 check: {n} MISMATCH(es)")

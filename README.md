@@ -53,6 +53,15 @@ not make one.** Four reasons, all recorded with the evidence rather than omitted
 4. `beyond_sota_claim` is `false` and stays `false`; it is a claim about the domain, not
    about this table.
 
+**A real-domain transfer test on 2026-07-28 qualifies this table further.** Run unchanged
+over 64 real photographs of dense touching instances (BBBC038, CC0), N1 falls from 0.519
+to 0.125 while Cellpose-SAM rises from 0.510 to 0.709. Every in-repo trained model
+degrades (mean -0.243); every classical method improves (mean +0.088). The froth ranking
+is therefore substantially a property of the generator. That test is adjacent-domain and
+plays to Cellpose-SAM's pretraining, so it does not show Cellpose-SAM is better on froth,
+only that N1's lead does not survive a change of domain. See
+`docs/benchmark/02_real-domain-transfer.md`.
+
 The study that produced the ensemble also refuted its own hypothesis. The gap was
 supposed to be an under-training deficit; it is not. Averaged over seeds, training from
 80 to 120 epochs is worth about 0.002. What works is ensembling, because it suppresses
@@ -129,10 +138,11 @@ of record remains in the CAOS management repository.
 
 ## Honest limits
 
-- No third-party real images are committed. The source registry contains a
-  licensed public 88-image instance candidate, but real release claims remain
-  blocked until it is fetched, independently reviewed, physically calibrated,
-  grouped without leakage, and evaluated through the governed offline lane.
+- No real FROTH images exist here, and none are publicly available. Verified
+  2026-07-28 against primary sources: every public froth candidate is unlicensed,
+  non-commercial, or paywalled, and Zenodo has none. A real froth claim therefore
+  needs owned, annotated frames. The adjacent-domain BBBC038 (CC0) lane measures
+  generalisation only, and the release gate cannot be cleared by it.
   Current exact metrics therefore use the controlled synthetic harness.
 - Cellpose-SAM and SAM2 checkpoints are checksum-recorded external model assets;
   their very large upstream weights are not duplicated in git.

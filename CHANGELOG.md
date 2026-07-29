@@ -1,11 +1,79 @@
 # Changelog
 
-## [0.04.000] · UNRELEASED (work 2026-07-25 to 2026-07-27)
+## [0.05.000] · UNRELEASED (work 2026-07-28 to 2026-07-29)
 
-Not tagged. The release gate (`scripts/build_release_report.py`) reports
-`complete: false`, blocked on "no accepted licensed real held-out source with imported
-samples and calibration". Everything below is on `develop`; `main` is still at
-v0.03.000.
+On `develop`. The release gate still reports `complete: false`: BBBC038 satisfies the
+real-data lane for the adjacent domain only, and the blocker is specifically a licensed
+real **froth** held-out source, which no search has yet found.
+
+### Added (2026-07-29): the App is a single-rail workbench and focus mode exists
+
+- The App route follows ADR-0017 §1.2 again: ONE control rail holding the analysis-source
+  switch (still image / temporal sequence), the input and method controls for whichever lane
+  is active, and the focus entry. The source switch had been a full-width banner above the
+  workbench, which is the layout the ADR forbids.
+- New focus route (`/focus/:caseId`, ADR-0070). It renders outside the shell chrome, so the
+  stage holds 81% of the viewport at 1280x800 and 87% at 2560x1440 against 46% for the
+  documented App route. HUD metrics, an in-stage scenario label, a 240-330px parameter rail,
+  keyboard transport (space, arrows, Esc) and progressive disclosure behind "More detail".
+- Entry and return are both real controls, per ADR-0070 §8: the rail button opens focus on
+  the selected scenario and "Exit focus" returns to the App with that scenario still selected.
+  Verified by clicking, not by visiting the URL.
+- Sequence tabs are grouped into one row and the still-image tabs into six question-named
+  groups, so the App carries one row of nav chrome instead of two (ADR-0071).
+
+### Fixed (2026-07-29): four measured layout defects the build never caught
+
+- The still-lane tab panels render a fragment of siblings into a stage declared with a single
+  grid row, so the KPI strip and the instrument were placed in the same cell and drew on top
+  of each other. The stage is a flex column now.
+- The sequence replay tab rendered six loose siblings that became implicit rows and hung the
+  frame 41px past the viewport. Replay is its own grid; the transport and the summary moved
+  onto the frame as overlays, which took the instrument from 7.5% of the viewport to 16.5%.
+- The focus canvas rendered 1037x1037 in an 800px stage and the bottom quarter of every frame
+  was clipped away by the stage overflow.
+- The pan/zoom layer spanned the full window, so a square froth frame drew 364px wide inside
+  a 1246px bordered box. It follows the frame aspect and centres now, and the window no longer
+  carries the border that made the empty panning headroom read as a hollow panel.
+- Shell chrome is measured at runtime (`useViewportFit`) rather than hard-coded. The footer
+  carries a 48px margin-top that a height-only sum missed, which left the document exactly
+  18px past the viewport at every size.
+
+### Added (2026-07-28): a real-domain transfer lane, and what it showed
+
+- BBBC038 (Broad Bioimage Benchmark Collection, CC0) is adopted as the real-image lane: 670
+  annotated nuclei fields, imported and calibrated. It is real data with a real licence, and
+  it is not froth.
+- Transfer measured across the ladder. The result contradicts the expectation: the classical
+  methods **gained** on real images (+0.088 mean AP) while the in-repo trained models **lost**
+  (-0.243). The froth ranking is a property of the synthetic generator, not of segmentation
+  difficulty, and the product now says so.
+- Sources carry an explicit `domain` field (`froth` / `adjacent`) and the release gate
+  partitions on it. Without that field, adopting nuclei data would have flipped the release to
+  `complete: true` with zero froth validation behind it.
+
+### Removed (2026-07-28): Roboflow
+
+- Every Roboflow dependency, credential path and dataset reference is gone. The froth-data
+  search that replaced it is recorded with what was checked and why each candidate failed,
+  so the next search starts from the result rather than repeating it.
+
+### Added (2026-07-28): per-file inference
+
+- `fslab.infer_file` is a real CLI over one image or one sequence, raising `VideoNotSupported`
+  where the format is out of scope. The App had advertised this command before it existed.
+
+### Fixed (2026-07-28)
+
+- Text sources hash line-ending-normalised, so the parity gate gives the same answer on
+  Windows and in CI. Editing a Python file with CRLF against a repo that stores LF made the
+  gate pass locally and fail in CI as "parity is stale".
+- The footer licence correction fails loudly instead of silently reverting.
+
+## [0.04.000] · 2026-07-28
+
+Tagged and merged to `main` (PR #29). The release gate reports `complete: false`, blocked on
+"no accepted licensed real held-out source with imported samples and calibration".
 
 ### Changed (2026-07-28): LamellaStar ships as a three-seed ensemble and leads the benchmark
 

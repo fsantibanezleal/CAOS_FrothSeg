@@ -3,7 +3,7 @@
   "version": "0.4.0",
   "complete": false,
   "errors": [
-    "no accepted licensed real held-out source with imported samples and calibration"
+    "no accepted licensed real FROTH held-out source with imported samples and calibration"
   ],
   "branch_policy": "existing develop branch; no worktree",
   "dataset": {
@@ -17,7 +17,7 @@
   },
   "method_benchmark": {
     "path": "data/derived/method-benchmark.json",
-    "sha256": "711fe3c94d3b259baa2ecbeb0f3dce74f48dfa25fb4934689b413553f2e79d54",
+    "sha256": "7df6ad4d2a9ca51ff8d3f1c983cf40d9928de4c823bcd7fe20203edf3ecd24e3",
     "method_count": 15,
     "implemented_count": 15,
     "leader": {
@@ -944,7 +944,7 @@
   ],
   "classical_live_parity": {
     "path": "verification/classical-live-parity.json",
-    "sha256": "c7df6d804b6f0b015a31c0fe04ed3079b41b3eedf7e6b2bc2bb3274ef3826c6d",
+    "sha256": "541576c5763bc20507aa0b8c9573689f44abb246d3227bd77dff60caf9d71c78",
     "accepted_methods": [
       "otsu_cc",
       "watershed_dt",

@@ -15,7 +15,6 @@
 .fs-note.good { border-left-color: var(--color-good); }
 
 /* tab strip inside the App */
-.fs-tabs { display: flex; flex-wrap: wrap; gap: 0.3rem; border-bottom: 1px solid var(--color-border); margin-bottom: 0.8rem; }
 .fs-tab { background: none; border: none; border-bottom: 2px solid transparent; color: var(--color-fg-subtle); padding: 0.4rem 0.7rem; font-size: 0.85rem; cursor: pointer; }
 .fs-tab:hover { color: var(--color-fg); }
 .fs-tab.on { color: var(--color-fg); border-bottom-color: var(--color-accent); font-weight: 600; }
@@ -33,28 +32,12 @@
 .fs-lane.blocked { color: var(--color-warn); border-color: var(--color-warn); }
 @media (max-width: 980px) { .fs-method-portfolio { grid-template-columns: 1fr; } }
 
-.fs-layout { display: grid; grid-template-columns: minmax(330px, 380px) minmax(0, 1fr); gap: 1.4rem; align-items: start; }
-.fs-source-model { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 1.2rem; align-items: center; margin: 0 0 1.35rem; padding: 1rem 1.1rem; border: 1px solid var(--color-border); border-radius: 14px; background: linear-gradient(135deg, color-mix(in oklab, var(--color-accent) 8%, var(--color-surface)), var(--color-surface)); }
-.fs-source-model > div:first-child { display: grid; grid-template-columns: auto 1fr; gap: .18rem .75rem; align-items: baseline; }
-.fs-source-kicker { grid-row: 1 / 3; align-self: stretch; padding-right: .8rem; border-right: 1px solid var(--color-border); color: var(--color-accent); font: 700 .68rem var(--font-mono); letter-spacing: .08em; text-transform: uppercase; }
-.fs-source-model strong { font-size: 1rem; }
-.fs-source-model p { margin: 0; color: var(--color-fg-subtle); font-size: .76rem; }
-.fs-source-switch { display: grid; grid-template-columns: repeat(2, minmax(140px, 1fr)); padding: .25rem; border: 1px solid var(--color-border); border-radius: 10px; background: var(--color-bg); }
-.fs-source-switch button { display: flex; gap: .55rem; align-items: center; border: 0; border-radius: 7px; padding: .55rem .72rem; color: var(--color-fg-subtle); background: transparent; font: 650 .8rem var(--font-sans); cursor: pointer; }
-.fs-source-switch button span { color: var(--color-fg-faint); font: 700 .65rem var(--font-mono); }
-.fs-source-switch button.on { color: var(--color-fg); background: var(--color-surface); box-shadow: 0 2px 10px color-mix(in oklab, #000 14%, transparent); }
-.fs-source-switch button.on span { color: var(--color-accent); }
 
-.fs-sequence-workbench { display: grid; grid-template-columns: minmax(260px, 315px) minmax(0, 1fr); gap: 1.35rem; align-items: start; }
-.fs-sequence-sidebar { display: flex; flex-direction: column; gap: 1rem; position: sticky; top: .5rem; padding: 1rem; border: 1px solid var(--color-border); border-radius: 14px; background: var(--color-surface); }
-.fs-sequence-sidebar h2 { margin: .35rem 0 .45rem; font-size: 1.45rem; line-height: 1.08; letter-spacing: -.025em; }
-.fs-sequence-sidebar p { margin: 0; color: var(--color-fg-subtle); font-size: .78rem; line-height: 1.52; }
 .fs-sequence-kicker { color: var(--color-accent); font: 700 .66rem var(--font-mono); text-transform: uppercase; letter-spacing: .08em; }
 .fs-sequence-facts { display: grid; gap: .45rem; }
 .fs-sequence-facts > div { display: grid; grid-template-columns: 1fr auto; gap: .5rem; align-items: baseline; padding: .55rem .65rem; border-radius: 8px; background: var(--color-bg); }
 .fs-sequence-facts span { color: var(--color-fg-subtle); font-size: .67rem; }
 .fs-sequence-facts strong { font: 700 .78rem var(--font-mono); }
-.fs-sequence-main { min-width: 0; }
 .fs-sequence-toolbar { display: flex; flex-wrap: wrap; gap: .7rem; justify-content: space-between; align-items: center; margin-bottom: .7rem; }
 .fs-view-picker { display: inline-flex; flex-wrap: wrap; gap: .3rem; }
 .fs-view-picker button { padding: .38rem .62rem; border: 1px solid var(--color-border); border-radius: 7px; color: var(--color-fg-subtle); background: var(--color-surface); font-size: .72rem; cursor: pointer; }
@@ -62,7 +45,7 @@
 .fs-evidence-status { color: var(--color-fg-faint); font: .66rem var(--font-mono); }
 /* The canonical sequence frames are square (256 x 256). A 16/9 stage pillarboxed them into wide
    dead bars and used ~56% of its own width, so match the source aspect and cap the height. */
-.fs-sequence-stage { position: relative; aspect-ratio: 1 / 1; width: min(100%, 62vh); margin-inline: auto; overflow: hidden; border: 1px solid color-mix(in oklab, var(--color-accent) 35%, var(--color-border)); border-radius: 16px; background: #051016; box-shadow: 0 18px 44px color-mix(in oklab, #000 22%, transparent); }
+.fs-sequence-stage { position: relative; aspect-ratio: 1 / 1; width: min(100%, 62vh); max-height: 100%; max-width: 100%; margin-inline: auto; overflow: hidden; border: 1px solid color-mix(in oklab, var(--color-accent) 35%, var(--color-border)); border-radius: 16px; background: #051016; box-shadow: 0 18px 44px color-mix(in oklab, #000 22%, transparent); }
 .fs-sequence-stage img, .fs-sequence-stage canvas { display: block; width: 100%; height: 100%; object-fit: contain; image-rendering: pixelated; }
 /* The stamp sits over the frame, so it carries its own scrim instead of relying on whatever
    pixels happen to be under it. */
@@ -91,7 +74,6 @@
   .fs-layout, .fs-sequence-workbench { grid-template-columns: 1fr; }
   .fs-controls, .fs-sequence-sidebar { position: static; }
 }
-.fs-controls { display: flex; flex-direction: column; gap: 0.9rem; position: sticky; top: 0.5rem; }
 .fs-ctl { display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.82rem; color: var(--color-fg-subtle); }
 .fs-ctl input[type="range"] { width: 100%; }
 .fs-sel { background: var(--color-surface); color: var(--color-fg); border: 1px solid var(--color-border); border-radius: 6px; padding: 0.25rem 0.4rem; font-size: 0.82rem; width: 100%; }
@@ -572,3 +554,322 @@
 @media (max-width: 500px) {
   .fs-overview-facts, .fs-compute-cards { grid-template-columns: 1fr; }
 }
+
+/* ============================================================================
+   App layout contract: ADR-0017 1.2 (page-body + control aside + 1fr main) and
+   ADR-0071 (the page is exactly the viewport, a workbench is not prose, sized
+   containers, one row of chrome, the instrument gets the majority).
+
+   Measured before this contract, on the deployed build:
+     2560x1440  page 46.9% of viewport width, instrument 15.2% of viewport area
+     1600x900   page 75.0%, instrument 38.8%, document 1620px tall on a 900 view
+   Every one of those is a sizing failure, not a style preference.
+   ============================================================================ */
+
+/* ADR-0071 2: the shell caps PROSE at --maxw. A workbench uses the whole screen;
+   capping an instrument at a reading width discards the screen it exists to use. */
+.page-body.wide { max-width: none; width: 100%; padding: 0.9rem 1.1rem 0.9rem; }
+
+/* ADR-0071 1: the App route is exactly the viewport. Scrolling belongs inside the
+   one container that owns long content, never on the document. 56px header, and the
+   footer stays reachable without a document scroll. */
+.fs-app {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 1rem;
+  height: calc(100dvh - 56px - 3.2rem);
+  min-height: 30rem;
+  align-items: stretch;
+}
+
+/* ADR-0071 3: every ancestor of a scrollable row carries min-width:0, or a nowrap
+   row silently sizes its whole column and pushes the page sideways. */
+.fs-app > * { min-width: 0; min-height: 0; }
+
+/* ADR-0071 6: a rail that needs scrolling before a control can be reached is a
+   sizing failure. It gets an explicit size and scrolls only its own overflow. */
+.fs-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0.9rem;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  background: var(--color-surface);
+}
+.fs-rail-block { display: flex; flex-direction: column; gap: 0.5rem; }
+.fs-rail-kicker {
+  color: var(--color-accent); font: 700 0.62rem var(--font-mono);
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+.fs-rail-desc { margin: 0; color: var(--color-fg-subtle); font-size: 0.72rem; line-height: 1.5; }
+.fs-rail-foot { margin-top: auto; }
+
+/* The source model is a control and lives in the rail (ADR-0017 1.2), not in a
+   full-width banner above the workbench. */
+.fs-source-switch { display: grid; grid-template-columns: 1fr 1fr; gap: 0.35rem; }
+.fs-source-switch button {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 0.1rem;
+  padding: 0.45rem 0.55rem; border: 1px solid var(--color-border); border-radius: 9px;
+  background: var(--color-bg); color: var(--color-fg-subtle);
+  font-size: 0.74rem; font-weight: 600; cursor: pointer; text-align: left;
+}
+.fs-source-switch button span { font: 700 0.58rem var(--font-mono); opacity: 0.75; }
+.fs-source-switch button.on {
+  border-color: var(--color-accent); color: var(--color-accent);
+  background: color-mix(in oklab, var(--color-accent) 12%, var(--color-surface));
+}
+
+.fs-focus-enter {
+  display: flex; align-items: center; justify-content: center; gap: 0.45rem;
+  padding: 0.55rem 0.7rem; border: 1px solid var(--color-accent); border-radius: 10px;
+  background: color-mix(in oklab, var(--color-accent) 14%, var(--color-surface));
+  color: var(--color-accent); font-size: 0.78rem; font-weight: 700; cursor: pointer;
+}
+.fs-focus-enter:hover { background: color-mix(in oklab, var(--color-accent) 22%, var(--color-surface)); }
+.fs-run { padding: 0.5rem; font-size: 0.85rem; }
+
+/* The stage column: one row of chrome, then the instrument takes what is left. */
+.fs-stage-col { display: grid; grid-template-rows: auto minmax(0, 1fr); gap: 0.6rem; }
+
+/* ADR-0071 4: navigation chrome gets ONE row. It never wraps; it scrolls. */
+.fs-tabrow { display: flex; flex-direction: column; gap: 0.35rem; min-width: 0; }
+.fs-tabs, .fs-subtabs {
+  display: flex; flex-wrap: nowrap; gap: 0.3rem;
+  overflow-x: auto; scrollbar-width: thin; min-width: 0;
+}
+.fs-tabs::-webkit-scrollbar, .fs-subtabs::-webkit-scrollbar { height: 4px; }
+.fs-tab, .fs-subtab {
+  flex: 0 0 auto; white-space: nowrap; cursor: pointer;
+  border: 1px solid var(--color-border); background: var(--color-surface);
+  color: var(--color-fg-subtle); border-radius: 999px;
+}
+.fs-tab { padding: 0.38rem 0.8rem; font-size: 0.8rem; font-weight: 600; }
+.fs-subtab { padding: 0.24rem 0.6rem; font-size: 0.72rem; background: transparent; }
+.fs-tab.on, .fs-subtab.on {
+  border-color: var(--color-accent); color: var(--color-accent);
+  background: color-mix(in oklab, var(--color-accent) 12%, var(--color-surface));
+}
+
+/* ADR-0071 8: the instrument gets the majority of the surface. The stage body is the
+   only scroll container on the route. */
+/* A column, not a single grid row. Every tab panel renders a FRAGMENT of siblings (a KPI row,
+   the instrument, a caption) and the panel count differs per tab, so a fixed `grid-template-rows`
+   cannot describe them: with one declared row the KPI strip and the instrument were both placed
+   in it and drew on top of each other, which is the overlapping "22.96 / 0.718 / 325ms" band.
+   A flex column lets the chrome take what it needs in order and hands the rest to the instrument. */
+.fs-stage-body { min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding-right: 0.2rem; display: flex; flex-direction: column; gap: 0.55rem; }
+.fs-stage-body > * { flex: 0 0 auto; min-height: 0; }
+.fs-stage-body > .fs-overlay-slot,
+.fs-stage-body > .fs-replay,
+.fs-stage-body > .fs-panel { flex: 1 1 auto; }
+
+@media (max-width: 900px) {
+  .fs-app { grid-template-columns: 1fr; height: auto; }
+  .fs-rail { max-height: 46vh; }
+  .fs-stage-body { overflow: visible; }
+}
+
+/* ============================================================================
+   ADR-0070 focus mode. Fixed to the viewport OUTSIDE the shell, because the header
+   and footer are the chrome this route exists to escape. Stage at least 80% of the
+   viewport, one parameter column on the right, KPIs overlaid as a HUD.
+   ============================================================================ */
+.fs-focus {
+  position: fixed; inset: 0; z-index: 60;
+  display: grid;
+  /* ADR-0070 asks for a 300-340px rail AND a stage of at least 80% of the viewport. At 1280
+     those two cannot both hold: a 320px rail leaves 75%. The measurable floor wins, so the
+     rail narrows on smaller screens and keeps its intended width where there is room. */
+  grid-template-columns: minmax(0, 1fr) clamp(240px, 19vw, 330px);
+  background: var(--color-bg);
+}
+.fs-focus > * { min-width: 0; min-height: 0; }
+.fs-focus-stage {
+  position: relative; display: flex; align-items: center; justify-content: center;
+  min-width: 0; min-height: 0;
+  background: #050f16; overflow: hidden;
+}
+/* The frame must FIT the stage without being cropped AND without underfilling it. Two measured
+   failures bracket this rule: as a grid item with an auto row, a square canvas rendered
+   1037x1037 in an 800px stage and the bottom quarter of every frame was clipped; sized by
+   max-* with auto width/height instead, the 256px source stopped upscaling and the instrument
+   collapsed to 6% of the viewport. A flex parent with a definite height makes the percentages
+   resolve, and object-fit letterboxes the source inside that box. */
+.fs-focus-stage canvas {
+  width: 100%; height: 100%; min-width: 0; min-height: 0;
+  object-fit: contain; image-rendering: pixelated; display: block;
+}
+.fs-focus-empty { color: var(--color-fg-subtle); gap: 1rem; }
+
+/* ADR-0070 4: named in place, so the view teaches on its own. */
+.fs-focus-label {
+  position: absolute; top: 1rem; left: 1rem; max-width: 46ch;
+  padding: 0.6rem 0.8rem; border-radius: 11px; pointer-events: none;
+  background: color-mix(in oklab, #04121a 82%, transparent);
+  backdrop-filter: blur(6px); color: #eafffc;
+}
+.fs-focus-label strong { display: block; font-size: 1rem; letter-spacing: -0.01em; }
+.fs-focus-label p { margin: 0.25rem 0 0; font-size: 0.76rem; line-height: 1.5; opacity: 0.88; }
+
+/* ADR-0070 3: a HUD on the stage, not cards stacked above it. */
+.fs-focus-hud {
+  position: absolute; top: 1rem; right: 1rem; display: grid; gap: 0.4rem;
+  padding: 0.6rem 0.75rem; border-radius: 11px; pointer-events: none;
+  background: color-mix(in oklab, #04121a 82%, transparent);
+  backdrop-filter: blur(6px); color: #eafffc; min-width: 8.5rem;
+}
+.fs-focus-hud div { display: flex; justify-content: space-between; gap: 1rem; align-items: baseline; }
+.fs-focus-hud span { font-size: 0.64rem; opacity: 0.72; text-transform: uppercase; letter-spacing: 0.05em; }
+.fs-focus-hud strong { font: 700 0.92rem var(--font-mono); }
+
+.fs-focus-exit, .fs-focus-more {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  padding: 0.42rem 0.7rem; border-radius: 9px; cursor: pointer;
+  border: 1px solid var(--color-border); background: var(--color-surface);
+  color: var(--color-fg); font-size: 0.75rem; font-weight: 600;
+}
+.fs-focus-exit { position: absolute; bottom: 1rem; left: 1rem; }
+.fs-focus-empty .fs-focus-exit { position: static; }
+
+.fs-focus-transport {
+  position: absolute; bottom: 1rem; left: 50%; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 0.5rem; width: min(46rem, 62%);
+  padding: 0.5rem 0.75rem; border-radius: 999px;
+  background: color-mix(in oklab, #04121a 82%, transparent); backdrop-filter: blur(6px);
+}
+.fs-focus-transport button {
+  display: inline-grid; place-items: center; width: 32px; height: 32px;
+  border-radius: 50%; border: 1px solid color-mix(in oklab, #eafffc 22%, transparent);
+  background: transparent; color: #eafffc; cursor: pointer;
+}
+.fs-focus-transport button.primary { background: var(--color-accent); border-color: transparent; color: #fff; }
+.fs-focus-transport input { flex: 1; accent-color: var(--color-accent); }
+
+/* ADR-0070 2: one parameter column on the right, scrolling independently of the stage. */
+.fs-focus-rail {
+  display: flex; flex-direction: column; gap: 0.7rem;
+  padding: 0.9rem; overflow-y: auto; overscroll-behavior: contain;
+  border-left: 1px solid var(--color-border); background: var(--color-surface);
+}
+.fs-focus-railhead { display: flex; flex-direction: column; gap: 0.15rem; }
+.fs-focus-railhead span {
+  color: var(--color-accent); font: 700 0.62rem var(--font-mono);
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+.fs-focus-railhead strong { font-size: 1.05rem; line-height: 1.15; }
+.fs-focus-detail { display: flex; flex-direction: column; gap: 0.5rem; }
+.fs-focus-foot { margin-top: auto; }
+
+@media (max-width: 860px) {
+  .fs-focus { grid-template-columns: 1fr; grid-template-rows: minmax(0, 1fr) auto; }
+  .fs-focus-rail { max-height: 46vh; border-left: none; border-top: 1px solid var(--color-border); }
+}
+
+/* The instrument is capped by the stage it lives in. Measured before this rule: a square
+   mask in a 1224px column rendered 1224px tall and pushed the document 126px past the
+   viewport, which is the ADR-0071 1 failure. Height leads, width follows the aspect. */
+.fs-overlay-view {
+  position: relative;
+  overflow: hidden;
+  /* Height is derived from the viewport, not from the parent chain: a height:100% cascade
+     has to survive every wrapper between the stage and the canvas (PanelBoundary, fragments,
+     KPI rows) and one non-grid ancestor collapsed it to 2px. An explicit height also gives the
+     absolutely positioned canvases a box to fill; with width:auto + aspect-ratio alone they
+     had no basis and resolved to zero. The frame's own aspect is preserved by the canvases,
+     which contain inside this box. */
+  /* Deterministic: derived from the viewport minus the measured chrome and the in-stage
+     furniture (one tab row, the overlay toolbar, the caption). A percentage chain through
+     the PanelBoundary wrappers resolved smaller and cost the instrument half its area. */
+  height: calc(100dvh - var(--fs-chrome, 185px) - 8.5rem);
+  min-height: 14rem;
+  /* Full width on purpose: this is a pan/zoom inspection window, so the box is the window and
+     the frame is centred inside it at full height. Sizing the WINDOW to the frame aspect was
+     tried twice and measured worse both times. With the slot clamp still in play, auto width
+     and the clamp resolved against each other through a content-sized grid row and the
+     instrument collapsed from 24% of the viewport to 6.9%; without the clamp, the
+     viewport-derived height overshot the slot and the frame was cropped at all three sizes. */
+  width: 100%;
+  margin-inline: auto;
+}
+/* The zoom layer follows the frame's aspect and centres in the window. Left at `inset: 0` it
+   spanned the full 1246px window, the contained canvases letterboxed inside it, and a square
+   froth frame drew 364px wide with empty background either side. */
+.fs-overlay-zoom {
+  position: absolute; inset: 0; margin: auto; height: 100%; width: auto;
+  aspect-ratio: var(--fs-ar, 1 / 1);
+}
+.fs-overlay { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; min-height: 0; height: 100%; }
+/* The wrapper between the stage and the instrument was display:block, so it sized from its
+   content and the instrument could never fill the stage. */
+.fs-overlay-slot { display: grid; min-height: 0; height: 100%; }
+.fs-stage-body > .fs-panel { display: grid; grid-template-rows: auto minmax(0, 1fr); min-height: 0; }
+
+/* Panels inside the stage fill it rather than stacking past it. */
+.fs-stage-body > .fs-panel,
+.fs-stage-body > div > .fs-panel { max-width: 100%; }
+.fs-stage-body img.fs-frame-preview { max-height: 100%; width: auto; object-fit: contain; margin-inline: auto; display: block; }
+
+/* Chrome allowance: shell header (57px) + shell footer (128px at the widths this product
+   supports) + the wide page padding. Measured, not guessed; the gate re-checks it at
+   1280x800, 1600x900 and 2560x1440. */
+/* --fs-chrome is measured at runtime by useViewportFit; the fallback keeps the layout sane
+   for the first paint before the observer reports. */
+.fs-app { height: calc(100dvh - var(--fs-chrome, 185px) - 1.8rem); }
+
+/* The replay tab is the sequence lane's instrument view: a toolbar, the frame, the transport
+   and the summary. Rendered as loose siblings they became implicit rows of the stage column
+   and the frame hung 41px past the viewport at 1280x800. Chrome takes what it needs, the
+   frame takes the rest, and it sizes from that free height rather than from a `62vh` guess
+   that ignores how much chrome is above and below it. */
+.fs-replay {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
+  gap: 0.55rem;
+  min-height: 0;
+  height: 100%;
+}
+.fs-replay > .fs-sequence-stage {
+  height: 100%;
+  width: auto;
+  aspect-ratio: 1 / 1;
+  justify-self: center;
+}
+/* The margins belonged to the loose-sibling layout; the grid gap replaces them. */
+.fs-replay > .fs-sequence-timeline,
+.fs-replay > .fs-sequence-summary { margin-top: 0; }
+
+/* Belt and braces on the still lane: the viewport-derived height above is the fallback for a
+   broken parent chain, but where the chain DOES resolve the slot is authoritative. Without
+   this the instrument sat 12px past its slot and the frame's bottom edge was clipped. */
+.fs-overlay-view { max-height: 100%; }
+
+/* The window is a viewport, not a card. Bordered and filled it read as a large hollow panel
+   with a small frame floating in it; unstyled, the eye lands on the frame, which now carries
+   its own edge. The panning headroom is still there, it just stops looking like empty content. */
+.fs-overlay-view { border-color: transparent; background: none; }
+.fs-overlay-zoom { border: 1px solid var(--color-border); border-radius: 8px; overflow: hidden; }
+
+/* Replay after the overlays moved in: toolbar, then the frame taking all the free height. */
+.fs-replay { grid-template-rows: auto minmax(0, 1fr); }
+.fs-sequence-stage .fs-sequence-summary {
+  position: absolute; top: 0.6rem; right: 0.6rem; left: auto; z-index: 2;
+  display: grid; grid-template-columns: repeat(2, auto); gap: 0.35rem; margin-top: 0;
+}
+.fs-sequence-stage .fs-sequence-summary .fs-kpi {
+  padding: 0.3rem 0.5rem; border-radius: 9px; border-color: transparent;
+  background: color-mix(in oklab, #04121a 80%, transparent);
+  backdrop-filter: blur(6px); color: #eafffc;
+}
+.fs-sequence-stage .fs-sequence-summary .fs-kpi span { color: #9fd9d3; }
+.fs-sequence-stage .fs-sequence-timeline {
+  position: absolute; left: 0.6rem; right: 0.6rem; bottom: 0.6rem; z-index: 2;
+  margin-top: 0; border-color: transparent;
+  background: color-mix(in oklab, #04121a 78%, transparent);
+  backdrop-filter: blur(6px);
+}
+.fs-sequence-stage .fs-sequence-timeline label,
+.fs-sequence-stage .fs-sequence-timeline select { color: #eafffc; }
+.fs-sequence-stage .fs-sequence-timeline select { background: color-mix(in oklab, #04121a 60%, transparent); border-color: color-mix(in oklab, #eafffc 26%, transparent); }
