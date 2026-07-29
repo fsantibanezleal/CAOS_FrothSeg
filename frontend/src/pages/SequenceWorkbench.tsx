@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { Tabs } from '@fasl-work/caos-app-shell';
 import { PanelBoundary } from '../viz/PanelBoundary';
+import { MetricBars } from '../viz/MetricBars';
 import { ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react';
 import { artifactUrl, loadTemporalShowcase } from '../api/artifacts';
 import type { TemporalSequenceMetrics } from '../lib/contract.types';
@@ -565,6 +566,24 @@ function TrackingEvidence({
         <SequenceKpi value={metrics.track_fragmentations} label={es ? 'fragmentaciones' : 'fragmentations'} />
         <SequenceKpi value={metrics.flow_epe_px?.toFixed(2) ?? 'n/a'} label="flow EPE px" />
       </div>
+
+      {/* All five of these are fractions of the same unit, so they were being compared in the
+          reader's head from a column of numbers. On one scale the shape is the point: identity
+          precision far above identity recall says the method keeps the tracks it commits to and
+          drops the rest, which is a different failure from switching them around. */}
+      <MetricBars
+        rows={[
+          { label: 'IDF1', value: metrics.idf1 },
+          { label: 'HOTA', value: metrics.hota },
+          { label: es ? 'precisión de identidad' : 'identity precision', value: metrics.id_precision },
+          { label: es ? 'recobrado de identidad' : 'identity recall', value: metrics.id_recall },
+          { label: es ? 'exactitud de asociación' : 'association accuracy', value: metrics.association_accuracy },
+          { label: es ? 'cobertura media' : 'mean coverage', value: metrics.mean_frame_coverage },
+        ]}
+        caption={es
+          ? 'Todas en la misma escala 0 a 1. Los conteos (fragmentaciones, cambios de ID) quedan en la tabla porque no lo son.'
+          : 'All on the same 0 to 1 scale. The counts (fragmentations, ID switches) stay in the table because they are not.'}
+      />
       <table className="fs-table">
         <tbody>
           <tr><th>{es ? 'instancias GT asociadas' : 'matched GT instances'}</th><td className="num">{metrics.matched_gt_instances ?? 'n/a'}</td></tr>

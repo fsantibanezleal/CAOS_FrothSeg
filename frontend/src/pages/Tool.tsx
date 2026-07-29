@@ -20,6 +20,7 @@ import { maskAp, type MaskApResult } from '../sam/score';
 import { MaskOverlay } from '../viz/MaskOverlay';
 import { BsdHistogram } from '../viz/BsdHistogram';
 import { ApCurve } from '../viz/ApCurve';
+import { MethodScatter } from '../viz/MethodScatter';
 import { Gauge } from '../viz/Gauge';
 import { PanelBoundary } from '../viz/PanelBoundary';
 import {
@@ -461,30 +462,70 @@ export default function Tool() {
             </PanelBoundary>) : pending(false),
     state: result && froth ? (
             <PanelBoundary label="froth state">
-              <div className="fs-panel">
-                <div style={{ display: 'flex', gap: '1.2rem', alignItems: 'center', flexWrap: 'wrap' }}>
-                  <Gauge value={froth.health} label={es ? 'estabilidad (proxy)' : 'stability (proxy)'} />
-                  <div style={{ flex: 1, minWidth: 240 }}>
-                    <div style={{ fontWeight: 700, fontSize: '1.05rem' }}>{froth.title}</div>
-                    <p className="fs-hint">{froth.summary}</p>
-                  </div>
+              {/* The classification is READ OFF the size distribution, so the distribution
+                  belongs on the same screen as the verdict. Without it the panel was a gauge,
+                  a five-row table and two caveats over an empty half-stage, and the reader had
+                  to take "nominal froth" on trust. */}
+              <div className="fs-state-view">
+                <div className="fs-panel">
+                  <div className="fs-panel-t">{es ? 'La distribución de la que se lee el estado' : 'The distribution the state is read from'}</div>
+                  <BsdHistogram ariaLabel="bubble-size distribution" unit="px"
+                    series={gtDiams.length
+                      ? [{ label: source === 'sample' ? showcaseMethodId : result.model, diameters: diams }, { label: es ? 'verdad' : 'truth', diameters: gtDiams }]
+                      : [{ label: result.model, diameters: diams }]} />
                 </div>
-                <table className="fs-table" style={{ marginTop: '0.6rem' }}>
-                  <tbody>{froth.indicators.map((ind) => (
-                    <tr key={ind.label}><th>{ind.label}</th><td className="num">{ind.value}</td><td className="fs-hint small">{ind.note ?? ''}</td></tr>
-                  ))}</tbody>
-                </table>
-                {froth.notes.map((n, i) => <p key={i} className="fs-note" style={{ marginTop: '0.4rem' }}>{n}</p>)}
+
+                <aside className="fs-companion">
+                  <div className="fs-state-head">
+                    <Gauge value={froth.health} label={es ? 'estabilidad (proxy)' : 'stability (proxy)'} />
+                    <div>
+                      <div className="fs-state-title">{froth.title}</div>
+                      <p className="fs-hint">{froth.summary}</p>
+                    </div>
+                  </div>
+                  <table className="fs-table">
+                    <tbody>{froth.indicators.map((ind) => (
+                      <tr key={ind.label}><th>{ind.label}</th><td className="num">{ind.value}</td></tr>
+                    ))}</tbody>
+                  </table>
+                  {froth.notes.map((n, i) => <p key={i} className="fs-note">{n}</p>)}
+                </aside>
               </div>
             </PanelBoundary>) : pending(false),
     compare: (
       <>
         {source === 'sample' && (
             <PanelBoundary label="held-out method evaluation">
-              <div className="fs-panel">
+              {/* The ranking answers "which is best"; the scatter answers the question that
+                  actually decides a deployment, which is what each rank costs. N1 sitting up
+                  and to the LEFT of L5 is the finding, and it is invisible in a sorted column. */}
+              <div className="fs-methods-view">
+                <div className="fs-panel">
+                  <div className="fs-panel-t">{es ? 'Exactitud contra coste' : 'Accuracy against cost'}</div>
+                  <MethodScatter
+                    points={(methodBenchmark?.methods ?? [])
+                      .filter((m) => m.test)
+                      .map((m) => ({
+                        id: m.id,
+                        name: m.name,
+                        family: methodFamily(m, false),
+                        ap: m.test!.mean_ap,
+                        ms: m.compute.mean_inference_ms,
+                      }))}
+                    selectedId={showcaseMethodId}
+                    onSelect={(id) => { setShowcaseMethodId(id); setTab('segment'); }}
+                    es={es}
+                    ariaLabel={es ? 'AP contra milisegundos por imagen' : 'AP against milliseconds per image'}
+                  />
+                  <p className="fs-hint small">{es
+                    ? 'Elija un punto para replicarlo en Segmentación. El eje de coste es logarítmico: los métodos van de 3.4 ms a 972 ms.'
+                    : 'Pick a point to replay it in Segmentation. The cost axis is logarithmic: the methods span 3.4 ms to 972 ms.'}</p>
+                </div>
+
+              <div className="fs-panel fs-methods-table">
                 <div className="fs-panel-t">{es ? 'Los 15 métodos · prueba retenida de 64 casos' : 'All 15 methods · 64-case held-out test'}</div>
                 <p className="fs-hint">{es ? 'Todos los resultados fueron generados offline con el mismo protocolo.' : 'Every result was generated offline under the same protocol.'}</p>
-                <div style={{ overflowX: 'auto' }}>
+                <div className="fs-scrollbox">
                   <table className="fs-table">
                     <thead><tr><th>ID</th><th>{es ? 'método' : 'method'}</th><th>{es ? 'familia' : 'family'}</th><th className="num">AP</th><th className="num">AP50</th><th className="num">PQ</th><th className="num">Boundary F</th><th className="num">ms/image</th></tr></thead>
                     <tbody>
@@ -503,6 +544,7 @@ export default function Tool() {
                     </tbody>
                   </table>
                 </div>
+              </div>
               </div>
             </PanelBoundary>)}
         {source === 'upload' && result && (
