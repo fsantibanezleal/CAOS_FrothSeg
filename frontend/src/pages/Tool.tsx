@@ -632,6 +632,15 @@ export default function Tool() {
   return (
     <div className="page-body fs-layout">
       <aside className="fs-side">
+        {/* ADR-0070 8 asks for an entry control that is visible and obvious on the same surface
+            as the scenario selector. It sat BELOW the input and method blocks, so on the
+            sequence lane it was the seventh thing down the rail and read as a footnote to the
+            controls rather than the way into the view. It leads the rail now. */}
+        <button type="button" className="fs-focus-enter" onClick={() => navigate('/focus/' + focusCase)}>
+          <Maximize2 size={15} aria-hidden="true" />
+          {es ? 'Abrir en modo foco' : 'Open focus mode'}
+        </button>
+
         {/* ADR-0017 1.2: the source model is a control, so it belongs in the control rail,
             not in a full-width banner above the workbench. */}
         <div className="fs-rail-block">
@@ -738,13 +747,6 @@ export default function Tool() {
             </div>}
           </>
         )}
-
-        {/* ADR-0070 8: the entry control is on the same surface as the scenario selector,
-            visible and obvious, and it opens the CURRENTLY selected scenario. */}
-        <button type="button" className="fs-focus-enter" onClick={() => navigate('/focus/' + focusCase)}>
-          <Maximize2 size={15} aria-hidden="true" />
-          {es ? 'Abrir en modo foco' : 'Open focus mode'}
-        </button>
 
         {!sequenceMode && result && device && (
           <p className="fs-hint small fs-rail-foot">{source === 'sample' ? (es ? 'artefacto' : 'artifact') : (es ? 'motor' : 'engine')}: <span className="mono">{device}</span></p>

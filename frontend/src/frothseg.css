@@ -812,8 +812,13 @@
    a MutationObserver and a --fs-chrome variable, to work around a 48px footer
    margin that the reference simply sets to zero. That hook is deleted.
    ============================================================================ */
+/* The viewport lock is for the WORKBENCH ONLY. Applied to every route it truncated the five
+   doc pages: `document.scrollHeight === innerHeight` with content continuing past the fold and
+   no way to scroll to it, so Methodology ended mid-diagram and Introduction lost four of its
+   five sections. A workbench must not scroll; a document must. */
 .app-shell { height: 100dvh; min-height: 100dvh; overflow: hidden; }
-.app-shell > .page { flex: 1 1 auto; min-height: 0; display: flex; }
+.app-shell > .page { flex: 1 1 auto; min-height: 0; display: flex; overflow-y: auto; }
+.app-shell > .page:has(> .page-body.fs-layout) { overflow: hidden; }
 .page-body.fs-layout { max-width: none; width: 100%; flex: 1 1 auto; min-height: 0;
   padding: 1rem 1.25rem; align-items: stretch; }
 .app-shell .site-footer { margin-top: 0; }
@@ -873,7 +878,7 @@ html, body { overflow-x: hidden; }
 
 /* ADR-0070 8: the focus entry sits with the scenario selector, visible without scrolling. */
 .fs-focus-enter { display: flex; align-items: center; justify-content: center; gap: 0.45rem;
-  margin-top: 0.2rem; padding: 0.55rem 0.7rem; border-radius: 10px; cursor: pointer;
+  margin-bottom: 0.25rem; padding: 0.55rem 0.7rem; border-radius: 10px; cursor: pointer;
   border: 1px solid var(--color-accent); font-size: 0.84rem; font-weight: 650;
   color: var(--color-accent); background: color-mix(in oklab, var(--color-accent) 10%, transparent); }
 .fs-focus-enter:hover { background: color-mix(in oklab, var(--color-accent) 20%, transparent); }
