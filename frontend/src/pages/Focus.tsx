@@ -21,6 +21,7 @@ import { useShellLang } from '@fasl-work/caos-app-shell';
 import { artifactUrl, loadTemporalShowcase } from '../api/artifacts';
 import { decodeShowcaseLabels } from '../lib/showcaseLabels';
 import { isNativeVideoMode, type TemporalShowcaseManifest } from '../lib/workbench';
+import { temporalMethodLabel } from './SequenceWorkbench';
 
 const PLAY_SPEEDS = [1, 2, 4] as const;
 
@@ -155,6 +156,11 @@ export default function Focus() {
         <div className="fs-focus-label">
           <strong>{name}</strong>
           <p>{scenarioBlurb(sequence?.case_id ?? '', es)}</p>
+          <em>{showTruth
+            ? (es ? 'Mostrando la referencia exacta' : 'Showing the exact reference')
+            : prediction
+              ? `${prediction.method_id} · ${temporalMethodLabel(prediction.method_id, prediction.method_slug)}`
+              : (es ? 'Sin prediccion publicada' : 'No published prediction')}</em>
         </div>
 
         {/* ADR-0070 3: KPIs overlay the stage as a HUD, never stacked as cards in flow. */}
@@ -203,7 +209,8 @@ export default function Focus() {
             <select className="fs-sel" value={predictionIndex} onChange={(e) => setPredictionIndex(Number(e.target.value))}>
               {predictions.map((item, index) => (
                 <option key={item.method_id} value={index}>
-                  {item.method_id}{isNativeVideoMode(item.mode) ? (es ? ' (no comparable)' : ' (not comparable)') : ''}
+                  {item.method_id} · {temporalMethodLabel(item.method_id, item.method_slug)}
+                  {isNativeVideoMode(item.mode) ? (es ? ' (no comparable)' : ' (not comparable)') : ''}
                 </option>
               ))}
             </select>
@@ -251,7 +258,8 @@ export default function Focus() {
             ? 'Cuadros y mascaras precalculados offline y servidos como artefactos verificados por sha256. El navegador no ejecuta el modelo.'
             : 'Frames and masks are precomputed offline and served as sha256-verified artifacts. The browser does not run the model.'}</p>
           {prediction && (
-            <p className="mono">{prediction.method_id} · {prediction.method_slug}
+            <p className="mono">{prediction.method_id} · {temporalMethodLabel(prediction.method_id, prediction.method_slug)}
+              {' · '}{prediction.method_slug}
               {prediction.model_provenance?.device ? ` · ${prediction.model_provenance.device}` : ''}</p>
           )}
         </div>

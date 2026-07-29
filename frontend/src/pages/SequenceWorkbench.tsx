@@ -102,11 +102,18 @@ export function useSequenceLane(es: boolean) {
 
   // The event logs live beside their prediction frames rather than in the manifest, so only the
   // pair the reader actually opened is downloaded.
+  //
+  // The trigger is VISIBILITY, not the lane's `tab` state. The shell's Tabs primitive owns its
+  // own selection and mounts every panel (hiding the inactive ones), so `tab` never left
+  // 'replay' once the hand-rolled strip was removed and this fetch was never issued: the Events
+  // panel sat on "Loading this pair's event log" forever, with zero network requests to show
+  // for it. A hidden panel has no layout box, so an intersection check is the honest signal.
+  const [eventsWanted, setEventsWanted] = useState(false);
   useEffect(() => {
     const path = prediction?.events_path;
     setEventLog(null);
     setEventError('');
-    if (!path || tab !== 'events') return undefined;
+    if (!path || !eventsWanted) return undefined;
     let cancelled = false;
     fetch(artifactUrl(path))
       .then((response) => {
@@ -118,7 +125,7 @@ export function useSequenceLane(es: boolean) {
         if (!cancelled) setEventError(String(reason instanceof Error ? reason.message : reason));
       });
     return () => { cancelled = true; };
-  }, [prediction?.events_path, tab]);
+  }, [prediction?.events_path, eventsWanted]);
 
   const frameLabel = frames.length
     ? `${String(frameIndex + 1).padStart(2, '0')} / ${String(frames.length).padStart(2, '0')}`
@@ -130,7 +137,7 @@ export function useSequenceLane(es: boolean) {
     nativePredictions, prediction, displayFrame, metrics, views, tabs, tab, setTab,
     sequenceIndex, setSequenceIndex, predictionIndex, setPredictionIndex,
     frameIndex, setFrameIndex, playing, setPlaying, speed, setSpeed, view, setView,
-    eventLog, eventError, frameLabel, displayLabel,
+    eventLog, eventError, requestEvents: setEventsWanted, frameLabel, displayLabel,
     ready: Boolean(manifest && sequence && frame),
   };
 }
@@ -217,7 +224,7 @@ export function SequenceStage({ lane, es }: { lane: SequenceLane; es: boolean })
     manifest, loadError, sequence, frames, frame, predictions, framewisePredictions,
     nativePredictions, prediction, displayFrame, metrics, views, tabs, tab, setTab,
     setPredictionIndex, frameIndex, setFrameIndex, playing, setPlaying, speed, setSpeed,
-    view, setView, eventLog, eventError, frameLabel, displayLabel,
+    view, setView, eventLog, eventError, requestEvents, frameLabel, displayLabel,
   } = lane;
 
   if (!manifest || !sequence || !frame) {
@@ -326,7 +333,7 @@ export function SequenceStage({ lane, es }: { lane: SequenceLane; es: boolean })
                   <tbody>
                     <tr><th>{es ? 'cuadro' : 'frame'}</th><td className="num">{frameIndex + 1} / {frames.length}</td></tr>
                     <tr><th>{es ? 'vista' : 'view'}</th><td>{sequenceViewLabel(view, displayFrame ?? frame, es, prediction?.method_id)}</td></tr>
-                    <tr><th>{es ? 'metodo' : 'method'}</th><td className="mono">{prediction?.method_id ?? '--'}</td></tr>
+                    <tr><th>{es ? 'metodo' : 'method'}</th><td>{prediction ? `${prediction.method_id} · ${temporalMethodLabel(prediction.method_id, prediction.method_slug)}` : '--'}</td></tr>
                     <tr><th>{es ? 'artefacto' : 'artifact'}</th><td className="mono">{(displayFrame?.prediction_sha256 ?? displayFrame?.truth_sha256 ?? '').slice(0, 10) || '--'}</td></tr>
                   </tbody>
                 </table>
@@ -362,7 +369,9 @@ export function SequenceStage({ lane, es }: { lane: SequenceLane; es: boolean })
             loading={!eventLog && !eventError}
             error={eventError}
             frameIndex={frameIndex}
+            frameCount={frames.length}
             es={es}
+            onVisible={requestEvents}
           />
     ) : null,
     compare: (
@@ -674,7 +683,9 @@ function EventEvidence({
   loading,
   error,
   frameIndex,
+  frameCount,
   es,
+  onVisible,
 }: {
   metrics: TemporalSequenceMetrics;
   truthEvents: TemporalEvent[];
@@ -682,12 +693,29 @@ function EventEvidence({
   loading: boolean;
   error: string;
   frameIndex: number;
+  frameCount: number;
   es: boolean;
+  onVisible: (wanted: boolean) => void;
 }) {
   const truthAtFrame = truthEvents.filter((event) => event.frame_index === frameIndex);
   const predictedAtFrame = predictedEvents.filter((event) => event.frame_index === frameIndex);
+
+  // The shell mounts every tab panel and hides the inactive ones, so "am I mounted" says
+  // nothing about whether the reader opened this view. A hidden panel has no layout box, so
+  // an intersection observer is what actually distinguishes the two.
+  const root = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const element = root.current;
+    if (!element) return undefined;
+    const observer = new IntersectionObserver((entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) onVisible(true);
+    });
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [onVisible]);
+
   return (
-    <div className="fs-evidence-panel">
+    <div className="fs-evidence-panel" ref={root}>
       <header>
         <span>{es ? 'Eventos temporales' : 'Temporal events'}</span>
         <h3>{es ? 'Coalescencia y ruptura se reportan con sus errores' : 'Coalescence and bursting are reported with their errors'}</h3>
@@ -717,6 +745,48 @@ function EventEvidence({
           {es ? 'Cargando el registro de eventos de este par' : 'Loading this pair’s event log'}
         </p>
       )}
+      {/* The whole log is in the browser, but the panel only ever reported the CURRENT frame,
+          so a sequence with events in frames 3 and 6 read as "no published events in this
+          frame" on the frame the reader happened to be on. The timeline shows where the events
+          actually are, truth above and prediction below, on a shared frame axis. */}
+      {!loading && !error && (truthEvents.length > 0 || predictedEvents.length > 0) && (
+        <div className="fs-event-timeline">
+          <div className="fs-event-track">
+            <span>{es ? 'referencia' : 'truth'}</span>
+            <div>
+              {Array.from({ length: frameCount }, (_, i) => {
+                const n = truthEvents.filter((e) => e.frame_index === i).length;
+                return (
+                  <i
+                    key={i}
+                    className={`${n > 0 ? 'on' : ''}${i === frameIndex ? ' now' : ''}`}
+                    title={`${es ? 'cuadro' : 'frame'} ${i + 1}: ${n}`}
+                  >{n > 0 ? n : ''}</i>
+                );
+              })}
+            </div>
+          </div>
+          <div className="fs-event-track">
+            <span>{es ? 'prediccion' : 'prediction'}</span>
+            <div>
+              {Array.from({ length: frameCount }, (_, i) => {
+                const n = predictedEvents.filter((e) => e.frame_index === i).length;
+                return (
+                  <i
+                    key={i}
+                    className={`${n > 0 ? 'on pred' : ''}${i === frameIndex ? ' now' : ''}`}
+                    title={`${es ? 'cuadro' : 'frame'} ${i + 1}: ${n}`}
+                  >{n > 0 ? n : ''}</i>
+                );
+              })}
+            </div>
+          </div>
+          <p className="fs-hint small">{es
+            ? 'Cada casilla es un cuadro; el numero es cuantos eventos se reportaron en el. El cuadro seleccionado esta resaltado.'
+            : 'Each cell is a frame; the number is how many events were reported in it. The selected frame is highlighted.'}</p>
+        </div>
+      )}
+
       {!loading && !error && (
         <div className="fs-event-columns">
           <article>
@@ -823,7 +893,7 @@ const TEMPORAL_METHOD_LABELS: Record<string, string> = {
   N1: 'LamellaStar',
 };
 
-function temporalMethodLabel(methodId: string, slug?: string): string {
+export function temporalMethodLabel(methodId: string, slug?: string): string {
   return TEMPORAL_METHOD_LABELS[methodId] ?? slug ?? methodId;
 }
 
@@ -844,11 +914,15 @@ function sequenceViewLabel(
     : (es ? 'Fuente + referencia' : 'Source + truth');
 }
 
+/** Same vocabulary as the still lane (see `groupLabel` in Tool.tsx): short noun phrases, with
+ *  Methods and Provenance named identically in both lanes so the nav does not change meaning
+ *  when the analysis source does. "Compare methods" here versus "Compare" there was the same
+ *  view under two names. */
 function sequenceTabLabel(tab: SequenceTab, es: boolean): string {
   if (tab === 'replay') return es ? 'Reproducción' : 'Replay';
   if (tab === 'tracking') return es ? 'Seguimiento' : 'Tracking';
   if (tab === 'events') return es ? 'Eventos' : 'Events';
-  if (tab === 'compare') return es ? 'Comparar métodos' : 'Compare methods';
+  if (tab === 'compare') return es ? 'Métodos' : 'Methods';
   return es ? 'Proveniencia' : 'Provenance';
 }
 

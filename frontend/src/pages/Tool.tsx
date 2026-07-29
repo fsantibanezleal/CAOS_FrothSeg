@@ -19,6 +19,7 @@ import { classifyFroth } from '../sam/frothState';
 import { maskAp, type MaskApResult } from '../sam/score';
 import { MaskOverlay } from '../viz/MaskOverlay';
 import { BsdHistogram } from '../viz/BsdHistogram';
+import { ApCurve } from '../viz/ApCurve';
 import { Gauge } from '../viz/Gauge';
 import { PanelBoundary } from '../viz/PanelBoundary';
 import {
@@ -383,17 +384,42 @@ export default function Tool() {
             </PanelBoundary>) : pending(false),
     boundary: result ? (
             <PanelBoundary label="boundary and error">
-              <div className="fs-panel">
-                <div className="fs-panel-t">{es ? 'Frontera y errores de instancia' : 'Boundary and instance errors'}</div>
-                <div className="fs-kpis">
-                  <Kpi value={boundaryPixels} label={es ? 'píxeles frontera' : 'boundary pixels'} />
-                  <Kpi value={ap?.nPred ?? result.nInstances} label={es ? 'predicciones' : 'predictions'} />
-                  <Kpi value={ap?.nGt ?? '--'} label={es ? 'instancias GT' : 'GT instances'} />
-                  <Kpi value={ap?.ap50?.toFixed(3) ?? '--'} label="AP50" />
+              {/* This panel used to be four cards and one sentence over an empty stage. The AP
+                  it reports is an average over ten IoU thresholds that maskAp already computes
+                  and used to discard, so the curve is shown rather than described, next to the
+                  instance outcomes at the standard 0.5 operating point. */}
+              <div className="fs-quality-view">
+                <div className="fs-panel">
+                  <div className="fs-panel-t">{es ? 'AP contra el umbral IoU' : 'AP against the IoU threshold'}</div>
+                  <ApCurve curve={ap?.curve ?? []} ap={ap?.ap ?? null} es={es}
+                    ariaLabel={es ? 'AP por umbral de IoU' : 'AP by IoU threshold'} />
+                  <p className="fs-hint small">{es
+                    ? 'Cada punto es TP/(TP+FP+FN) al emparejar con ese IoU. La media de los diez es el AP publicado; no es el AP de COCO.'
+                    : 'Each point is TP/(TP+FP+FN) when matching at that IoU. The mean of the ten is the published AP; it is not COCO AP.'}</p>
                 </div>
-                <p className="fs-hint">{gt
-                  ? (es ? 'La verdad sintética permite contar fallas; la matriz canónica completa de merge, split, miss y spurious se calcula offline.' : 'Synthetic truth enables error counting; the complete canonical merge, split, miss, and spurious matrix is computed offline.')
-                  : (es ? 'Una carga real sin anotación no permite afirmar error de frontera. Exporta la máscara para anotarla y evaluarla offline.' : 'An unannotated real upload cannot support a boundary-error claim. Export the mask for annotation and offline evaluation.')}</p>
+
+                <aside className="fs-companion">
+                  <div className="fs-kpis fs-kpis-stack">
+                    <Kpi value={ap?.tp50 ?? '--'} label={es ? 'emparejadas' : 'matched'} />
+                    <Kpi value={ap?.fn50 ?? '--'} label={es ? 'no detectadas' : 'missed'} />
+                    <Kpi value={ap?.fp50 ?? '--'} label={es ? 'espurias' : 'spurious'} />
+                    <Kpi value={boundaryPixels} label={es ? 'pixeles frontera' : 'boundary pixels'} />
+                  </div>
+                  <div className="fs-companion-plot">
+                    <div className="fs-panel-t">{es ? 'En IoU 0.50' : 'At IoU 0.50'}</div>
+                    <table className="fs-table">
+                      <tbody>
+                        <tr><th>{es ? 'predicciones' : 'predictions'}</th><td className="num">{ap?.nPred ?? result.nInstances}</td></tr>
+                        <tr><th>{es ? 'instancias GT' : 'GT instances'}</th><td className="num">{ap?.nGt ?? '--'}</td></tr>
+                        <tr><th>AP50</th><td className="num">{ap?.ap50?.toFixed(3) ?? '--'}</td></tr>
+                        <tr><th>AP75</th><td className="num">{ap?.ap75?.toFixed(3) ?? '--'}</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <p className="fs-hint small">{gt
+                    ? (es ? 'La verdad sintetica permite contar fallas; la matriz canonica completa de merge, split, miss y spurious se calcula offline.' : 'Synthetic truth enables error counting; the complete canonical merge, split, miss, and spurious matrix is computed offline.')
+                    : (es ? 'Una carga real sin anotacion no permite afirmar error de frontera. Exporte la mascara para anotarla y evaluarla offline.' : 'An unannotated real upload cannot support a boundary-error claim. Export the mask for annotation and offline evaluation.')}</p>
+                </aside>
               </div>
             </PanelBoundary>) : pending(false),
     morphometry: result ? (
@@ -717,17 +743,23 @@ function BsdTable({ es, bsd, scale }: { es: boolean; bsd: SegResult['bsd']; scal
   );
 }
 
-/** ADR-0071 §5: a group is named for the QUESTION the user is asking, not for the noun of the
- *  view inside it. The previous labels were nouns (Segmentation, Quality, Provenance), which is
- *  a list of nine views wearing six names and makes the reader scan every one to find theirs. */
+/** ADR-0071 §5 asks for groups "named for the QUESTION the user is asking". Its own worked
+ *  example answers what that means in practice: ChargeCascade's five groups are Charge motion,
+ *  Power, Learned, Validation, Custom mill. Short noun phrases that name the user's concern,
+ *  not interrogative sentences. An earlier pass wrote literal questions here ("What did it
+ *  find?"), which read as a different product from the sequence lane's plain labels and cost
+ *  roughly twice the width in a tab row that gets exactly one line.
+ *
+ *  Both lanes share one vocabulary, and the two views that exist in both (Methods, Provenance)
+ *  carry the same name in the same position, so switching lane does not relearn the nav. */
 function groupLabel(id: string, es: boolean): string {
   const labels: Record<string, [string, string]> = {
-    segmentation: ['What did it find?', '¿Qué encontró?'],
-    size: ['How big are they?', '¿De qué tamaño son?'],
-    quality: ['How good is it?', '¿Qué tan bueno es?'],
-    state: ['What state is the froth in?', '¿En qué estado está la espuma?'],
-    compare: ['Which method wins?', '¿Qué método gana?'],
-    provenance: ['Where did this come from?', '¿De dónde viene esto?'],
+    segmentation: ['Segmentation', 'Segmentación'],
+    size: ['Size', 'Tamaño'],
+    quality: ['Quality', 'Calidad'],
+    state: ['Froth state', 'Estado de espuma'],
+    compare: ['Methods', 'Métodos'],
+    provenance: ['Provenance', 'Proveniencia'],
   };
   return labels[id]?.[es ? 1 : 0] ?? id;
 }
