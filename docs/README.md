@@ -33,7 +33,9 @@ per-bubble industrial froth ground truth is not publicly available.
 - **[temporal/](temporal/temporal.md)**, IDF1/HOTA, events, fragmentation, and flow evaluation,
   plus [the full 15-method x 5-sequence matrix](temporal/02_the-full-method-matrix.md) and why
   the framewise and prompted-video lanes are never ranked against each other.
-- **[benchmark/](benchmark/benchmark.md)**, the complete held-out matrix and acceptance boundaries.
+- **[benchmark/](benchmark/benchmark.md)**, the complete held-out matrix and acceptance boundaries,
+  plus [real-domain transfer](benchmark/02_real-domain-transfer.md): the same ladder run unchanged
+  on real photographs (BBBC038, CC0) to test whether the ranking is an artefact of the generator.
 - **[problem-types/](problem-types/problem-types.md)**, domain failure modes and method assumptions.
 - **[use-cases/](use-cases/use-cases.md)**, operational uses, non-goals, and deployment boundaries.
 - **[security/](security/security.md)**, static-surface threat boundary, dependency audit decisions,
