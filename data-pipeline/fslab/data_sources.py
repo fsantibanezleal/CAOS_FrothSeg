@@ -20,6 +20,16 @@ class DataSource:
     url: str
     scoreable: bool
     calibration_required: bool
+    #: ``"froth"`` or ``"adjacent"``. This is load-bearing, not descriptive.
+    #:
+    #: The release gate's real-data requirement exists to stop the product claiming plant
+    #: accuracy it has not earned. That requirement can only be satisfied by froth. An
+    #: adjacent-domain real source (dense touching instances from another field) is genuine
+    #: evidence that the method ladder generalises off the synthetic generator, and it is
+    #: worth having, but it says nothing about a flotation cell. Without this field the gate
+    #: matched on ``kind.startswith("real")`` and any real dataset would have cleared the
+    #: froth blocker, turning the release report into a false statement.
+    domain: str = "froth"
     #: What was checked, when, and what it settled. Present once a licence claim has been
     #: verified against the publisher rather than assumed, so the question is not reopened.
     license_verification: dict | None = None

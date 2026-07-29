@@ -10,7 +10,8 @@
       "redistribution": "generated-derived-evidence",
       "url": "https://github.com/fsantibanezleal/CAOS_FrothSeg",
       "scoreable": true,
-      "calibration_required": false
+      "calibration_required": false,
+      "domain": "froth"
     },
     {
       "source_id": "kaggle-froth-bubbles",
@@ -27,7 +28,8 @@
         "method": "Kaggle public dataset metadata API, GET /api/v1/datasets/view/obobojk/froth-bubbles",
         "reported_license": "Unknown",
         "conclusion": "The publisher attached no licence, so there is no grant to rely on. This source can never be accepted into the scored lane regardless of credentials: the obstacle is the missing licence, not access. Do not re-investigate."
-      }
+      },
+      "domain": "froth"
     },
     {
       "source_id": "bbbc038-dsb2018",
@@ -47,11 +49,13 @@
         "conclusion": "Public domain. Nothing downstream inherits a restriction, which is why this was selected over every froth candidate."
       },
       "adoption_status": {
-        "state": "evaluated-candidate-awaiting-decision",
-        "what_it_proves": "Real photographs with per-object non-overlapping instance masks and densely touching convex objects: the same geometric problem as froth. Adopting it would test whether the ladder generalises beyond the in-repo generator, which is the largest open doubt about the 15-method comparison.",
-        "what_it_cannot_prove": "Froth accuracy. These are cell nuclei. It must be reported as its own source and never merged into the froth benchmark or described as froth data.",
+        "state": "adopted-2026-07-28",
+        "role": "real-domain generalisation evidence only",
+        "what_it_proves": "Whether the method ladder survives real photographs at all. Every method had only ever been measured on the in-repo generator, so the whole comparison could have been an artefact of one generator's statistics.",
+        "what_it_cannot_prove": "Anything about froth. These are cell nuclei. The release gate treats domain 'adjacent' as unable to clear the froth requirement, by construction.",
         "research": "CAOS_MANAGE wip/frothseg/real-data-source-search-2026-07-28.md"
-      }
+      },
+      "domain": "adjacent"
     }
   ],
   "froth_source_search": {

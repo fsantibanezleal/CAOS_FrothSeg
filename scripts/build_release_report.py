@@ -352,14 +352,35 @@ def build() -> dict:
                     "manifest": "data/derived/real-dataset-manifest.json",
                     "sha256": _sha(real_manifest_path),
                 })
-        if not accepted_real_sources and not any(
+        # The froth blocker can only be cleared by froth. An accepted real source from an
+        # adjacent domain is real evidence that the ladder generalises off the synthetic
+        # generator, and it is recorded as such, but it says nothing about a flotation cell.
+        # Accepting it here would have made this report state something false.
+        accepted_froth_sources = [
+            source for source in accepted_real_sources
+            if source.get("domain", "froth") == "froth"
+        ]
+        adjacent_real_sources = [
+            source for source in accepted_real_sources
+            if source.get("domain", "froth") != "froth"
+        ]
+        if not accepted_froth_sources and not any(
             error.startswith("real held-out") for error in errors
         ):
             errors.append(
-                "no accepted licensed real held-out source with imported samples and calibration"
+                "no accepted licensed real FROTH held-out source with imported samples "
+                "and calibration"
+                + (
+                    f" ({len(adjacent_real_sources)} accepted adjacent-domain real source(s) "
+                    "provide generalisation evidence only)"
+                    if adjacent_real_sources
+                    else ""
+                )
             )
-        elif not any(source.get("calibrated_sample_count", 0) > 0 for source in accepted_real_sources):
-            errors.append("accepted real sources contain no physically calibrated samples")
+        elif not any(
+            source.get("calibrated_sample_count", 0) > 0 for source in accepted_froth_sources
+        ):
+            errors.append("accepted real froth sources contain no physically calibrated samples")
 
     cellpose_run = _load(MODEL_RUNS["cellpose_sam"])
     cellpose_fine_tuning = cellpose_run.get("fine_tuning", {})
