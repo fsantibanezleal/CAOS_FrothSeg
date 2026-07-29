@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Maximize2 } from 'lucide-react';
 import { useShellLang } from '@fasl-work/caos-app-shell';
 import {
   artifactUrl, loadIndex, loadMasks, loadMethodBenchmark,
@@ -20,13 +22,15 @@ import { BsdHistogram } from '../viz/BsdHistogram';
 import { Gauge } from '../viz/Gauge';
 import { PanelBoundary } from '../viz/PanelBoundary';
 import {
-  CLASSICAL_METHODS, LIVE_CLASSICAL_METHODS, runClassical, type ClassicalMethod,
+  LIVE_CLASSICAL_METHODS, runClassical, type ClassicalMethod,
 } from '../classical/methods';
 import { bsdFromLabels } from '../sam/morphometry';
 import {
-  primaryShowcaseCases, visibleStillTabs, type StillTab, type WorkbenchSource,
+  groupOfTab, primaryShowcaseCases, stillGroups,
+  type StillTab, type WorkbenchSource,
 } from '../lib/workbench';
-import { SequenceWorkbench } from './SequenceWorkbench';
+import { SequenceControls, SequenceStage, useSequenceLane } from './SequenceWorkbench';
+import { useViewportFit } from '../lib/useViewportFit';
 
 type Tab = StillTab;
 
@@ -34,7 +38,11 @@ export default function Tool() {
   const es = useShellLang() === 'es';
   const [index, setIndex] = useState<CaseIndex | null>(null);
   const [methodBenchmark, setMethodBenchmark] = useState<MethodBenchmarkDoc | null>(null);
-  const [workbenchSource, setWorkbenchSource] = useState<WorkbenchSource>('still');
+  // Returning from focus carries the lane and the scenario, so the round trip preserves
+  // the user's selection instead of resetting it (ADR-0070 8).
+  const [workbenchSource, setWorkbenchSource] = useState<WorkbenchSource>(
+    () => (new URLSearchParams(window.location.search).get('source') === 'sequence' ? 'sequence' : 'still'),
+  );
   const [source, setSource] = useState<'sample' | 'upload'>('sample');
   const [sampleId, setSampleId] = useState('poly-normal');
   const [uploadUrl, setUploadUrl] = useState<string | null>(null);
@@ -58,11 +66,24 @@ export default function Tool() {
   const [errMsg, setErrMsg] = useState('');
   const [result, setResult] = useState<SegResult | null>(null);
   const [frameUrl, setFrameUrl] = useState('');
-  const [gateFlags, setGateFlags] = useState<string[]>([]);
   const [gt, setGt] = useState<Int32Array | null>(null);
   const [ap, setAp] = useState<MaskApResult | null>(null);
   const [tab, setTab] = useState<Tab>('segment');
   const [analysisFrame, setAnalysisFrame] = useState<Float32Array | null>(null);
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  // The sequence lane's state lives here so its controls can share the single rail.
+  const lane = useSequenceLane(es);
+  useViewportFit();
+
+  const restoredCase = searchParams.get('case');
+  const restoredRef = useRef(false);
+  useEffect(() => {
+    if (restoredRef.current || !restoredCase || !lane.manifest) return;
+    const index = lane.manifest.sequences.findIndex((s) => s.case_id === restoredCase);
+    if (index >= 0) lane.setSequenceIndex(index);
+    restoredRef.current = true;
+  }, [restoredCase, lane]);
 
   useEffect(() => {
     loadIndex().then(setIndex).catch(() => setIndex(null));
@@ -74,7 +95,7 @@ export default function Tool() {
   // just switching cases) left the panel blank / showed the previous case's masks.
   useEffect(() => {
     let cancelled = false;
-    setResult(null); setAp(null); setGt(null); setErrMsg(''); setGateFlags([]); setStatus('idle'); setDevice('');
+    setResult(null); setAp(null); setGt(null); setErrMsg(''); setStatus('idle'); setDevice('');
     if (workbenchSource !== 'still') {
       setFrameUrl('');
       return;
@@ -156,8 +177,7 @@ export default function Tool() {
       const img = await loadImage(src);
       // 2) CONTRACT-1 gate
       const gate = validateImage(img.gray, img.width, img.height);
-      setGateFlags(gate.flags);
-      if (!gate.ok) {
+            if (!gate.ok) {
         setStatus('error');
         setErrMsg((es ? 'Cuadro rechazado: ' : 'Frame rejected: ') + gate.reason);
         return;
@@ -250,7 +270,9 @@ export default function Tool() {
   const boundaryPixels = result ? countBoundaryPixels(result.labels, result.width, result.height) : 0;
   const showcaseMethod = methodBenchmark?.methods.find((candidate) => candidate.id === showcaseMethodId) ?? null;
   const primaryCases = useMemo(() => primaryShowcaseCases(index?.cases ?? []), [index]);
-  const visibleTabs = visibleStillTabs(source === 'sample' ? 'canonical' : 'upload', Boolean(result));
+  const groups = stillGroups(source === 'sample' ? 'canonical' : 'upload', Boolean(result));
+  const activeGroup = groupOfTab(tab);
+  const groupTabs = groups.find((g) => g.id === activeGroup)?.tabs ?? [];
   const liveComparison = useMemo(() => {
     if (!analysisFrame || !result) return [];
     return LIVE_CLASSICAL_METHODS.map((candidate) => {
@@ -262,160 +284,164 @@ export default function Tool() {
     });
   }, [analysisFrame, result, gt]);
 
+  const sequenceMode = workbenchSource === 'sequence';
+  const focusCase = sequenceMode ? (lane.sequence?.case_id ?? sampleId) : sampleId;
+
   return (
-    <div className="page-body">
-      <div className="page-head">
-        <h1>{es ? 'Banco de trabajo de segmentación' : 'Froth segmentation workbench'}</h1>
-        <p className="lede">
-          {es
-            ? 'Examine 15 métodos en 12 imágenes canónicas o reproduzca cinco secuencias con referencia temporal. Las cargas locales usan solo cuatro motores interactivos.'
-            : 'Examine 15 methods on 12 canonical stills or replay five sequences with temporal reference. Local uploads use only four interactive engines.'}
-        </p>
-      </div>
-
-      <section className="fs-source-model" aria-label={es ? 'Modelo de fuente' : 'Source model'}>
-        <div>
-          <span className="fs-source-kicker">{es ? 'Fuente de análisis' : 'Analysis source'}</span>
-          <strong>{workbenchSource === 'still'
-            ? (es ? 'Imagen fija' : 'Still image')
-            : (es ? 'Secuencia temporal' : 'Temporal sequence')}</strong>
-          <p>{workbenchSource === 'still'
-            ? (es ? 'Compare artefactos precalculados o evalúe una imagen local.' : 'Compare precomputed artifacts or evaluate a local image.')
-            : (es ? 'Reproduzca cuadros, identidades, seguimiento y eventos medidos offline.' : 'Replay frames, identities, tracking, and events measured offline.')}</p>
+    <div className="page-body wide fs-app">
+      <aside className="fs-rail">
+        {/* ADR-0017 1.2: the source model is a control, so it belongs in the control rail,
+            not in a full-width banner above the workbench. */}
+        <div className="fs-rail-block">
+          <span className="fs-rail-kicker">{es ? 'Fuente de análisis' : 'Analysis source'}</span>
+          <div className="fs-source-switch" role="group" aria-label={es ? 'Tipo de fuente' : 'Source type'}>
+            <button
+              type="button"
+              className={workbenchSource === 'still' ? 'on' : ''}
+              aria-pressed={workbenchSource === 'still'}
+              onClick={() => setWorkbenchSource('still')}
+            >
+              <span>01</span>{es ? 'Imagen fija' : 'Still image'}
+            </button>
+            <button
+              type="button"
+              className={sequenceMode ? 'on' : ''}
+              aria-pressed={sequenceMode}
+              onClick={() => setWorkbenchSource('sequence')}
+            >
+              <span>02</span>{es ? 'Secuencia' : 'Sequence'}
+            </button>
+          </div>
+          <p className="fs-rail-desc">{sequenceMode
+            ? (es ? 'Reproduzca cuadros, identidades, seguimiento y eventos medidos offline.' : 'Replay frames, identities, tracking, and events measured offline.')
+            : (es ? 'Compare artefactos precalculados o evalúe una imagen local.' : 'Compare precomputed artifacts or evaluate a local image.')}</p>
         </div>
-        <div className="fs-source-switch" role="group" aria-label={es ? 'Tipo de fuente' : 'Source type'}>
-          <button
-            type="button"
-            className={workbenchSource === 'still' ? 'on' : ''}
-            aria-pressed={workbenchSource === 'still'}
-            onClick={() => setWorkbenchSource('still')}
-          >
-            <span>01</span>{es ? 'Imagen fija' : 'Still image'}
-          </button>
-          <button
-            type="button"
-            className={workbenchSource === 'sequence' ? 'on' : ''}
-            aria-pressed={workbenchSource === 'sequence'}
-            onClick={() => setWorkbenchSource('sequence')}
-          >
-            <span>02</span>{es ? 'Secuencia' : 'Sequence'}
-          </button>
-        </div>
-      </section>
 
-      {workbenchSource === 'still' && (
-      <div className="fs-layout">
-        {/* ---- controls ---- */}
-        <div className="fs-controls">
-          <div className="fs-panel">
-            <div className="fs-panel-t">{es ? 'Fuente de imagen fija' : 'Still-image input'}</div>
-            <div className="fs-seg" style={{ marginBottom: '0.5rem' }}>
-              <button className={`chip${source === 'sample' ? ' on' : ''}`} onClick={() => setSource('sample')}>{es ? 'Galería precalculada' : 'Precomputed gallery'}</button>
-              <button className={`chip${source === 'upload' ? ' on' : ''}`} onClick={() => setSource('upload')}>{es ? 'Imagen local' : 'Local image'}</button>
+        {sequenceMode ? <SequenceControls lane={lane} es={es} /> : (
+          <>
+            <div className="fs-rail-block">
+              <span className="fs-rail-kicker">{es ? 'Entrada' : 'Input'}</span>
+              <div className="fs-seg">
+                <button className={source === 'sample' ? 'chip on' : 'chip'} onClick={() => setSource('sample')}>{es ? 'Galería' : 'Gallery'}</button>
+                <button className={source === 'upload' ? 'chip on' : 'chip'} onClick={() => setSource('upload')}>{es ? 'Imagen local' : 'Local image'}</button>
+              </div>
+              {source === 'sample' ? (
+                <label className="fs-ctl">{es ? 'caso (12)' : 'case (12)'}
+                  <select className="fs-sel" value={sampleId} onChange={(e) => setSampleId(e.target.value)}>
+                    {primaryCases.map((c) => <option key={c.case_id} value={c.case_id}>{caseLabel(c.case_id, c.category, es)}</option>)}
+                  </select>
+                </label>
+              ) : (
+                <label className="fs-ctl">{es ? 'imagen de espuma' : 'froth image'}
+                  <input type="file" accept="image/*" onChange={(e) => onUpload(e.target.files?.[0] ?? null)} />
+                  {uploadName && <span className="fs-hint small mono">{uploadName}</span>}
+                </label>
+              )}
             </div>
-            {source === 'sample' ? (
-              <label className="fs-ctl">{es ? 'caso principal (12 disponibles)' : 'primary case (12 available)'}
-                <select className="fs-sel" value={sampleId} onChange={(e) => setSampleId(e.target.value)}>
-                  {primaryCases.map((c) => <option key={c.case_id} value={c.case_id}>{caseLabel(c.case_id, c.category, es)}</option>)}
+
+            {source === 'sample' && <div className="fs-rail-block">
+              <span className="fs-rail-kicker">{es ? 'Método' : 'Method'}</span>
+              <label className="fs-ctl">{es ? 'los 15 evaluados' : 'all 15 evaluated'}
+                <select className="fs-sel" value={showcaseMethodId} onChange={(event) => setShowcaseMethodId(event.target.value)}>
+                  <optgroup label={es ? 'Clásicos' : 'Classical'}>
+                    {methodBenchmark?.methods.filter((c) => c.id.startsWith('C')).map((c) => (
+                      <option key={c.id} value={c.id}>{c.id} · {c.name}</option>))}
+                  </optgroup>
+                  <optgroup label={es ? 'Entrenados y fundacionales' : 'Trained and foundation'}>
+                    {methodBenchmark?.methods.filter((c) => c.id.startsWith('L')).map((c) => (
+                      <option key={c.id} value={c.id}>{c.id} · {c.name}</option>))}
+                  </optgroup>
+                  <optgroup label={es ? 'Investigación' : 'Research'}>
+                    {methodBenchmark?.methods.filter((c) => c.id.startsWith('N')).map((c) => (
+                      <option key={c.id} value={c.id}>{c.id} · {c.name}</option>))}
+                  </optgroup>
                 </select>
               </label>
-            ) : (
-              <label className="fs-ctl">{es ? 'imagen de espuma' : 'froth image'}
-                <input type="file" accept="image/*" onChange={(e) => onUpload(e.target.files?.[0] ?? null)} />
-                {uploadName && <span className="fs-hint small mono">{uploadName}</span>}
+              {showcaseMethod?.test && (
+                <p className="fs-hint small">AP {showcaseMethod.test.mean_ap.toFixed(3)} · PQ {showcaseMethod.test.mean_pq?.toFixed(3) ?? '--'} · {es ? '64 casos' : '64 cases'}</p>
+              )}
+            </div>}
+
+            {source === 'upload' && <div className="fs-rail-block">
+              <span className="fs-rail-kicker">{es ? 'Motor interactivo' : 'Interactive engine'}</span>
+              <label className="fs-ctl">{es ? '4 disponibles' : '4 available'}
+                <select className="fs-sel" value={method} onChange={(e) => setMethod(e.target.value as 'sam' | ClassicalMethod)}>
+                  <option value="sam">SlimSAM zero-shot</option>
+                  {LIVE_CLASSICAL_METHODS.map((m) => <option key={m.id} value={m.id}>{m.label}</option>)}
+                </select>
               </label>
-            )}
-            <p className="fs-hint small" style={{ marginTop: '0.4rem' }}>
-              {source === 'sample'
-                ? (es ? 'Caso sintético anotado para explicación visual. Los controles diagnósticos permanecen en Benchmark y Metodología.' : 'Annotated synthetic case for visual analysis. Diagnostic controls remain documented in Benchmark and Methodology.')
-                : (es ? 'La imagen permanece en este navegador. Sin anotación local no se afirma exactitud.' : 'The image stays in this browser. Without a local annotation, no accuracy claim is made.')}
-            </p>
-          </div>
-
-          {source === 'upload' && <div className="fs-panel">
-            <div className="fs-panel-t">{es ? 'Segmentación interactiva' : 'Interactive segmentation'}</div>
-            <label className="fs-ctl">{es ? 'método interactivo (4 disponibles)' : 'interactive method (4 available)'}
-              <select className="fs-sel" value={method} onChange={(e) => setMethod(e.target.value as 'sam' | ClassicalMethod)}>
-                <option value="sam">{es ? 'SlimSAM cero-shot (modelo de navegador)' : 'SlimSAM zero-shot (browser model)'}</option>
-                {LIVE_CLASSICAL_METHODS.map((m) => <option key={m.id} value={m.id}>{m.label}</option>)}
-              </select>
-            </label>
-            {method !== 'sam' && (
-              <p className="fs-hint small">{classicalMethodNote(method, es)}. {es ? 'Se ejecuta sobre esta imagen en CPU, sin descargar un modelo.' : 'Runs on this image in the CPU, with no model download.'}</p>
-            )}
-            {method === 'sam' && (
-              <>
-                <label className="fs-ctl">{es ? 'densidad de grilla' : 'grid density'}: {grid}x{grid} ({grid * grid} {es ? 'puntos' : 'points'})
-                  <input type="range" min={12} max={40} step={4} value={grid} onChange={(e) => setGrid(+e.target.value)} />
-                </label>
-                <label className="fs-ctl">{es ? 'umbral IoU predicha' : 'predicted-IoU threshold'}: {predIou.toFixed(2)}
-                  <input type="range" min={0.5} max={0.95} step={0.02} value={predIou} onChange={(e) => setPredIou(+e.target.value)} />
-                </label>
-                <label className="fs-ctl">{es ? 'umbral estabilidad' : 'stability threshold'}: {stability.toFixed(2)}
-                  <input type="range" min={0.5} max={0.98} step={0.02} value={stability} onChange={(e) => setStability(+e.target.value)} />
-                </label>
-                <p className="fs-hint small">{es ? 'Grilla más densa y umbrales más bajos hallan más burbujas (y más falsos positivos). Ajustar y volver a ejecutar.' : 'Denser grid and lower thresholds find more bubbles (and more false positives). Adjust and re-run.'}</p>
-              </>
-            )}
-          </div>}
-
-          {source === 'sample' && <div className="fs-panel">
-            <div className="fs-panel-t">{es ? 'Inferencia precalculada' : 'Precomputed inference'}</div>
-            <label className="fs-ctl">{es ? 'método (15 disponibles)' : 'method (all 15 available)'}
-              <select className="fs-sel" value={showcaseMethodId} onChange={(event) => setShowcaseMethodId(event.target.value)}>
-                <optgroup label={es ? 'Métodos clásicos' : 'Classical methods'}>
-                  {methodBenchmark?.methods.filter((candidate) => candidate.id.startsWith('C')).map((candidate) => (
-                    <option key={candidate.id} value={candidate.id}>{candidate.id} · {candidate.name}</option>
-                  ))}
-                </optgroup>
-                <optgroup label={es ? 'Modelos entrenados y fundacionales' : 'Trained and foundation models'}>
-                  {methodBenchmark?.methods.filter((candidate) => candidate.id.startsWith('L')).map((candidate) => (
-                    <option key={candidate.id} value={candidate.id}>{candidate.id} · {candidate.name}</option>
-                  ))}
-                </optgroup>
-                <optgroup label={es ? 'Experimento de investigación' : 'Research experiment'}>
-                  {methodBenchmark?.methods.filter((candidate) => candidate.id.startsWith('N')).map((candidate) => (
-                    <option key={candidate.id} value={candidate.id}>{candidate.id} · {candidate.name}</option>
-                  ))}
-                </optgroup>
-              </select>
-            </label>
-            {showcaseMethod?.test && (
-              <p className="fs-hint small">
-                AP {showcaseMethod.test.mean_ap.toFixed(3)} · AP50 {showcaseMethod.test.mean_ap50.toFixed(3)} · PQ {showcaseMethod.test.mean_pq?.toFixed(3) ?? '--'} · {es ? '64 casos retenidos' : '64 held-out cases'}
-              </p>
-            )}
-          </div>}
-
-          {source === 'upload' && <div className="fs-panel">
-            <div className="fs-panel-t">{es ? 'Front-end de imagen real' : 'Real-image front-end'}</div>
-            <div className="fs-seg">
-              <button className={`chip${flatten ? ' on' : ''}`} onClick={() => setFlatten((v) => !v)}>{es ? 'Aplanar luz' : 'Flatten light'}</button>
-              <button className={`chip${deglare ? ' on' : ''}`} onClick={() => setDeglare((v) => !v)}>{es ? 'Quitar brillo' : 'Deglare'}</button>
-            </div>
-            <label className="fs-ctl" style={{ marginTop: '0.5rem' }}>{es ? 'escala (px por mm, opcional)' : 'scale (px per mm, optional)'}
-              <input className="fs-sel" type="number" min={0} step={0.1} value={pxPerMm} onChange={(e) => setPxPerMm(e.target.value)} placeholder="px/mm" />
-            </label>
-          </div>}
-
-          {source === 'upload' && <button className="chip on" style={{ padding: '0.5rem', fontSize: '0.9rem' }} onClick={run} disabled={status === 'running' || status === 'loading-model'}>
-            {status === 'loading-model' ? (es ? 'Cargando modelo...' : 'Loading model...') : status === 'running' ? (es ? `Segmentando ${progress}%` : `Segmenting ${progress}%`) : (es ? 'Segmentar' : 'Segment')}
-          </button>}
-          {result && device && <p className="fs-hint small">{source === 'sample' ? (es ? 'artefacto' : 'artifact') : (es ? 'motor' : 'engine')}: <span className="mono">{device}</span> · {result.model.split('/').pop()}</p>}
-          {gateFlags.length > 0 && <p className="fs-note">{es ? 'avisos del cuadro: ' : 'frame flags: '}{gateFlags.join('; ')}</p>}
-          {errMsg && <p className="fs-note">{errMsg}</p>}
-        </div>
-
-        {/* ---- main ---- */}
-        <div className="fs-main">
-          {visibleTabs.length > 0 && <div className="fs-tabs" role="tablist" aria-label={es ? 'Análisis de imagen fija' : 'Still-image analysis'}>
-            {visibleTabs.map((t) => (
-              <button key={t} role="tab" aria-selected={tab === t} className={`fs-tab${tab === t ? ' on' : ''}`} onClick={() => setTab(t)}>
-                {label(t, es)}
+              {method === 'sam' && (
+                <>
+                  <label className="fs-ctl">{es ? 'grilla' : 'grid'}: {grid}x{grid}
+                    <input type="range" min={12} max={40} step={4} value={grid} onChange={(e) => setGrid(+e.target.value)} />
+                  </label>
+                  <label className="fs-ctl">{es ? 'IoU predicha' : 'predicted IoU'}: {predIou.toFixed(2)}
+                    <input type="range" min={0.5} max={0.95} step={0.02} value={predIou} onChange={(e) => setPredIou(+e.target.value)} />
+                  </label>
+                  <label className="fs-ctl">{es ? 'estabilidad' : 'stability'}: {stability.toFixed(2)}
+                    <input type="range" min={0.5} max={0.98} step={0.02} value={stability} onChange={(e) => setStability(+e.target.value)} />
+                  </label>
+                </>
+              )}
+              <div className="fs-seg">
+                <button className={flatten ? 'chip on' : 'chip'} onClick={() => setFlatten((v) => !v)}>{es ? 'Aplanar' : 'Flatten'}</button>
+                <button className={deglare ? 'chip on' : 'chip'} onClick={() => setDeglare((v) => !v)}>{es ? 'Sin brillo' : 'Deglare'}</button>
+              </div>
+              <label className="fs-ctl">{es ? 'escala px/mm' : 'scale px/mm'}
+                <input className="fs-sel" type="number" min={0} step={0.1} value={pxPerMm} onChange={(e) => setPxPerMm(e.target.value)} placeholder="px/mm" />
+              </label>
+              <button className="chip on fs-run" onClick={run} disabled={status === 'running' || status === 'loading-model'}>
+                {status === 'loading-model' ? (es ? 'Cargando modelo...' : 'Loading model...') : status === 'running' ? (es ? 'Segmentando ' + progress + '%' : 'Segmenting ' + progress + '%') : (es ? 'Segmentar' : 'Segment')}
               </button>
-            ))}
-          </div>}
+            </div>}
+          </>
+        )}
 
+        {/* ADR-0070 8: the entry control is on the same surface as the scenario selector,
+            visible and obvious, and it opens the CURRENTLY selected scenario. */}
+        <button type="button" className="fs-focus-enter" onClick={() => navigate('/focus/' + focusCase)}>
+          <Maximize2 size={15} aria-hidden="true" />
+          {es ? 'Abrir en modo foco' : 'Open focus mode'}
+        </button>
+
+        {!sequenceMode && result && device && (
+          <p className="fs-hint small fs-rail-foot">{source === 'sample' ? (es ? 'artefacto' : 'artifact') : (es ? 'motor' : 'engine')}: <span className="mono">{device}</span></p>
+        )}
+        {errMsg && <p className="fs-note">{errMsg}</p>}
+      </aside>
+
+      <main className="fs-stage-col">
+        {sequenceMode ? <SequenceStage lane={lane} es={es} /> : (
+          <>
+            {groups.length > 0 && <div className="fs-tabrow">
+              <div className="fs-tabs" role="tablist" aria-label={es ? 'Análisis de imagen fija' : 'Still-image analysis'}>
+                {groups.map((group) => (
+                  <button
+                    key={group.id}
+                    role="tab"
+                    aria-selected={activeGroup === group.id}
+                    className={activeGroup === group.id ? 'fs-tab on' : 'fs-tab'}
+                    onClick={() => setTab(group.tabs[0])}
+                  >
+                    {groupLabel(group.id, es)}
+                  </button>
+                ))}
+              </div>
+              {groupTabs.length > 1 && <div className="fs-subtabs" role="tablist" aria-label={es ? 'Vista' : 'View'}>
+                {groupTabs.map((item) => (
+                  <button
+                    key={item}
+                    role="tab"
+                    aria-selected={tab === item}
+                    className={tab === item ? 'fs-subtab on' : 'fs-subtab'}
+                    onClick={() => setTab(item)}
+                  >
+                    {label(item, es)}
+                  </button>
+                ))}
+              </div>}
+            </div>}
+            <div className="fs-stage-body">
           {source === 'sample' && tab === 'segment' && !result && (
             <PanelBoundary label="precomputed instance segmentation">
               <div className="fs-panel">
@@ -497,7 +523,7 @@ export default function Tool() {
                   <div className="fs-kpi"><div className="fs-kpi-v">{ap?.ap != null ? ap.ap.toFixed(3) : '--'}</div><div className="fs-kpi-l">{es ? 'AP vs verdad' : 'AP vs truth'}</div></div>
                   <div className="fs-kpi"><div className="fs-kpi-v">{result.totalMs}<span style={{ fontSize: '0.7rem' }}>ms</span></div><div className="fs-kpi-l">{es ? 'tiempo' : 'time'}</div></div>
                 </div>
-                <div style={{ marginTop: '0.7rem' }}>
+                <div className="fs-overlay-slot">
                   <MaskOverlay baseUrl={frameUrl} labels={result.labels} width={result.width} height={result.height} pxPerMm={scale}
                     caption={source === 'sample'
                       ? (es ? 'Máscara de instancias precalculada para el caso canónico seleccionado. Pase el cursor para inspeccionar cada burbuja.' : 'Precomputed instance mask for the selected canonical case. Hover to inspect each bubble.')
@@ -670,10 +696,10 @@ export default function Tool() {
               </div>
             </PanelBoundary>
           )}
-        </div>
-      </div>
-      )}
-      {workbenchSource === 'sequence' && <SequenceWorkbench es={es} />}
+            </div>
+          </>
+        )}
+      </main>
     </div>
   );
 }
@@ -699,6 +725,18 @@ function BsdTable({ es, bsd, scale }: { es: boolean; bsd: SegResult['bsd']; scal
       </tbody>
     </table>
   );
+}
+
+function groupLabel(id: string, es: boolean): string {
+  const labels: Record<string, [string, string]> = {
+    segmentation: ['Segmentation', 'Segmentación'],
+    size: ['Size distribution', 'Distribución'],
+    quality: ['Quality', 'Calidad'],
+    state: ['Froth state', 'Estado'],
+    compare: ['Compare', 'Comparar'],
+    provenance: ['Provenance', 'Proveniencia'],
+  };
+  return labels[id]?.[es ? 1 : 0] ?? id;
 }
 
 function label(t: Tab, es: boolean): string {
@@ -746,15 +784,6 @@ function liveMethodRegistryId(method: 'sam' | ClassicalMethod): string {
   return method === 'sam' ? 'L5' : ids[method];
 }
 
-function classicalMethodNote(method: ClassicalMethod, es: boolean): string {
-  if (!es) return CLASSICAL_METHODS.find((candidate) => candidate.id === method)?.note ?? '';
-  const notes: Partial<Record<ClassicalMethod, string>> = {
-    otsu_cc: 'línea base que subsegmenta burbujas en contacto',
-    watershed_hmax: 'método clásico de espuma con marcadores de brillos',
-    watershed_dt: 'referencia clásica genérica basada en distancia',
-  };
-  return notes[method] ?? '';
-}
 
 function Kpi({ value, label: kpiLabel }: { value: string | number; label: string }) {
   return <div className="fs-kpi"><div className="fs-kpi-v">{value}</div><div className="fs-kpi-l">{kpiLabel}</div></div>;

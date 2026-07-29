@@ -11,7 +11,9 @@ import {
 
 type SequenceTab = 'replay' | 'tracking' | 'events' | 'compare' | 'provenance';
 
-export function SequenceWorkbench({ es }: { es: boolean }) {
+/** The sequence lane's state. Lifted out of the component so its controls can live in the
+ *  App's single left rail (ADR-0017 1.2) while its stage owns the main column. */
+export function useSequenceLane(es: boolean) {
   const [manifest, setManifest] = useState<TemporalShowcaseManifest | null>(null);
   const [loadError, setLoadError] = useState('');
   const [sequenceIndex, setSequenceIndex] = useState(0);
@@ -116,33 +118,35 @@ export function SequenceWorkbench({ es }: { es: boolean }) {
     return () => { cancelled = true; };
   }, [prediction?.events_path, tab]);
 
-  if (!manifest || !sequence || !frame) {
-    return (
-      <div className="fs-sequence-loading">
-        <span className="fs-spinner" aria-hidden="true" />
-        <div>
-          <strong>{es ? 'Cargando secuencias verificadas' : 'Loading verified sequences'}</strong>
-          <p>{loadError || (es
-            ? 'Los cuadros y sus referencias se leen desde el paquete offline.'
-            : 'Frames and their references are read from the offline artifact package.')}</p>
-        </div>
-      </div>
-    );
-  }
+  const frameLabel = frames.length
+    ? `${String(frameIndex + 1).padStart(2, '0')} / ${String(frames.length).padStart(2, '0')}`
+    : '';
+  const displayLabel = sequence ? sequenceLabel(sequence.case_id, es) : '';
 
-  const frameLabel = `${String(frameIndex + 1).padStart(2, '0')} / ${String(frames.length).padStart(2, '0')}`;
-  const displayLabel = sequenceLabel(sequence.case_id, es);
+  return {
+    manifest, loadError, sequence, frames, frame, predictions, framewisePredictions,
+    nativePredictions, prediction, displayFrame, metrics, views, tabs, tab, setTab,
+    sequenceIndex, setSequenceIndex, predictionIndex, setPredictionIndex,
+    frameIndex, setFrameIndex, playing, setPlaying, speed, setSpeed, view, setView,
+    eventLog, eventError, frameLabel, displayLabel,
+    ready: Boolean(manifest && sequence && frame),
+  };
+}
 
+export type SequenceLane = ReturnType<typeof useSequenceLane>;
+
+/** Rail slot: every control that selects what the stage shows. */
+export function SequenceControls({ lane, es }: { lane: SequenceLane; es: boolean }) {
+  const {
+    manifest, sequence, predictions, framewisePredictions, nativePredictions,
+    prediction, frames, sequenceIndex, setSequenceIndex, predictionIndex, setPredictionIndex,
+  } = lane;
+  if (!manifest || !sequence) return null;
   return (
-    <div className="fs-sequence-workbench">
-      <aside className="fs-sequence-sidebar">
-        <div>
-          <span className="fs-sequence-kicker">{es ? 'Secuencia precalculada' : 'Precomputed sequence'}</span>
-          <h2>{displayLabel}</h2>
-          <p>
-            {sequenceDescription(sequence.case_id, es)}
-          </p>
-        </div>
+    <>
+      <div className="fs-rail-block">
+        <span className="fs-rail-kicker">{es ? 'Secuencia' : 'Sequence'}</span>
+        <p className="fs-rail-desc">{sequenceDescription(sequence.case_id, es)}</p>
         <label className="fs-ctl">
           {es ? 'secuencia (5 disponibles)' : 'sequence (5 available)'}
           <select
@@ -200,14 +204,40 @@ export function SequenceWorkbench({ es }: { es: boolean }) {
           <div><span>{es ? 'referencia' : 'reference'}</span><strong>{es ? 'IDs exactos' : 'Exact IDs'}</strong></div>
           <div><span>{es ? 'análisis' : 'analysis'}</span><strong>{prediction ? `${prediction.method_id} · ${temporalMethodLabel(prediction.method_id)}` : 'not published'}</strong></div>
         </div>
-        <p className="fs-note good">
-          {es
-            ? 'La reproducción usa artefactos generados y verificados antes del despliegue.'
-            : 'Replay uses artifacts generated and verified before deployment.'}
-        </p>
-      </aside>
+      </div>
+    </>
+  );
+}
 
-      <section className="fs-sequence-main">
+/** Stage slot: the tab row and the instrument. */
+export function SequenceStage({ lane, es }: { lane: SequenceLane; es: boolean }) {
+  const {
+    manifest, loadError, sequence, frames, frame, predictions, framewisePredictions,
+    nativePredictions, prediction, displayFrame, metrics, views, tabs, tab, setTab,
+    setPredictionIndex, frameIndex, setFrameIndex, playing, setPlaying, speed, setSpeed,
+    view, setView, eventLog, eventError, frameLabel, displayLabel,
+  } = lane;
+
+  if (!manifest || !sequence || !frame) {
+    return (
+      <div className="fs-sequence-loading">
+        <span className="fs-spinner" aria-hidden="true" />
+        <div>
+          <strong>{es ? 'Cargando secuencias verificadas' : 'Loading verified sequences'}</strong>
+          <p>{loadError || (es
+            ? 'Los cuadros y sus referencias se leen desde el paquete offline.'
+            : 'Frames and their references are read from the offline artifact package.')}</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Same shape as the still lane: ONE auto row of tab chrome, then a `minmax(0, 1fr)` body.
+  // Rendered as a bare fragment the six replay children became six implicit rows of
+  // `.fs-stage-col` and the frame hung 41px past the stage at 1280x800.
+  return (
+      <>
+        <div className="fs-tabrow">
         <div className="fs-tabs" role="tablist" aria-label={es ? 'Análisis de secuencia' : 'Sequence analysis'}>
           {tabs.map((item) => (
             <button
@@ -222,9 +252,11 @@ export function SequenceWorkbench({ es }: { es: boolean }) {
             </button>
           ))}
         </div>
+        </div>
 
+        <div className="fs-stage-body">
         {tab === 'replay' && (
-          <>
+          <div className="fs-replay">
             <div className="fs-sequence-toolbar">
               <div className="fs-view-picker" role="group" aria-label={es ? 'Vista del cuadro' : 'Frame view'}>
                 {views.map((item) => (
@@ -252,9 +284,21 @@ export function SequenceWorkbench({ es }: { es: boolean }) {
                 <span>{displayLabel}</span>
                 <strong>{frameLabel}</strong>
               </div>
-            </div>
 
-            <div className="fs-sequence-timeline">
+              {/* The transport and the summary ride ON the frame rather than under it. As stacked
+                  rows they consumed 117px of an 508px stage and shrank the square instrument to
+                  7.5% of the viewport; overlaid, the frame keeps the whole free height and the
+                  controls stay where the eye already is. Same HUD pattern as focus mode. */}
+              {metrics && (
+                <div className="fs-kpis fs-sequence-summary">
+                  <SequenceKpi value={`${(metrics.mean_frame_coverage * 100).toFixed(1)}%`} label={es ? 'cobertura' : 'coverage'} />
+                  <SequenceKpi value={metrics.idf1.toFixed(3)} label="IDF1" />
+                  <SequenceKpi value={metrics.hota.toFixed(3)} label="HOTA" />
+                  <SequenceKpi value={`${(metrics.id_switch_rate * 100).toFixed(2)}%`} label={es ? 'cambios de ID' : 'ID switches'} />
+                </div>
+              )}
+
+              <div className="fs-sequence-timeline">
               <button
                 type="button"
                 className="fs-play-button"
@@ -295,17 +339,9 @@ export function SequenceWorkbench({ es }: { es: boolean }) {
                   <option value={4}>4 fps</option>
                 </select>
               </label>
-            </div>
-
-            {metrics && (
-              <div className="fs-kpis fs-sequence-summary">
-                <SequenceKpi value={`${(metrics.mean_frame_coverage * 100).toFixed(1)}%`} label={es ? 'cobertura' : 'coverage'} />
-                <SequenceKpi value={metrics.idf1.toFixed(3)} label="IDF1" />
-                <SequenceKpi value={metrics.hota.toFixed(3)} label="HOTA" />
-                <SequenceKpi value={`${(metrics.id_switch_rate * 100).toFixed(2)}%`} label={es ? 'cambios de ID' : 'ID switches'} />
               </div>
-            )}
-          </>
+            </div>
+          </div>
         )}
 
         {tab === 'tracking' && metrics && (
@@ -346,8 +382,8 @@ export function SequenceWorkbench({ es }: { es: boolean }) {
             es={es}
           />
         )}
-      </section>
-    </div>
+        </div>
+      </>
   );
 }
 

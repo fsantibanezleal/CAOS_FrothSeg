@@ -17,6 +17,7 @@ import Methodology from './pages/Methodology';
 import Implementation from './pages/Implementation';
 import Experiments from './pages/Experiments';
 import Benchmark from './pages/Benchmark';
+import Focus from './pages/Focus';
 
 applyTheme(readTheme());
 
@@ -109,7 +110,9 @@ if (el) {
     <StrictMode>
       <BrowserRouter>
         <CitationsProvider items={CITATIONS}>
-          <AppShell config={config}>
+          <Routes>
+            <Route path="/focus/:caseId" element={<Focus />} />
+            <Route path="*" element={<AppShell config={config}>
             <ShellLicenseCorrection />
             <Routes>
               <Route path="/" element={<Tool />} />
@@ -120,7 +123,8 @@ if (el) {
               <Route path="/benchmark" element={<Benchmark />} />
               <Route path="*" element={<Tool />} />
             </Routes>
-          </AppShell>
+          </AppShell>} />
+          </Routes>
         </CitationsProvider>
       </BrowserRouter>
     </StrictMode>,
