@@ -588,9 +588,7 @@ function TrackingEvidence({
         <tbody>
           <tr><th>{es ? 'instancias GT asociadas' : 'matched GT instances'}</th><td className="num">{metrics.matched_gt_instances ?? 'n/a'}</td></tr>
           <tr><th>{es ? 'cambios de identidad' : 'identity switches'}</th><td className="num">{metrics.id_switches ?? 'n/a'}</td></tr>
-          <tr><th>{es ? 'precisión de identidad' : 'identity precision'}</th><td className="num">{formatMetric(metrics.id_precision)}</td></tr>
-          <tr><th>{es ? 'recobrado de identidad' : 'identity recall'}</th><td className="num">{formatMetric(metrics.id_recall)}</td></tr>
-          <tr><th>{es ? 'exactitud de asociación' : 'association accuracy'}</th><td className="num">{formatMetric(metrics.association_accuracy)}</td></tr>
+          <tr><th>{es ? 'fragmentaciones de traza' : 'track fragmentations'}</th><td className="num">{metrics.track_fragmentations ?? 'n/a'}</td></tr>
         </tbody>
       </table>
     </div>
