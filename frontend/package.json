@@ -10,7 +10,8 @@
     "build": "tsc --noEmit && vite build",
     "postbuild": "node create-spa-routes.mjs",
     "preview": "vite preview",
-    "test": "vitest run"
+    "test": "vitest run",
+    "gates": "node scripts/gates/frothseg-all-routes.mjs && node scripts/gates/frothseg-content-depth.mjs && node scripts/gates/frothseg-instrument-fit.mjs && node scripts/gates/frothseg-focus-flow.mjs"
   },
   "dependencies": {
     "@fasl-work/caos-app-shell": "^0.3.0",
@@ -27,6 +28,7 @@
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^4.3.4",
+    "playwright": "^1.62.0",
     "tsx": "^4.23.0",
     "typescript": "^5.7.2",
     "vite": "^6.0.7",

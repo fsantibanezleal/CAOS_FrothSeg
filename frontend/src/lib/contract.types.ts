@@ -192,6 +192,13 @@ export interface MethodMetricSummary {
     tp: number;
     fp: number;
     fn: number;
+    /** Association IoU the micro accounting was pooled at (0.5 in the committed artifact). */
+    association_iou?: number;
+    /** Under-segmentation: one predicted segment covering more than one ground-truth bubble.
+     *  Emitted by `panoptic_quality` at the 0.2 coverage threshold and pooled per method. */
+    merges?: number;
+    /** Over-segmentation: one ground-truth bubble covered by more than one predicted segment. */
+    splits?: number;
     instance_precision: number;
     instance_recall: number;
     instance_f1: number;

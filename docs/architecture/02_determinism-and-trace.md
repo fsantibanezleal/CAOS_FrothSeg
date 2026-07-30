@@ -43,7 +43,9 @@ identifiers and local-file hashes recorded in their run manifests.
 ## Release trace
 
 `method-benchmark.json` joins all 15 method results. `release-report.json`
-records the SHA of that comparison, each method run, and both temporal reports.
+records the SHA of that comparison, the SHA of each of the 8 run manifests (the
+7 classical methods have no trained artifact, so their `run` field is `null`),
+and the SHA of all 15 temporal reports, one per registered method.
 The release gate rejects an incomplete registry or missing evidence.
 
 The legacy browser SlimSAM experiment remains a separate historical artifact.

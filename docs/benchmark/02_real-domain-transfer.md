@@ -104,9 +104,11 @@ Grouped by tier, the pattern is unambiguous:
 
 **The synthetic ranking does not transfer.** N1 LamellaStar leads the froth benchmark at 0.519
 and falls to eighth at 0.125 on real images, a drop of 0.394. Every model trained on the 192
-synthetic samples degrades. Every classical method, which has no learned prior to overfit,
-improves. The single method that was never trained in this repository is the only learned
-method that improves, and it becomes the clear leader at 0.709.
+synthetic samples degrades. Six of the seven classical methods, which have no learned prior to
+overfit, improve, for a tier mean of +0.088; the exception is C2 gradient immersion watershed,
+which was already at 0.017 on froth and returns 0.000 here, a delta of -0.017, so the tier gains
+while its weakest member does not. The single method that was never trained in this repository is
+the only learned method that improves, and it becomes the clear leader at 0.709.
 
 ### What this does and does not say about N1
 
