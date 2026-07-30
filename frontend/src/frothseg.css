@@ -1,3 +1,9 @@
+
+/* Typography comes from the shell, full stop. ADR-0017 1.1: "the shell primitives (use them;
+   never redefine; never pick your own width)", and the reference app overrides no heading at all.
+   The overrides removed here ran the doc-page h1 up to 4.8rem and the Introduction h1 up to
+   5.6rem against the shell's own 1.7rem, which is a marketing scale on a technical shell and is
+   why these pages read as a different, worse product than the App. */
 /* FrothSeg app styles on top of the shared design-system tokens (@fasl-work/caos-app-shell). The shell provides
    the --color-* / --font-* tokens and light/dark theming; it does NOT ship .chip or the layout helpers, so they
    live here. Mirrors the RotorVitals/DispatchLab conventions with an fs- prefix. */
@@ -90,7 +96,6 @@
   .header-actions { gap: 0; }
   .header-actions a.icon-btn:not([href*="github"]) { display: none; }
   .header-sep { display: none; }
-  .page-body { padding-inline: 1rem; }
   .fs-panel { min-width: 0; overflow-x: auto; }
   .fs-source-model { grid-template-columns: 1fr; }
   .fs-source-model > div:first-child { grid-template-columns: 1fr; }
@@ -158,8 +163,6 @@
 /* Scientific introduction */
 .fs-intro { --fs-cyan: var(--color-accent); --fs-blue: color-mix(in oklab, var(--color-accent) 58%, var(--color-fg)); }
 .fs-intro-hero { display: grid; grid-template-columns: minmax(0, .82fr) minmax(420px, 1.18fr); gap: clamp(2rem, 5vw, 5rem); align-items: center; padding-block: clamp(2rem, 6vw, 5.5rem); }
-.fs-intro-copy h1 { max-width: 15ch; margin-block: .5rem 1rem; font-size: clamp(2.6rem, 6vw, 5.6rem); line-height: .96; letter-spacing: -.055em; }
-.fs-intro-copy .lede { max-width: 58ch; }
 .fs-intro-actions { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1.5rem; }
 .fs-primary-link, .fs-secondary-link { display: inline-flex; align-items: center; justify-content: center; padding: .65rem .95rem; border-radius: 8px; font-size: .86rem; font-weight: 650; text-decoration: none; }
 .fs-primary-link { color: var(--color-accent-fg); background: var(--fs-cyan); border: 1px solid var(--fs-cyan); }
@@ -184,7 +187,6 @@
 .fs-intro-section { padding-block: clamp(2.5rem, 6vw, 5rem); border-top: 1px solid var(--color-border); }
 .fs-section-heading { display: grid; grid-template-columns: minmax(260px, .8fr) minmax(320px, 1.2fr); gap: 1rem 4rem; align-items: end; margin-bottom: 2rem; }
 .fs-section-heading .eyebrow { grid-column: 1 / -1; }
-.fs-section-heading h2 { margin: 0; font-size: clamp(1.8rem, 3.5vw, 3.25rem); line-height: 1.03; letter-spacing: -.035em; }
 .fs-section-heading p { margin: 0; color: var(--color-fg-subtle); line-height: 1.65; }
 .fs-process-figure { margin: 0; overflow-x: auto; border: 1px solid var(--color-border); border-radius: 18px; background: color-mix(in oklab, var(--color-surface) 72%, var(--color-bg)); }
 .fs-process-figure svg { display: block; min-width: 900px; width: 100%; height: auto; color: var(--fs-cyan); }
@@ -235,14 +237,12 @@
 
 @media (max-width: 980px) {
   .fs-intro-hero { grid-template-columns: 1fr; }
-  .fs-intro-copy h1 { max-width: 18ch; }
-  .fs-hero-figure { max-width: 720px; }
+    .fs-hero-figure { max-width: 720px; }
   .fs-section-heading { grid-template-columns: 1fr; }
   .fs-challenge-grid, .fs-output-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 580px) {
-  .fs-intro-copy h1 { font-size: clamp(2.35rem, 13vw, 3.5rem); }
-  .fs-challenge-grid, .fs-output-grid { grid-template-columns: 1fr; }
+    .fs-challenge-grid, .fs-output-grid { grid-template-columns: 1fr; }
   .fs-symbol-list { grid-template-columns: 1fr; }
   .fs-temporal-controls { grid-template-columns: auto 1fr; }
   .fs-temporal-controls select { grid-column: 1 / -1; }
@@ -251,11 +251,9 @@
 }
 
 /* Methodology chapters */
-.fs-science-head h1 { max-width: 18ch; font-size: clamp(2.35rem, 5vw, 4.8rem); line-height: 1; letter-spacing: -.045em; }
 .fs-method-chapter { padding-top: 1.5rem; }
 .fs-chapter-lead { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: 1.25rem; align-items: start; max-width: 920px; margin: 1rem 0 2rem; }
 .fs-chapter-lead > span { color: var(--color-accent); font: 700 2.1rem/1 var(--font-mono); }
-.fs-chapter-lead h2 { margin: 0 0 .7rem; font-size: clamp(1.7rem, 3vw, 2.8rem); line-height: 1.04; letter-spacing: -.03em; }
 .fs-chapter-lead p { margin: 0; color: var(--color-fg-subtle); font-size: 1rem; line-height: 1.65; }
 .fs-method-flow, .fs-split-diagram, .fs-mechanism-diagram, .fs-target-diagram, .fs-temporal-method { margin: 1.5rem 0 2rem; overflow-x: auto; border: 1px solid var(--color-border); border-radius: 16px; background: color-mix(in oklab, var(--color-surface) 78%, var(--color-bg)); }
 .fs-method-flow svg, .fs-split-diagram svg, .fs-mechanism-diagram svg, .fs-target-diagram svg, .fs-temporal-method svg { display: block; min-width: 780px; width: 100%; height: auto; color: var(--color-accent); }
@@ -549,21 +547,6 @@
 @media (max-width: 500px) {
   .fs-overview-facts, .fs-compute-cards { grid-template-columns: 1fr; }
 }
-
-/* ============================================================================
-   App layout contract: ADR-0017 1.2 (page-body + control aside + 1fr main) and
-   ADR-0071 (the page is exactly the viewport, a workbench is not prose, sized
-   containers, one row of chrome, the instrument gets the majority).
-
-   Measured before this contract, on the deployed build:
-     2560x1440  page 46.9% of viewport width, instrument 15.2% of viewport area
-     1600x900   page 75.0%, instrument 38.8%, document 1620px tall on a 900 view
-   Every one of those is a sizing failure, not a style preference.
-   ============================================================================ */
-
-/* ADR-0071 2: the shell caps PROSE at --maxw. A workbench uses the whole screen;
-   capping an instrument at a reading width discards the screen it exists to use. */
-.page-body.wide { max-width: none; width: 100%; padding: 0.9rem 1.1rem 0.9rem; }
 
 /* The source model is a control and lives in the rail (ADR-0017 1.2), not in a
    full-width banner above the workbench. */

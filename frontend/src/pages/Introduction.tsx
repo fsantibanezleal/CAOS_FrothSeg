@@ -2,7 +2,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Pause, Play, ScanSearch } from 'lucide-react';
 import { Callout, Equation, Refs, useShellLang } from '@fasl-work/caos-app-shell';
-import { artifactUrl } from '../api/artifacts';
+import { artifactUrl, loadMethodBenchmark } from '../api/artifacts';
+import type { MethodBenchmarkDoc } from '../lib/contract.types';
 
 interface TemporalFrame {
   frame_index: number;
@@ -164,6 +165,17 @@ export default function Introduction() {
 }
 
 function FrothSignalDiagram({ es }: { es: boolean }) {
+  // Read from the published benchmark. The three figures this replaced were hard-coded, and one
+  // of them (d32 3.84 mm) was impossible: the product has no pixel/mm calibration at all.
+  const [bench, setBench] = useState<MethodBenchmarkDoc | null>(null);
+  useEffect(() => { loadMethodBenchmark().then(setBench).catch(() => setBench(null)); }, []);
+  const heldOutCases = bench?.methods.find((m) => m.test)?.test?.n_cases ?? null;
+  const bestAp = bench
+    ? bench.methods.reduce<number | null>((best, m) => {
+      const ap = m.test?.mean_ap;
+      return ap != null && (best == null || ap > best) ? ap : best;
+    }, null)
+    : null;
   return (
     <figure className="fs-hero-figure" aria-label={es ? 'Espuma convertida en señal de proceso' : 'Froth converted into a process signal'}>
       <svg viewBox="0 0 720 500" role="img">
@@ -193,19 +205,27 @@ function FrothSignalDiagram({ es }: { es: boolean }) {
           <path d="M448 382 L486 382 L501 330 L526 425 L550 300 L575 362 L596 232 L620 352 L649 279 L676 279" />
           <circle cx="596" cy="232" r="7" className="fs-signal-pulse fs-signal-dot" />
         </g>
+        {/* These were hard-coded literals: 214 instances, d32 3.84 mm, 91.6% coverage. None of
+            the three came from an artifact, and `3.84 mm` was not merely wrong but IMPOSSIBLE:
+            the product has no pixel/mm calibration and the App itself prints "no pixel/mm scale
+            entered, sizes shown in pixels". A landing page for a product whose whole claim is
+            honesty about what it measured cannot open with three invented measurements. They
+            are read from the published benchmark now, or the block does not render. */}
         <g className="fs-hero-metrics" fontFamily="ui-monospace, monospace">
-          <text x="455" y="92" fontSize="15" opacity=".7">{es ? 'INSTANCIAS' : 'INSTANCES'}</text>
-          <text x="455" y="129" fontSize="34" fontWeight="700">214</text>
-          <text x="455" y="179" fontSize="15" opacity=".7">d32</text>
-          <text x="455" y="213" fontSize="29" fontWeight="700">3.84 mm</text>
-          <text x="455" y="263" fontSize="15" opacity=".7">{es ? 'COBERTURA' : 'COVERAGE'}</text>
-          <text x="455" y="297" fontSize="29" fontWeight="700">91.6%</text>
+          <text x="455" y="92" fontSize="15" opacity=".7">{es ? 'MÉTODOS' : 'METHODS'}</text>
+          <text x="455" y="129" fontSize="34" fontWeight="700">{bench ? bench.methods.length : '--'}</text>
+          <text x="455" y="179" fontSize="15" opacity=".7">{es ? 'CASOS RETENIDOS' : 'HELD-OUT CASES'}</text>
+          <text x="455" y="213" fontSize="29" fontWeight="700">{heldOutCases ?? '--'}</text>
+          <text x="455" y="263" fontSize="15" opacity=".7">{es ? 'MEJOR AP' : 'BEST AP'}</text>
+          <text x="455" y="297" fontSize="29" fontWeight="700">{bestAp != null ? bestAp.toFixed(3) : '--'}</text>
         </g>
         <path d="M417 52 V448" className="fs-hero-divider" />
         <text x="36" y="42" className="fs-hero-label" fontFamily="ui-monospace, monospace" fontSize="13">{es ? 'SUPERFICIE OBSERVADA' : 'OBSERVED SURFACE'}</text>
         <text x="455" y="42" className="fs-hero-label" fontFamily="ui-monospace, monospace" fontSize="13">{es ? 'SEÑAL RECUPERADA' : 'RECOVERED SIGNAL'}</text>
       </svg>
-      <figcaption>{es ? 'Contornos por instancia → morfometría → señal temporal' : 'Instance contours → morphometry → temporal signal'}</figcaption>
+      <figcaption>{es
+        ? 'Esquema: contornos por instancia, morfometría, señal temporal. Las burbujas y la traza son ilustrativas; las tres cifras se leen del benchmark publicado.'
+        : 'Schematic: instance contours, then morphometry, then a temporal signal. The bubbles and the trace are illustrative; the three figures are read from the published benchmark.'}</figcaption>
     </figure>
   );
 }
