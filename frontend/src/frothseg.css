@@ -596,15 +596,25 @@
   min-width: 0; min-height: 0;
   background: #050f16; overflow: hidden;
 }
-/* The picture box. It carries the source aspect (published by the page as --fs-focus-ar), so
-   it hugs the drawn frame exactly, and every overlay anchors to IT rather than to the stage:
-   anchored to the stage, the label straddled the letterbox margin and the image with a broken
-   shape, and the HUD floated in the dead black band beside the picture. */
+/* The stage is [info column][picture]. Two rejected layouts bracket this one: anchored to the
+   stage, the label straddled the letterbox margin and the image with a broken shape; anchored
+   to the picture, the label and the HUD covered the bubbles they exist to explain. The info
+   column now occupies the letterbox band and the picture is canvas only, never covered. */
+.fs-focus-stage { display: flex; align-items: stretch; }
+.fs-focus-side {
+  flex: 0 0 clamp(230px, 17vw, 320px); min-width: 0;
+  display: flex; flex-direction: column; gap: 0.7rem;
+  padding: 1rem; overflow-y: auto; color: #eafffc;
+}
 .fs-focus-frame {
+  flex: 1 1 auto; min-width: 0; position: relative;
+  display: flex; align-items: center; justify-content: center;
+}
+.fs-focus-picture {
   position: relative; height: 100%; max-width: 100%; width: auto;
   aspect-ratio: var(--fs-focus-ar, 1 / 1);
 }
-.fs-focus-frame canvas {
+.fs-focus-picture canvas {
   width: 100%; height: 100%; min-width: 0; min-height: 0;
   object-fit: contain; image-rendering: pixelated; display: block;
 }
@@ -612,10 +622,8 @@
 
 /* ADR-0070 4: named in place, so the view teaches on its own. */
 .fs-focus-label {
-  position: absolute; top: 1rem; left: 1rem; max-width: 46ch;
-  padding: 0.6rem 0.8rem; border-radius: 11px; pointer-events: none;
-  background: color-mix(in oklab, #04121a 82%, transparent);
-  backdrop-filter: blur(6px); color: #eafffc;
+  padding: 0.6rem 0.8rem; border-radius: 11px;
+  background: color-mix(in oklab, #04121a 82%, transparent); color: #eafffc;
 }
 .fs-focus-label strong { display: block; font-size: 1rem; letter-spacing: -0.01em; }
 .fs-focus-label p { margin: 0.25rem 0 0; font-size: 0.76rem; line-height: 1.5; opacity: 0.88; }
@@ -625,8 +633,7 @@
    label second: the eye reads the number." It was a right-aligned grid with the label first,
    which is the same information in the wrong reading order and the wrong place. */
 .fs-focus-hud {
-  position: absolute; left: 1rem; top: 8.5rem; display: flex; flex-direction: column;
-  gap: 0.55rem; pointer-events: none; color: #eafffc;
+  display: flex; flex-direction: column; gap: 0.55rem; color: #eafffc;
 }
 .fs-focus-hud div { display: flex; flex-direction: column; gap: 0.05rem; align-items: flex-start;
   padding: 0.4rem 0.6rem; border-radius: 9px; min-width: 7.5rem;
@@ -641,14 +648,13 @@
   border: 1px solid var(--color-border); background: var(--color-surface);
   color: var(--color-fg); font-size: 0.75rem; font-weight: 600;
 }
-.fs-focus-exit { position: absolute; top: 1rem; right: 1rem; z-index: 3; }
+.fs-focus-side .fs-focus-exit { justify-content: center; width: 100%; }
 .fs-focus-empty .fs-focus-exit { position: static; }
 
 .fs-focus-transport {
-  position: absolute; bottom: 1rem; left: 50%; transform: translateX(-50%);
-  display: flex; align-items: center; gap: 0.5rem; width: min(46rem, 62%);
-  padding: 0.5rem 0.75rem; border-radius: 999px;
-  background: color-mix(in oklab, #04121a 82%, transparent); backdrop-filter: blur(6px);
+  margin-top: auto; display: grid; grid-template-columns: auto auto auto minmax(0, 1fr);
+  gap: 0.5rem; align-items: center; padding: 0.55rem 0.65rem; border-radius: 12px;
+  background: color-mix(in oklab, #04121a 78%, transparent);
 }
 .fs-focus-transport button {
   display: inline-grid; place-items: center; width: 32px; height: 32px;

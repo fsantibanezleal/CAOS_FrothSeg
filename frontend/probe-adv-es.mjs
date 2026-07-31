@@ -1,0 +1,12 @@
+import { chromium } from 'playwright';
+const browser = await chromium.launch();
+const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+await page.addInitScript(() => { localStorage.setItem('caos.lang', 'es'); localStorage.setItem('caos.theme', 'light'); });
+await page.goto('http://localhost:4627/methodology', { waitUntil: 'networkidle' });
+await page.click('.tablist [role=tab]:has-text("Piso clásico")');
+await page.waitForTimeout(300);
+const sh = await page.evaluate(() => document.querySelector('main.page')?.scrollHeight || 0);
+await page.setViewportSize({ width: 1280, height: Math.min(sh + 260, 20000) });
+await page.waitForTimeout(300);
+await page.screenshot({ path: 'E:/_Temp/frothseg-adv/slices/es_methodology_c1c2.png' });
+await browser.close();

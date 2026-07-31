@@ -243,10 +243,14 @@ export default function Focus() {
   return (
     <div className="fs-focus">
       <div className="fs-focus-stage">
-        {/* Every overlay anchors to this box, which carries the source aspect, so the label and
-            the HUD sit ON the picture rather than straddling the letterbox margin. */}
-        <div className="fs-focus-frame" style={{ ['--fs-focus-ar' as string]: frameAspect }}>
-          <canvas ref={canvasRef} role="img" aria-label={name} />
+        {/* The stage is [info column][picture]. Anchoring the label and HUD ON the picture hid
+            the bubbles under them, which Felipe rejected: the image is the whole point of this
+            view. The info column occupies the letterbox band the picture cannot use, so the
+            stage stays fully owned (ADR-0070 1) and the picture is never covered by anything. */}
+        <aside className="fs-focus-side">
+          <button className="fs-focus-exit" onClick={backToApp} title={es ? 'Salir (Esc)' : 'Exit (Esc)'}>
+            <Minimize2 size={15} aria-hidden="true" />{es ? 'Salir del foco' : 'Exit focus'}
+          </button>
 
           {/* ADR-0070 4: the stage is labelled in place, so the view teaches on its own. */}
           <div className="fs-focus-label">
@@ -299,11 +303,14 @@ export default function Focus() {
                 aria-label={es ? 'Cuadro de secuencia' : 'Sequence frame'} />
             </div>
           )}
-        </div>
+        </aside>
 
-        <button className="fs-focus-exit" onClick={backToApp} title={es ? 'Salir (Esc)' : 'Exit (Esc)'}>
-          <Minimize2 size={15} aria-hidden="true" />{es ? 'Salir del foco' : 'Exit focus'}
-        </button>
+        {/* The picture: canvas only. Nothing is ever drawn over it. */}
+        <div className="fs-focus-frame">
+          <div className="fs-focus-picture" style={{ ['--fs-focus-ar' as string]: frameAspect }}>
+            <canvas ref={canvasRef} role="img" aria-label={name} />
+          </div>
+        </div>
       </div>
 
       {/* ADR-0070 2: one parameter column on the right, scrollable independently of the stage. */}
