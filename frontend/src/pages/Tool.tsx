@@ -77,13 +77,22 @@ export default function Tool() {
   const lane = useSequenceLane(es);
 
   const restoredCase = searchParams.get('case');
+  const restoredMethod = searchParams.get('method');
   const restoredRef = useRef(false);
+  // Returning from a STILL focus restores the case and the method directly.
   useEffect(() => {
-    if (restoredRef.current || !restoredCase || !lane.manifest) return;
+    if (!restoredCase || workbenchSource !== 'still') return;
+    setSampleId(restoredCase);
+    if (restoredMethod) setShowcaseMethodId(restoredMethod);
+    // Restore once; later user changes must not be fought by the URL.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  useEffect(() => {
+    if (restoredRef.current || !restoredCase || workbenchSource !== 'sequence' || !lane.manifest) return;
     const index = lane.manifest.sequences.findIndex((s) => s.case_id === restoredCase);
     if (index >= 0) lane.setSequenceIndex(index);
     restoredRef.current = true;
-  }, [restoredCase, lane]);
+  }, [restoredCase, workbenchSource, lane]);
 
   useEffect(() => {
     loadIndex().then(setIndex).catch(() => setIndex(null));
@@ -284,7 +293,6 @@ export default function Tool() {
   }, [analysisFrame, result, gt]);
 
   const sequenceMode = workbenchSource === 'sequence';
-  const focusCase = sequenceMode ? (lane.sequence?.case_id ?? sampleId) : sampleId;
 
 
   /* ADR-0016 6 and ADR-0017 1.1: the App composes the shell's Tabs primitive. It does not
@@ -636,7 +644,9 @@ export default function Tool() {
             as the scenario selector. It sat BELOW the input and method blocks, so on the
             sequence lane it was the seventh thing down the rail and read as a footnote to the
             controls rather than the way into the view. It leads the rail now. */}
-        <button type="button" className="fs-focus-enter" onClick={() => navigate('/focus/' + focusCase)}>
+        <button type="button" className="fs-focus-enter" onClick={() => navigate(sequenceMode
+          ? `/focus/sequence/${lane.sequence?.case_id ?? ''}`
+          : `/focus/still/${sampleId}?method=${encodeURIComponent(showcaseMethodId)}`)}>
           <Maximize2 size={15} aria-hidden="true" />
           {es ? 'Abrir en modo foco' : 'Open focus mode'}
         </button>

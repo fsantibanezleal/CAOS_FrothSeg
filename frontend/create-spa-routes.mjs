@@ -18,7 +18,16 @@ const showcase = JSON.parse(
   await readFile(join('dist', 'data', 'showcase', 'temporal', 'manifest.json'), 'utf8'),
 );
 for (const sequence of showcase.sequences ?? []) {
+  // The old lane-less path stays materialized so shared links keep answering 200.
   routes.push(join('focus', sequence.case_id));
+  routes.push(join('focus', 'sequence', sequence.case_id));
+}
+// Still cases are focusable too (the case index is the same one the App reads).
+const caseIndex = JSON.parse(
+  await readFile(join('dist', 'data', 'manifests', 'index.json'), 'utf8'),
+);
+for (const entry of caseIndex.cases ?? []) {
+  routes.push(join('focus', 'still', entry.case_id));
 }
 
 for (const route of routes) {

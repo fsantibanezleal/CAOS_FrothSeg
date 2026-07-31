@@ -111,7 +111,9 @@ if (el) {
       <BrowserRouter>
         <CitationsProvider items={CITATIONS}>
           <Routes>
-            <Route path="/focus/:caseId" element={<Focus />} />
+            <Route path="/focus/:laneKind/:caseId" element={<Focus />} />
+        {/* Old deep links carried no lane and were always sequences; they keep working. */}
+        <Route path="/focus/:caseId" element={<Focus />} />
             <Route path="*" element={<AppShell config={config}>
             <ShellLicenseCorrection />
             <Routes>
