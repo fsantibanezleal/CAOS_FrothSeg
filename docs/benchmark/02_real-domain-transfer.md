@@ -75,17 +75,19 @@ accumulates.
 ## Result
 
 64 real held-out images, 4,979 annotated nuclei, froth-fitted settings applied unchanged.
-No method failed to run.
+No method failed to run. Re-run on 2026-08-01 after the C3 and C7 engine defaults were adopted; the
+split is the same already-observed one drawn on 2026-07-28, so this recomputes a published surface
+and selects nothing.
 
 | id | method | real AP | froth AP | delta |
 |---|---|---|---|---|
 | L5 | Cellpose-SAM | **0.709** | 0.510 | **+0.199** |
 | C1 | Otsu + connected components | 0.339 | 0.065 | +0.274 |
+| C7 | Lamella-valley constrained watershed | 0.301 | 0.233 | +0.069 |
 | C5 | H-minima watershed | 0.264 | 0.133 | +0.131 |
 | C4 | Distance-transform watershed | 0.256 | 0.198 | +0.059 |
-| C7 | Lamella-valley watershed | 0.193 | 0.167 | +0.026 |
-| C3 | Marker-controlled watershed | 0.182 | 0.103 | +0.079 |
 | L6 | YOLO froth segmentation | 0.144 | 0.293 | -0.149 |
+| C3 | Marker-controlled watershed | 0.128 | 0.220 | **-0.092** |
 | **N1** | **LamellaStar** | **0.125** | **0.519** | **-0.394** |
 | L3 | GC-FSegNet | 0.110 | 0.319 | -0.209 |
 | L1 | Boundary/distance U-Net | 0.094 | 0.415 | -0.322 |
@@ -98,15 +100,30 @@ Grouped by tier, the pattern is unambiguous:
 
 | tier | mean delta |
 |---|---|
-| classical (7 methods) | **+0.088** |
+| classical (7 methods) | **+0.070** |
 | in-repo trained (6 methods) | **-0.243** |
 | foundation, never trained here (L5) | **+0.199** |
 
 **The synthetic ranking does not transfer.** N1 LamellaStar leads the froth benchmark at 0.519
 and falls to eighth at 0.125 on real images, a drop of 0.394. Every model trained on the 192
-synthetic samples degrades. Every classical method, which has no learned prior to overfit,
-improves. The single method that was never trained in this repository is the only learned
-method that improves, and it becomes the clear leader at 0.709.
+synthetic samples degrades. Five of the seven classical methods, which have no learned prior to
+overfit, improve, for a tier mean of +0.070. The single method that was never trained in this
+repository is the only learned method that improves, and it becomes the clear leader at 0.709.
+
+**The two classical exceptions are named, not averaged away.** C2 gradient immersion watershed was
+already at 0.017 on froth and returns 0.000 here, a delta of -0.017, so the tier gains while its
+weakest member does not. C3 marker-controlled watershed is the more interesting one: it falls from
+0.220 to 0.128 after the 2026-08-01 adoption moved its flooding surface to the negated image, where
+before the adoption it rose from 0.103 to 0.182 on the distance transform. That reversal is a real
+result and is stated as one. The adopted surface is a FROTH mechanism, since flooding the negated
+intensity from h-maxima markers assumes one bright specular highlight per object and a dark Plateau
+border between objects, and cell nuclei have neither; on this domain the distance transform it
+replaced is the better surface. The change was adopted on a froth source and confirmed on a froth
+reserve slice (`verification/phase1-adoption.json`), and this split supports no froth statement, so
+the adoption stands. But nobody should read C3's froth gain as evidence that the surface is
+generally better, and this row is why. C7's constrained watershed moves the other way on this same
+re-run: its real AP rises from 0.193 before the adoption to 0.301 after it, its froth-to-real delta
+is +0.069 (0.233 to 0.301), and it is now the second-best classical method here, behind C1.
 
 ### What this does and does not say about N1
 

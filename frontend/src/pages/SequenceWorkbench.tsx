@@ -1,4 +1,7 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { Tabs } from '@fasl-work/caos-app-shell';
+import { PanelBoundary } from '../viz/PanelBoundary';
+import { MetricBars } from '../viz/MetricBars';
 import { ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react';
 import { artifactUrl, loadTemporalShowcase } from '../api/artifacts';
 import type { TemporalSequenceMetrics } from '../lib/contract.types';
@@ -25,6 +28,13 @@ export function useSequenceLane(es: boolean) {
   const [speed, setSpeed] = useState(2);
   const [view, setView] = useState<SequenceView>('overlay');
   const [tab, setTab] = useState<SequenceTab>('replay');
+  // The shell Tabs is uncontrolled: it copies `initial` into useState once at mount, so
+  // `setTab` alone cannot steer it afterwards. Same trap as the Events fetch documented
+  // below, and the same fix as the still lane's pick-to-replay (Tool.tsx `tabEpoch`):
+  // each Methods-row pick bumps this counter, the counter is part of the SequenceStage
+  // Tabs key, and the remount honours `initial={tab}`. Without it the pick moved the
+  // rail selection but the active tab stayed on Methods (measured 2026-07-31).
+  const [tabEpoch, setTabEpoch] = useState(0);
   const [eventLog, setEventLog] = useState<TemporalEventLog | null>(null);
   const [eventError, setEventError] = useState('');
 
@@ -100,11 +110,18 @@ export function useSequenceLane(es: boolean) {
 
   // The event logs live beside their prediction frames rather than in the manifest, so only the
   // pair the reader actually opened is downloaded.
+  //
+  // The trigger is VISIBILITY, not the lane's `tab` state. The shell's Tabs primitive owns its
+  // own selection and mounts every panel (hiding the inactive ones), so `tab` never left
+  // 'replay' once the hand-rolled strip was removed and this fetch was never issued: the Events
+  // panel sat on "Loading this pair's event log" forever, with zero network requests to show
+  // for it. A hidden panel has no layout box, so an intersection check is the honest signal.
+  const [eventsWanted, setEventsWanted] = useState(false);
   useEffect(() => {
     const path = prediction?.events_path;
     setEventLog(null);
     setEventError('');
-    if (!path || tab !== 'events') return undefined;
+    if (!path || !eventsWanted) return undefined;
     let cancelled = false;
     fetch(artifactUrl(path))
       .then((response) => {
@@ -116,7 +133,7 @@ export function useSequenceLane(es: boolean) {
         if (!cancelled) setEventError(String(reason instanceof Error ? reason.message : reason));
       });
     return () => { cancelled = true; };
-  }, [prediction?.events_path, tab]);
+  }, [prediction?.events_path, eventsWanted]);
 
   const frameLabel = frames.length
     ? `${String(frameIndex + 1).padStart(2, '0')} / ${String(frames.length).padStart(2, '0')}`
@@ -126,9 +143,10 @@ export function useSequenceLane(es: boolean) {
   return {
     manifest, loadError, sequence, frames, frame, predictions, framewisePredictions,
     nativePredictions, prediction, displayFrame, metrics, views, tabs, tab, setTab,
+    tabEpoch, setTabEpoch,
     sequenceIndex, setSequenceIndex, predictionIndex, setPredictionIndex,
     frameIndex, setFrameIndex, playing, setPlaying, speed, setSpeed, view, setView,
-    eventLog, eventError, frameLabel, displayLabel,
+    eventLog, eventError, requestEvents: setEventsWanted, frameLabel, displayLabel,
     ready: Boolean(manifest && sequence && frame),
   };
 }
@@ -214,8 +232,9 @@ export function SequenceStage({ lane, es }: { lane: SequenceLane; es: boolean })
   const {
     manifest, loadError, sequence, frames, frame, predictions, framewisePredictions,
     nativePredictions, prediction, displayFrame, metrics, views, tabs, tab, setTab,
+    tabEpoch, setTabEpoch,
     setPredictionIndex, frameIndex, setFrameIndex, playing, setPlaying, speed, setSpeed,
-    view, setView, eventLog, eventError, frameLabel, displayLabel,
+    view, setView, eventLog, eventError, requestEvents, frameLabel, displayLabel,
   } = lane;
 
   if (!manifest || !sequence || !frame) {
@@ -233,71 +252,66 @@ export function SequenceStage({ lane, es }: { lane: SequenceLane; es: boolean })
   }
 
   // Same shape as the still lane: ONE auto row of tab chrome, then a `minmax(0, 1fr)` body.
-  // Rendered as a bare fragment the six replay children became six implicit rows of
-  // `.fs-stage-col` and the frame hung 41px past the stage at 1280x800.
-  return (
-      <>
-        <div className="fs-tabrow">
-        <div className="fs-tabs" role="tablist" aria-label={es ? 'Análisis de secuencia' : 'Sequence analysis'}>
-          {tabs.map((item) => (
-            <button
-              key={item}
-              type="button"
-              role="tab"
-              aria-selected={tab === item}
-              className={`fs-tab${tab === item ? ' on' : ''}`}
-              onClick={() => setTab(item)}
-            >
-              {sequenceTabLabel(item, es)}
-            </button>
-          ))}
-        </div>
-        </div>
-
-        <div className="fs-stage-body">
-        {tab === 'replay' && (
+  // ADR-0016 6: the shell's Tabs primitive, same as the still lane and the reference app.
+  const panels: Record<SequenceTab, ReactNode> = {
+    replay: (
           <div className="fs-replay">
-            <div className="fs-sequence-toolbar">
-              <div className="fs-view-picker" role="group" aria-label={es ? 'Vista del cuadro' : 'Frame view'}>
-                {views.map((item) => (
-                  <button
-                    key={item}
-                    type="button"
-                    className={view === item ? 'on' : ''}
-                    aria-pressed={view === item}
-                    onClick={() => setView(item)}
-                  >
-                    {sequenceViewLabel(item, displayFrame ?? frame, es, prediction?.method_id)}
-                  </button>
-                ))}
-              </div>
-              {!views.includes('prediction') && (
-                <span className="fs-evidence-status">
-                  {es ? 'Vista de predicción no publicada para este artefacto' : 'Prediction view not published for this artifact'}
-                </span>
-              )}
-            </div>
-
+            
+            {/* ADR-0071 section 8 (decision delegated 2026-07-31): the instrument is the
+                interactive window and it fills the whole panel. The frame letterboxes inside;
+                the readouts and the transport live in the band over the letterbox, never over
+                the frame at rest. */}
+            <div className="fs-instrument">
             <div className="fs-sequence-stage">
               <SequenceFrame frame={displayFrame ?? frame} view={view} es={es} label={displayLabel} />
-              <div className="fs-sequence-stamp">
+            </div>
+            <aside className="fs-instrument-band">
+              <div className="fs-band-card">
                 <span>{displayLabel}</span>
-                <strong>{frameLabel}</strong>
+                <div className="fs-kpi-v" style={{ fontSize: '0.95rem' }}>{frameLabel}</div>
               </div>
-
-              {/* The transport and the summary ride ON the frame rather than under it. As stacked
-                  rows they consumed 117px of an 508px stage and shrank the square instrument to
-                  7.5% of the viewport; overlaid, the frame keeps the whole free height and the
-                  controls stay where the eye already is. Same HUD pattern as focus mode. */}
+              <div className="fs-band-card">
+                <span>{es ? 'Vista' : 'View'}</span>
+                <select
+                  className="fs-sel"
+                  value={view}
+                  onChange={(event) => setView(event.target.value as SequenceView)}
+                  aria-label={es ? 'Vista del cuadro' : 'Frame view'}
+                >
+                  {views.map((item) => (
+                    <option key={item} value={item}>{sequenceViewLabel(item, displayFrame ?? frame, es, prediction?.method_id)}</option>
+                  ))}
+                </select>
+                {!views.includes('prediction') && (
+                  <p className="fs-hint small" style={{ margin: '0.3rem 0 0' }}>{es
+                    ? 'Vista de predicción no publicada para este artefacto'
+                    : 'Prediction view not published for this artifact'}</p>
+                )}
+              </div>
+              <div className="fs-band-card">
+                <span>{es ? 'Este cuadro' : 'This frame'}</span>
+                <table className="fs-table">
+                  <tbody>
+                    <tr><th>{es ? 'método' : 'method'}</th><td>{prediction?.method_id ?? '--'}</td></tr>
+                  </tbody>
+                </table>
+              </div>
               {metrics && (
-                <div className="fs-kpis fs-sequence-summary">
-                  <SequenceKpi value={`${(metrics.mean_frame_coverage * 100).toFixed(1)}%`} label={es ? 'cobertura' : 'coverage'} />
-                  <SequenceKpi value={metrics.idf1.toFixed(3)} label="IDF1" />
-                  <SequenceKpi value={metrics.hota.toFixed(3)} label="HOTA" />
-                  <SequenceKpi value={`${(metrics.id_switch_rate * 100).toFixed(2)}%`} label={es ? 'cambios de ID' : 'ID switches'} />
+                <div className="fs-band-card">
+                  <span>{es ? 'Secuencia' : 'Sequence'}</span>
+                  <table className="fs-table">
+                    <tbody>
+                      <tr><th>{es ? 'cobertura' : 'coverage'}</th><td className="num">{(metrics.mean_frame_coverage * 100).toFixed(1)}%</td></tr>
+                      <tr><th>IDF1</th><td className="num">{metrics.idf1.toFixed(3)}</td></tr>
+                      <tr><th>HOTA</th><td className="num">{metrics.hota.toFixed(3)}</td></tr>
+                      <tr><th>{es ? 'cambios ID' : 'ID switches'}</th><td className="num">{metrics.id_switches ?? '--'}</td></tr>
+                    </tbody>
+                  </table>
+                  <p className="fs-hint small" style={{ margin: '0.3rem 0 0' }}>{isNativeVideoMode(prediction?.mode)
+                    ? (es ? 'Propagación nativa: no comparable con el protocolo por cuadro.' : 'Native propagation: not comparable with the framewise protocol.')
+                    : (es ? 'Protocolo por cuadro, asociación por IoU.' : 'Framewise protocol, IoU association.')}</p>
                 </div>
               )}
-
               <div className="fs-sequence-timeline">
               <button
                 type="button"
@@ -340,14 +354,14 @@ export function SequenceStage({ lane, es }: { lane: SequenceLane; es: boolean })
                 </select>
               </label>
               </div>
+            </aside>
             </div>
           </div>
-        )}
-
-        {tab === 'tracking' && metrics && (
-          <TrackingEvidence metrics={metrics} methodId={prediction?.method_id} es={es} />
-        )}
-        {tab === 'events' && metrics && (
+        ),
+    tracking: metrics ? (
+      <TrackingEvidence metrics={metrics} methodId={prediction?.method_id} mode={prediction?.mode} es={es} />
+    ) : null,
+    events: metrics ? (
           <EventEvidence
             metrics={metrics}
             truthEvents={eventLog?.truth_events ?? []}
@@ -355,22 +369,30 @@ export function SequenceStage({ lane, es }: { lane: SequenceLane; es: boolean })
             loading={!eventLog && !eventError}
             error={eventError}
             frameIndex={frameIndex}
+            frameCount={frames.length}
             es={es}
+            onVisible={requestEvents}
           />
-        )}
-        {tab === 'compare' && (
+    ) : null,
+    compare: (
           <SequenceComparison
             framewise={framewisePredictions}
             native={nativePredictions}
             selectedMethodId={prediction?.method_id}
             onSelect={(methodId) => {
               const index = predictions.findIndex((item) => item.method_id === methodId);
-              if (index >= 0) { setPredictionIndex(index); setTab('replay'); }
+              if (index >= 0) {
+                setPredictionIndex(index);
+                setTab('replay');
+                // Remount the uncontrolled Tabs so `initial={tab}` takes effect (see
+                // tabEpoch in useSequenceLane).
+                setTabEpoch((epoch) => epoch + 1);
+              }
             }}
             es={es}
           />
-        )}
-        {tab === 'provenance' && (
+    ),
+    provenance: (
           <SequenceProvenance
             manifest={manifest}
             frame={displayFrame ?? frame}
@@ -381,9 +403,20 @@ export function SequenceStage({ lane, es }: { lane: SequenceLane; es: boolean })
             evidenceSha={prediction?.evidence_sha256 ?? null}
             es={es}
           />
-        )}
-        </div>
-      </>
+    ),
+  };
+
+  return (
+    <Tabs
+      key={`${sequence.case_id}-${tabEpoch}`}
+      initial={tab}
+      ariaLabel={es ? 'Análisis de secuencia' : 'Sequence analysis'}
+      tabs={tabs.map((item) => ({
+        id: item,
+        label: sequenceTabLabel(item, es),
+        content: <PanelBoundary key={item} label={item}>{panels[item]}</PanelBoundary>,
+      }))}
+    />
   );
 }
 
@@ -514,15 +547,22 @@ function InstanceRaster({
 function TrackingEvidence({
   metrics,
   methodId,
+  mode,
   es,
 }: {
   metrics: TemporalSequenceMetrics;
   methodId?: string;
+  mode?: string;
   es: boolean;
 }) {
   const method = methodId ?? (es ? 'método publicado' : 'published method');
   return (
     <div className="fs-evidence-panel">
+      {isNativeVideoMode(mode) && (
+        <p className="fs-note">{es
+          ? 'Este método recibe las máscaras exactas del primer cuadro y solo debe conservarlas, así que sus puntuaciones de identidad describen el protocolo, no una detección: no son comparables con los métodos por cuadro.'
+          : 'This method is given the exact first-frame masks and only has to keep them, so its identity scores describe the protocol, not a detection: they are not comparable with the framewise methods.'}</p>
+      )}
       <header>
         <span>{es ? 'Asociación cuadro a cuadro' : 'Frame-to-frame association'}</span>
         <h3>{es ? 'La identidad se evalúa separada de la detección' : 'Identity is evaluated separately from detection'}</h3>
@@ -538,13 +578,29 @@ function TrackingEvidence({
         <SequenceKpi value={metrics.track_fragmentations} label={es ? 'fragmentaciones' : 'fragmentations'} />
         <SequenceKpi value={metrics.flow_epe_px?.toFixed(2) ?? 'n/a'} label="flow EPE px" />
       </div>
+
+      {/* All five of these are fractions of the same unit, so they were being compared in the
+          reader's head from a column of numbers. On one scale the shape is the point: identity
+          precision far above identity recall says the method keeps the tracks it commits to and
+          drops the rest, which is a different failure from switching them around. */}
+      <MetricBars
+        rows={[
+          { label: 'IDF1', value: metrics.idf1 },
+          { label: 'HOTA', value: metrics.hota },
+          { label: es ? 'precisión de identidad' : 'identity precision', value: metrics.id_precision },
+          { label: es ? 'recobrado de identidad' : 'identity recall', value: metrics.id_recall },
+          { label: es ? 'exactitud de asociación' : 'association accuracy', value: metrics.association_accuracy },
+          { label: es ? 'cobertura media' : 'mean coverage', value: metrics.mean_frame_coverage },
+        ]}
+        caption={es
+          ? 'Todas en la misma escala 0 a 1. Los conteos (fragmentaciones, cambios de ID) quedan en la tabla porque no lo son.'
+          : 'All on the same 0 to 1 scale. The counts (fragmentations, ID switches) stay in the table because they are not.'}
+      />
       <table className="fs-table">
         <tbody>
           <tr><th>{es ? 'instancias GT asociadas' : 'matched GT instances'}</th><td className="num">{metrics.matched_gt_instances ?? 'n/a'}</td></tr>
           <tr><th>{es ? 'cambios de identidad' : 'identity switches'}</th><td className="num">{metrics.id_switches ?? 'n/a'}</td></tr>
-          <tr><th>{es ? 'precisión de identidad' : 'identity precision'}</th><td className="num">{formatMetric(metrics.id_precision)}</td></tr>
-          <tr><th>{es ? 'recobrado de identidad' : 'identity recall'}</th><td className="num">{formatMetric(metrics.id_recall)}</td></tr>
-          <tr><th>{es ? 'exactitud de asociación' : 'association accuracy'}</th><td className="num">{formatMetric(metrics.association_accuracy)}</td></tr>
+          <tr><th>{es ? 'fragmentaciones de traza' : 'track fragmentations'}</th><td className="num">{metrics.track_fragmentations ?? 'n/a'}</td></tr>
         </tbody>
       </table>
     </div>
@@ -580,7 +636,7 @@ function SequenceComparison({
             : 'Every method ran frame by frame under the same protocol and received identities by IoU association. The table is ordered by HOTA, which balances detection and association. Pick a row to replay it.'}
         </p>
       </header>
-      <div style={{ overflowX: 'auto' }}>
+      <div className="fs-scrollbox">
         <table className="fs-table">
           <thead>
             <tr>
@@ -656,7 +712,9 @@ function EventEvidence({
   loading,
   error,
   frameIndex,
+  frameCount,
   es,
+  onVisible,
 }: {
   metrics: TemporalSequenceMetrics;
   truthEvents: TemporalEvent[];
@@ -664,12 +722,29 @@ function EventEvidence({
   loading: boolean;
   error: string;
   frameIndex: number;
+  frameCount: number;
   es: boolean;
+  onVisible: (wanted: boolean) => void;
 }) {
   const truthAtFrame = truthEvents.filter((event) => event.frame_index === frameIndex);
   const predictedAtFrame = predictedEvents.filter((event) => event.frame_index === frameIndex);
+
+  // The shell mounts every tab panel and hides the inactive ones, so "am I mounted" says
+  // nothing about whether the reader opened this view. A hidden panel has no layout box, so
+  // an intersection observer is what actually distinguishes the two.
+  const root = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const element = root.current;
+    if (!element) return undefined;
+    const observer = new IntersectionObserver((entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) onVisible(true);
+    });
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [onVisible]);
+
   return (
-    <div className="fs-evidence-panel">
+    <div className="fs-evidence-panel" ref={root}>
       <header>
         <span>{es ? 'Eventos temporales' : 'Temporal events'}</span>
         <h3>{es ? 'Coalescencia y ruptura se reportan con sus errores' : 'Coalescence and bursting are reported with their errors'}</h3>
@@ -699,6 +774,48 @@ function EventEvidence({
           {es ? 'Cargando el registro de eventos de este par' : 'Loading this pair’s event log'}
         </p>
       )}
+      {/* The whole log is in the browser, but the panel only ever reported the CURRENT frame,
+          so a sequence with events in frames 3 and 6 read as "no published events in this
+          frame" on the frame the reader happened to be on. The timeline shows where the events
+          actually are, truth above and prediction below, on a shared frame axis. */}
+      {!loading && !error && (truthEvents.length > 0 || predictedEvents.length > 0) && (
+        <div className="fs-event-timeline">
+          <div className="fs-event-track">
+            <span>{es ? 'referencia' : 'truth'}</span>
+            <div>
+              {Array.from({ length: frameCount }, (_, i) => {
+                const n = truthEvents.filter((e) => e.frame_index === i).length;
+                return (
+                  <i
+                    key={i}
+                    className={`${n > 0 ? 'on' : ''}${i === frameIndex ? ' now' : ''}`}
+                    title={`${es ? 'cuadro' : 'frame'} ${i + 1}: ${n}`}
+                  >{n > 0 ? n : ''}</i>
+                );
+              })}
+            </div>
+          </div>
+          <div className="fs-event-track">
+            <span>{es ? 'predicción' : 'prediction'}</span>
+            <div>
+              {Array.from({ length: frameCount }, (_, i) => {
+                const n = predictedEvents.filter((e) => e.frame_index === i).length;
+                return (
+                  <i
+                    key={i}
+                    className={`${n > 0 ? 'on pred' : ''}${i === frameIndex ? ' now' : ''}`}
+                    title={`${es ? 'cuadro' : 'frame'} ${i + 1}: ${n}`}
+                  >{n > 0 ? n : ''}</i>
+                );
+              })}
+            </div>
+          </div>
+          <p className="fs-hint small">{es
+            ? 'Cada casilla es un cuadro; el número es cuántos eventos se reportaron en él. El cuadro seleccionado está resaltado.'
+            : 'Each cell is a frame; the number is how many events were reported in it. The selected frame is highlighted.'}</p>
+        </div>
+      )}
+
       {!loading && !error && (
         <div className="fs-event-columns">
           <article>
@@ -794,7 +911,7 @@ const TEMPORAL_METHOD_LABELS: Record<string, string> = {
   C4: 'Distance-transform watershed',
   C5: 'H-minima watershed',
   C6: 'SLIC + RAG merge',
-  C7: 'Lamella-valley watershed',
+  C7: 'Lamella-valley constrained watershed',
   L1: 'Boundary/distance U-Net',
   L2: 'Deep-marker watershed',
   L3: 'GC-FSegNet',
@@ -805,7 +922,7 @@ const TEMPORAL_METHOD_LABELS: Record<string, string> = {
   N1: 'LamellaStar',
 };
 
-function temporalMethodLabel(methodId: string, slug?: string): string {
+export function temporalMethodLabel(methodId: string, slug?: string): string {
   return TEMPORAL_METHOD_LABELS[methodId] ?? slug ?? methodId;
 }
 
@@ -821,16 +938,29 @@ function sequenceViewLabel(
     const method = methodId ?? 'prediction';
     return es ? `Predicción ${method}` : `${method} prediction`;
   }
-  return frame.prediction_overlay_path
-    ? (es ? 'Fuente + predicción' : 'Source + prediction')
-    : (es ? 'Fuente + referencia' : 'Source + truth');
+  // Mirrors SequenceFrame's overlay branch exactly: the composite draws
+  // frame.prediction_path when present (the SELECTED METHOD's labels over the source),
+  // falls back to truth_path, and only then to the pre-rendered overlay.png, which is
+  // source + truth (data-pipeline/fslab/showcase.py line 359). The old check keyed on
+  // prediction_overlay_path, a field no manifest frame carries, so the lane's default
+  // view named the method's prediction "Source + truth" (adversarial review 2026-07-31,
+  // D1: overlay pixels measurably change with the selected method).
+  if (frame.prediction_path) {
+    const method = methodId ? ` ${methodId}` : '';
+    return es ? `Fuente + predicción${method}` : `Source +${method} prediction`;
+  }
+  return es ? 'Fuente + referencia' : 'Source + truth';
 }
 
+/** Same vocabulary as the still lane (see `groupLabel` in Tool.tsx): short noun phrases, with
+ *  Methods and Provenance named identically in both lanes so the nav does not change meaning
+ *  when the analysis source does. "Compare methods" here versus "Compare" there was the same
+ *  view under two names. */
 function sequenceTabLabel(tab: SequenceTab, es: boolean): string {
   if (tab === 'replay') return es ? 'Reproducción' : 'Replay';
   if (tab === 'tracking') return es ? 'Seguimiento' : 'Tracking';
   if (tab === 'events') return es ? 'Eventos' : 'Events';
-  if (tab === 'compare') return es ? 'Comparar métodos' : 'Compare methods';
+  if (tab === 'compare') return es ? 'Métodos' : 'Methods';
   return es ? 'Proveniencia' : 'Provenance';
 }
 

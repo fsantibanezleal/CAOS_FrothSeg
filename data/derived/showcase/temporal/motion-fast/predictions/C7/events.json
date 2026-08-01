@@ -484,11 +484,6 @@
     },
     {
       "frame_index": 4,
-      "instance_id": 89,
-      "type": "birth"
-    },
-    {
-      "frame_index": 4,
       "instance_id": 7,
       "type": "disappearance"
     },
@@ -539,13 +534,13 @@
     },
     {
       "frame_index": 4,
-      "instance_id": 76,
+      "instance_id": 77,
       "type": "disappearance"
     },
     {
-      "frame_index": 4,
-      "instance_id": 77,
-      "type": "disappearance"
+      "frame_index": 5,
+      "instance_id": 89,
+      "type": "birth"
     },
     {
       "frame_index": 5,
@@ -644,11 +639,6 @@
     },
     {
       "frame_index": 5,
-      "instance_id": 109,
-      "type": "birth"
-    },
-    {
-      "frame_index": 5,
       "instance_id": 68,
       "type": "disappearance"
     },
@@ -660,6 +650,11 @@
     {
       "frame_index": 5,
       "instance_id": 81,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 83,
       "type": "disappearance"
     },
     {
@@ -678,9 +673,9 @@
       "type": "disappearance"
     },
     {
-      "frame_index": 5,
-      "instance_id": 87,
-      "type": "disappearance"
+      "frame_index": 6,
+      "instance_id": 109,
+      "type": "birth"
     },
     {
       "frame_index": 6,
@@ -749,13 +744,8 @@
     },
     {
       "frame_index": 6,
-      "instance_id": 123,
-      "type": "birth"
-    },
-    {
-      "frame_index": 6,
-      "instance_id": 124,
-      "type": "birth"
+      "instance_id": 6,
+      "type": "disappearance"
     },
     {
       "frame_index": 6,
@@ -769,7 +759,7 @@
     },
     {
       "frame_index": 6,
-      "instance_id": 83,
+      "instance_id": 89,
       "type": "disappearance"
     },
     {
@@ -794,12 +784,12 @@
     },
     {
       "frame_index": 6,
-      "instance_id": 94,
+      "instance_id": 95,
       "type": "disappearance"
     },
     {
       "frame_index": 6,
-      "instance_id": 96,
+      "instance_id": 97,
       "type": "disappearance"
     },
     {
@@ -829,11 +819,6 @@
     },
     {
       "frame_index": 6,
-      "instance_id": 103,
-      "type": "disappearance"
-    },
-    {
-      "frame_index": 6,
       "instance_id": 104,
       "type": "disappearance"
     },
@@ -849,13 +834,18 @@
     },
     {
       "frame_index": 6,
-      "instance_id": 107,
+      "instance_id": 108,
       "type": "disappearance"
     },
     {
-      "frame_index": 6,
-      "instance_id": 109,
-      "type": "disappearance"
+      "frame_index": 7,
+      "instance_id": 123,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 124,
+      "type": "birth"
     },
     {
       "frame_index": 7,
@@ -889,16 +879,6 @@
     },
     {
       "frame_index": 7,
-      "instance_id": 131,
-      "type": "birth"
-    },
-    {
-      "frame_index": 7,
-      "instance_id": 132,
-      "type": "birth"
-    },
-    {
-      "frame_index": 7,
       "instance_id": 16,
       "type": "disappearance"
     },
@@ -909,12 +889,22 @@
     },
     {
       "frame_index": 7,
-      "instance_id": 89,
+      "instance_id": 88,
       "type": "disappearance"
     },
     {
       "frame_index": 7,
-      "instance_id": 97,
+      "instance_id": 96,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 103,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 109,
       "type": "disappearance"
     },
     {
@@ -924,7 +914,7 @@
     },
     {
       "frame_index": 7,
-      "instance_id": 111,
+      "instance_id": 113,
       "type": "disappearance"
     },
     {
@@ -934,7 +924,7 @@
     },
     {
       "frame_index": 7,
-      "instance_id": 115,
+      "instance_id": 116,
       "type": "disappearance"
     },
     {
@@ -949,27 +939,17 @@
     },
     {
       "frame_index": 7,
-      "instance_id": 119,
-      "type": "disappearance"
-    },
-    {
-      "frame_index": 7,
       "instance_id": 120,
       "type": "disappearance"
     },
     {
       "frame_index": 7,
+      "instance_id": 121,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 7,
       "instance_id": 122,
-      "type": "disappearance"
-    },
-    {
-      "frame_index": 7,
-      "instance_id": 123,
-      "type": "disappearance"
-    },
-    {
-      "frame_index": 7,
-      "instance_id": 124,
       "type": "disappearance"
     }
   ],

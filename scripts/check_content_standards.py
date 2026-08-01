@@ -29,6 +29,22 @@ SELF = "scripts/check_content_standards.py"
 BANNED_DASHES = {0x2014, 0x2015}  # em dash, horizontal bar
 EMOJI_SELECTOR = 0xFE0F
 
+# Directional arrows read as a machine-generated tell when they stand in for a word in a sentence
+# ("instance contours -> morphometry -> temporal signal" was shipped on the Introduction page).
+# ADR-0067 as written lets every arrow through, and it says so deliberately, so this is a scoped
+# TIGHTENING rather than a reinterpretation: arrows are banned only in USER-VISIBLE product strings
+# under frontend/src, where prose lives. They remain allowed in developer documentation, where
+# "preprocess -> train -> infer" is stage notation and "Settings -> Pages -> Source" is a UI path,
+# neither of which is prose. U+2197 stays allowed everywhere: it is the external-link affordance
+# ADR-0067 explicitly sanctions, not a word substitute.
+BANNED_ARROWS = {0x2190, 0x2192, 0x2194, 0x21D2, 0x21D0, 0x27F6, 0x27F5}
+PROSE_ROOTS = ("frontend/src/",)
+
+
+def is_prose_file(rel: str) -> bool:
+    """User-visible product strings live here; developer notation does not."""
+    return rel.startswith(PROSE_ROOTS)
+
 
 def is_emoji(cp: int) -> bool:
     return 0x1F000 <= cp <= 0x1FAFF or cp == EMOJI_SELECTOR
@@ -63,9 +79,13 @@ def main() -> int:
                     hits.append(f"  {rel}:{lineno}:{col}  em-dash (U+{cp:04X})")
                 elif is_emoji(cp):
                     hits.append(f"  {rel}:{lineno}:{col}  emoji (U+{cp:04X} {ch!r})")
+                elif cp in BANNED_ARROWS and is_prose_file(rel):
+                    hits.append(
+                        f"  {rel}:{lineno}:{col}  arrow in product prose (U+{cp:04X} {ch!r})"
+                    )
 
     if not hits:
-        print("check_content_standards: OK, no em-dash or emoji in tracked content.")
+        print("check_content_standards: OK, no em-dash or emoji in tracked content, and no arrow in product prose.")
         return 0
 
     print("::error::banned characters found (no em-dash, no emoji in product content, ADR-0067):")
@@ -73,6 +93,8 @@ def main() -> int:
         print(h)
     print("\nReplace an em-dash with a comma, colon, semicolon, period, parentheses, or a middot "
           "as the sense requires. Remove emojis. This applies to code, docs, and UI strings alike.")
+    print("Replace an arrow in a user-visible string with the word it stands for: 'then', 'to', "
+          "'produces', or a comma. Arrows stay legal in developer docs as stage notation.")
     return 1
 
 

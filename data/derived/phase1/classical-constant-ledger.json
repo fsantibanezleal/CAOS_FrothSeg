@@ -1,0 +1,787 @@
+{
+  "schema": "frothseg.classical-constant-ledger/v1",
+  "generated_utc": "2026-08-01T15:39:26+00:00",
+  "plan": "CAOS_MANAGE/plans/frothseg/research-2026-07-31/PLAN-PROPOSAL.md section 3",
+  "acceptance": "Every constant that survives is swept-and-recorded, or documented as a deliberate choice with its source.",
+  "constant_count": 19,
+  "swept_count": 14,
+  "not_swept_count": 5,
+  "not_swept": [
+    "watershed_immersion.gradient_radius",
+    "slic_merge.n_segments",
+    "slic_merge.compactness",
+    "slic_merge.sigma",
+    "slic_merge.rag_threshold"
+  ],
+  "acceptance_met_for_scored_methods_c1_c3_c4_c5_c7": true,
+  "constants": [
+    {
+      "constant": "_foreground.otsu_factor",
+      "published_value": 0.75,
+      "consumed_by": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "C7"
+      ],
+      "scored_dependants_swept": [
+        "C1",
+        "C3",
+        "C4",
+        "C5",
+        "C7"
+      ],
+      "status": "swept",
+      "sweep_artifact": "data/derived/phase1/foreground-factor-sweep.json",
+      "published_is_argmax_for": [
+        "C7"
+      ],
+      "per_method": {
+        "C1": {
+          "argmax_otsu_factor": 0.9,
+          "argmax_mean_ap": 0.09025,
+          "published_mean_ap": 0.06521875,
+          "delta_mean_ap": 0.02503124999999999
+        },
+        "C3": {
+          "argmax_otsu_factor": 0.85,
+          "argmax_mean_ap": 0.11545312500000002,
+          "published_mean_ap": 0.103109375,
+          "delta_mean_ap": 0.012343750000000014
+        },
+        "C4": {
+          "argmax_otsu_factor": 0.8,
+          "argmax_mean_ap": 0.21092187499999998,
+          "published_mean_ap": 0.19768750000000002,
+          "delta_mean_ap": 0.013234374999999965
+        },
+        "C5": {
+          "argmax_otsu_factor": 0.8,
+          "argmax_mean_ap": 0.1494375,
+          "published_mean_ap": 0.132984375,
+          "delta_mean_ap": 0.016453125000000013
+        },
+        "C7": {
+          "argmax_otsu_factor": 0.75,
+          "argmax_mean_ap": 0.1673125,
+          "published_mean_ap": 0.1673125,
+          "delta_mean_ap": 0.0
+        }
+      },
+      "tier_mean_ap_by_value": {
+        "0.5": 0.032534375,
+        "0.55": 0.052578124999999996,
+        "0.6": 0.08163125,
+        "0.65": 0.10125312499999999,
+        "0.7": 0.116675,
+        "0.75": 0.1332625,
+        "0.8": 0.14380625,
+        "0.85": 0.14171875,
+        "0.9": 0.12890937500000002,
+        "0.95": 0.10792500000000001,
+        "1.0": 0.084203125,
+        "1.05": 0.061159375,
+        "1.1": 0.042300000000000004
+      },
+      "tier_argmax": 0.8,
+      "source": {
+        "doi": "10.1109/TSMC.1979.4310076",
+        "note": "Otsu 1979 supplies the threshold. The 0.75 multiplier is not part of Otsu's method, so the citation defends the threshold and not the constant."
+      },
+      "decision": "kept, deliberate",
+      "decision_evidence": "data/derived/phase1/foreground-factor-sweep.json",
+      "verdict": "Swept and recorded, and KEPT at 0.75 as a deliberate default with that sweep as its evidence. 0.75 is the argmax for exactly one of the five scored dependants and the tier-mean argmax is a different value, so moving it would be picking a per-method winner on the observed test split for a constant that five methods share. It is common-mode: a change here moves C1, C2, C3, C4, C5, C6 and C7 at once, which is why the sweep is the record and the value does not move on it."
+    },
+    {
+      "constant": "_foreground.hole_max_size",
+      "published_value": 16,
+      "consumed_by": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "C7"
+      ],
+      "scored_dependants_swept": [
+        "C1",
+        "C3",
+        "C4",
+        "C5",
+        "C7"
+      ],
+      "status": "swept",
+      "sweep_artifact": "data/derived/phase1/foreground-cleanup-sweep.json",
+      "grid": [
+        0,
+        4,
+        8,
+        16,
+        32,
+        64
+      ],
+      "published_is_argmax_for": [],
+      "per_method": {
+        "C1": {
+          "argmax_hole_max_size": 0,
+          "argmax_mean_ap": 0.141703125,
+          "published_mean_ap": 0.06521875,
+          "delta_mean_ap": 0.07648437500000001
+        },
+        "C3": {
+          "argmax_hole_max_size": 0,
+          "argmax_mean_ap": 0.193015625,
+          "published_mean_ap": 0.103109375,
+          "delta_mean_ap": 0.08990625
+        },
+        "C4": {
+          "argmax_hole_max_size": 0,
+          "argmax_mean_ap": 0.293171875,
+          "published_mean_ap": 0.19768750000000002,
+          "delta_mean_ap": 0.09548437500000001
+        },
+        "C5": {
+          "argmax_hole_max_size": 0,
+          "argmax_mean_ap": 0.236546875,
+          "published_mean_ap": 0.132984375,
+          "delta_mean_ap": 0.1035625
+        },
+        "C7": {
+          "argmax_hole_max_size": 0,
+          "argmax_mean_ap": 0.16996875,
+          "published_mean_ap": 0.1673125,
+          "delta_mean_ap": 0.002656249999999999
+        }
+      },
+      "source": null,
+      "verdict": "Swept and recorded."
+    },
+    {
+      "constant": "_foreground.object_max_size",
+      "published_value": 12,
+      "consumed_by": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "C7"
+      ],
+      "scored_dependants_swept": [
+        "C1",
+        "C3",
+        "C4",
+        "C5",
+        "C7"
+      ],
+      "status": "swept",
+      "sweep_artifact": "data/derived/phase1/foreground-cleanup-sweep.json",
+      "grid": [
+        0,
+        4,
+        8,
+        12,
+        24,
+        48
+      ],
+      "published_is_argmax_for": [
+        "C1",
+        "C3",
+        "C4",
+        "C5",
+        "C7"
+      ],
+      "per_method": {
+        "C1": {
+          "argmax_object_max_size": 12,
+          "argmax_mean_ap": 0.06521875,
+          "published_mean_ap": 0.06521875,
+          "delta_mean_ap": 0.0
+        },
+        "C3": {
+          "argmax_object_max_size": 12,
+          "argmax_mean_ap": 0.103109375,
+          "published_mean_ap": 0.103109375,
+          "delta_mean_ap": 0.0
+        },
+        "C4": {
+          "argmax_object_max_size": 12,
+          "argmax_mean_ap": 0.19768750000000002,
+          "published_mean_ap": 0.19768750000000002,
+          "delta_mean_ap": 0.0
+        },
+        "C5": {
+          "argmax_object_max_size": 12,
+          "argmax_mean_ap": 0.132984375,
+          "published_mean_ap": 0.132984375,
+          "delta_mean_ap": 0.0
+        },
+        "C7": {
+          "argmax_object_max_size": 12,
+          "argmax_mean_ap": 0.1673125,
+          "published_mean_ap": 0.1673125,
+          "delta_mean_ap": 0.0
+        }
+      },
+      "source": null,
+      "verdict": "Swept and recorded."
+    },
+    {
+      "constant": "watershed_dt.compactness",
+      "published_value": 0.0,
+      "consumed_by": [
+        "C4"
+      ],
+      "status": "swept",
+      "sweep_artifact": "data/derived/phase1/c4-compactness-sweep.json",
+      "grid": [
+        0.0,
+        0.0001,
+        0.001,
+        0.01,
+        0.03,
+        0.1,
+        0.3,
+        1.0,
+        3.0,
+        10.0,
+        30.0,
+        100.0
+      ],
+      "argmax_mean_ap": {
+        "config": {
+          "compactness": 0.0,
+          "watershed_line": false
+        },
+        "mean_ap": 0.19768750000000002,
+        "mean_pq": 0.40221875,
+        "mean_boundary_fscore": 0.834403125,
+        "mean_bsd_wasserstein": 2.5898125,
+        "mean_count_absolute_error": 139.8125,
+        "mean_d32_relative_error": 1.1554515625000001,
+        "mean_inference_ms": 15.445401559645688
+      },
+      "argmin_d32_relative_error": {
+        "config": {
+          "compactness": 100.0,
+          "watershed_line": false
+        },
+        "mean_ap": 0.170109375,
+        "mean_pq": 0.3699375,
+        "mean_boundary_fscore": 0.825825,
+        "mean_bsd_wasserstein": 3.078390625,
+        "mean_count_absolute_error": 139.8125,
+        "mean_d32_relative_error": 0.46264375,
+        "mean_inference_ms": 19.176179686382966
+      },
+      "published": {
+        "config": {
+          "compactness": 0.0,
+          "watershed_line": false
+        },
+        "mean_ap": 0.19768750000000002,
+        "mean_pq": 0.40221875,
+        "mean_boundary_fscore": 0.834403125,
+        "mean_bsd_wasserstein": 2.5898125,
+        "mean_count_absolute_error": 139.8125,
+        "mean_d32_relative_error": 1.1554515625000001,
+        "mean_inference_ms": 15.445401559645688
+      },
+      "published_is_argmax_on_mean_ap": true,
+      "source": {
+        "citation": "P. Neubert and P. Protzel, Compact Watershed and Preemptive SLIC, ICPR 2014, pp. 996-1001",
+        "doi": "10.1109/ICPR.2014.181",
+        "where_verified": "skimage.segmentation.watershed.__doc__ reference [1] in the pinned scikit-image 0.26.0, read in this environment"
+      },
+      "decision": "kept, deliberate",
+      "decision_evidence": "data/derived/phase1/c4-compactness-sweep.json",
+      "swept_values_worse_than_published": [
+        0.0001,
+        0.001,
+        0.01,
+        0.03,
+        0.1,
+        0.3,
+        1.0,
+        3.0,
+        10.0,
+        30.0,
+        100.0
+      ],
+      "verdict": "Swept and recorded, and KEPT at 0.0 as a deliberate default with that sweep as its evidence. 0.0 is the argmax on mean AP and every other swept value scores lower, so the absence of compactness is a measured choice and not an unexamined one. Compactness buys a large reduction in d32 relative error at a cost in AP, PQ and BSD Wasserstein; that trade is recorded here and is available if a later cycle decides the size distribution matters more than the mask, but it is not taken on this sweep."
+    },
+    {
+      "constant": "watershed_dt.watershed_line",
+      "published_value": false,
+      "consumed_by": [
+        "C4"
+      ],
+      "status": "swept",
+      "sweep_artifact": "data/derived/phase1/c4-compactness-sweep.json",
+      "published": {
+        "config": {
+          "compactness": 0.0,
+          "watershed_line": false
+        },
+        "mean_ap": 0.19768750000000002,
+        "mean_pq": 0.40221875,
+        "mean_boundary_fscore": 0.834403125,
+        "mean_bsd_wasserstein": 2.5898125,
+        "mean_count_absolute_error": 139.8125,
+        "mean_d32_relative_error": 1.1554515625000001,
+        "mean_inference_ms": 15.445401559645688
+      },
+      "alternative": {
+        "config": {
+          "compactness": 0.0,
+          "watershed_line": true
+        },
+        "mean_ap": 0.193453125,
+        "mean_pq": 0.39696875,
+        "mean_boundary_fscore": 0.8371546875,
+        "mean_bsd_wasserstein": 2.560203125,
+        "mean_count_absolute_error": 139.8125,
+        "mean_d32_relative_error": 1.15283125,
+        "mean_inference_ms": 18.91355468706024
+      },
+      "library_behaviour": "No. watershed_line produces a separating line only at compactness == 0; for every compactness > 0 tested the output is bit-identical to watershed_line=False and no foreground pixel is left at label 0.",
+      "source": null,
+      "verdict": "Swept and recorded. False is the argmax on mean AP at compactness 0, and at every compactness above 0 the flag has no effect at all in the pinned scikit-image."
+    },
+    {
+      "constant": "watershed_dt.min_distance",
+      "published_value": 4,
+      "consumed_by": [
+        "C4"
+      ],
+      "status": "swept",
+      "sweep_artifact": "data/derived/phase1/residual-constants-sweep.json",
+      "grid": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        8
+      ],
+      "argmax_mean_ap": {
+        "config": {
+          "min_distance": 4
+        },
+        "mean_ap": 0.19768750000000002,
+        "mean_pq": 0.40221875,
+        "mean_boundary_fscore": 0.834403125,
+        "mean_bsd_wasserstein": 2.5898125,
+        "mean_count_absolute_error": 139.8125,
+        "mean_d32_relative_error": 1.1554515625000001,
+        "mean_inference_ms": 30.274739062406297
+      },
+      "published_is_argmax_on_mean_ap": true,
+      "source": null,
+      "verdict": "Swept and recorded. The published 4 is the argmax on mean AP."
+    },
+    {
+      "constant": "watershed_hmax.surface",
+      "published_value": "neg_gray",
+      "previous_value": "neg_edt",
+      "consumed_by": [
+        "C3"
+      ],
+      "status": "swept",
+      "sweep_artifact": "data/derived/phase1/c3-flooding-surface.json",
+      "grid": [
+        "neg_edt",
+        "gray",
+        "neg_gray",
+        "gradient"
+      ],
+      "argmax_mean_ap": {
+        "config": {
+          "surface": "neg_gray",
+          "watershed_line": false
+        },
+        "mean_ap": 0.21957812499999999,
+        "mean_pq": 0.440921875,
+        "mean_boundary_fscore": 0.881734375,
+        "mean_bsd_wasserstein": 3.62646875,
+        "mean_count_absolute_error": 178.875,
+        "mean_d32_relative_error": 0.19074375,
+        "mean_inference_ms": 22.503840624722216
+      },
+      "published": {
+        "config": {
+          "surface": "neg_gray",
+          "watershed_line": false
+        },
+        "mean_ap": 0.21957812499999999,
+        "mean_pq": 0.440921875,
+        "mean_boundary_fscore": 0.881734375,
+        "mean_bsd_wasserstein": 3.62646875,
+        "mean_count_absolute_error": 178.875,
+        "mean_d32_relative_error": 0.19074375,
+        "mean_inference_ms": 22.503840624722216
+      },
+      "previous": {
+        "config": {
+          "surface": "neg_edt",
+          "watershed_line": false
+        },
+        "mean_ap": 0.103109375,
+        "mean_pq": 0.24903124999999998,
+        "mean_boundary_fscore": 0.832290625,
+        "mean_bsd_wasserstein": 6.032187499999999,
+        "mean_count_absolute_error": 178.875,
+        "mean_d32_relative_error": 0.4310671875,
+        "mean_inference_ms": 25.640576562636852
+      },
+      "c4_same_surface_reference": {
+        "config": {},
+        "mean_ap": 0.19768750000000002,
+        "mean_pq": 0.40221875,
+        "mean_boundary_fscore": 0.834403125,
+        "mean_bsd_wasserstein": 2.5898125,
+        "mean_count_absolute_error": 139.8125,
+        "mean_d32_relative_error": 1.1554515625000001,
+        "mean_inference_ms": 15.995373437363014
+      },
+      "published_is_argmax_on_mean_ap": true,
+      "source": {
+        "citation": "H. Sadr-Kazemi and J. J. Cilliers, An image processing algorithm for measurement of flotation froth bubble size and shape distributions, Minerals Engineering 10(10), 1997",
+        "doi": "10.1016/S0892-6875(97)00094-0"
+      },
+      "decision": "ADOPTED 2026-08-01, neg_edt to neg_gray",
+      "decision_evidence": "verification/phase1-adoption.json",
+      "decision_basis": "The primary source, not the sweep score. Flooding the negated grayscale from h-maxima markers IS the method Sadr-Kazemi and Cilliers 1997 (10.1016/S0892-6875(97)00094-0) publish, and that source is what the C3 registry entry already cites. The code was not implementing its own citation: it flooded the negated distance transform, which is C4's surface, so C3 and C4 differed only in their markers. The sweep is the observed evidence that motivated the correction and its numbers are NOT the published effect; the effect is measured on the untouched reserve slice in verification/phase1-adoption.json.",
+      "verdict": "Swept, sourced and adopted."
+    },
+    {
+      "constant": "watershed_hmax.h",
+      "published_value": 0.06,
+      "consumed_by": [
+        "C3"
+      ],
+      "status": "swept",
+      "sweep_artifact": "data/derived/phase1/residual-constants-sweep.json",
+      "grid": [
+        0.02,
+        0.04,
+        0.06,
+        0.08,
+        0.12,
+        0.2
+      ],
+      "argmax_mean_ap": {
+        "config": {
+          "h": 0.2
+        },
+        "mean_ap": 0.12493749999999999,
+        "mean_pq": 0.291359375,
+        "mean_boundary_fscore": 0.8555453125,
+        "mean_bsd_wasserstein": 4.733171875,
+        "mean_count_absolute_error": 56.765625,
+        "mean_d32_relative_error": 0.6846796875,
+        "mean_inference_ms": 36.19085781292597
+      },
+      "published_is_argmax_on_mean_ap": false,
+      "source": null,
+      "verdict": "Swept and recorded."
+    },
+    {
+      "constant": "watershed_hmin.h",
+      "published_value": 0.08,
+      "consumed_by": [
+        "C5"
+      ],
+      "status": "swept",
+      "sweep_artifact": "data/derived/phase1/residual-constants-sweep.json",
+      "grid": [
+        0.02,
+        0.04,
+        0.06,
+        0.08,
+        0.12,
+        0.2
+      ],
+      "argmax_mean_ap": {
+        "config": {
+          "h": 0.02
+        },
+        "mean_ap": 0.181875,
+        "mean_pq": 0.3805,
+        "mean_boundary_fscore": 0.826209375,
+        "mean_bsd_wasserstein": 3.1122343749999994,
+        "mean_count_absolute_error": 116.1875,
+        "mean_d32_relative_error": 1.2740453125000002,
+        "mean_inference_ms": 31.875549998858332
+      },
+      "published_is_argmax_on_mean_ap": false,
+      "source": {
+        "citation": "P. Soille, Morphological Image Analysis, 2nd ed., Springer 2004, extended minima",
+        "note": "The h-minima transform is sourced; the per-image normalization by the frame's maximum EDT, which makes h a fraction rather than a pixel depth, is not, and is recorded in the engine docstring as what was measured rather than as what is correct."
+      },
+      "verdict": "Swept and recorded."
+    },
+    {
+      "constant": "valley_edge.mode",
+      "published_value": "watershed",
+      "previous_value": "subtract",
+      "consumed_by": [
+        "C7"
+      ],
+      "status": "swept",
+      "sweep_artifact": "data/derived/phase1/c7-constrained-watershed.json",
+      "grid": [
+        "subtract",
+        "watershed"
+      ],
+      "published": {
+        "config": {
+          "seam_radius": 3,
+          "mode": "watershed",
+          "watershed_line": false
+        },
+        "mean_ap": 0.2325625,
+        "mean_pq": 0.43823437499999995,
+        "mean_boundary_fscore": 0.8837046875,
+        "mean_bsd_wasserstein": 3.5419375000000004,
+        "mean_count_absolute_error": 114.234375,
+        "mean_d32_relative_error": 1.4370609374999999,
+        "mean_inference_ms": 15.596223434840795
+      },
+      "previous": {
+        "config": {
+          "seam_radius": 3,
+          "mode": "subtract",
+          "watershed_line": false
+        },
+        "mean_ap": 0.1673125,
+        "mean_pq": 0.36321875,
+        "mean_boundary_fscore": 0.86284375,
+        "mean_bsd_wasserstein": 3.564171875,
+        "mean_count_absolute_error": 114.234375,
+        "mean_d32_relative_error": 1.2583640624999999,
+        "mean_inference_ms": 7.794950002335099
+      },
+      "best_watershed_point": {
+        "config": {
+          "seam_radius": 4,
+          "mode": "watershed",
+          "watershed_line": false
+        },
+        "mean_ap": 0.24301562499999999,
+        "mean_pq": 0.4565625,
+        "mean_boundary_fscore": 0.8935015625,
+        "mean_bsd_wasserstein": 3.26459375,
+        "mean_count_absolute_error": 117.46875,
+        "mean_d32_relative_error": 1.2437765625,
+        "mean_inference_ms": 17.226306250449852
+      },
+      "published_is_argmax_on_mean_ap": false,
+      "every_watershed_row_beats_every_subtract_row_on_mean_ap": true,
+      "source": {
+        "citation": "F. Meyer, Topographic distance and watershed lines, Signal Processing 38(1), 1994, 113-125",
+        "doi": "10.1016/0165-1684(94)90060-4",
+        "where_named_in_repo": "data-pipeline/fslab/model_registry.py C7 entry, which already calls C7 a constrained watershed"
+      },
+      "decision": "ADOPTED 2026-08-01, subtract to watershed, at the unchanged seam_radius 3",
+      "decision_evidence": "verification/phase1-adoption.json",
+      "decision_basis": "The registry called this row a constrained watershed until 2026-07-31, when a Phase 0 honesty pass renamed it to 'dark-seam detector' because the engine ran no watershed: it subtracted the seam and labelled what was left, so every mask stopped short of the seam centreline by construction. This adoption resolves the same mismatch from the other side by implementing the method, on Meyer 1994 (10.1016/0165-1684(94)90060-4), and the registry name and provenance were restored in the same change. The structural result on the sweep is that EVERY watershed row beats EVERY subtract row at every swept radius, so the mode is a finding and not a tuned optimum. seam_radius and watershed_line are NOT moved with it. Honest cost, stated wherever this change is described: d32 relative error moves the WRONG way at radius 3, 1.2584 to 1.4371 on the observed test split and 1.3160 to 1.4972 on the untouched reserve slice.",
+      "cost_of_the_change": {
+        "metric": "mean_d32_relative_error",
+        "direction": "worse",
+        "test_split_before": 1.2583640624999999,
+        "test_split_after": 1.4370609374999999,
+        "test_split_source": "data/derived/phase1/c7-constrained-watershed.json",
+        "reserve_source": "verification/phase1-adoption.json"
+      },
+      "verdict": "Swept, sourced and adopted, with a stated cost."
+    },
+    {
+      "constant": "valley_edge.seam_radius",
+      "published_value": 3,
+      "consumed_by": [
+        "C7"
+      ],
+      "status": "swept",
+      "sweep_artifact": "data/derived/phase1/c7-constrained-watershed.json",
+      "grid": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "argmax_mean_ap_within_previous_mode": {
+        "config": {
+          "seam_radius": 2,
+          "mode": "subtract",
+          "watershed_line": false
+        },
+        "mean_ap": 0.17696875,
+        "mean_pq": 0.36103125,
+        "mean_boundary_fscore": 0.8632296875000001,
+        "mean_bsd_wasserstein": 3.915625,
+        "mean_count_absolute_error": 122.796875,
+        "mean_d32_relative_error": 1.700925,
+        "mean_inference_ms": 6.406440622413356
+      },
+      "argmax_mean_ap_within_published_mode": {
+        "config": {
+          "seam_radius": 4,
+          "mode": "watershed",
+          "watershed_line": false
+        },
+        "mean_ap": 0.24301562499999999,
+        "mean_pq": 0.4565625,
+        "mean_boundary_fscore": 0.8935015625,
+        "mean_bsd_wasserstein": 3.26459375,
+        "mean_count_absolute_error": 117.46875,
+        "mean_d32_relative_error": 1.2437765625,
+        "mean_inference_ms": 17.226306250449852
+      },
+      "published_is_argmax_within_published_mode": false,
+      "source": null,
+      "decision": "kept, deliberate, NOT moved with the mode",
+      "decision_evidence": "data/derived/phase1/c7-constrained-watershed.json",
+      "verdict": "Swept and recorded, and KEPT at 3. Radius 4 or 5 in the adopted watershed mode is worth about 0.01 mean AP over radius 3 on the observed test split, which is exactly the test-split selection this programme exists to avoid: the mode change is defended by its primary source, a radius change would be defended by nothing but the score on the surface the score was read on. The measurement stays on record for a later cycle that can confirm it on an unobserved surface."
+    },
+    {
+      "constant": "valley_edge.min_cap_size",
+      "published_value": 8,
+      "consumed_by": [
+        "C7"
+      ],
+      "status": "swept",
+      "sweep_artifact": "data/derived/phase1/residual-constants-sweep.json",
+      "grid": [
+        0,
+        4,
+        8,
+        16,
+        32
+      ],
+      "argmax_mean_ap": {
+        "config": {
+          "min_cap_size": 8
+        },
+        "mean_ap": 0.1673125,
+        "mean_pq": 0.36321875,
+        "mean_boundary_fscore": 0.86284375,
+        "mean_bsd_wasserstein": 3.564171875,
+        "mean_count_absolute_error": 114.234375,
+        "mean_d32_relative_error": 1.2583640624999999,
+        "mean_inference_ms": 9.531420313578565
+      },
+      "published_is_argmax_on_mean_ap": true,
+      "source": null,
+      "verdict": "Swept and recorded. The published 8 is the argmax on mean AP."
+    },
+    {
+      "constant": "valley_edge.watershed_line",
+      "published_value": false,
+      "consumed_by": [
+        "C7"
+      ],
+      "status": "swept",
+      "sweep_artifact": "data/derived/phase1/c7-constrained-watershed.json",
+      "note": "Reachable now that the watershed mode is the default; under the previous subtract mode the engine never flooded and the flag was dead.",
+      "source": null,
+      "decision": "kept, deliberate, NOT moved with the mode",
+      "decision_evidence": "data/derived/phase1/c7-constrained-watershed.json",
+      "verdict": "Swept and recorded, and KEPT at False. Turning the line on trades a little mean AP for a little boundary F at every radius; neither direction is defended by a source, so the flag stays where it was rather than moving on a test-split preference."
+    },
+    {
+      "constant": "watershed_immersion.min_distance",
+      "published_value": 2,
+      "consumed_by": [
+        "C2"
+      ],
+      "status": "swept",
+      "sweep_artifact": "data/derived/phase1/residual-constants-sweep.json",
+      "grid": [
+        1,
+        2,
+        3,
+        4,
+        6
+      ],
+      "argmax_mean_ap": {
+        "config": {
+          "min_distance": 6
+        },
+        "mean_ap": 0.09975,
+        "mean_pq": 0.25390625,
+        "mean_boundary_fscore": 0.8169671875,
+        "mean_bsd_wasserstein": 2.772984375,
+        "mean_count_absolute_error": 141.3125,
+        "mean_d32_relative_error": 0.247809375,
+        "mean_inference_ms": 57.48542031597026
+      },
+      "published_is_argmax_on_mean_ap": false,
+      "source": {
+        "citation": "L. Vincent and P. Soille, IEEE TPAMI 13(6), 1991",
+        "doi": "10.1109/34.87344"
+      },
+      "verdict": "Swept and recorded, and separately defended as a deliberate choice: C2's declared role in the ladder is the over-segmentation exhibit, so the value that maximises its AP is not the value that serves its purpose. Raising it monotonically improves AP and monotonically destroys the exhibit."
+    },
+    {
+      "constant": "watershed_immersion.gradient_radius",
+      "published_value": 1,
+      "consumed_by": [
+        "C2"
+      ],
+      "status": "not-swept",
+      "sweep_artifact": null,
+      "source": null,
+      "verdict": "NOT swept and NOT sourced. Deliberately left: C2 is an exhibit, not a competitor, and the constant is exposed as a named keyword so a later cycle can sweep it without an engine edit."
+    },
+    {
+      "constant": "slic_merge.n_segments",
+      "published_value": 400,
+      "consumed_by": [
+        "C6"
+      ],
+      "status": "not-swept",
+      "sweep_artifact": null,
+      "source": null,
+      "verdict": "NOT swept and NOT sourced. Out of Phase 1 scope by cost and by plan: C6 costs 536 ms per image for 0.0186 mean AP and is a Phase 5 rebuild-or-demote item, so sweeping its constants would be tuning a row that is a candidate for removal."
+    },
+    {
+      "constant": "slic_merge.compactness",
+      "published_value": 8,
+      "consumed_by": [
+        "C6"
+      ],
+      "status": "not-swept",
+      "sweep_artifact": null,
+      "source": null,
+      "verdict": "NOT swept and NOT sourced. Out of Phase 1 scope by cost and by plan: C6 costs 536 ms per image for 0.0186 mean AP and is a Phase 5 rebuild-or-demote item, so sweeping its constants would be tuning a row that is a candidate for removal."
+    },
+    {
+      "constant": "slic_merge.sigma",
+      "published_value": 1,
+      "consumed_by": [
+        "C6"
+      ],
+      "status": "not-swept",
+      "sweep_artifact": null,
+      "source": null,
+      "verdict": "NOT swept and NOT sourced. Out of Phase 1 scope by cost and by plan: C6 costs 536 ms per image for 0.0186 mean AP and is a Phase 5 rebuild-or-demote item, so sweeping its constants would be tuning a row that is a candidate for removal."
+    },
+    {
+      "constant": "slic_merge.rag_threshold",
+      "published_value": 0.08,
+      "consumed_by": [
+        "C6"
+      ],
+      "status": "not-swept",
+      "sweep_artifact": null,
+      "source": null,
+      "verdict": "NOT swept and NOT sourced. Out of Phase 1 scope by cost and by plan: C6 costs 536 ms per image for 0.0186 mean AP and is a Phase 5 rebuild-or-demote item, so sweeping its constants would be tuning a row that is a candidate for removal."
+    }
+  ]
+}

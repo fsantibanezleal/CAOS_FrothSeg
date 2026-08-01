@@ -1,3 +1,9 @@
+
+/* Typography comes from the shell, full stop. ADR-0017 1.1: "the shell primitives (use them;
+   never redefine; never pick your own width)", and the reference app overrides no heading at all.
+   The overrides removed here ran the doc-page h1 up to 4.8rem and the Introduction h1 up to
+   5.6rem against the shell's own 1.7rem, which is a marketing scale on a technical shell and is
+   why these pages read as a different, worse product than the App. */
 /* FrothSeg app styles on top of the shared design-system tokens (@fasl-work/caos-app-shell). The shell provides
    the --color-* / --font-* tokens and light/dark theming; it does NOT ship .chip or the layout helpers, so they
    live here. Mirrors the RotorVitals/DispatchLab conventions with an fs- prefix. */
@@ -13,11 +19,6 @@
 .fs-hint { font-size: 0.82rem; color: var(--color-fg-subtle); }
 .fs-note { font-size: 0.78rem; border-left: 3px solid var(--color-warn); padding-left: 0.6rem; color: var(--color-fg-subtle); }
 .fs-note.good { border-left-color: var(--color-good); }
-
-/* tab strip inside the App */
-.fs-tab { background: none; border: none; border-bottom: 2px solid transparent; color: var(--color-fg-subtle); padding: 0.4rem 0.7rem; font-size: 0.85rem; cursor: pointer; }
-.fs-tab:hover { color: var(--color-fg); }
-.fs-tab.on { color: var(--color-fg); border-bottom-color: var(--color-accent); font-weight: 600; }
 .fs-command { overflow-x: auto; margin: 0.8rem 0; padding: 0.7rem; border: 1px solid var(--color-border); border-radius: 8px; background: var(--color-bg); color: var(--color-fg); font: 0.75rem/1.5 var(--font-mono); }
 
 /* method portfolio + two-column workbench */
@@ -95,7 +96,6 @@
   .header-actions { gap: 0; }
   .header-actions a.icon-btn:not([href*="github"]) { display: none; }
   .header-sep { display: none; }
-  .page-body { padding-inline: 1rem; }
   .fs-panel { min-width: 0; overflow-x: auto; }
   .fs-source-model { grid-template-columns: 1fr; }
   .fs-source-model > div:first-child { grid-template-columns: 1fr; }
@@ -163,8 +163,6 @@
 /* Scientific introduction */
 .fs-intro { --fs-cyan: var(--color-accent); --fs-blue: color-mix(in oklab, var(--color-accent) 58%, var(--color-fg)); }
 .fs-intro-hero { display: grid; grid-template-columns: minmax(0, .82fr) minmax(420px, 1.18fr); gap: clamp(2rem, 5vw, 5rem); align-items: center; padding-block: clamp(2rem, 6vw, 5.5rem); }
-.fs-intro-copy h1 { max-width: 15ch; margin-block: .5rem 1rem; font-size: clamp(2.6rem, 6vw, 5.6rem); line-height: .96; letter-spacing: -.055em; }
-.fs-intro-copy .lede { max-width: 58ch; }
 .fs-intro-actions { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1.5rem; }
 .fs-primary-link, .fs-secondary-link { display: inline-flex; align-items: center; justify-content: center; padding: .65rem .95rem; border-radius: 8px; font-size: .86rem; font-weight: 650; text-decoration: none; }
 .fs-primary-link { color: var(--color-accent-fg); background: var(--fs-cyan); border: 1px solid var(--fs-cyan); }
@@ -189,7 +187,6 @@
 .fs-intro-section { padding-block: clamp(2.5rem, 6vw, 5rem); border-top: 1px solid var(--color-border); }
 .fs-section-heading { display: grid; grid-template-columns: minmax(260px, .8fr) minmax(320px, 1.2fr); gap: 1rem 4rem; align-items: end; margin-bottom: 2rem; }
 .fs-section-heading .eyebrow { grid-column: 1 / -1; }
-.fs-section-heading h2 { margin: 0; font-size: clamp(1.8rem, 3.5vw, 3.25rem); line-height: 1.03; letter-spacing: -.035em; }
 .fs-section-heading p { margin: 0; color: var(--color-fg-subtle); line-height: 1.65; }
 .fs-process-figure { margin: 0; overflow-x: auto; border: 1px solid var(--color-border); border-radius: 18px; background: color-mix(in oklab, var(--color-surface) 72%, var(--color-bg)); }
 .fs-process-figure svg { display: block; min-width: 900px; width: 100%; height: auto; color: var(--fs-cyan); }
@@ -240,14 +237,12 @@
 
 @media (max-width: 980px) {
   .fs-intro-hero { grid-template-columns: 1fr; }
-  .fs-intro-copy h1 { max-width: 18ch; }
-  .fs-hero-figure { max-width: 720px; }
+    .fs-hero-figure { max-width: 720px; }
   .fs-section-heading { grid-template-columns: 1fr; }
   .fs-challenge-grid, .fs-output-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 580px) {
-  .fs-intro-copy h1 { font-size: clamp(2.35rem, 13vw, 3.5rem); }
-  .fs-challenge-grid, .fs-output-grid { grid-template-columns: 1fr; }
+    .fs-challenge-grid, .fs-output-grid { grid-template-columns: 1fr; }
   .fs-symbol-list { grid-template-columns: 1fr; }
   .fs-temporal-controls { grid-template-columns: auto 1fr; }
   .fs-temporal-controls select { grid-column: 1 / -1; }
@@ -256,11 +251,9 @@
 }
 
 /* Methodology chapters */
-.fs-science-head h1 { max-width: 18ch; font-size: clamp(2.35rem, 5vw, 4.8rem); line-height: 1; letter-spacing: -.045em; }
 .fs-method-chapter { padding-top: 1.5rem; }
 .fs-chapter-lead { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: 1.25rem; align-items: start; max-width: 920px; margin: 1rem 0 2rem; }
 .fs-chapter-lead > span { color: var(--color-accent); font: 700 2.1rem/1 var(--font-mono); }
-.fs-chapter-lead h2 { margin: 0 0 .7rem; font-size: clamp(1.7rem, 3vw, 2.8rem); line-height: 1.04; letter-spacing: -.03em; }
 .fs-chapter-lead p { margin: 0; color: var(--color-fg-subtle); font-size: 1rem; line-height: 1.65; }
 .fs-method-flow, .fs-split-diagram, .fs-mechanism-diagram, .fs-target-diagram, .fs-temporal-method { margin: 1.5rem 0 2rem; overflow-x: auto; border: 1px solid var(--color-border); border-radius: 16px; background: color-mix(in oklab, var(--color-surface) 78%, var(--color-bg)); }
 .fs-method-flow svg, .fs-split-diagram svg, .fs-mechanism-diagram svg, .fs-target-diagram svg, .fs-temporal-method svg { display: block; min-width: 780px; width: 100%; height: auto; color: var(--color-accent); }
@@ -555,58 +548,6 @@
   .fs-overview-facts, .fs-compute-cards { grid-template-columns: 1fr; }
 }
 
-/* ============================================================================
-   App layout contract: ADR-0017 1.2 (page-body + control aside + 1fr main) and
-   ADR-0071 (the page is exactly the viewport, a workbench is not prose, sized
-   containers, one row of chrome, the instrument gets the majority).
-
-   Measured before this contract, on the deployed build:
-     2560x1440  page 46.9% of viewport width, instrument 15.2% of viewport area
-     1600x900   page 75.0%, instrument 38.8%, document 1620px tall on a 900 view
-   Every one of those is a sizing failure, not a style preference.
-   ============================================================================ */
-
-/* ADR-0071 2: the shell caps PROSE at --maxw. A workbench uses the whole screen;
-   capping an instrument at a reading width discards the screen it exists to use. */
-.page-body.wide { max-width: none; width: 100%; padding: 0.9rem 1.1rem 0.9rem; }
-
-/* ADR-0071 1: the App route is exactly the viewport. Scrolling belongs inside the
-   one container that owns long content, never on the document. 56px header, and the
-   footer stays reachable without a document scroll. */
-.fs-app {
-  display: grid;
-  grid-template-columns: 300px minmax(0, 1fr);
-  gap: 1rem;
-  height: calc(100dvh - 56px - 3.2rem);
-  min-height: 30rem;
-  align-items: stretch;
-}
-
-/* ADR-0071 3: every ancestor of a scrollable row carries min-width:0, or a nowrap
-   row silently sizes its whole column and pushes the page sideways. */
-.fs-app > * { min-width: 0; min-height: 0; }
-
-/* ADR-0071 6: a rail that needs scrolling before a control can be reached is a
-   sizing failure. It gets an explicit size and scrolls only its own overflow. */
-.fs-rail {
-  display: flex;
-  flex-direction: column;
-  gap: 0.7rem;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  padding: 0.9rem;
-  border: 1px solid var(--color-border);
-  border-radius: 14px;
-  background: var(--color-surface);
-}
-.fs-rail-block { display: flex; flex-direction: column; gap: 0.5rem; }
-.fs-rail-kicker {
-  color: var(--color-accent); font: 700 0.62rem var(--font-mono);
-  letter-spacing: 0.08em; text-transform: uppercase;
-}
-.fs-rail-desc { margin: 0; color: var(--color-fg-subtle); font-size: 0.72rem; line-height: 1.5; }
-.fs-rail-foot { margin-top: auto; }
-
 /* The source model is a control and lives in the rail (ADR-0017 1.2), not in a
    full-width banner above the workbench. */
 .fs-source-switch { display: grid; grid-template-columns: 1fr 1fr; gap: 0.35rem; }
@@ -631,45 +572,8 @@
 .fs-focus-enter:hover { background: color-mix(in oklab, var(--color-accent) 22%, var(--color-surface)); }
 .fs-run { padding: 0.5rem; font-size: 0.85rem; }
 
-/* The stage column: one row of chrome, then the instrument takes what is left. */
-.fs-stage-col { display: grid; grid-template-rows: auto minmax(0, 1fr); gap: 0.6rem; }
-
-/* ADR-0071 4: navigation chrome gets ONE row. It never wraps; it scrolls. */
-.fs-tabrow { display: flex; flex-direction: column; gap: 0.35rem; min-width: 0; }
-.fs-tabs, .fs-subtabs {
-  display: flex; flex-wrap: nowrap; gap: 0.3rem;
-  overflow-x: auto; scrollbar-width: thin; min-width: 0;
-}
-.fs-tabs::-webkit-scrollbar, .fs-subtabs::-webkit-scrollbar { height: 4px; }
-.fs-tab, .fs-subtab {
-  flex: 0 0 auto; white-space: nowrap; cursor: pointer;
-  border: 1px solid var(--color-border); background: var(--color-surface);
-  color: var(--color-fg-subtle); border-radius: 999px;
-}
-.fs-tab { padding: 0.38rem 0.8rem; font-size: 0.8rem; font-weight: 600; }
-.fs-subtab { padding: 0.24rem 0.6rem; font-size: 0.72rem; background: transparent; }
-.fs-tab.on, .fs-subtab.on {
-  border-color: var(--color-accent); color: var(--color-accent);
-  background: color-mix(in oklab, var(--color-accent) 12%, var(--color-surface));
-}
-
-/* ADR-0071 8: the instrument gets the majority of the surface. The stage body is the
-   only scroll container on the route. */
-/* A column, not a single grid row. Every tab panel renders a FRAGMENT of siblings (a KPI row,
-   the instrument, a caption) and the panel count differs per tab, so a fixed `grid-template-rows`
-   cannot describe them: with one declared row the KPI strip and the instrument were both placed
-   in it and drew on top of each other, which is the overlapping "22.96 / 0.718 / 325ms" band.
-   A flex column lets the chrome take what it needs in order and hands the rest to the instrument. */
-.fs-stage-body { min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding-right: 0.2rem; display: flex; flex-direction: column; gap: 0.55rem; }
-.fs-stage-body > * { flex: 0 0 auto; min-height: 0; }
-.fs-stage-body > .fs-overlay-slot,
-.fs-stage-body > .fs-replay,
-.fs-stage-body > .fs-panel { flex: 1 1 auto; }
-
 @media (max-width: 900px) {
   .fs-app { grid-template-columns: 1fr; height: auto; }
-  .fs-rail { max-height: 46vh; }
-  .fs-stage-body { overflow: visible; }
 }
 
 /* ============================================================================
@@ -692,13 +596,25 @@
   min-width: 0; min-height: 0;
   background: #050f16; overflow: hidden;
 }
-/* The frame must FIT the stage without being cropped AND without underfilling it. Two measured
-   failures bracket this rule: as a grid item with an auto row, a square canvas rendered
-   1037x1037 in an 800px stage and the bottom quarter of every frame was clipped; sized by
-   max-* with auto width/height instead, the 256px source stopped upscaling and the instrument
-   collapsed to 6% of the viewport. A flex parent with a definite height makes the percentages
-   resolve, and object-fit letterboxes the source inside that box. */
-.fs-focus-stage canvas {
+/* The stage is [info column][picture]. Two rejected layouts bracket this one: anchored to the
+   stage, the label straddled the letterbox margin and the image with a broken shape; anchored
+   to the picture, the label and the HUD covered the bubbles they exist to explain. The info
+   column now occupies the letterbox band and the picture is canvas only, never covered. */
+.fs-focus-stage { display: flex; align-items: stretch; }
+.fs-focus-side {
+  flex: 0 0 clamp(230px, 17vw, 320px); min-width: 0;
+  display: flex; flex-direction: column; gap: 0.7rem;
+  padding: 1rem; overflow-y: auto; color: #eafffc;
+}
+.fs-focus-frame {
+  flex: 1 1 auto; min-width: 0; position: relative;
+  display: flex; align-items: center; justify-content: center;
+}
+.fs-focus-picture {
+  position: relative; height: 100%; max-width: 100%; width: auto;
+  aspect-ratio: var(--fs-focus-ar, 1 / 1);
+}
+.fs-focus-picture canvas {
   width: 100%; height: 100%; min-width: 0; min-height: 0;
   object-fit: contain; image-rendering: pixelated; display: block;
 }
@@ -706,24 +622,25 @@
 
 /* ADR-0070 4: named in place, so the view teaches on its own. */
 .fs-focus-label {
-  position: absolute; top: 1rem; left: 1rem; max-width: 46ch;
-  padding: 0.6rem 0.8rem; border-radius: 11px; pointer-events: none;
-  background: color-mix(in oklab, #04121a 82%, transparent);
-  backdrop-filter: blur(6px); color: #eafffc;
+  padding: 0.6rem 0.8rem; border-radius: 11px;
+  background: color-mix(in oklab, #04121a 82%, transparent); color: #eafffc;
 }
 .fs-focus-label strong { display: block; font-size: 1rem; letter-spacing: -0.01em; }
 .fs-focus-label p { margin: 0.25rem 0 0; font-size: 0.76rem; line-height: 1.5; opacity: 0.88; }
 
 /* ADR-0070 3: a HUD on the stage, not cards stacked above it. */
+/* ADR-0070, the HUD: "a vertical column at the LEFT edge below the label ... value first,
+   label second: the eye reads the number." It was a right-aligned grid with the label first,
+   which is the same information in the wrong reading order and the wrong place. */
 .fs-focus-hud {
-  position: absolute; top: 1rem; right: 1rem; display: grid; gap: 0.4rem;
-  padding: 0.6rem 0.75rem; border-radius: 11px; pointer-events: none;
-  background: color-mix(in oklab, #04121a 82%, transparent);
-  backdrop-filter: blur(6px); color: #eafffc; min-width: 8.5rem;
+  display: flex; flex-direction: column; gap: 0.55rem; color: #eafffc;
 }
-.fs-focus-hud div { display: flex; justify-content: space-between; gap: 1rem; align-items: baseline; }
-.fs-focus-hud span { font-size: 0.64rem; opacity: 0.72; text-transform: uppercase; letter-spacing: 0.05em; }
-.fs-focus-hud strong { font: 700 0.92rem var(--font-mono); }
+.fs-focus-hud div { display: flex; flex-direction: column; gap: 0.05rem; align-items: flex-start;
+  padding: 0.4rem 0.6rem; border-radius: 9px; min-width: 7.5rem;
+  background: color-mix(in oklab, #04121a 82%, transparent); backdrop-filter: blur(6px); }
+.fs-focus-hud strong { order: 1; font: 700 1.15rem var(--font-mono); line-height: 1.1; }
+.fs-focus-hud span { order: 2; font-size: 0.62rem; opacity: 0.72;
+  text-transform: uppercase; letter-spacing: 0.06em; }
 
 .fs-focus-exit, .fs-focus-more {
   display: inline-flex; align-items: center; gap: 0.4rem;
@@ -731,14 +648,13 @@
   border: 1px solid var(--color-border); background: var(--color-surface);
   color: var(--color-fg); font-size: 0.75rem; font-weight: 600;
 }
-.fs-focus-exit { position: absolute; bottom: 1rem; left: 1rem; }
+.fs-focus-side .fs-focus-exit { justify-content: center; width: 100%; }
 .fs-focus-empty .fs-focus-exit { position: static; }
 
 .fs-focus-transport {
-  position: absolute; bottom: 1rem; left: 50%; transform: translateX(-50%);
-  display: flex; align-items: center; gap: 0.5rem; width: min(46rem, 62%);
-  padding: 0.5rem 0.75rem; border-radius: 999px;
-  background: color-mix(in oklab, #04121a 82%, transparent); backdrop-filter: blur(6px);
+  margin-top: auto; display: grid; grid-template-columns: auto auto auto minmax(0, 1fr);
+  gap: 0.5rem; align-items: center; padding: 0.55rem 0.65rem; border-radius: 12px;
+  background: color-mix(in oklab, #04121a 78%, transparent);
 }
 .fs-focus-transport button {
   display: inline-grid; place-items: center; width: 32px; height: 32px;
@@ -750,8 +666,8 @@
 
 /* ADR-0070 2: one parameter column on the right, scrolling independently of the stage. */
 .fs-focus-rail {
-  display: flex; flex-direction: column; gap: 0.7rem;
-  padding: 0.9rem; overflow-y: auto; overscroll-behavior: contain;
+  display: flex; flex-direction: column; gap: 0.55rem;
+  padding: 0.85rem 1rem; overflow-y: auto; overscroll-behavior: contain;
   border-left: 1px solid var(--color-border); background: var(--color-surface);
 }
 .fs-focus-railhead { display: flex; flex-direction: column; gap: 0.15rem; }
@@ -783,7 +699,7 @@
   /* Deterministic: derived from the viewport minus the measured chrome and the in-stage
      furniture (one tab row, the overlay toolbar, the caption). A percentage chain through
      the PanelBoundary wrappers resolved smaller and cost the instrument half its area. */
-  height: calc(100dvh - var(--fs-chrome, 185px) - 8.5rem);
+  height: calc(100dvh - 0px - 8.5rem);
   min-height: 14rem;
   /* Full width on purpose: this is a pan/zoom inspection window, so the box is the window and
      the frame is centred inside it at full height. Sizing the WINDOW to the frame aspect was
@@ -805,19 +721,7 @@
 /* The wrapper between the stage and the instrument was display:block, so it sized from its
    content and the instrument could never fill the stage. */
 .fs-overlay-slot { display: grid; min-height: 0; height: 100%; }
-.fs-stage-body > .fs-panel { display: grid; grid-template-rows: auto minmax(0, 1fr); min-height: 0; }
 
-/* Panels inside the stage fill it rather than stacking past it. */
-.fs-stage-body > .fs-panel,
-.fs-stage-body > div > .fs-panel { max-width: 100%; }
-.fs-stage-body img.fs-frame-preview { max-height: 100%; width: auto; object-fit: contain; margin-inline: auto; display: block; }
-
-/* Chrome allowance: shell header (57px) + shell footer (128px at the widths this product
-   supports) + the wide page padding. Measured, not guessed; the gate re-checks it at
-   1280x800, 1600x900 and 2560x1440. */
-/* --fs-chrome is measured at runtime by useViewportFit; the fallback keeps the layout sane
-   for the first paint before the observer reports. */
-.fs-app { height: calc(100dvh - var(--fs-chrome, 185px) - 1.8rem); }
 
 /* The replay tab is the sequence lane's instrument view: a toolbar, the frame, the transport
    and the summary. Rendered as loose siblings they became implicit rows of the stage column
@@ -863,7 +767,22 @@
   background: color-mix(in oklab, #04121a 80%, transparent);
   backdrop-filter: blur(6px); color: #eafffc;
 }
-.fs-sequence-stage .fs-sequence-summary .fs-kpi span { color: #9fd9d3; }
+/* The HUD sits on the frame, so its type is light in BOTH themes. Setting the colour on the
+   .fs-kpi wrapper alone was not enough: .fs-kpi-v and .fs-kpi-l carry their own theme colours,
+   which won, and in light theme the values rendered dark-on-dark and were unreadable. */
+.fs-sequence-stage .fs-sequence-summary .fs-kpi span,
+.fs-sequence-stage .fs-sequence-summary .fs-kpi-v,
+.fs-sequence-stage .fs-sequence-summary .fs-kpi-l { color: #eafffc; }
+.fs-sequence-stage .fs-sequence-summary .fs-kpi-l { color: #9fd9d3; }
+
+/* Same for the transport: the step buttons inherit the page foreground, so on the dark frame in
+   light theme they were white-on-white and only the accented play button was visible. */
+.fs-sequence-stage .fs-sequence-timeline .fs-play-button {
+  color: #eafffc; border-color: color-mix(in oklab, #eafffc 34%, transparent);
+  background: color-mix(in oklab, #04121a 55%, transparent); }
+.fs-sequence-stage .fs-sequence-timeline .fs-play-button.primary {
+  color: var(--color-bg); background: var(--color-accent); border-color: var(--color-accent); }
+.fs-sequence-stage .fs-sequence-timeline input[type="range"] { accent-color: var(--color-accent); }
 .fs-sequence-stage .fs-sequence-timeline {
   position: absolute; left: 0.6rem; right: 0.6rem; bottom: 0.6rem; z-index: 2;
   margin-top: 0; border-color: transparent;
@@ -873,3 +792,283 @@
 .fs-sequence-stage .fs-sequence-timeline label,
 .fs-sequence-stage .fs-sequence-timeline select { color: #eafffc; }
 .fs-sequence-stage .fs-sequence-timeline select { background: color-mix(in oklab, #04121a 60%, transparent); border-color: color-mix(in oklab, #eafffc 26%, transparent); }
+
+/* ============================================================================
+   The workbench layout, mirrored from the reference app (CAOS_RotorVitals).
+   ADR-0017: "when this ADR and any other doc disagree on the look, layout,
+   content shape or references, RotorVitals wins: mirror it, do not re-derive."
+
+   These five rules are how a workbench fills the viewport. The version this
+   replaces measured the shell header and footer at runtime with a ResizeObserver,
+   a MutationObserver and a --fs-chrome variable, to work around a 48px footer
+   margin that the reference simply sets to zero. That hook is deleted.
+   ============================================================================ */
+/* The viewport lock is for the WORKBENCH ONLY. Applied to every route it truncated the five
+   doc pages: `document.scrollHeight === innerHeight` with content continuing past the fold and
+   no way to scroll to it, so Methodology ended mid-diagram and Introduction lost four of its
+   five sections. A workbench must not scroll; a document must. */
+.app-shell { height: 100dvh; min-height: 100dvh; overflow: hidden; }
+.app-shell > .page { flex: 1 1 auto; min-height: 0; display: flex; overflow-y: auto; }
+.app-shell > .page:has(> .page-body.fs-layout) { overflow: hidden; }
+.page-body.fs-layout { max-width: none; width: 100%; flex: 1 1 auto; min-height: 0;
+  padding: 0.35rem 0.45rem; align-items: stretch; }
+.app-shell .site-footer { margin-top: 0; }
+html, body { overflow-x: hidden; }
+
+/* Containment: a flex or grid item defaults to min-width:auto and refuses to shrink below its
+   content, so ONE nowrap row silently sizes the page wider than the screen. */
+.page-body.fs-layout > * { min-width: 0; max-width: 100%; }
+.tabs, .tabpanel, .tablist, .subtabs { min-width: 0; max-width: 100%; }
+
+/* ADR-0071 4: navigation chrome gets ONE row. This styles the SHELL's tablist rather than
+   replacing it, which is the whole point of using the shell primitive. */
+.tablist { flex-wrap: nowrap !important; overflow-x: auto; scrollbar-width: thin; }
+.tablist .tab, .tablist button { flex: 0 0 auto; white-space: nowrap; }
+
+.fs-layout { display: grid; grid-template-columns: 290px minmax(0, 1fr); gap: 0.6rem; align-items: stretch; }
+@media (max-width: 900px) { .fs-layout { grid-template-columns: 1fr; } }
+.fs-side { display: flex; flex-direction: column; gap: 0.75rem; min-height: 0; overflow-y: auto; }
+.fs-main { min-width: 0; min-height: 0; display: flex; flex-direction: column; }
+
+/* The tab panel is the stage: it takes every pixel the tab row does not. */
+.fs-main > .tabs { display: flex; flex-direction: column; min-height: 0; flex: 1 1 auto; }
+/* `:not([hidden])` is load-bearing. The shell hides inactive panels with the `hidden` attribute,
+   and a bare `display: flex` here outranked that: all five sequence panels rendered at once,
+   stacked, and the replay frame was squeezed to 7% of the viewport. */
+.fs-main > .tabs > .tabpanel:not([hidden]) { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+.fs-main > .tabs > .tabpanel[hidden] { display: none; }
+.fs-main > .tabs > .tabpanel:not([hidden]) > * { min-height: 0; flex: 1 1 auto; }
+
+/* The rail, mirroring the reference app's `.rv-side` / `.rv-ctl` rather than a bespoke set of
+   card classes. Sections are separated by a rule, not by nested panels: ADR-0071 6 wants the
+   rail to SHOW its controls without scrolling, and card chrome inside a card was costing rows. */
+.fs-side > * { flex: 0 0 auto; }
+.fs-rail-block { display: flex; flex-direction: column; gap: 0.45rem;
+  padding-top: 0.7rem; border-top: 1px solid var(--color-border); }
+.fs-side > .fs-rail-block:first-of-type { padding-top: 0; border-top: none; }
+.fs-rail-kicker { font: 700 0.68rem var(--font-mono); letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--color-accent); }
+.fs-rail-desc { margin: 0; font-size: 0.78rem; line-height: 1.45; color: var(--color-fg-subtle); }
+.fs-ctl { display: flex; flex-direction: column; gap: 0.35rem;
+  font-size: 0.82rem; color: var(--color-fg-subtle); }
+.fs-ctl .fs-sel, .fs-ctl select, .fs-ctl input[type="range"], .fs-ctl input[type="number"] { width: 100%; }
+.fs-sel { padding: 0.4rem 0.5rem; border: 1px solid var(--color-border); border-radius: 8px;
+  background: var(--color-bg); color: var(--color-fg); font-size: 0.82rem; }
+.fs-rail-foot { margin: 0; }
+
+/* The source switch is the first control in the rail, not a banner over the workbench
+   (ADR-0017 1.2). Two numbered options, so the reader sees the choice before the views. */
+.fs-source-switch { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; }
+.fs-source-switch button { display: flex; flex-direction: column; gap: 0.1rem; align-items: flex-start;
+  padding: 0.45rem 0.6rem; border: 1px solid var(--color-border); border-radius: 9px;
+  background: var(--color-surface); color: var(--color-fg-subtle); cursor: pointer;
+  font-size: 0.82rem; font-weight: 600; text-align: left; }
+.fs-source-switch button span { font: 700 0.6rem var(--font-mono); opacity: 0.7; }
+.fs-source-switch button.on { color: var(--color-accent); border-color: var(--color-accent);
+  background: color-mix(in oklab, var(--color-accent) 12%, var(--color-surface)); }
+
+/* ADR-0070 8: the focus entry sits with the scenario selector, visible without scrolling. */
+.fs-focus-enter { display: flex; align-items: center; justify-content: center; gap: 0.45rem;
+  margin-bottom: 0.25rem; padding: 0.55rem 0.7rem; border-radius: 10px; cursor: pointer;
+  border: 1px solid var(--color-accent); font-size: 0.84rem; font-weight: 650;
+  color: var(--color-accent); background: color-mix(in oklab, var(--color-accent) 10%, transparent); }
+.fs-focus-enter:hover { background: color-mix(in oklab, var(--color-accent) 20%, transparent); }
+
+/* The segmentation view: instrument plus the readouts it needs, side by side. The frame is
+   square, so on a wide stage it can never reach the ADR-0071 8 majority on its own; the
+   remainder carries the KPIs and the size distribution rather than empty background. */
+.fs-segment-view { display: grid; grid-template-columns: minmax(0, 1fr) minmax(240px, 26rem);
+  gap: 1rem; min-height: 0; height: 100%; align-items: stretch; }
+@media (max-width: 1100px) { .fs-segment-view { grid-template-columns: 1fr; } }
+.fs-companion { display: flex; flex-direction: column; gap: 0.7rem; min-height: 0; overflow-y: auto; }
+.fs-kpis-stack { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+.fs-companion-plot { display: flex; flex-direction: column; gap: 0.4rem; min-height: 0;
+  padding: 0.7rem; border: 1px solid var(--color-border); border-radius: 12px;
+  background: var(--color-surface); }
+
+/* The replay stage: frame plus its per-frame evidence, mirroring the still lane's two-pane view. */
+.fs-replay-stage { display: grid; grid-template-columns: minmax(0, 1fr) minmax(230px, 24rem);
+  gap: 1rem; min-height: 0; height: 100%; align-items: stretch; }
+@media (max-width: 1100px) { .fs-replay-stage { grid-template-columns: 1fr; } }
+.fs-replay > .fs-replay-stage { min-height: 0; }
+.fs-replay-stage > .fs-sequence-stage { height: 100%; width: auto; aspect-ratio: 1 / 1; justify-self: center; }
+
+.fs-focus-railhead code { display: block; margin-top: 0.15rem; font-size: 0.66rem; opacity: 0.6; }
+.fs-focus-prov { display: flex; flex-direction: column; gap: 0.3rem; padding-top: 0.6rem;
+  border-top: 1px solid color-mix(in oklab, #eafffc 14%, transparent); }
+.fs-focus-prov span { font: 700 0.62rem var(--font-mono); letter-spacing: 0.07em;
+  text-transform: uppercase; opacity: 0.7; }
+.fs-focus-prov p { margin: 0; font-size: 0.72rem; line-height: 1.45; opacity: 0.82; }
+.fs-focus-chips { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+.fs-focus-chips .chip { font-size: 0.7rem; }
+
+/* The method under the scenario blurb: what is actually drawn on the stage right now. */
+.fs-focus-label em { display: block; margin-top: 0.35rem; font-style: normal;
+  font: 700 0.72rem var(--font-mono); letter-spacing: 0.01em; color: #7fe3d8; }
+
+/* Quality view: the curve as the instrument, its outcomes beside it. */
+.fs-quality-view { display: grid; grid-template-columns: minmax(0, 1fr) minmax(240px, 24rem);
+  gap: 1rem; min-height: 0; height: 100%; align-items: stretch; }
+@media (max-width: 1100px) { .fs-quality-view { grid-template-columns: 1fr; } }
+.fs-quality-view > .fs-panel { display: flex; flex-direction: column; gap: 0.5rem; min-height: 0; }
+.fs-apcurve { margin: 0; flex: 1 1 auto; min-height: 0; display: flex; }
+.fs-apcurve svg { width: 100%; height: 100%; min-height: 12rem; }
+.fs-apcurve-grid { stroke: var(--color-border); stroke-width: 1; }
+.fs-apcurve-tick, .fs-apcurve-axis { fill: var(--color-fg-subtle); font: 500 10px var(--font-mono); }
+.fs-apcurve-axis { font-size: 10.5px; letter-spacing: 0.03em; }
+.fs-apcurve-line { fill: none; stroke: var(--color-accent); stroke-width: 2.2;
+  stroke-linejoin: round; stroke-linecap: round; }
+.fs-apcurve-dot { fill: var(--color-accent); }
+.fs-apcurve-dot-on { fill: var(--color-accent); stroke: var(--color-surface); stroke-width: 2; }
+.fs-apcurve-cross { stroke: var(--color-accent); stroke-width: 1; stroke-dasharray: 3 3; opacity: 0.55; }
+.fs-apcurve-tipbg { fill: var(--color-surface); stroke: var(--color-border); }
+.fs-apcurve-tiplabel { fill: var(--color-fg-subtle); font: 500 9.5px var(--font-mono); }
+.fs-apcurve-tipvalue { fill: var(--color-fg); font: 700 10.5px var(--font-mono); }
+.fs-apcurve-end { fill: var(--color-fg-subtle); font: 600 10px var(--font-mono); }
+.fs-apcurve svg { cursor: crosshair; }
+.fs-apcurve-mean { stroke: var(--color-fg-subtle); stroke-width: 1.2; stroke-dasharray: 5 4; }
+.fs-apcurve-meanlabel { fill: var(--color-fg-subtle); font: 600 10px var(--font-mono); }
+
+/* Event timeline: where the events are across the sequence, truth over prediction. */
+.fs-event-timeline { display: flex; flex-direction: column; gap: 0.45rem; margin-top: 0.8rem; }
+.fs-event-track { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); gap: 0.6rem; align-items: center; }
+.fs-event-track > span { font: 600 0.7rem var(--font-mono); text-transform: uppercase;
+  letter-spacing: 0.05em; color: var(--color-fg-subtle); }
+.fs-event-track > div { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 3px; }
+.fs-event-track i { display: flex; align-items: center; justify-content: center; height: 2rem;
+  border: 1px solid var(--color-border); border-radius: 6px; background: var(--color-bg);
+  font: 700 0.72rem var(--font-mono); font-style: normal; color: var(--color-fg-subtle); }
+.fs-event-track i.on { color: var(--color-bg); background: var(--color-accent); border-color: var(--color-accent); }
+.fs-event-track i.on.pred { background: color-mix(in oklab, var(--color-accent) 62%, var(--color-bg));
+  border-color: color-mix(in oklab, var(--color-accent) 62%, var(--color-bg)); color: var(--color-fg); }
+.fs-event-track i.now { outline: 2px solid var(--color-fg); outline-offset: 1px; }
+
+/* Metric bars: several 0-to-1 metrics on one scale, directly labelled. */
+.fs-metricbars { display: flex; flex-direction: column; gap: 0.4rem; }
+.fs-metricbar { display: grid; grid-template-columns: 10rem minmax(0, 1fr) 3.2rem; gap: 0.6rem; align-items: center; }
+.fs-metricbar-l { font-size: 0.76rem; color: var(--color-fg-subtle); }
+.fs-metricbar-t { height: 9px; border-radius: 5px; background: color-mix(in oklab, var(--color-fg) 10%, transparent); overflow: hidden; }
+.fs-metricbar-t i { display: block; height: 100%; border-radius: 0 4px 4px 0; background: var(--color-accent); }
+.fs-metricbar-v { font: 700 0.76rem var(--font-mono); color: var(--color-fg); text-align: right; }
+
+/* Accuracy against compute. Family is doubled with shape, so colour is never the only cue. */
+.fs-scatter { margin: 0; display: flex; flex-direction: column; gap: 0.5rem; min-height: 0; flex: 0 1 auto; }
+/* The plot keeps its aspect and pins to the TOP of the panel. Centred in a tall panel it
+   floated with empty bands above and below, which reads as a chart that failed to load. */
+.fs-scatter svg { width: 100%; height: auto; max-height: 100%; min-height: 13rem; align-self: flex-start; }
+.fs-scatter-grid { stroke: var(--color-border); stroke-width: 1; }
+.fs-scatter-tick, .fs-scatter-axis { fill: var(--color-fg-subtle); font: 500 10px var(--font-mono); }
+.fs-scatter-label { fill: var(--color-fg); font: 700 9.5px var(--font-mono); }
+.fs-scatter-pt { cursor: pointer; }
+.fs-scatter-pt > circle, .fs-scatter-pt > rect, .fs-scatter-pt > path { stroke: var(--color-surface); stroke-width: 2; }
+.fs-scatter-ring { fill: none; stroke: var(--color-fg); stroke-width: 1.6; }
+.fs-scatter-legend { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 0; padding: 0; list-style: none; }
+.fs-scatter-legend li { display: inline-flex; align-items: center; gap: 0.35rem;
+  font-size: 0.72rem; color: var(--color-fg-subtle); }
+.fs-scatter-legend span { width: 10px; height: 10px; border-radius: 50%; }
+
+/* Validated with the dataviz palette validator in BOTH modes: adjacent-pair CVD separation,
+   normal-vision floor and contrast all pass. The light steps are darker steps of the same hues
+   chosen against the light surface, not the dark steps reused. */
+.fs-scatter-pt.fam-0 > * { fill: #0969da; }
+.fs-scatter-pt.fam-1 > * { fill: #bc4c00; }
+.fs-scatter-pt.fam-2 > * { fill: #8250df; }
+.fs-scatter-pt.fam-3 > * { fill: #1a7f37; }
+.fs-scatter-legend li.fam-0 span { background: #0969da; }
+.fs-scatter-legend li.fam-1 span { background: #bc4c00; }
+.fs-scatter-legend li.fam-2 span { background: #8250df; }
+.fs-scatter-legend li.fam-3 span { background: #1a7f37; }
+:root[data-theme="dark"] .fs-scatter-pt.fam-0 > *, html.dark .fs-scatter-pt.fam-0 > * { fill: #58a6ff; }
+:root[data-theme="dark"] .fs-scatter-pt.fam-1 > *, html.dark .fs-scatter-pt.fam-1 > * { fill: #f0883e; }
+:root[data-theme="dark"] .fs-scatter-pt.fam-2 > *, html.dark .fs-scatter-pt.fam-2 > * { fill: #bc8cff; }
+:root[data-theme="dark"] .fs-scatter-pt.fam-3 > *, html.dark .fs-scatter-pt.fam-3 > * { fill: #3fb950; }
+:root[data-theme="dark"] .fs-scatter-legend li.fam-0 span { background: #58a6ff; }
+:root[data-theme="dark"] .fs-scatter-legend li.fam-1 span { background: #f0883e; }
+:root[data-theme="dark"] .fs-scatter-legend li.fam-2 span { background: #bc8cff; }
+:root[data-theme="dark"] .fs-scatter-legend li.fam-3 span { background: #3fb950; }
+
+/* Methods: the trade-off plot beside the ranking, both filling the stage. */
+.fs-methods-view { display: grid; grid-template-columns: minmax(0, 25rem) minmax(0, 1fr);
+  gap: 1rem; min-height: 0; height: 100%; align-items: stretch; }
+@media (max-width: 1200px) { .fs-methods-view { grid-template-columns: 1fr; } }
+.fs-methods-view > .fs-panel { display: flex; flex-direction: column; gap: 0.5rem; min-height: 0; }
+.fs-methods-table { min-height: 0; }
+.fs-methods-table > div:last-child { flex: 1 1 auto; }
+
+
+/* A bounded scroll region has to LOOK bounded. The 15-method table clipped its last rows with
+   no cue, so it read as a table that had failed rather than one with more below. */
+.fs-scrollbox { position: relative; overflow: auto; min-height: 0; }
+.fs-scrollbox::after { content: ''; position: sticky; bottom: 0; left: 0; display: block; height: 1.6rem;
+  margin-top: -1.6rem; pointer-events: none;
+  background: linear-gradient(transparent, var(--color-surface)); }
+
+/* Froth state: the verdict beside the distribution it was read from. */
+.fs-state-view { display: grid; grid-template-columns: minmax(0, 1fr) minmax(260px, 26rem);
+  gap: 1rem; min-height: 0; height: 100%; align-items: stretch; }
+@media (max-width: 1100px) { .fs-state-view { grid-template-columns: 1fr; } }
+.fs-state-view > .fs-panel { display: flex; flex-direction: column; gap: 0.5rem; min-height: 0; }
+.fs-state-head { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+.fs-state-title { font-weight: 700; font-size: 1.02rem; }
+
+/* ============================================================================
+   The instrument window (ADR-0071 section 8, decision delegated 2026-07-31).
+   A square frame cannot reach 50% of a 1280x800 viewport (needs 715px of height; ~555 exist
+   under the chrome), so the instrument is the INTERACTIVE pan/zoom window: it fills the whole
+   tab panel, the frame fits inside, and the letterbox bands carry the readouts, the same
+   pattern focus mode uses. At rest (zoom 1) nothing intersects the frame; the instrument gate
+   asserts that as zero rectangle overlap.
+   ============================================================================ */
+.fs-instrument {
+  position: relative; height: 100%; min-height: 0; overflow: hidden;
+  border-radius: 14px; background: #051016;
+  border: 1px solid color-mix(in oklab, var(--color-accent) 30%, var(--color-border));
+}
+.fs-instrument-band {
+  position: absolute; left: 0.6rem; top: 0.6rem; bottom: 0.6rem; width: 185px;
+  display: flex; flex-direction: column; gap: 0.5rem; z-index: 2;
+  overflow-y: auto; color: #eafffc; pointer-events: auto;
+}
+.fs-instrument-band .fs-kpi {
+  padding: 0.35rem 0.55rem; border-radius: 9px; border: none;
+  background: color-mix(in oklab, #04121a 82%, transparent); backdrop-filter: blur(6px);
+}
+.fs-instrument-band .fs-kpi-v { color: #eafffc; font-size: 1.05rem; }
+.fs-instrument-band .fs-kpi-l { color: #9fd9d3; }
+.fs-instrument-band .fs-table { font-size: 0.7rem; }
+.fs-instrument-band .fs-table th, .fs-instrument-band .fs-table td {
+  color: #eafffc; border-color: color-mix(in oklab, #eafffc 14%, transparent); padding: 0.22rem 0.4rem; }
+.fs-instrument-band .fs-band-card {
+  padding: 0.45rem 0.55rem; border-radius: 9px;
+  background: color-mix(in oklab, #04121a 82%, transparent); backdrop-filter: blur(6px);
+}
+.fs-instrument-band .fs-band-card > span {
+  display: block; font: 700 0.6rem var(--font-mono); letter-spacing: 0.06em;
+  text-transform: uppercase; color: #9fd9d3; margin-bottom: 0.25rem;
+}
+.fs-instrument-band .fs-hint { color: #bfe8e2; }
+.fs-instrument-band .fs-sequence-timeline {
+  position: static; margin-top: auto; border-color: transparent;
+  background: color-mix(in oklab, #04121a 82%, transparent);
+  grid-template-columns: auto auto auto minmax(0, 1fr);
+}
+
+/* The overlay chain fills the window completely. */
+.fs-instrument .fs-overlay { height: 100%; grid-template-rows: auto minmax(0, 1fr); }
+.fs-instrument .fs-overlay-view { height: 100%; min-height: 0; border: none; background: none; }
+.fs-instrument .fs-overlay > div:first-child { padding: 0.45rem 0.6rem 0; justify-content: flex-end; }
+
+/* The replay window: full-bleed inside the instrument, frame letterboxed by object-fit. */
+.fs-instrument .fs-sequence-stage {
+  position: absolute; inset: 0; margin: auto; height: 100%; width: auto;
+  aspect-ratio: 1 / 1; max-width: 100%; max-height: 100%;
+  border: none; border-radius: 0; box-shadow: none; background: none;
+}
+.fs-instrument .fs-sequence-stage img, .fs-instrument .fs-sequence-stage canvas {
+  width: 100%; height: 100%; object-fit: contain;
+}
+
+
+/* The last centimetres of the 50% floor: one compact tab row, no dead margins under it. */
+.fs-main > .tabs > .tablist { margin-bottom: 0.35rem; padding-bottom: 0.3rem; }
+.fs-replay { grid-template-rows: minmax(0, 1fr); gap: 0; }

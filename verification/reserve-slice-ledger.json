@@ -1,0 +1,62 @@
+{
+  "schema": "frothseg.reserve-ledger/v1",
+  "purpose": "Running count of the Phase 2 reserve slices a study has spent. The pre-registration in verification/phase2-data-preregistration.json is a frozen snapshot of the data step and is never back-edited; this file changes instead.",
+  "rule": "A study spends the reserve slice named after it, at most once. A second entry for the same slice means the slice was observed twice and its guarantee is void.",
+  "entries": [
+    {
+      "reserve_study": "p2",
+      "spent_by": "p2-domain-randomization-matched-and-extended-budget",
+      "date": "2026-08-01",
+      "evidence": "verification/p2-domain-randomization.json",
+      "sample_count": 64,
+      "group_ids_sha256": "859ad6b2d402b0ba5a61b827c875546d1095abdb5c41dd14dd6332455429c0e3",
+      "sample_ids_sha256": "7f589b4b9bf9f4871125bebfd759cbaf91bbb4f971411e0ebf5c03328163b7bf",
+      "test_evaluations_spent": 2,
+      "fresh_real_split_read": {
+        "split": "fresh-test",
+        "sample_count": 72,
+        "group_count": 5,
+        "sample_ids_sha256": "d8372087aa0544a6b542b6c5835958dbbed3b292effbaebb43951e53756a9052"
+      },
+      "ensembles_scored": [
+        "A"
+      ],
+      "note": "Two non-iterated passes, one per surface, scoring one ensemble each. The pre-registered scope was the arm selected on validation plus the no-augmentation control; validation selected the control itself, so they coincided. Both surfaces are now burned for the published no-augmentation N1 ensemble."
+    },
+    {
+      "reserve_study": "p3",
+      "spent_by": "p3-conformal-intervals",
+      "date": "2026-08-01",
+      "evidence": "verification/p3-conformal-intervals.json",
+      "sample_count": 64,
+      "group_ids_sha256": "047500786d8010215d765f059d6bda84a609e6443a73a1fa40c9a9a6ee9fc5f4",
+      "sample_ids_sha256": "2f35ae349c0cac8350da0ebb6b45a5517a465bc2252e0d9204e1c8579bebc9d0",
+      "test_evaluations_spent": 0
+    },
+    {
+      "reserve_study": "p1",
+      "spent_by": "phase1-classical-adoption-c3-flooding-surface-and-c7-mode",
+      "date": "2026-08-01",
+      "evidence": "verification/phase1-adoption.json",
+      "sample_count": 64,
+      "group_ids_sha256": "47efac56e423011aed7f0f5282cc264e49c6205de7bbf65a7cb6ab857ad4a59a",
+      "sample_ids_sha256": "291d72eeda527398e1cb36b21890cc7966684ab9d17027ffb956c24dd598dace",
+      "test_evaluations_spent": 0,
+      "reassigned_from_its_named_study": {
+        "named_study": "P-1, ensemble-to-ensemble spread",
+        "why_the_slice_was_free": "P-1's pre-registered design states 'Test-evaluation budget: zero' and 'existing splits, no reserve groups consumed' (PLAN-PROPOSAL.md section 5, P-1). P-1 ran and closed on 2026-07-31 with verdict 'fail' (verification/p1-ensemble-spread.json) without reading this archive, so the slice its name reserved was never going to be spent by it.",
+        "what_this_costs": "P-1 can never be re-run against an unobserved synthetic surface using this slice. That is accepted: P-1 is closed, and its refutation was decided on validation by construction.",
+        "rule_note": "The ledger rule is one entry per slice, at most once. This is that one entry for p1; the slice is now burned for every purpose, not only for this one."
+      },
+      "evaluations": 4,
+      "arms_scored": [
+        "watershed_hmax surface=neg_edt (before)",
+        "watershed_hmax surface=neg_gray (after)",
+        "valley_edge seam_radius=3 mode=subtract (before)",
+        "valley_edge seam_radius=3 mode=watershed (after)"
+      ],
+      "note": "One non-iterated pass per arm, four in total, no grid and no re-optimisation. Nothing was trained and no learned-lane test evaluation was spent: all four arms are classical engines. The slice is now burned and no later study may quote it."
+    }
+  ],
+  "slices_spent": 3
+}

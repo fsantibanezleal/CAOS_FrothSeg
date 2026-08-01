@@ -52,8 +52,10 @@ $$ \mathrm{AP}(t) = \frac{\mathrm{TP}(t)}{\mathrm{TP}(t) + \mathrm{FP}(t) + \mat
    \mathrm{AP} = \frac{1}{\lvert \mathcal{T} \rvert} \sum_{t \in \mathcal{T}} \mathrm{AP}(t), \quad
    \mathcal{T} = \{0.5, 0.55, \dots, 0.95\} $$
 
-This is the exact protocol behind every number in the benchmark: SAM mean AP 0.365 vs the classical floor 0.262
-over the 13 cases (the committed `data/derived/sam_benchmark.json`), both computed on the decoded RLE ground truth.
+This is the exact protocol behind every number in the benchmark: SAM mean AP 0.365 vs the classical floor 0.351
+over the 12 scored cases (the committed `data/derived/sam_benchmark.json`), both computed on the decoded RLE
+ground truth. The floor figure was 0.262 until the 2026-08-01 C3 and C7 adoption moved the best classical method
+on 11 of those 12 cases.
 
 ## Install (exact, verified)
 

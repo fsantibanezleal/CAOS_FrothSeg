@@ -481,75 +481,75 @@
         },
         {
           "events_path": "showcase/temporal/poly-normal/predictions/C3/events.json",
-          "events_sha256": "8872b889eda538e500bcb31a76070714a74a9bed7e5c6b8e01829e1fd4bad932",
+          "events_sha256": "bdf560eff4a194d4ec660e5ff63285aaec04a114e4740579f0ab30da456f21c7",
           "evidence_path": "temporal/watershed_hmax.json",
-          "evidence_sha256": "fe9c5c56f1ad4eb889d3416193ecc7b525768b10ff9f89e305079cda43210249",
+          "evidence_sha256": "71a5d96d98ac7e445e60c8545ff4ec67c26ebd58c04a37046761ebdf10fd20d2",
           "frames": [
             {
               "frame_index": 0,
               "prediction_path": "showcase/temporal/poly-normal/000/predictions/C3/labels.rle",
-              "prediction_sha256": "ce16ac4c217999083590cd629346c69fb8659f06dc634c1f15eba146fb4f95a1"
+              "prediction_sha256": "55b59dc75c9e8ce81b375c3b99603b439b36879897cee7edf5ce5d74db7057d6"
             },
             {
               "frame_index": 1,
               "prediction_path": "showcase/temporal/poly-normal/001/predictions/C3/labels.rle",
-              "prediction_sha256": "a8542dfa704c9c60c2448723c4842008737cf08bc0add90cc6e1196e12654a78"
+              "prediction_sha256": "b5f903129385fa3a18df2480cafe53519e1d5a32ea35bfc72ad8550ccf4d4514"
             },
             {
               "frame_index": 2,
               "prediction_path": "showcase/temporal/poly-normal/002/predictions/C3/labels.rle",
-              "prediction_sha256": "a244f364c17cb1876b7cbbbbb422f5509e2e9f1b83277c80ec47f5fa4639321d"
+              "prediction_sha256": "9bf294fd88a6bb402a363d50fe4be7e7171867dba2c1f643dc4f1a2f12b1f2bc"
             },
             {
               "frame_index": 3,
               "prediction_path": "showcase/temporal/poly-normal/003/predictions/C3/labels.rle",
-              "prediction_sha256": "805bbdf45a85c0909820343b717867d0ca31fa722c2336bbb5332d697dd01e8c"
+              "prediction_sha256": "d18ef46dff957955245aa0d70d6cb3cc97d4546ba684b5005a4b9beac79f22b6"
             },
             {
               "frame_index": 4,
               "prediction_path": "showcase/temporal/poly-normal/004/predictions/C3/labels.rle",
-              "prediction_sha256": "a4889399f7d92e9cfa0e57ab6be2e722f1d95b4d40f0fbbddcdb60f1f2e4bda4"
+              "prediction_sha256": "58a8e08c121e5343a3ebade879e87cb374e9a9de78d7d6d418e67f15c66f85fa"
             },
             {
               "frame_index": 5,
               "prediction_path": "showcase/temporal/poly-normal/005/predictions/C3/labels.rle",
-              "prediction_sha256": "b99b74f4ce58e971712222920614b944fc40f3b518b98b5f525ff9b409f44e64"
+              "prediction_sha256": "78154c6cd3c27e5e1eeeace56c901726ca78cde9c0fe7ccdbbfd89cd9e73b0a8"
             },
             {
               "frame_index": 6,
               "prediction_path": "showcase/temporal/poly-normal/006/predictions/C3/labels.rle",
-              "prediction_sha256": "d11ec8d7b517e9ad837cf7eb017ddd2da7b7a65161d2c7d44277daa6f4052bdc"
+              "prediction_sha256": "81fe1352e6254cda8c57cabfe7a97fefb3946623c783d79af632fff73a96e226"
             },
             {
               "frame_index": 7,
               "prediction_path": "showcase/temporal/poly-normal/007/predictions/C3/labels.rle",
-              "prediction_sha256": "d3a0689639032d4e0b126b9931629671961fed07cf7fdc9893dd3bcb021d02a4"
+              "prediction_sha256": "e14c9a26c777c6f6b3f54968c0f680ee10ec3b2bada6d631877e423bbdf4c626"
             }
           ],
           "method_id": "C3",
           "method_slug": "watershed_hmax",
           "metrics": {
-            "association_accuracy": 0.7580233781046447,
-            "detection_accuracy": 0.4152753108348135,
-            "event_f1": 0.0017421602787456446,
+            "association_accuracy": 0.8484351265661475,
+            "detection_accuracy": 0.6415327564894932,
+            "event_f1": 0.003076923076923077,
             "event_false_negatives": 0,
-            "event_false_positives": 2292,
-            "event_precision": 0.0008718395815170009,
+            "event_false_positives": 1296,
+            "event_precision": 0.0015408320493066256,
             "event_recall": 1.0,
             "event_true_positives": 2,
-            "false_negative_instances": 406,
-            "false_positive_instances": 1240,
-            "flow_epe_px": 1.4179231485133488,
+            "false_negative_instances": 18,
+            "false_positive_instances": 852,
+            "flow_epe_px": 1.0619048730382157,
             "frames": 8,
-            "hota": 0.5610600627049316,
-            "id_precision": 0.4200913242009132,
-            "id_recall": 0.6425396825396825,
-            "id_switch_rate": 0.030795551753635585,
-            "id_switches": 36,
-            "idf1": 0.5080321285140562,
-            "matched_gt_instances": 1169,
-            "mean_frame_coverage": 0.7422401067025796,
-            "track_fragmentations": 84
+            "hota": 0.7377661726105993,
+            "id_precision": 0.5794935657949356,
+            "id_recall": 0.8863492063492063,
+            "id_switch_rate": 0.057161207450224794,
+            "id_switches": 89,
+            "idf1": 0.7008032128514057,
+            "matched_gt_instances": 1557,
+            "mean_frame_coverage": 0.9885754428675023,
+            "track_fragmentations": 6
           },
           "mode": "framewise_segmentation_with_iou_identity_association",
           "model_provenance": {
@@ -557,7 +557,7 @@
             "checkpoint_sha256": null,
             "device": "cpu"
           },
-          "predicted_event_count": 2294,
+          "predicted_event_count": 1298,
           "protocol": "independent per-frame inference, followed by greedy IoU identity association",
           "truth_event_count": 2
         },
@@ -809,72 +809,72 @@
         },
         {
           "events_path": "showcase/temporal/poly-normal/predictions/C7/events.json",
-          "events_sha256": "3c0b8e57f71df48d359d12398d82300a624d16ab41785f75330fdbf58a7acd69",
+          "events_sha256": "8b6f45b11b0af1520120421440757dd21b1a9d1e5b9876994e7d9c162b4c9c47",
           "evidence_path": "temporal/valley_edge.json",
-          "evidence_sha256": "8a6ab70f8f709169a4a83e353128ea0de4af9457de56bc211be9721cad910f14",
+          "evidence_sha256": "b41fdd2f1dbde653e92ead5319c1053ad4df93cc58889f66cc478817f35f091a",
           "frames": [
             {
               "frame_index": 0,
               "prediction_path": "showcase/temporal/poly-normal/000/predictions/C7/labels.rle",
-              "prediction_sha256": "d70e443bad0a05ff05b616f2f185e902c4f668fcf9fb0e3d3f7da06c95fc32e8"
+              "prediction_sha256": "e32b48b24e1244bbd254271fa250a577ec143d009e593e7f52e9b25f6adeb39a"
             },
             {
               "frame_index": 1,
               "prediction_path": "showcase/temporal/poly-normal/001/predictions/C7/labels.rle",
-              "prediction_sha256": "4a7d20be367df874ed4e28da3701dad865525f9f3ed72a4e1f390c8dadfb6e2b"
+              "prediction_sha256": "8dee8d12a743ab5dd21fe79bcae8e778367862a118913a02099b1634b93eb398"
             },
             {
               "frame_index": 2,
               "prediction_path": "showcase/temporal/poly-normal/002/predictions/C7/labels.rle",
-              "prediction_sha256": "6c5e4ff1571d03ac07819a090c1251075dc3418ee2abcd1a0d3216db2af48b01"
+              "prediction_sha256": "12b5ae3331fad6a65f08f0caeb259b75bc6567fdf02e180376e53c4e94e15779"
             },
             {
               "frame_index": 3,
               "prediction_path": "showcase/temporal/poly-normal/003/predictions/C7/labels.rle",
-              "prediction_sha256": "d06f02f0080d902e3818738d7dacef78ae0be09f9387c12fd593285c32b38385"
+              "prediction_sha256": "b84b0922650454474b557c43f03769d7a4fc09ac5e62f3d4a0d1f70de3b0d36f"
             },
             {
               "frame_index": 4,
               "prediction_path": "showcase/temporal/poly-normal/004/predictions/C7/labels.rle",
-              "prediction_sha256": "72717c8bfddd6711f6c116879f928c47377e8a0d43e101afdebb8c62e09a8a80"
+              "prediction_sha256": "008c267098e9afe58dbe80edb32b8fbef314d8986f6e03c9540d755588dd97da"
             },
             {
               "frame_index": 5,
               "prediction_path": "showcase/temporal/poly-normal/005/predictions/C7/labels.rle",
-              "prediction_sha256": "243df9b697048675c5494df11e798f39d365fddd083799fbf2d5ca9e538c84f0"
+              "prediction_sha256": "702e23c9bc7064918f57b414f1ada3855900b5ad52bf3c363ccd34094095d04e"
             },
             {
               "frame_index": 6,
               "prediction_path": "showcase/temporal/poly-normal/006/predictions/C7/labels.rle",
-              "prediction_sha256": "9462b5954a3a8ad7f03a96a060d663e1ad1069535b4a4e2f328332929cd20027"
+              "prediction_sha256": "4dad25b5cfad3dc749045088b46bb72e3df75f75a5d5811ac118f4be5769a4b1"
             },
             {
               "frame_index": 7,
               "prediction_path": "showcase/temporal/poly-normal/007/predictions/C7/labels.rle",
-              "prediction_sha256": "9ce1a60d43af30261608fb88c59e28241f02cdfed39e5142d51bbb2f66fcc738"
+              "prediction_sha256": "55ed12453c57d35a70312554e856c049eed4315f0d88ee55c5a25bb38bce6ae8"
             }
           ],
           "method_id": "C7",
           "method_slug": "valley_edge",
           "metrics": {
-            "association_accuracy": 0.791165495110949,
+            "association_accuracy": 0.7960309609582329,
             "detection_accuracy": 0.8631512868801005,
-            "event_f1": 0.01532567049808429,
+            "event_f1": 0.016736401673640166,
             "event_false_negatives": 0,
-            "event_false_positives": 257,
-            "event_precision": 0.007722007722007722,
+            "event_false_positives": 235,
+            "event_precision": 0.008438818565400843,
             "event_recall": 1.0,
             "event_true_positives": 2,
             "false_negative_instances": 200,
             "false_positive_instances": 18,
-            "flow_epe_px": 0.9513951552787006,
+            "flow_epe_px": 0.9086781321155366,
             "frames": 8,
-            "hota": 0.8263749241356174,
-            "id_precision": 0.8636037329504667,
-            "id_recall": 0.7638095238095238,
-            "id_switch_rate": 0.01818181818181818,
-            "id_switches": 25,
-            "idf1": 0.8106469002695418,
+            "hota": 0.828912026904847,
+            "id_precision": 0.867910983488873,
+            "id_recall": 0.7676190476190476,
+            "id_switch_rate": 0.012363636363636363,
+            "id_switches": 17,
+            "idf1": 0.8146900269541779,
             "matched_gt_instances": 1375,
             "mean_frame_coverage": 0.8730316999896406,
             "track_fragmentations": 86
@@ -885,7 +885,7 @@
             "checkpoint_sha256": null,
             "device": "cpu"
           },
-          "predicted_event_count": 259,
+          "predicted_event_count": 237,
           "protocol": "independent per-frame inference, followed by greedy IoU identity association",
           "truth_event_count": 2
         },
@@ -1793,75 +1793,75 @@
         },
         {
           "events_path": "showcase/temporal/fine-froth/predictions/C3/events.json",
-          "events_sha256": "dc6f1acc130dab49648c1c6473eba1ff211c1df46d70adc952536b12cc97e4f6",
+          "events_sha256": "0606d8c93010ec52eac8e03e3f31980f374cd9c522c884db131f2110c864da53",
           "evidence_path": "temporal/watershed_hmax.json",
-          "evidence_sha256": "fe9c5c56f1ad4eb889d3416193ecc7b525768b10ff9f89e305079cda43210249",
+          "evidence_sha256": "71a5d96d98ac7e445e60c8545ff4ec67c26ebd58c04a37046761ebdf10fd20d2",
           "frames": [
             {
               "frame_index": 0,
               "prediction_path": "showcase/temporal/fine-froth/000/predictions/C3/labels.rle",
-              "prediction_sha256": "bbe69eefd812e9ed24585c389d2f4959ef37a40b3837789f9569cb375fa8b6f4"
+              "prediction_sha256": "6f2351a40525e64a81f15deb10d3f3ae3da5d5b395e510144d5ec2c06543f328"
             },
             {
               "frame_index": 1,
               "prediction_path": "showcase/temporal/fine-froth/001/predictions/C3/labels.rle",
-              "prediction_sha256": "73133fde54744ad87bada8d9c5f8713027f25627b8db5451bdd3963f2675e60b"
+              "prediction_sha256": "ae9b3637b883980fd6c2a5121e9b82a2b09851ac0c665ec5dfa9cf14de7eea3b"
             },
             {
               "frame_index": 2,
               "prediction_path": "showcase/temporal/fine-froth/002/predictions/C3/labels.rle",
-              "prediction_sha256": "fd64c2e5a562e7cab054f71165d75aa66d931ec806338d326e8ed52211ace03f"
+              "prediction_sha256": "aff7b88d5e17fc2b0b3690168d87a283ede4bf44c03b4868ff969375dd31040b"
             },
             {
               "frame_index": 3,
               "prediction_path": "showcase/temporal/fine-froth/003/predictions/C3/labels.rle",
-              "prediction_sha256": "768854bb2b7c5a2a6d9f43001daea87813e48b877638d8950ca335afe2794cf0"
+              "prediction_sha256": "5d978726c501d344bc2cc9e1b8663e44051569244698c7734c48e19ed4554a43"
             },
             {
               "frame_index": 4,
               "prediction_path": "showcase/temporal/fine-froth/004/predictions/C3/labels.rle",
-              "prediction_sha256": "fba6617fa1ffaf6f31ce5977d176531faae3b8e9e4ae0020c11e419d92c26b3b"
+              "prediction_sha256": "bf1ca5f4b676d1e9a719c153e387761df31de469fb72e9f17cdffac0ba5a3fa9"
             },
             {
               "frame_index": 5,
               "prediction_path": "showcase/temporal/fine-froth/005/predictions/C3/labels.rle",
-              "prediction_sha256": "15d7a7f386aed5277c1d0c012af0ad3bc259088e812fe56d3a97c1bfe03a57a1"
+              "prediction_sha256": "24039a561897ae06a56a8d579c1e7e6d5f51e2ce88b95b88cda1cfe327b2385a"
             },
             {
               "frame_index": 6,
               "prediction_path": "showcase/temporal/fine-froth/006/predictions/C3/labels.rle",
-              "prediction_sha256": "d29183684db4f20f6aa2e826c35b6fdb3ae94821bdcf6271e331852b3b05e0f1"
+              "prediction_sha256": "93df4e3c571f46b0613999f865bdf55e980d88426e11f8ab4a8713373e37f3c6"
             },
             {
               "frame_index": 7,
               "prediction_path": "showcase/temporal/fine-froth/007/predictions/C3/labels.rle",
-              "prediction_sha256": "97fa6535b9d4b90bec96cec1148fb347d552fe6e6c46f4f1575592ab14bf8806"
+              "prediction_sha256": "cc1d07071b01bd0f6fccd4d25e0ebbf84cb6d5576f19f6ec7bf06dc9e732246f"
             }
           ],
           "method_id": "C3",
           "method_slug": "watershed_hmax",
           "metrics": {
-            "association_accuracy": 0.6289671111334445,
-            "detection_accuracy": 0.5468896530165677,
-            "event_f1": 0.0005078720162519045,
+            "association_accuracy": 0.8907515699907709,
+            "detection_accuracy": 0.8872997711670481,
+            "event_f1": 0.0017482517482517483,
             "event_false_negatives": 0,
-            "event_false_positives": 3936,
-            "event_precision": 0.000254000508001016,
+            "event_false_positives": 1142,
+            "event_precision": 0.0008748906386701663,
             "event_recall": 1.0,
             "event_true_positives": 1,
-            "false_negative_instances": 1244,
-            "false_positive_instances": 1655,
-            "flow_epe_px": 1.1388473339201868,
+            "false_negative_instances": 90,
+            "false_positive_instances": 501,
+            "flow_epe_px": 0.4541279916767241,
             "frames": 8,
-            "hota": 0.5864943351530366,
-            "id_precision": 0.5252231276678309,
-            "id_recall": 0.5707358212102045,
-            "id_switch_rate": 0.05687339239782795,
-            "id_switches": 199,
-            "idf1": 0.5470344548853188,
-            "matched_gt_instances": 3499,
-            "mean_frame_coverage": 0.7377209761405588,
-            "track_fragmentations": 387
+            "hota": 0.889023995300183,
+            "id_precision": 0.8298409002716337,
+            "id_recall": 0.9017499472907442,
+            "id_switch_rate": 0.03846980442725124,
+            "id_switches": 179,
+            "idf1": 0.8643023138324745,
+            "matched_gt_instances": 4653,
+            "mean_frame_coverage": 0.9810261753110614,
+            "track_fragmentations": 36
           },
           "mode": "framewise_segmentation_with_iou_identity_association",
           "model_provenance": {
@@ -1869,7 +1869,7 @@
             "checkpoint_sha256": null,
             "device": "cpu"
           },
-          "predicted_event_count": 3937,
+          "predicted_event_count": 1143,
           "protocol": "independent per-frame inference, followed by greedy IoU identity association",
           "truth_event_count": 1
         },
@@ -2121,75 +2121,75 @@
         },
         {
           "events_path": "showcase/temporal/fine-froth/predictions/C7/events.json",
-          "events_sha256": "8baba0a55952eb3a4f60692e204f55baf3b893e3c77eb7ab2b578100d061efad",
+          "events_sha256": "8343451c9fec3d6e7024168ab6e2d7df05b50a2e252152b3054b2ae59d5099c8",
           "evidence_path": "temporal/valley_edge.json",
-          "evidence_sha256": "8a6ab70f8f709169a4a83e353128ea0de4af9457de56bc211be9721cad910f14",
+          "evidence_sha256": "b41fdd2f1dbde653e92ead5319c1053ad4df93cc58889f66cc478817f35f091a",
           "frames": [
             {
               "frame_index": 0,
               "prediction_path": "showcase/temporal/fine-froth/000/predictions/C7/labels.rle",
-              "prediction_sha256": "63e7ec1f2318b14e49ae10a642a0155d1bf1a63ac44f722448cee42905de03d8"
+              "prediction_sha256": "b2710b36513186c4dc7b80393dc0e2416080c58a9a3e871a7971b1da9b653131"
             },
             {
               "frame_index": 1,
               "prediction_path": "showcase/temporal/fine-froth/001/predictions/C7/labels.rle",
-              "prediction_sha256": "e83816adabfdec1276f086f18aa9a7bd944575247b39111aa0edac02e77838ae"
+              "prediction_sha256": "81b96a2e32bb4bcbfac9a5847caf3d5395719a460c3f181b5a1639b4bd2e6144"
             },
             {
               "frame_index": 2,
               "prediction_path": "showcase/temporal/fine-froth/002/predictions/C7/labels.rle",
-              "prediction_sha256": "5eee8636bb9a939fe2bc31888b11677b8e133ce4b20fa549c8b066981b9a9147"
+              "prediction_sha256": "8180ddbfcf8a1bd6f0af85939fa369ff5dad383fb2c6f9f8c8c80b52862a5e42"
             },
             {
               "frame_index": 3,
               "prediction_path": "showcase/temporal/fine-froth/003/predictions/C7/labels.rle",
-              "prediction_sha256": "0530d1907e8fc6c502cd384dc5a68fca740f3a717822d0ba71425bc045dc0c81"
+              "prediction_sha256": "52b0be63153ccd2f1bb3b6d91748fe674893afa24247846347f2fdd9fe45b718"
             },
             {
               "frame_index": 4,
               "prediction_path": "showcase/temporal/fine-froth/004/predictions/C7/labels.rle",
-              "prediction_sha256": "198e5d68d44aef6eb8e6cbbf23d813e4832a7a10561c15c4409d6ae4b66de0ff"
+              "prediction_sha256": "2da436c1900db524215711b8694e6f64aee218a1e689c433991ed4d1a22ca8ac"
             },
             {
               "frame_index": 5,
               "prediction_path": "showcase/temporal/fine-froth/005/predictions/C7/labels.rle",
-              "prediction_sha256": "c96384a1675edd7c9b439f610e14b4a4522adf05dfcb9f2248278cc8ba8f1352"
+              "prediction_sha256": "3cb3438ef87d247ae0614d7beba8ccf81488b0bcb27a92c365c3df7c3165495c"
             },
             {
               "frame_index": 6,
               "prediction_path": "showcase/temporal/fine-froth/006/predictions/C7/labels.rle",
-              "prediction_sha256": "faeedfbd11eba104cc7562970dcba3769388723e3b1aac223afd7df0a0f69d29"
+              "prediction_sha256": "60cf4034323b22327e77c697bb07ee35b72e87581629ad1ab8e1d3f8a04aa4c5"
             },
             {
               "frame_index": 7,
               "prediction_path": "showcase/temporal/fine-froth/007/predictions/C7/labels.rle",
-              "prediction_sha256": "d77cff4a20fbc777f12d1a17488052163de046a3f33a1ed91eb3e0e389f342d2"
+              "prediction_sha256": "05da13cd4b76a8001f0b11e1d4b787b3fd5fa1c5843e6c367a42d7d3191e2986"
             }
           ],
           "method_id": "C7",
           "method_slug": "valley_edge",
           "metrics": {
-            "association_accuracy": 0.7243350723815546,
+            "association_accuracy": 0.7309460939674506,
             "detection_accuracy": 0.8391313514653173,
-            "event_f1": 0.0019102196752626551,
+            "event_f1": 0.0021668472372697724,
             "event_false_negatives": 0,
-            "event_false_positives": 1045,
-            "event_precision": 0.0009560229445506692,
+            "event_false_positives": 921,
+            "event_precision": 0.0010845986984815619,
             "event_recall": 1.0,
             "event_true_positives": 1,
             "false_negative_instances": 763,
             "false_positive_instances": 0,
-            "flow_epe_px": 0.8384622545754535,
+            "flow_epe_px": 0.776604780385451,
             "frames": 8,
-            "hota": 0.7796231578148909,
-            "id_precision": 0.8311557788944723,
-            "id_recall": 0.6974488720219271,
-            "id_switch_rate": 0.03768844221105527,
-            "id_switches": 150,
-            "idf1": 0.7584546600940043,
+            "hota": 0.783172895138233,
+            "id_precision": 0.8389447236180905,
+            "id_recall": 0.7039848197343453,
+            "id_switch_rate": 0.02763819095477387,
+            "id_switches": 110,
+            "idf1": 0.7655623065459131,
             "matched_gt_instances": 3980,
             "mean_frame_coverage": 0.8391300105966,
-            "track_fragmentations": 310
+            "track_fragmentations": 309
           },
           "mode": "framewise_segmentation_with_iou_identity_association",
           "model_provenance": {
@@ -2197,7 +2197,7 @@
             "checkpoint_sha256": null,
             "device": "cpu"
           },
-          "predicted_event_count": 1046,
+          "predicted_event_count": 922,
           "protocol": "independent per-frame inference, followed by greedy IoU identity association",
           "truth_event_count": 1
         },
@@ -3105,75 +3105,75 @@
         },
         {
           "events_path": "showcase/temporal/glare-storm/predictions/C3/events.json",
-          "events_sha256": "488ad784f08915822f4f4b417ab48ce347c054f4ff6cc6d8fba14f5eb01c47ed",
+          "events_sha256": "ca5ec159c8f0262933b6688164b6a2e1d6407aa99e3be74c665b82753e2b307e",
           "evidence_path": "temporal/watershed_hmax.json",
-          "evidence_sha256": "fe9c5c56f1ad4eb889d3416193ecc7b525768b10ff9f89e305079cda43210249",
+          "evidence_sha256": "71a5d96d98ac7e445e60c8545ff4ec67c26ebd58c04a37046761ebdf10fd20d2",
           "frames": [
             {
               "frame_index": 0,
               "prediction_path": "showcase/temporal/glare-storm/000/predictions/C3/labels.rle",
-              "prediction_sha256": "96316e9f8930a5e19cd1bd173d9ffce5aa7d2077eb2af20a6e40f2166c4b34c7"
+              "prediction_sha256": "f1a0dca06cc5695fd2021b4c12b666d4c43bfbd5f4dca302204cad33aeb7e71a"
             },
             {
               "frame_index": 1,
               "prediction_path": "showcase/temporal/glare-storm/001/predictions/C3/labels.rle",
-              "prediction_sha256": "615759573b76e64a22a303df985239e542f36c19a003170baafbecd9606ec719"
+              "prediction_sha256": "0015f7c9ff48c5231c0ff384ca187d80b75a22a4d08afe4187b0a9a135eaf4f1"
             },
             {
               "frame_index": 2,
               "prediction_path": "showcase/temporal/glare-storm/002/predictions/C3/labels.rle",
-              "prediction_sha256": "b562a78f2278dbdb5b33f7273756156091cbe69d92802333d9e519d24746111a"
+              "prediction_sha256": "7156755ec1effde309c50d847391687f76e80446d301215ffd1c755213e601e3"
             },
             {
               "frame_index": 3,
               "prediction_path": "showcase/temporal/glare-storm/003/predictions/C3/labels.rle",
-              "prediction_sha256": "331f135517248f543d7dae57dc779220e911c60a5a0a0f98caaac4dfa5e45016"
+              "prediction_sha256": "b6b95e6df85a3bee524c5860a3881d43e4d9b3114297b31b5a835e60c2773bce"
             },
             {
               "frame_index": 4,
               "prediction_path": "showcase/temporal/glare-storm/004/predictions/C3/labels.rle",
-              "prediction_sha256": "47f642cb7381b735ec6a608acf968b0e5a3b62b421a7845ced1973dc968d6b07"
+              "prediction_sha256": "92e61cd912036043ace8a83207d019a9b39b4e9f10fb942f833b2284e252a4db"
             },
             {
               "frame_index": 5,
               "prediction_path": "showcase/temporal/glare-storm/005/predictions/C3/labels.rle",
-              "prediction_sha256": "7ddd8cf87e3da084a17852808dbe06593c66846694f6c582b9d302ba2741b508"
+              "prediction_sha256": "b7f62c1ca3d7b1d96fc4ab0ba73fb9d2c4332b7de04da1bd40da0ed2871be619"
             },
             {
               "frame_index": 6,
               "prediction_path": "showcase/temporal/glare-storm/006/predictions/C3/labels.rle",
-              "prediction_sha256": "d7ede0216344deba9a9ad21d6a4dcaf9022249069ae52cc6d80a27e22fe0c593"
+              "prediction_sha256": "19252e4a57e0ccb0ca33f312a4a6318e92265e01f2a4affbe533f11a70869fe2"
             },
             {
               "frame_index": 7,
               "prediction_path": "showcase/temporal/glare-storm/007/predictions/C3/labels.rle",
-              "prediction_sha256": "4f5a79d655b55f2cf7aeda18fce613268474c71b92e9c86ed4e8feab2eb805fe"
+              "prediction_sha256": "ecd44ebda176d40eb2d042314a23c75324855d6603b31f8d792090e9a17648ce"
             }
           ],
           "method_id": "C3",
           "method_slug": "watershed_hmax",
           "metrics": {
-            "association_accuracy": 0.33623473103124285,
-            "detection_accuracy": 0.15690567414705345,
+            "association_accuracy": 0.4801379055936347,
+            "detection_accuracy": 0.2220080940450954,
             "event_f1": 0.0,
             "event_false_negatives": 0,
-            "event_false_positives": 7142,
+            "event_false_positives": 6208,
             "event_precision": 0.0,
             "event_recall": 0.0,
             "event_true_positives": 0,
-            "false_negative_instances": 716,
-            "false_positive_instances": 3905,
-            "flow_epe_px": 4.505095960663035,
+            "false_negative_instances": 424,
+            "false_positive_instances": 3613,
+            "flow_epe_px": 2.1148390879024617,
             "frames": 8,
-            "hota": 0.22968921860659972,
-            "id_precision": 0.10849947534102833,
-            "id_recall": 0.3280456852791878,
-            "id_switch_rate": 0.09767441860465116,
+            "hota": 0.32648813347447525,
+            "id_precision": 0.16411332633788037,
+            "id_recall": 0.49619289340101524,
+            "id_switch_rate": 0.07291666666666667,
             "id_switches": 84,
-            "idf1": 0.1630657624980287,
-            "matched_gt_instances": 860,
-            "mean_frame_coverage": 0.5456852791878173,
-            "track_fragmentations": 211
+            "idf1": 0.24664879356568364,
+            "matched_gt_instances": 1152,
+            "mean_frame_coverage": 0.7309644670050761,
+            "track_fragmentations": 195
           },
           "mode": "framewise_segmentation_with_iou_identity_association",
           "model_provenance": {
@@ -3181,7 +3181,7 @@
             "checkpoint_sha256": null,
             "device": "cpu"
           },
-          "predicted_event_count": 7142,
+          "predicted_event_count": 6208,
           "protocol": "independent per-frame inference, followed by greedy IoU identity association",
           "truth_event_count": 0
         },
@@ -3433,75 +3433,75 @@
         },
         {
           "events_path": "showcase/temporal/glare-storm/predictions/C7/events.json",
-          "events_sha256": "886fc2087d0dfaa60ea3e89a23ae230e69c6121429f3aa6749755cf18962bb39",
+          "events_sha256": "da4a2ed763a7aafce7350ef9d9aaea4ea34b28052c374ef62d2a4f3d00d5f095",
           "evidence_path": "temporal/valley_edge.json",
-          "evidence_sha256": "8a6ab70f8f709169a4a83e353128ea0de4af9457de56bc211be9721cad910f14",
+          "evidence_sha256": "b41fdd2f1dbde653e92ead5319c1053ad4df93cc58889f66cc478817f35f091a",
           "frames": [
             {
               "frame_index": 0,
               "prediction_path": "showcase/temporal/glare-storm/000/predictions/C7/labels.rle",
-              "prediction_sha256": "dba85929cea51f40361dd1eb39f1b97cbdc7e42b7ce6e90843edbed88167ac57"
+              "prediction_sha256": "1e1515905c9cd9bd66d566497fe19bd492b6917271e1c435b4a4005e9299255b"
             },
             {
               "frame_index": 1,
               "prediction_path": "showcase/temporal/glare-storm/001/predictions/C7/labels.rle",
-              "prediction_sha256": "f57964a3b7409812dc74e3bafe6175c76ab60819548d59546dad6ca2d3024692"
+              "prediction_sha256": "5c642a0f5810133bddd6918bdb765eb506d18d43c2c492afda7da6f9d80b6adc"
             },
             {
               "frame_index": 2,
               "prediction_path": "showcase/temporal/glare-storm/002/predictions/C7/labels.rle",
-              "prediction_sha256": "af5e4fb8d5c997d9f5ee94ff6fb481cb2622319615f3ed37e23551e189c9342e"
+              "prediction_sha256": "3e0f9b3177c38646b926e4d5678a9e1683ce18c6811054442e6d784daccc7b88"
             },
             {
               "frame_index": 3,
               "prediction_path": "showcase/temporal/glare-storm/003/predictions/C7/labels.rle",
-              "prediction_sha256": "458d4e1e4b906198e33916cc391f63c2feb012905831f092c7ffe31fb67652b0"
+              "prediction_sha256": "3c5d142664751e6a956b9d26fa4b6be6b412a5b5072b9b9b58c797e97a4aa46a"
             },
             {
               "frame_index": 4,
               "prediction_path": "showcase/temporal/glare-storm/004/predictions/C7/labels.rle",
-              "prediction_sha256": "ab04a29c802e744643a8d7bae85023302fab53ae66db59dfe9f522016ceb4f29"
+              "prediction_sha256": "e2f2a8cb9fe30e9479e88ee123e68d18810b42f562d379aaad40aa602ecfc3de"
             },
             {
               "frame_index": 5,
               "prediction_path": "showcase/temporal/glare-storm/005/predictions/C7/labels.rle",
-              "prediction_sha256": "cb351796399786d69ff83fe36f505da41be97ad1e0700ac4eb013296009bc05c"
+              "prediction_sha256": "3d6f6719b024686812c91d3acb93e1bb68398482c1dd2c38537c57dca077c9d7"
             },
             {
               "frame_index": 6,
               "prediction_path": "showcase/temporal/glare-storm/006/predictions/C7/labels.rle",
-              "prediction_sha256": "0d45e382eabf6e7ee5f02b0e424e19acf3f62a1c68c8a7b3803ca39335e346ac"
+              "prediction_sha256": "1189666837c856afafa3ccf060786a28cc1b0d80de2c3c2d85340e19a291869c"
             },
             {
               "frame_index": 7,
               "prediction_path": "showcase/temporal/glare-storm/007/predictions/C7/labels.rle",
-              "prediction_sha256": "4be4b98cc8e9da30b8b84cae2860dd8100921b0ffaced51452eef307890a31f4"
+              "prediction_sha256": "9680684cb589685c93ca03a8c98e9f338473fc3e57f27832dae2d067c3e8a15d"
             }
           ],
           "method_id": "C7",
           "method_slug": "valley_edge",
           "metrics": {
-            "association_accuracy": 0.30214978734715586,
-            "detection_accuracy": 0.367816091954023,
+            "association_accuracy": 0.2983448344834484,
+            "detection_accuracy": 0.3661631419939577,
             "event_f1": 0.0,
             "event_false_negatives": 0,
-            "event_false_positives": 714,
+            "event_false_positives": 706,
             "event_precision": 0.0,
             "event_recall": 0.0,
             "event_true_positives": 0,
-            "false_negative_instances": 968,
-            "false_positive_instances": 77,
-            "flow_epe_px": 2.0564626324437705,
+            "false_negative_instances": 970,
+            "false_positive_instances": 79,
+            "flow_epe_px": 2.0390998760758814,
             "frames": 8,
-            "hota": 0.33336999560063885,
-            "id_precision": 0.5722627737226277,
-            "id_recall": 0.24873096446700507,
-            "id_switch_rate": 0.018092105263157895,
-            "id_switches": 11,
-            "idf1": 0.34674922600619196,
-            "matched_gt_instances": 608,
-            "mean_frame_coverage": 0.3857868020304569,
-            "track_fragmentations": 188
+            "hota": 0.330519109874341,
+            "id_precision": 0.564963503649635,
+            "id_recall": 0.24555837563451777,
+            "id_switch_rate": 0.0231023102310231,
+            "id_switches": 14,
+            "idf1": 0.3423264042459089,
+            "matched_gt_instances": 606,
+            "mean_frame_coverage": 0.38451776649746194,
+            "track_fragmentations": 184
           },
           "mode": "framewise_segmentation_with_iou_identity_association",
           "model_provenance": {
@@ -3509,7 +3509,7 @@
             "checkpoint_sha256": null,
             "device": "cpu"
           },
-          "predicted_event_count": 714,
+          "predicted_event_count": 706,
           "protocol": "independent per-frame inference, followed by greedy IoU identity association",
           "truth_event_count": 0
         },
@@ -4417,75 +4417,75 @@
         },
         {
           "events_path": "showcase/temporal/motion-fast/predictions/C3/events.json",
-          "events_sha256": "41393f6307650c5ac2ed441065efdb630a5d6b1bd297c5f4c3023659c099ac09",
+          "events_sha256": "bebda0b91e8c6ed03d06137bac8ebddcb387420a6b52329dc5c245c1109f4690",
           "evidence_path": "temporal/watershed_hmax.json",
-          "evidence_sha256": "fe9c5c56f1ad4eb889d3416193ecc7b525768b10ff9f89e305079cda43210249",
+          "evidence_sha256": "71a5d96d98ac7e445e60c8545ff4ec67c26ebd58c04a37046761ebdf10fd20d2",
           "frames": [
             {
               "frame_index": 0,
               "prediction_path": "showcase/temporal/motion-fast/000/predictions/C3/labels.rle",
-              "prediction_sha256": "0f9f9b29a9d19fe8edc55097f7f7095895807e4d57bc3162152c960edab0a8f6"
+              "prediction_sha256": "8fdc5aca7173cb7fca6159f7372f248b208db28cecd99d920eb8169cd38d8406"
             },
             {
               "frame_index": 1,
               "prediction_path": "showcase/temporal/motion-fast/001/predictions/C3/labels.rle",
-              "prediction_sha256": "2acd4b804196547543e0dace099d9eb38c2622e781a17d2c9217872890eaabf4"
+              "prediction_sha256": "a6747df6123b6329d0d6cdff5010c8ef769af096be8ec9532cc19a4149d84939"
             },
             {
               "frame_index": 2,
               "prediction_path": "showcase/temporal/motion-fast/002/predictions/C3/labels.rle",
-              "prediction_sha256": "38602f56f622a28d9e3698b99982806c7c4bbacc4c421dc6d9f2f3e5e1d409ec"
+              "prediction_sha256": "abd5a98df1de8b509e680649ff43e16accc46b92c490bfdbd267bf8e67227c93"
             },
             {
               "frame_index": 3,
               "prediction_path": "showcase/temporal/motion-fast/003/predictions/C3/labels.rle",
-              "prediction_sha256": "15ae6d1d849fca27127c21a6bca0607ebe989f27654fb9e2f06c7554c3fcb6cb"
+              "prediction_sha256": "9d6170b7a7e26ace4710fabce2242cc77b4004b5a29fe8eb2a7fcaee946b4eaa"
             },
             {
               "frame_index": 4,
               "prediction_path": "showcase/temporal/motion-fast/004/predictions/C3/labels.rle",
-              "prediction_sha256": "393cfc008b2c4b3054d9c9c1631dfd6fbefdb790c3016f7e503b6fe10b97b828"
+              "prediction_sha256": "6140e4fbae2be922f7cdefd298b9eb2565e2ae51aa4fcbceae5aeadaa27ceb3c"
             },
             {
               "frame_index": 5,
               "prediction_path": "showcase/temporal/motion-fast/005/predictions/C3/labels.rle",
-              "prediction_sha256": "aef00fc7b54819d5710935ed52b9edc7965a6dafa4e8e06e60c436f87e593211"
+              "prediction_sha256": "9056ebf5ca0ed49643332cbfa1b7d4a15390b4645bfd0a6274d55a14580d25d9"
             },
             {
               "frame_index": 6,
               "prediction_path": "showcase/temporal/motion-fast/006/predictions/C3/labels.rle",
-              "prediction_sha256": "7ae16e01bddd61a5fb27c1e39b7ea542b6b53514a9a9ea0b8a8aab955454b7f6"
+              "prediction_sha256": "f265ae0f1ed681c8867dcc24d8afeb3c32ffcd24a1ed59374bf0ea2b96ed975a"
             },
             {
               "frame_index": 7,
               "prediction_path": "showcase/temporal/motion-fast/007/predictions/C3/labels.rle",
-              "prediction_sha256": "aee634c8d42b7bee3a425af715f8257dcc5ef7b86f43a89a31602ce6a88a9111"
+              "prediction_sha256": "4d617d0670bc8bb48fec752a425a545993599efbc3e1ed562ff8332fc46255ba"
             }
           ],
           "method_id": "C3",
           "method_slug": "watershed_hmax",
           "metrics": {
-            "association_accuracy": 0.5224089824548537,
-            "detection_accuracy": 0.17015298157976896,
+            "association_accuracy": 0.8137947195110723,
+            "detection_accuracy": 0.5841081994928149,
             "event_f1": 0.0,
             "event_false_negatives": 0,
-            "event_false_positives": 2902,
+            "event_false_positives": 1364,
             "event_precision": 0.0,
             "event_recall": 0.0,
             "event_true_positives": 0,
-            "false_negative_instances": 1031,
-            "false_positive_instances": 1627,
-            "flow_epe_px": 3.173375766119646,
+            "false_negative_instances": 194,
+            "false_positive_instances": 790,
+            "flow_epe_px": 1.8407189324634525,
             "frames": 8,
-            "hota": 0.29814333124983117,
-            "id_precision": 0.1878453038674033,
-            "id_recall": 0.25888324873096447,
-            "id_switch_rate": 0.06605504587155964,
-            "id_switches": 36,
-            "idf1": 0.21771611526147278,
-            "matched_gt_instances": 545,
-            "mean_frame_coverage": 0.3458121827411168,
-            "track_fragmentations": 80
+            "hota": 0.6894520783712039,
+            "id_precision": 0.5667587476979742,
+            "id_recall": 0.7810913705583756,
+            "id_switch_rate": 0.049927641099855286,
+            "id_switches": 69,
+            "idf1": 0.6568836712913554,
+            "matched_gt_instances": 1382,
+            "mean_frame_coverage": 0.8769035532994924,
+            "track_fragmentations": 54
           },
           "mode": "framewise_segmentation_with_iou_identity_association",
           "model_provenance": {
@@ -4493,7 +4493,7 @@
             "checkpoint_sha256": null,
             "device": "cpu"
           },
-          "predicted_event_count": 2902,
+          "predicted_event_count": 1364,
           "protocol": "independent per-frame inference, followed by greedy IoU identity association",
           "truth_event_count": 0
         },
@@ -4745,74 +4745,74 @@
         },
         {
           "events_path": "showcase/temporal/motion-fast/predictions/C7/events.json",
-          "events_sha256": "a3ae9434004b0ecbfdc2fb00d05189b8d0778902c19367c48eec49a34fd2464c",
+          "events_sha256": "278398f8ccf8acefbb4eabf2a9b83357d4438c45c6418c8f926edab0d7279360",
           "evidence_path": "temporal/valley_edge.json",
-          "evidence_sha256": "8a6ab70f8f709169a4a83e353128ea0de4af9457de56bc211be9721cad910f14",
+          "evidence_sha256": "b41fdd2f1dbde653e92ead5319c1053ad4df93cc58889f66cc478817f35f091a",
           "frames": [
             {
               "frame_index": 0,
               "prediction_path": "showcase/temporal/motion-fast/000/predictions/C7/labels.rle",
-              "prediction_sha256": "5a8ed2fae6a722b72baeda3eacce0579bb3244fa7fa3e2fea8cc5d84f4567826"
+              "prediction_sha256": "0c92974be6103454d3ed617d510a00720c7c74c36354db711260613f0a3f3b81"
             },
             {
               "frame_index": 1,
               "prediction_path": "showcase/temporal/motion-fast/001/predictions/C7/labels.rle",
-              "prediction_sha256": "b4ea9021c0931fe130cd7e0eaf0a3768f0d27065dde405f29eae57409db4ae79"
+              "prediction_sha256": "9e479a8c34e73a197adff65dabbb78ecd5ff82a59d1e568acaa587a27eed788e"
             },
             {
               "frame_index": 2,
               "prediction_path": "showcase/temporal/motion-fast/002/predictions/C7/labels.rle",
-              "prediction_sha256": "97e015838bbc9495cdbd291447f142e34076eed4704c5e72b9b632849716f546"
+              "prediction_sha256": "e99e5efb3181c37d398b35039ce57edf02697dc2c6959bef845cbf2c4a692db2"
             },
             {
               "frame_index": 3,
               "prediction_path": "showcase/temporal/motion-fast/003/predictions/C7/labels.rle",
-              "prediction_sha256": "a7b315a14654fac34602f6b50fcc701f96b1c557770f3beba7c61227d69da690"
+              "prediction_sha256": "20d52358ff825eafbc2989d6e073502d2285a2428006a91f3a68122b1469c7f6"
             },
             {
               "frame_index": 4,
               "prediction_path": "showcase/temporal/motion-fast/004/predictions/C7/labels.rle",
-              "prediction_sha256": "dfd37da8ae8bd306c926a80a8a21623eb22d85ef7979b788a66dee7648a2c7bc"
+              "prediction_sha256": "1f88b174a0a223129f31021b8785878112afadd14fe20bd31d6c8b5e11e9aed2"
             },
             {
               "frame_index": 5,
               "prediction_path": "showcase/temporal/motion-fast/005/predictions/C7/labels.rle",
-              "prediction_sha256": "ade32bfff78a23b2369acbb71f9340360c8777c39a9ac6f3e803d82a9c98b60d"
+              "prediction_sha256": "9f658639417291dd74cc3fd395455d56d27907d431cec2606955a0e589f8d564"
             },
             {
               "frame_index": 6,
               "prediction_path": "showcase/temporal/motion-fast/006/predictions/C7/labels.rle",
-              "prediction_sha256": "54276412a0e31742aa4008d743fff7eb43175d47bd39c00b51742f16fa8634a2"
+              "prediction_sha256": "a8d8802a5a2cdbafe5d4adc626d0a1fb5779c0319174ed82a5de54e045cd8050"
             },
             {
               "frame_index": 7,
               "prediction_path": "showcase/temporal/motion-fast/007/predictions/C7/labels.rle",
-              "prediction_sha256": "f033c699d9fafe3b1c22d9de34a931579c5091a9df160353daed874cb24db1e6"
+              "prediction_sha256": "e17eaac314e0318e772f9d654609e9976924428ff9a6dc3449c08b2300438dd6"
             }
           ],
           "method_id": "C7",
           "method_slug": "valley_edge",
           "metrics": {
-            "association_accuracy": 0.5247862046563346,
-            "detection_accuracy": 0.14111178985949907,
+            "association_accuracy": 0.5382477033711602,
+            "detection_accuracy": 0.14953846153846154,
             "event_f1": 0.0,
             "event_false_negatives": 0,
-            "event_false_positives": 194,
+            "event_false_positives": 190,
             "event_precision": 0.0,
             "event_recall": 0.0,
             "event_true_positives": 0,
-            "false_negative_instances": 1345,
-            "false_positive_instances": 61,
-            "flow_epe_px": 1.2829139917165302,
+            "false_negative_instances": 1333,
+            "false_positive_instances": 49,
+            "flow_epe_px": 2.6523639568620387,
             "frames": 8,
-            "hota": 0.27212776527327887,
-            "id_precision": 0.6198630136986302,
-            "id_recall": 0.1148477157360406,
-            "id_switch_rate": 0.03896103896103896,
+            "hota": 0.2837053638702193,
+            "id_precision": 0.6541095890410958,
+            "id_recall": 0.12119289340101523,
+            "id_switch_rate": 0.037037037037037035,
             "id_switches": 9,
-            "idf1": 0.1937901498929336,
-            "matched_gt_instances": 231,
-            "mean_frame_coverage": 0.14657360406091371,
+            "idf1": 0.2044967880085653,
+            "matched_gt_instances": 243,
+            "mean_frame_coverage": 0.15418781725888325,
             "track_fragmentations": 35
           },
           "mode": "framewise_segmentation_with_iou_identity_association",
@@ -4821,7 +4821,7 @@
             "checkpoint_sha256": null,
             "device": "cpu"
           },
-          "predicted_event_count": 194,
+          "predicted_event_count": 190,
           "protocol": "independent per-frame inference, followed by greedy IoU identity association",
           "truth_event_count": 0
         },
@@ -5729,75 +5729,75 @@
         },
         {
           "events_path": "showcase/temporal/bursting/predictions/C3/events.json",
-          "events_sha256": "4b1b6cddcc38c4144337f49338bdca20c06e3dd7df0fa17957707d8eaef1fff4",
+          "events_sha256": "995582b7dd74007431ffe8664fd3f47efed0fd930fca852370c751de8380f2f2",
           "evidence_path": "temporal/watershed_hmax.json",
-          "evidence_sha256": "fe9c5c56f1ad4eb889d3416193ecc7b525768b10ff9f89e305079cda43210249",
+          "evidence_sha256": "71a5d96d98ac7e445e60c8545ff4ec67c26ebd58c04a37046761ebdf10fd20d2",
           "frames": [
             {
               "frame_index": 0,
               "prediction_path": "showcase/temporal/bursting/000/predictions/C3/labels.rle",
-              "prediction_sha256": "08eee368c197f170274678b5ac2dd4cc405e57d3930948f3f92b89bc53efa83b"
+              "prediction_sha256": "444e5f11cbc8f9a5beaff9c1a9b7cc105efd3f21428c8129941a9d27f737900e"
             },
             {
               "frame_index": 1,
               "prediction_path": "showcase/temporal/bursting/001/predictions/C3/labels.rle",
-              "prediction_sha256": "914d91f514f6d575b2349809ec7119093ed8ab2895405c5186e21895ef6f09c3"
+              "prediction_sha256": "5087652e5529236700180bbd6e45fd8f2506ee711348b71bc1c4e9212b1e6912"
             },
             {
               "frame_index": 2,
               "prediction_path": "showcase/temporal/bursting/002/predictions/C3/labels.rle",
-              "prediction_sha256": "3f677cc47ba7b4748e7762f53f769ad30df41d2f8b8ed9f8c533526200345f2f"
+              "prediction_sha256": "17faa6dee598e19ae902d1ef1bcb5fa42beb0d05e4f980592870456cbc99653c"
             },
             {
               "frame_index": 3,
               "prediction_path": "showcase/temporal/bursting/003/predictions/C3/labels.rle",
-              "prediction_sha256": "eb3b1f7bd18997b17a3ec432007e2886552bf3c1325e69cdff662eb821db4775"
+              "prediction_sha256": "e8100b57acb76282e4b73afac9c609ba4b8aee7c99e28cc7defe1c8c1b2a0a64"
             },
             {
               "frame_index": 4,
               "prediction_path": "showcase/temporal/bursting/004/predictions/C3/labels.rle",
-              "prediction_sha256": "124a0e16da9e23633097f78a47a743a6f98e2e0d6ba749b1eedcf7c13889d7a9"
+              "prediction_sha256": "1c068e3363f6c0d5b8167844b4048d499f7a6bdb1c2ebd2f08f1c22bb7a9020c"
             },
             {
               "frame_index": 5,
               "prediction_path": "showcase/temporal/bursting/005/predictions/C3/labels.rle",
-              "prediction_sha256": "d772c7bc5c3351275ef8fca258a600444a65aac50f8a43523c280d242ec2c761"
+              "prediction_sha256": "f23fc444fd17d55c10f18daa70b9a0d66a68f84795ca9a9e2de5019a511ee84c"
             },
             {
               "frame_index": 6,
               "prediction_path": "showcase/temporal/bursting/006/predictions/C3/labels.rle",
-              "prediction_sha256": "63da6eb2e6ffd6d472933fc653313ae8c212cb8432e00820a71d6dc1f979d0b7"
+              "prediction_sha256": "5bcd707c03ed8f55491914e6249a7b2448f8e9d50580f99dba193230ab69738a"
             },
             {
               "frame_index": 7,
               "prediction_path": "showcase/temporal/bursting/007/predictions/C3/labels.rle",
-              "prediction_sha256": "1c389a961cd0676f04b9959f108a32c5e0552a32446eb8c15f2e3e8ea13273f1"
+              "prediction_sha256": "b4de9cdfcc4738fbcad0a722e0f743d5a2cacfcdf62d7440fd23af139d050647"
             }
           ],
           "method_id": "C3",
           "method_slug": "watershed_hmax",
           "metrics": {
-            "association_accuracy": 0.7184825500927198,
-            "detection_accuracy": 0.3451638065522621,
-            "event_f1": 0.0015885623510722795,
+            "association_accuracy": 0.7654119805928599,
+            "detection_accuracy": 0.5074300699300699,
+            "event_f1": 0.002531645569620253,
             "event_false_negatives": 0,
-            "event_false_positives": 2514,
-            "event_precision": 0.000794912559618442,
+            "event_false_positives": 1576,
+            "event_precision": 0.0012674271229404308,
             "event_recall": 1.0,
             "event_true_positives": 2,
-            "false_negative_instances": 294,
-            "false_positive_instances": 1385,
-            "flow_epe_px": 1.560683513104115,
+            "false_negative_instances": 18,
+            "false_positive_instances": 1109,
+            "flow_epe_px": 1.4489529660186586,
             "frames": 8,
-            "hota": 0.49799013236346307,
-            "id_precision": 0.32687224669603526,
-            "id_recall": 0.6293469041560644,
-            "id_switch_rate": 0.04293785310734463,
-            "id_switches": 38,
-            "idf1": 0.43026964337489126,
-            "matched_gt_instances": 885,
-            "mean_frame_coverage": 0.750632009560581,
-            "track_fragmentations": 68
+            "hota": 0.6232118859886645,
+            "id_precision": 0.42951541850220265,
+            "id_recall": 0.8269720101781171,
+            "id_switch_rate": 0.08785529715762273,
+            "id_switches": 102,
+            "idf1": 0.5653812699333141,
+            "matched_gt_instances": 1161,
+            "mean_frame_coverage": 0.9847340963412392,
+            "track_fragmentations": 12
           },
           "mode": "framewise_segmentation_with_iou_identity_association",
           "model_provenance": {
@@ -5805,7 +5805,7 @@
             "checkpoint_sha256": null,
             "device": "cpu"
           },
-          "predicted_event_count": 2516,
+          "predicted_event_count": 1578,
           "protocol": "independent per-frame inference, followed by greedy IoU identity association",
           "truth_event_count": 2
         },
@@ -6057,75 +6057,75 @@
         },
         {
           "events_path": "showcase/temporal/bursting/predictions/C7/events.json",
-          "events_sha256": "530d539a0bd36d71545615de352cda2d2c1297c4cc3a4a0019f4773a3fbfc5dc",
+          "events_sha256": "0e69a8dc27d66d2d0182062de2b0d5a62a654973aa4149435eaff590c5784c58",
           "evidence_path": "temporal/valley_edge.json",
-          "evidence_sha256": "8a6ab70f8f709169a4a83e353128ea0de4af9457de56bc211be9721cad910f14",
+          "evidence_sha256": "b41fdd2f1dbde653e92ead5319c1053ad4df93cc58889f66cc478817f35f091a",
           "frames": [
             {
               "frame_index": 0,
               "prediction_path": "showcase/temporal/bursting/000/predictions/C7/labels.rle",
-              "prediction_sha256": "cebf0df0e1af74d5851c4e4b9d3c6800571c7fcfec59b6a8b9ca3a0fd71faf35"
+              "prediction_sha256": "b2f36dae32c9ecd661f99a3c5e2bedd21e49325b13e080876fe203aa5f7d075f"
             },
             {
               "frame_index": 1,
               "prediction_path": "showcase/temporal/bursting/001/predictions/C7/labels.rle",
-              "prediction_sha256": "f890d10e660980ce23fc348dca074cacc8bddaab6afb2a650830e7ff66376488"
+              "prediction_sha256": "be0c4f526ab0604376ecb0db5a24974b74f1e4355ef21ae59d76ca18ac0b2219"
             },
             {
               "frame_index": 2,
               "prediction_path": "showcase/temporal/bursting/002/predictions/C7/labels.rle",
-              "prediction_sha256": "12a813cde85877d62901d86662fa2abf9edde5b701842550ea7d556bac7e8688"
+              "prediction_sha256": "f5a4b3ecc56475f337ee1bf92520d2ee1dd6afe8a99d41af12535a828b4a5222"
             },
             {
               "frame_index": 3,
               "prediction_path": "showcase/temporal/bursting/003/predictions/C7/labels.rle",
-              "prediction_sha256": "e8343a9a72c6bd62264a5ee49df1458d056019ef23c00f4b3c386de833008d92"
+              "prediction_sha256": "e66c8b8b5df9a03732099ad96ce6412e6766698e0435ed9fd843040a290ba8c9"
             },
             {
               "frame_index": 4,
               "prediction_path": "showcase/temporal/bursting/004/predictions/C7/labels.rle",
-              "prediction_sha256": "d2ee81e1dd6e8ba000ec20b41deadeaa227472f92b96845d407689682f1feed0"
+              "prediction_sha256": "11ffbcfeef0aba7b287bd6c162ae186372c1479f13f958bce2e802f1501d1089"
             },
             {
               "frame_index": 5,
               "prediction_path": "showcase/temporal/bursting/005/predictions/C7/labels.rle",
-              "prediction_sha256": "a81874908f82a0db05b8d5de30d9b58e526f9202ac655609fa22b8438580258f"
+              "prediction_sha256": "aa0ab0a4a11c5d79c91862ff37065be3e688663bb13ee292f014e3c724519a4f"
             },
             {
               "frame_index": 6,
               "prediction_path": "showcase/temporal/bursting/006/predictions/C7/labels.rle",
-              "prediction_sha256": "20a9a445a6c41e57a9fb2b62e03a4433c59d192670fa367c47289b8b41bad49f"
+              "prediction_sha256": "bae62a90f5dcee35ed9f91618bb7ba2ba01ea1e68da686abfaf54db86e6d3a78"
             },
             {
               "frame_index": 7,
               "prediction_path": "showcase/temporal/bursting/007/predictions/C7/labels.rle",
-              "prediction_sha256": "20bbced7404affe6420dcfc9ec7bf4261b2dc7b25cf6669d2d2fbc5f8b747288"
+              "prediction_sha256": "3403e7435c13a639780b93d3c61f68d031a353c576fef775a8a7e0c9b41ac209"
             }
           ],
           "method_id": "C7",
           "method_slug": "valley_edge",
           "metrics": {
-            "association_accuracy": 0.7158559523265406,
-            "detection_accuracy": 0.8312958435207825,
-            "event_f1": 0.013468013468013467,
+            "association_accuracy": 0.7321256254899743,
+            "detection_accuracy": 0.83278955954323,
+            "event_f1": 0.014652014652014652,
             "event_false_negatives": 0,
-            "event_false_positives": 293,
-            "event_precision": 0.006779661016949152,
+            "event_false_positives": 269,
+            "event_precision": 0.007380073800738007,
             "event_recall": 1.0,
             "event_true_positives": 2,
-            "false_negative_instances": 159,
-            "false_positive_instances": 48,
-            "flow_epe_px": 1.2168903309197339,
+            "false_negative_instances": 158,
+            "false_positive_instances": 47,
+            "flow_epe_px": 1.2395245148492942,
             "frames": 8,
-            "hota": 0.7714195212260736,
-            "id_precision": 0.7911985018726592,
-            "id_recall": 0.7167090754877015,
-            "id_switch_rate": 0.026470588235294117,
-            "id_switches": 27,
-            "idf1": 0.7521139296840231,
-            "matched_gt_instances": 1020,
-            "mean_frame_coverage": 0.865123414230557,
-            "track_fragmentations": 82
+            "hota": 0.7808371002853972,
+            "id_precision": 0.8071161048689138,
+            "id_recall": 0.731128074639525,
+            "id_switch_rate": 0.014691478942213516,
+            "id_switches": 15,
+            "idf1": 0.7672452158433467,
+            "matched_gt_instances": 1021,
+            "mean_frame_coverage": 0.8659680088251516,
+            "track_fragmentations": 81
           },
           "mode": "framewise_segmentation_with_iou_identity_association",
           "model_provenance": {
@@ -6133,7 +6133,7 @@
             "checkpoint_sha256": null,
             "device": "cpu"
           },
-          "predicted_event_count": 295,
+          "predicted_event_count": 271,
           "protocol": "independent per-frame inference, followed by greedy IoU identity association",
           "truth_event_count": 2
         },

@@ -1,0 +1,261 @@
+{
+  "schema": "frothseg.phase1-baseline-reproduction/v1",
+  "generated_utc": "2026-08-01T15:08:08+00:00",
+  "reference_artifact": "data/derived/classical-heldout.json",
+  "tolerance": 1e-12,
+  "all_identical": true,
+  "methods": [
+    {
+      "method": "otsu_cc",
+      "identical": true,
+      "metrics": {
+        "mean_ap": {
+          "observed": 0.06521875,
+          "committed": 0.06521875,
+          "delta": 0.0
+        },
+        "mean_pq": {
+          "observed": 0.17062500000000003,
+          "committed": 0.17062500000000003,
+          "delta": 0.0
+        },
+        "mean_boundary_fscore": {
+          "observed": 0.81125,
+          "committed": 0.81125,
+          "delta": 0.0
+        },
+        "mean_bsd_wasserstein": {
+          "observed": 10.164109375,
+          "committed": 10.164109375,
+          "delta": 0.0
+        },
+        "mean_count_absolute_error": {
+          "observed": 220.09375,
+          "committed": 220.09375,
+          "delta": 0.0
+        },
+        "mean_d32_relative_error": {
+          "observed": 5.0063249999999995,
+          "committed": 5.0063249999999995,
+          "delta": 0.0
+        }
+      }
+    },
+    {
+      "method": "watershed_immersion",
+      "identical": true,
+      "metrics": {
+        "mean_ap": {
+          "observed": 0.017265625,
+          "committed": 0.017265625,
+          "delta": 0.0
+        },
+        "mean_pq": {
+          "observed": 0.063453125,
+          "committed": 0.063453125,
+          "delta": 0.0
+        },
+        "mean_boundary_fscore": {
+          "observed": 0.7423500000000001,
+          "committed": 0.7423500000000001,
+          "delta": 0.0
+        },
+        "mean_bsd_wasserstein": {
+          "observed": 7.3928125,
+          "committed": 7.3928125,
+          "delta": 0.0
+        },
+        "mean_count_absolute_error": {
+          "observed": 849.34375,
+          "committed": 849.34375,
+          "delta": 0.0
+        },
+        "mean_d32_relative_error": {
+          "observed": 0.5757453125,
+          "committed": 0.5757453125,
+          "delta": 0.0
+        }
+      }
+    },
+    {
+      "method": "watershed_hmax",
+      "identical": true,
+      "metrics": {
+        "mean_ap": {
+          "observed": 0.21957812499999999,
+          "committed": 0.21957812499999999,
+          "delta": 0.0
+        },
+        "mean_pq": {
+          "observed": 0.440921875,
+          "committed": 0.440921875,
+          "delta": 0.0
+        },
+        "mean_boundary_fscore": {
+          "observed": 0.881734375,
+          "committed": 0.881734375,
+          "delta": 0.0
+        },
+        "mean_bsd_wasserstein": {
+          "observed": 3.62646875,
+          "committed": 3.62646875,
+          "delta": 0.0
+        },
+        "mean_count_absolute_error": {
+          "observed": 178.875,
+          "committed": 178.875,
+          "delta": 0.0
+        },
+        "mean_d32_relative_error": {
+          "observed": 0.19074375,
+          "committed": 0.19074375,
+          "delta": 0.0
+        }
+      }
+    },
+    {
+      "method": "watershed_dt",
+      "identical": true,
+      "metrics": {
+        "mean_ap": {
+          "observed": 0.19768750000000002,
+          "committed": 0.19768750000000002,
+          "delta": 0.0
+        },
+        "mean_pq": {
+          "observed": 0.40221875,
+          "committed": 0.40221875,
+          "delta": 0.0
+        },
+        "mean_boundary_fscore": {
+          "observed": 0.834403125,
+          "committed": 0.834403125,
+          "delta": 0.0
+        },
+        "mean_bsd_wasserstein": {
+          "observed": 2.5898125,
+          "committed": 2.5898125,
+          "delta": 0.0
+        },
+        "mean_count_absolute_error": {
+          "observed": 139.8125,
+          "committed": 139.8125,
+          "delta": 0.0
+        },
+        "mean_d32_relative_error": {
+          "observed": 1.1554515625000001,
+          "committed": 1.1554515625000001,
+          "delta": 0.0
+        }
+      }
+    },
+    {
+      "method": "watershed_hmin",
+      "identical": true,
+      "metrics": {
+        "mean_ap": {
+          "observed": 0.132984375,
+          "committed": 0.132984375,
+          "delta": 0.0
+        },
+        "mean_pq": {
+          "observed": 0.28446875,
+          "committed": 0.28446875,
+          "delta": 0.0
+        },
+        "mean_boundary_fscore": {
+          "observed": 0.7967640624999999,
+          "committed": 0.7967640624999999,
+          "delta": 0.0
+        },
+        "mean_bsd_wasserstein": {
+          "observed": 16.5679375,
+          "committed": 16.5679375,
+          "delta": 0.0
+        },
+        "mean_count_absolute_error": {
+          "observed": 176.453125,
+          "committed": 176.453125,
+          "delta": 0.0
+        },
+        "mean_d32_relative_error": {
+          "observed": 1.922390625,
+          "committed": 1.922390625,
+          "delta": 0.0
+        }
+      }
+    },
+    {
+      "method": "slic_merge",
+      "identical": true,
+      "metrics": {
+        "mean_ap": {
+          "observed": 0.01859375,
+          "committed": 0.01859375,
+          "delta": 0.0
+        },
+        "mean_pq": {
+          "observed": 0.0720625,
+          "committed": 0.0720625,
+          "delta": 0.0
+        },
+        "mean_boundary_fscore": {
+          "observed": 0.78645,
+          "committed": 0.78645,
+          "delta": 0.0
+        },
+        "mean_bsd_wasserstein": {
+          "observed": 8.382609375000001,
+          "committed": 8.382609375000001,
+          "delta": 0.0
+        },
+        "mean_count_absolute_error": {
+          "observed": 451.9375,
+          "committed": 451.9375,
+          "delta": 0.0
+        },
+        "mean_d32_relative_error": {
+          "observed": 0.7748187499999999,
+          "committed": 0.7748187499999999,
+          "delta": 0.0
+        }
+      }
+    },
+    {
+      "method": "valley_edge",
+      "identical": true,
+      "metrics": {
+        "mean_ap": {
+          "observed": 0.2325625,
+          "committed": 0.2325625,
+          "delta": 0.0
+        },
+        "mean_pq": {
+          "observed": 0.43823437499999995,
+          "committed": 0.43823437499999995,
+          "delta": 0.0
+        },
+        "mean_boundary_fscore": {
+          "observed": 0.8837046875,
+          "committed": 0.8837046875,
+          "delta": 0.0
+        },
+        "mean_bsd_wasserstein": {
+          "observed": 3.5419375000000004,
+          "committed": 3.5419375000000004,
+          "delta": 0.0
+        },
+        "mean_count_absolute_error": {
+          "observed": 114.234375,
+          "committed": 114.234375,
+          "delta": 0.0
+        },
+        "mean_d32_relative_error": {
+          "observed": 1.4370609374999999,
+          "committed": 1.4370609374999999,
+          "delta": 0.0
+        }
+      }
+    }
+  ]
+}

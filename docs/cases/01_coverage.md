@@ -24,32 +24,43 @@ entered. "What an expert should see" is the case's `expected_band` from `froth_c
 mean instance-mask AP over IoU 0.5:0.05:0.95; higher is better. Winner marks whichever method scores the higher
 AP (`n/a` where there is no GT to score).
 
-| case | category | what a froth-vision expert should see | stressor (generator params) | SAM AP | floor AP | winner |
-|---|---|---|---|---|---|---|
-| `mono-clean` | control: monodisperse | near-single-size bubbles, clean specular highlights; d50 ~ d32 | tight spread `sigma_ln=0.12`, `d32=30px`; positive control | **0.741** | 0.329 | SAM |
-| `coarse-froth` | coarse froth | few large bubbles (collapsing/coalescing froth); low count, large d32 | `d32=44px`, `sigma_ln=0.4` | **0.651** | 0.394 | SAM |
-| `poly-normal` | polydisperse (nominal) | wide bubble-size range, dark Plateau borders; the nominal operating case | `d32=26px`, `sigma_ln=0.5` | **0.457** | 0.401 | SAM |
-| `bursting` | transient: bursting | bubbles bursting: many missing highlights, irregular cells | `highlight_jitter=0.5`, `sigma_ln=0.6` | **0.449** | 0.361 | SAM |
-| `high-load` | stress: high load/dark | dense dark froth (high pull); low contrast between bubble and border | `load=0.9` (dark base) | **0.420** | 0.415 | SAM |
-| `edge-framing` | stress: framing/glare | off-centre framing with a glare band near the edge | `glare=0.3`, `d32=22px` | **0.412** | 0.309 | SAM |
-| `glare-storm` | stress: glare | a saturated glare lobe; highlight-seeded methods must fail here | `glare=0.8`, `highlight_jitter=0.6`; negative control | **0.407** | 0.081 | SAM |
-| `fine-froth` | fine froth | many small bubbles (high recovery regime); high count, small d32 | `d32=15px`, `sigma_ln=0.45` | **0.335** | 0.266 | SAM |
-| `low-light-noise` | stress: sensor noise | under-lit, noisy sensor; grain competes with true borders | `noise=0.09`, `load=0.7` | **0.302** | 0.263 | SAM |
-| `watery` | stress: watery/thin | thin watery froth, weak borders, low load; borders hard to resolve | `watery=0.9`, `load=0.35` | **0.172** | 0.155 | SAM |
-| `defocus` | stress: defocus | out-of-focus frame; soft borders, merged bubbles | Gaussian `defocus=2.4` | 0.016 | **0.066** | floor |
-| `motion-fast` | stress: motion blur | horizontal motion blur from fast froth travel; smeared borders | motion kernel `motion_blur=11` | 0.016 | **0.104** | floor |
-| `empty-control` | control: empty | no froth (launder/empty cell); segmenter must return zero bubbles | `empty=True`; negative control | n/a | n/a | n/a |
+The floor column is the BEST classical method on that case, not a fixed method, so it moved on 2026-08-01 when
+the C3 and C7 engines were corrected and every per-case bake was re-run. It is quoted here with the method that
+holds it. The SAM column did not move: not one prompt-grid prediction changed.
+
+| case | category | what a froth-vision expert should see | stressor (generator params) | SAM AP | floor AP | floor method | winner |
+|---|---|---|---|---|---|---|---|
+| `mono-clean` | control: monodisperse | near-single-size bubbles, clean specular highlights; d50 ~ d32 | tight spread `sigma_ln=0.12`, `d32=30px`; positive control | **0.741** | 0.329 | `watershed_dt` | SAM |
+| `coarse-froth` | coarse froth | few large bubbles (collapsing/coalescing froth); low count, large d32 | `d32=44px`, `sigma_ln=0.4` | **0.651** | 0.555 | `valley_edge` | SAM |
+| `poly-normal` | polydisperse (nominal) | wide bubble-size range, dark Plateau borders; the nominal operating case | `d32=26px`, `sigma_ln=0.5` | 0.457 | **0.458** | `valley_edge` | floor |
+| `bursting` | transient: bursting | bubbles bursting: many missing highlights, irregular cells | `highlight_jitter=0.5`, `sigma_ln=0.6` | **0.449** | 0.438 | `valley_edge` | SAM |
+| `high-load` | stress: high load/dark | dense dark froth (high pull); low contrast between bubble and border | `load=0.9` (dark base) | 0.420 | **0.442** | `valley_edge` | floor |
+| `edge-framing` | stress: framing/glare | off-centre framing with a glare band near the edge | `glare=0.3`, `d32=22px` | 0.412 | **0.415** | `valley_edge` | floor |
+| `glare-storm` | stress: glare | a saturated glare lobe; highlight-seeded methods must fail here | `glare=0.8`, `highlight_jitter=0.6`; negative control | **0.407** | 0.182 | `valley_edge` | SAM |
+| `fine-froth` | fine froth | many small bubbles (high recovery regime); high count, small d32 | `d32=15px`, `sigma_ln=0.45` | 0.335 | **0.363** | `valley_edge` | floor |
+| `low-light-noise` | stress: sensor noise | under-lit, noisy sensor; grain competes with true borders | `noise=0.09`, `load=0.7` | **0.302** | 0.267 | `valley_edge` | SAM |
+| `watery` | stress: watery/thin | thin watery froth, weak borders, low load; borders hard to resolve | `watery=0.9`, `load=0.35` | 0.172 | **0.373** | `watershed_hmax` | floor |
+| `defocus` | stress: defocus | out-of-focus frame; soft borders, merged bubbles | Gaussian `defocus=2.4` | 0.016 | **0.225** | `watershed_hmax` | floor |
+| `motion-fast` | stress: motion blur | horizontal motion blur from fast froth travel; smeared borders | motion kernel `motion_blur=11` | 0.016 | **0.165** | `watershed_hmax` | floor |
+| `empty-control` | control: empty | no froth (launder/empty cell); segmenter must return zero bubbles | `empty=True`; negative control | n/a | n/a | n/a | n/a |
 
 **Summary (over the 12 scored cases; the empty control has no GT to score):** mean SAM AP **0.365** vs mean floor
-AP **0.262**, delta **+0.103**, SAM wins **10 / 13**. Source: the committed artifact
+AP **0.351**, delta **+0.014**, SAM wins **5 / 12**. Source: the committed artifact
 `data/derived/sam_benchmark.json` (offline verification, onnxruntime-node CPU, SlimSAM-77-uniform,
 32x32 = 1024 prompt grid, scored with the same `fslab.science.segment.mask_ap` the classical floor uses).
+
+**This summary was 0.262 / +0.103 / 10 wins until 2026-08-01, and the change is entirely the floor.** C7's
+constrained watershed and C3's corrected flooding surface took the floor on 11 of the 12 scored cases, C7 on
+8 of them and C3 on 3, leaving `watershed_dt` holding only `mono-clean`. A conclusion that read as a clear
+margin for the untuned prompt grid now reads as a near-tie against a stronger classical floor. Nothing about
+SAM was re-measured; see `verification/phase1-adoption.json`.
 
 ### Per-case detail (counts, sizes, distribution distance)
 
 `SAM n` / `GT n` are instance counts; `d32` the Sauter-mean bubble diameter (px); `BSD-W` the Wasserstein-1
-distance between the predicted and GT bubble-diameter distributions (0 = identical). The floor method is
-`watershed_dt` (distance-transform marker-controlled watershed) on every case.
+distance between the predicted and GT bubble-diameter distributions (0 = identical). Every column below is a
+SAM column and none of them moved with the 2026-08-01 adoption; the floor method per case is in the matrix above
+(it is no longer `watershed_dt` everywhere).
 
 | case | SAM AP50 | SAM n | GT n | SAM d32 | GT d32 | BSD-W |
 |---|---|---|---|---|---|---|
@@ -73,18 +84,23 @@ distance between the predicted and GT bubble-diameter distributions (0 = identic
   scores its highest AP (0.741, AP50 0.974) with counts almost exact (113 vs 114). `empty-control` is the
   negative control: no froth, and SAM returns **0** instances (as it must); AP is undefined because there is no
   GT, and the pipeline handles the null rather than crashing.
-- **Size regimes.** SAM leads on `coarse-froth` (0.651), `poly-normal` (0.457) and `fine-froth` (0.335). On the
-  fine case it undercounts (446 of 593 GT bubbles), merging some small touching bubbles, yet its `d32` still
-  matches GT closely (12.77 vs 12.92): size is nearly unbiased even when the count is short, which is what the
-  downstream soft-sensor cares about.
-- **Stress.** The headline is glare. `glare-storm` is the realistic froth-camera failure mode where the
-  distance-transform floor collapses to AP 0.081, while zero-shot SAM holds at 0.407, a 5x gap. SAM also leads
-  on `high-load`, `edge-framing`, `low-light-noise` and `watery`. The honest exceptions are heavy blur:
-  `motion-fast` and `defocus` remove the promptable structure, so SAM's confident-mask count collapses (25 and
-  37 masks against ~170-200 GT), and the classical floor is complementary there. This is why the App ships both
-  SAM and the floor, and why blur is left as the floor's territory rather than hidden.
-- **Transient.** `bursting` (missing highlights, irregular cells) is handled well (0.449), because SAM does not
-  rely on a highlight-per-bubble cue the way highlight-seeded watershed does.
+- **Size regimes.** SAM leads on `coarse-froth` (0.651 against 0.555) and is now behind on `poly-normal`
+  (0.457 against 0.458) and `fine-froth` (0.335 against 0.363), both of which it led before the floor moved.
+  On the fine case it undercounts (446 of 593 GT bubbles), merging some small touching bubbles, yet its `d32`
+  still matches GT closely (12.77 vs 12.92): size is nearly unbiased even when the count is short, which is what
+  the downstream soft-sensor cares about.
+- **Stress.** The headline is still glare, at a smaller margin. `glare-storm` is the realistic froth-camera
+  failure mode where the best classical method of the case reaches only AP 0.182, while zero-shot SAM holds at
+  0.407, a 2.2x gap. Before the 2026-08-01 adoption that floor was `watershed_dt` at 0.081 and the gap read 5x.
+  SAM also leads on `low-light-noise` (0.302 against 0.267), and it no longer leads on `high-load`,
+  `edge-framing` or `watery`: C7 takes the first two and C3 takes `watery` outright at 0.373 against SAM's
+  0.172. The honest exceptions remain heavy blur: `motion-fast` and `defocus` remove the promptable structure,
+  so SAM's confident-mask count collapses (25 and 37 masks against ~170-200 GT), and the classical floor is
+  complementary there. This is why the App ships both SAM and the floor, and why blur is left as the floor's
+  territory rather than hidden.
+- **Transient.** `bursting` (missing highlights, irregular cells) is handled well (0.449 against a 0.438 floor),
+  because SAM does not rely on a highlight-per-bubble cue the way highlight-seeded watershed does. That margin
+  is now 0.011, not the 0.088 it was against the pre-adoption floor.
 
 This table is retained as the historical SlimSAM experiment. It does not replace
 the v2 untouched-test comparison in `data/derived/method-benchmark.json`, where

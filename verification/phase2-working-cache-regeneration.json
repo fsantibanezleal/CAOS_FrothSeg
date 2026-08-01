@@ -1,0 +1,22 @@
+{
+  "check": "phase2-working-cache-regeneration",
+  "preregistration": "CAOS_MANAGE plans/frothseg/research-2026-07-31/PLAN-PROPOSAL.md section 4",
+  "date": "2026-08-01",
+  "question": "Did the Phase 2 refactor of fslab.datasets change any working-matrix sample?",
+  "method": "Regenerate all 384 working samples with the refactored code into E:/_Temp and compare every array, then the whole archive, against the committed data/cache/learned-v2-192.npz.",
+  "committed_archive": "data/cache/learned-v2-192.npz",
+  "committed_sha256": "55b1ddd92237eca931ac242a662e05e97562a9cf749cf71b8f4b96229ba4340e",
+  "rebuilt_sha256": "55b1ddd92237eca931ac242a662e05e97562a9cf749cf71b8f4b96229ba4340e",
+  "archive_bytes_identical": true,
+  "arrays_identical": {
+    "images": true,
+    "labels": true,
+    "sample_ids": true,
+    "splits": true,
+    "conditions": true,
+    "group_ids": true
+  },
+  "all_arrays_identical": true,
+  "samples": 384,
+  "verdict": "unchanged"
+}

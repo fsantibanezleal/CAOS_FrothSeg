@@ -13,7 +13,7 @@ import numpy as np
 
 from .data_cache import load_cache, select_split
 from .multitask_models import build_model
-from .train_multitask import _calibrate, _evaluate, _probabilities
+from .train_multitask import _calibrate, _evaluate, _probabilities, method_decode
 
 
 def _load_member(model_dir: Path, *, device):
@@ -148,12 +148,14 @@ def run(
 
     combined_calibration = _combine(calibration_probabilities, mode)
     combined_evaluation = _combine(evaluation_probabilities, mode)
-    calibration = _calibrate(combined_calibration, calibration_cache)
+    decode = method_decode(expected_method)
+    calibration = _calibrate(combined_calibration, calibration_cache, decode=decode)
     evaluation = _evaluate(
         combined_evaluation,
         evaluation_cache,
         calibration,
         split=evaluation_split,
+        decode=decode,
     )
     props = torch.cuda.get_device_properties(device)
     report = {

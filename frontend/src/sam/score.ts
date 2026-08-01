@@ -9,6 +9,14 @@ export interface MaskApResult {
   ap75: number | null;
   nPred: number;
   nGt: number;
+  /** AP at each IoU threshold. Already computed to produce the mean; it was discarded, and it
+   *  is the only honest way to SHOW what the headline AP is an average of. */
+  curve: Array<{ threshold: number; ap: number }>;
+  /** Instance outcomes at IoU 0.5, the standard operating point: how many ground-truth bubbles
+   *  were matched, how many were missed, and how many predictions matched nothing. */
+  tp50: number;
+  fn50: number;
+  fp50: number;
 }
 
 export function maskAp(pred: Int32Array, gt: Int32Array): MaskApResult {
@@ -20,7 +28,7 @@ export function maskAp(pred: Int32Array, gt: Int32Array): MaskApResult {
   }
   const nPred = predIds.size;
   const nGt = gtIds.size;
-  if (nGt === 0) return { ap: null, ap50: null, ap75: null, nPred, nGt: 0 };
+  if (nGt === 0) return { ap: null, ap50: null, ap75: null, nPred, nGt: 0, curve: [], tp50: 0, fn50: 0, fp50: nPred };
 
   // sparse intersection counts keyed by (pred<<20 | gt) -> requires ids < 2^20; froth instance counts are small
   const inter = new Map<number, number>();
@@ -45,6 +53,7 @@ export function maskAp(pred: Int32Array, gt: Int32Array): MaskApResult {
   const thresholds: number[] = [];
   for (let t = 0.5; t < 0.999; t += 0.05) thresholds.push(+t.toFixed(2));
   const aps: Record<number, number> = {};
+  const tpAt: Record<number, number> = {};
   for (const t of thresholds) {
     const usedP = new Set<number>();
     const usedG = new Set<number>();
@@ -59,9 +68,21 @@ export function maskAp(pred: Int32Array, gt: Int32Array): MaskApResult {
     const fp = nPred - tp;
     const fn = nGt - tp;
     aps[t] = tp + fp + fn > 0 ? tp / (tp + fp + fn) : 0;
+    tpAt[t] = tp;
   }
   const mean = thresholds.reduce((a, t) => a + aps[t], 0) / thresholds.length;
-  return { ap: round(mean, 3), ap50: round(aps[0.5], 3), ap75: round(aps[0.75] ?? 0, 3), nPred, nGt };
+  const tp50 = tpAt[0.5] ?? 0;
+  return {
+    ap: round(mean, 3),
+    ap50: round(aps[0.5], 3),
+    ap75: round(aps[0.75] ?? 0, 3),
+    nPred,
+    nGt,
+    curve: thresholds.map((t) => ({ threshold: t, ap: round(aps[t], 3) })),
+    tp50,
+    fn50: nGt - tp50,
+    fp50: nPred - tp50,
+  };
 }
 
 function round(x: number, n: number): number {

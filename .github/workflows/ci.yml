@@ -49,6 +49,35 @@ jobs:
           npm audit --omit=dev --audit-level=critical
           npm run build
 
+      # Three rendered gates. Every gate before them measured the App route only, which is how a
+      # viewport-height lock added for the App truncated all five documentation pages while CI
+      # stayed green, and how five pages sat at 300 to 900 words against an ADR floor that has
+      # been numeric the whole time.
+      - name: Install Playwright chromium
+        working-directory: frontend
+        run: npx playwright install --with-deps chromium
+
+      - name: Serve the production build
+        working-directory: frontend
+        run: |
+          npx vite preview --port 4627 --strictPort &
+          for i in $(seq 1 40); do
+            curl -sf -o /dev/null http://localhost:4627/ && break
+            sleep 1
+          done
+          curl -sf -o /dev/null http://localhost:4627/
+
+      - name: Rendered gates (all routes reachable, ADR-0017 content-depth floors, App fit)
+        working-directory: frontend
+        env:
+          FS_BASE: http://localhost:4627
+          CC_BASE: http://localhost:4627
+        run: |
+          node scripts/gates/frothseg-all-routes.mjs
+          node scripts/gates/frothseg-content-depth.mjs
+          node scripts/gates/frothseg-instrument-fit.mjs
+          node scripts/gates/frothseg-focus-flow.mjs
+
   guards:
     runs-on: ubuntu-latest
     steps:

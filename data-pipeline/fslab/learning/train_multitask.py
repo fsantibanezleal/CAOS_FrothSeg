@@ -19,6 +19,7 @@ from ..science.segment import (
     mask_ap,
     summarize_metric_rows,
 )
+from . import domain_randomization, offset_head
 from .data_cache import load_cache, select_split
 from .multitask_models import (
     METHOD_CHANNELS,
@@ -26,6 +27,36 @@ from .multitask_models import (
     probabilities_to_instances,
     targets,
 )
+
+#: Methods whose third and fourth channels are a centroid-offset field instead of a scalar
+#: distance channel (pre-registered experiment P-5 / A-1). Their targets, loss composition
+#: and marker derivation come from :mod:`fslab.learning.offset_head`; every other method
+#: keeps the scalar path unchanged.
+OFFSET_FIELD_METHODS = frozenset({"lamellastar_offset"})
+
+#: Augmentation modes the trainer accepts. ``domain-randomization`` is the P-2 regime, fixed in
+#: CAOS_MANAGE ``plans/frothseg/research-2026-07-31/
+#: p2-domain-randomization-preregistration-2026-08-01.md`` section 5 before any run.
+AUGMENTATION_MODES = ("none", "geometric-photometric", "domain-randomization")
+
+#: Modes that transform frame geometry, and therefore cannot be applied to a vector-field target
+#: stack without also permuting and negating its components.
+GEOMETRIC_AUGMENTATION_MODES = frozenset({"geometric-photometric", "domain-randomization"})
+
+
+def method_targets(method: str):
+    """Return the target builder for a method: scalar distance stack or offset stack."""
+    if method in OFFSET_FIELD_METHODS:
+        return offset_head.targets
+    include_centers = method == "lamellastar"
+    return lambda labels: targets(labels, include_centers=include_centers)
+
+
+def method_decode(method: str):
+    """Return the probability-to-instance decode for a method."""
+    if method in OFFSET_FIELD_METHODS:
+        return offset_head.probabilities_to_instances
+    return probabilities_to_instances
 
 
 @dataclass(frozen=True)
@@ -62,13 +93,13 @@ def _seed(seed: int) -> None:
     torch.backends.cudnn.benchmark = False
 
 
-def _tensor_data(cache_split: dict[str, np.ndarray], *, include_centers: bool):
+def _tensor_data(cache_split: dict[str, np.ndarray], *, method: str):
     import torch
 
+    build_targets = method_targets(method)
     images = torch.from_numpy(cache_split["images"].astype(np.float32)[:, None] / 255.0)
     target_array = np.stack([
-        targets(label.astype(np.int32), include_centers=include_centers)
-        for label in cache_split["labels"]
+        build_targets(label.astype(np.int32)) for label in cache_split["labels"]
     ])
     return images, torch.from_numpy(target_array)
 
@@ -99,7 +130,14 @@ def _augment(images, truth, *, rng: np.random.Generator):
     return torch.stack(augmented_images), torch.stack(augmented_truth)
 
 
-def _loss(logits, truth):
+def _loss(logits, truth, *, offset_field: bool = False):
+    """Multitask loss.
+
+    ``offset_field`` swaps the scalar distance term for a two-channel offset regression at
+    the SAME weight (2.0) and moves the center term from channel 3 to channel 4. The
+    foreground, boundary and center terms and their weights are untouched, which is what
+    the P-5 / A-1 pre-registration means by holding everything else fixed.
+    """
     import torch
     from torch.nn import functional as functional
 
@@ -115,6 +153,13 @@ def _loss(logits, truth):
     )
     boundary_weight = 1.0 + 4.0 * truth[:, 1]
     boundary = (boundary_raw * boundary_weight).mean()
+    if offset_field:
+        offsets = functional.smooth_l1_loss(torch.sigmoid(logits[:, 2:4]), truth[:, 2:4])
+        total = foreground + boundary + 2.0 * offsets
+        center_raw = functional.binary_cross_entropy_with_logits(
+            logits[:, 4], truth[:, 4], reduction="none",
+        )
+        return total + (center_raw * (1.0 + 6.0 * truth[:, 4])).mean()
     distance = functional.smooth_l1_loss(torch.sigmoid(logits[:, 2]), truth[:, 2])
     total = foreground + boundary + 2.0 * distance
     if logits.shape[1] > 3:
@@ -137,7 +182,7 @@ def _probabilities(model, images, *, device, batch_size: int) -> np.ndarray:
     return np.concatenate(out)
 
 
-def _calibrate(probabilities, cache_split) -> dict:
+def _calibrate(probabilities, cache_split, *, decode=probabilities_to_instances) -> dict:
     # One appearance realization per latent group is enough for threshold
     # selection and prevents duplicate views from dominating calibration.
     _, indices = np.unique(cache_split["group_ids"], return_index=True)
@@ -151,7 +196,7 @@ def _calibrate(probabilities, cache_split) -> dict:
                     for center_weight in center_weights:
                         values = []
                         for index in indices:
-                            labels = probabilities_to_instances(
+                            labels = decode(
                                 probabilities[index],
                                 foreground_threshold=foreground_threshold,
                                 boundary_threshold=boundary_threshold,
@@ -177,10 +222,17 @@ def _calibrate(probabilities, cache_split) -> dict:
     return best
 
 
-def _evaluate(probabilities, cache_split, calibration, *, split: str) -> dict:
+def _evaluate(
+    probabilities,
+    cache_split,
+    calibration,
+    *,
+    split: str,
+    decode=probabilities_to_instances,
+) -> dict:
     rows = []
     for index, probability in enumerate(probabilities):
-        labels = probabilities_to_instances(
+        labels = decode(
             probability,
             foreground_threshold=calibration["foreground_threshold"],
             boundary_threshold=calibration["boundary_threshold"],
@@ -205,7 +257,21 @@ def _evaluate(probabilities, cache_split, calibration, *, split: str) -> dict:
     return summary
 
 
-def train(config: Config, cache_path: Path, output: Path, *, resume: bool = True) -> dict:
+def train(
+    config: Config,
+    cache_path: Path,
+    output: Path,
+    *,
+    resume: bool = True,
+    variant_bank_path: Path | None = None,
+) -> dict:
+    """Train one multitask model.
+
+    ``variant_bank_path`` is a cache location for the domain-randomization scale-variant bank,
+    not a hyperparameter: the bank is a deterministic function of the training labels and the
+    fixed ladder, so it is deliberately kept out of :class:`Config` and out of the checkpoint
+    compatibility check. Its key is recorded in the run manifest instead.
+    """
     import torch
 
     if config.method not in METHOD_CHANNELS:
@@ -220,14 +286,38 @@ def train(config: Config, cache_path: Path, output: Path, *, resume: bool = True
     calibration_cache = select_split(cache, "calibration")
     if config.evaluation_split not in {"validation", "test"}:
         raise ValueError("evaluation_split must be validation or test")
-    if config.augmentation not in {"none", "geometric-photometric"}:
-        raise ValueError("augmentation must be none or geometric-photometric")
+    if config.augmentation not in AUGMENTATION_MODES:
+        raise ValueError(f"augmentation must be one of {AUGMENTATION_MODES}")
+    offset_field = config.method in OFFSET_FIELD_METHODS
+    if offset_field and config.augmentation in GEOMETRIC_AUGMENTATION_MODES:
+        # _augment rotates and flips the target stack as if every channel were a scalar
+        # map. That is wrong for a vector field, whose components must also be permuted
+        # and negated. Refusing is honest; silently training on corrupted targets is not.
+        raise ValueError(
+            "geometric augmentation is not implemented for centroid-offset targets: "
+            "rotating or flipping the frame must also transform the offset components"
+        )
     evaluation_cache = select_split(cache, config.evaluation_split)
-    include_centers = config.method == "lamellastar"
-    train_images, train_truth = _tensor_data(train_cache, include_centers=include_centers)
+    decode = method_decode(config.method)
+    train_images, train_truth = _tensor_data(train_cache, method=config.method)
     validation_images, validation_truth = _tensor_data(
-        validation_cache, include_centers=include_centers,
+        validation_cache, method=config.method,
     )
+
+    variant_bank = None
+    if config.augmentation == "domain-randomization":
+        variant_bank = domain_randomization.load_or_build_bank(
+            train_cache["images"],
+            train_cache["labels"],
+            include_centers=config.method == "lamellastar",
+            path=variant_bank_path,
+            progress=True,
+        )
+        print(
+            f"domain-randomization variant bank key={variant_bank['key'][:16]} "
+            f"ladder={list(variant_bank['ladder'])}",
+            flush=True,
+        )
 
     output.mkdir(parents=True, exist_ok=True)
     checkpoint_path = output / "checkpoint.pt"
@@ -269,10 +359,20 @@ def train(config: Config, cache_path: Path, output: Path, *, resume: bool = True
                         config.seed * 1_000_003 + epoch * 10_007 + start
                     ),
                 )
+            elif config.augmentation == "domain-randomization":
+                image, truth = domain_randomization.augment_batch(
+                    image,
+                    truth,
+                    bank=variant_bank,
+                    indices=indices,
+                    rng=np.random.default_rng(
+                        config.seed * 1_000_003 + epoch * 10_007 + start
+                    ),
+                )
             image = image.to(device)
             truth = truth.to(device)
             optimizer.zero_grad(set_to_none=True)
-            loss = _loss(model(image), truth)
+            loss = _loss(model(image), truth, offset_field=offset_field)
             loss.backward()
             optimizer.step()
             losses.append(float(loss.detach()))
@@ -282,7 +382,9 @@ def train(config: Config, cache_path: Path, output: Path, *, resume: bool = True
             for start in range(0, len(validation_images), config.batch_size):
                 image = validation_images[start:start + config.batch_size].to(device)
                 truth = validation_truth[start:start + config.batch_size].to(device)
-                validation_losses.append(float(_loss(model(image), truth)))
+                validation_losses.append(
+                    float(_loss(model(image), truth, offset_field=offset_field))
+                )
         row = {
             "epoch": epoch,
             "train_loss": float(np.mean(losses)),
@@ -319,7 +421,7 @@ def train(config: Config, cache_path: Path, output: Path, *, resume: bool = True
     calibration_probabilities = _probabilities(
         model, calibration_images, device=device, batch_size=config.batch_size,
     )
-    calibration = _calibrate(calibration_probabilities, calibration_cache)
+    calibration = _calibrate(calibration_probabilities, calibration_cache, decode=decode)
     evaluation_probabilities = _probabilities(
         model, evaluation_images, device=device, batch_size=config.batch_size,
     )
@@ -328,6 +430,7 @@ def train(config: Config, cache_path: Path, output: Path, *, resume: bool = True
         evaluation_cache,
         calibration,
         split=config.evaluation_split,
+        decode=decode,
     )
     props = torch.cuda.get_device_properties(device)
     cache_report = json.loads(cache_path.with_suffix(".json").read_text(encoding="utf-8"))
@@ -358,6 +461,19 @@ def train(config: Config, cache_path: Path, output: Path, *, resume: bool = True
         "calibration": calibration,
         "evaluation": evaluation,
     }
+    if variant_bank is not None:
+        manifest["augmentation_detail"] = {
+            "mode": config.augmentation,
+            "preregistration": (
+                "CAOS_MANAGE plans/frothseg/research-2026-07-31/"
+                "p2-domain-randomization-preregistration-2026-08-01.md section 5"
+            ),
+            "scale_ladder": [float(value) for value in variant_bank["ladder"]],
+            "variant_bank_key": str(variant_bank["key"]),
+            "variant_bank_path": (
+                variant_bank_path.as_posix() if variant_bank_path is not None else None
+            ),
+        }
     with (output / "run.json").open("w", encoding="utf-8", newline="\n") as handle:
         handle.write(json.dumps(manifest, indent=2))
     return manifest
@@ -381,8 +497,17 @@ def main() -> None:
     )
     parser.add_argument(
         "--augmentation",
-        choices=("none", "geometric-photometric"),
+        choices=AUGMENTATION_MODES,
         default="none",
+    )
+    parser.add_argument(
+        "--variant-bank",
+        type=Path,
+        default=None,
+        help=(
+            "cache path for the domain-randomization scale-variant bank; deterministic from "
+            "the training labels, so it is a cache location and not a hyperparameter"
+        ),
     )
     parser.add_argument("--no-resume", action="store_true")
     args = parser.parse_args()
@@ -397,7 +522,13 @@ def main() -> None:
         evaluation_split=args.evaluation_split,
         augmentation=args.augmentation,
     )
-    manifest = train(config, args.cache, args.output, resume=not args.no_resume)
+    manifest = train(
+        config,
+        args.cache,
+        args.output,
+        resume=not args.no_resume,
+        variant_bank_path=args.variant_bank,
+    )
     print(json.dumps(manifest["evaluation"], indent=2))
 
 

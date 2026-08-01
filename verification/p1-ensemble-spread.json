@@ -1,0 +1,93 @@
+{
+  "experiment": "p1-ensemble-to-ensemble-spread",
+  "preregistration": "CAOS_MANAGE plans/frothseg/research-2026-07-31/PLAN-PROPOSAL.md section P-1",
+  "date": "2026-07-31",
+  "design": {
+    "configuration": "lamellastar c24-e120, lr 8e-4, batch 8, augmentation none",
+    "train_split": "existing 192-sample train split (data/cache/learned-v2-192.npz)",
+    "evaluation_split": "validation only",
+    "test_evaluations_spent": 0,
+    "ensemble_mode": "logit-mean",
+    "tta": "none"
+  },
+  "seeds": {
+    "published_ensemble": [
+      20260725,
+      20260726,
+      20260727
+    ],
+    "new_ensemble": [
+      20260728,
+      20260729,
+      20260730
+    ]
+  },
+  "new_members": [
+    {
+      "id": "c24-e120-s20260728",
+      "base_channels": 24,
+      "epochs": 120,
+      "seed": 20260728,
+      "validation_mean_ap": 0.49795312500000005
+    },
+    {
+      "id": "c24-e120-s20260729",
+      "base_channels": 24,
+      "epochs": 120,
+      "seed": 20260729,
+      "validation_mean_ap": 0.506765625
+    },
+    {
+      "id": "c24-e120-s20260730",
+      "base_channels": 24,
+      "epochs": 120,
+      "seed": 20260730,
+      "validation_mean_ap": 0.504515625
+    }
+  ],
+  "training_failures": [],
+  "ensembles": [
+    {
+      "id": "ensemble-logitmean-e120-seeds-28-29-30",
+      "members": [
+        "c24-e120-s20260728",
+        "c24-e120-s20260729",
+        "c24-e120-s20260730"
+      ],
+      "seeds": [
+        20260728,
+        20260729,
+        20260730
+      ],
+      "published": false,
+      "validation_mean_ap": 0.535828125
+    },
+    {
+      "id": "ensemble-logitmean-e120-seeds-25-26-27",
+      "members": [
+        "c24-e120-s20260725",
+        "c24-e120-s20260726",
+        "c24-e120-s20260727"
+      ],
+      "seeds": [
+        20260725,
+        20260726,
+        20260727
+      ],
+      "published": true,
+      "validation_mean_ap": 0.524,
+      "study_v3_recorded_validation_mean_ap": 0.524,
+      "matches_study_v3_record": true
+    }
+  ],
+  "spread_mean_validation_ap": 0.011828124999999967,
+  "hypothesis": "the published N1 leaderboard position is stable across ensemble draws: the ensemble-to-ensemble spread at c24-e120 is below 0.01 mean AP on validation",
+  "hypothesis_threshold": 0.01,
+  "refutation_condition": "spread comparable to the single-model seed spread (0.03744); in that case the N1 result is not distinguishable from noise and the published claim language must be weakened",
+  "single_model_seed_spread": 0.03744,
+  "spread_over_single_model_seed_spread": 0.3159221420940162,
+  "published_test_margin_over_baseline": 0.008703,
+  "spread_exceeds_published_margin": true,
+  "verdict": "fail",
+  "verdict_rule": "pass if the measured spread is below the pre-registered 0.01 threshold, fail otherwise; the rule was fixed before the runs and is not adjusted here"
+}

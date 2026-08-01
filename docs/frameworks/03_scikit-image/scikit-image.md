@@ -156,8 +156,10 @@ These methods are generic instance-segmentation and shape-measurement tools, not
 - **Small-object floor**: `remove_small_objects(max_size=12)` and the `p.area < 8` guard in morphometry drop specks
   below the resolvable bubble size; sub-8-pixel blobs are not counted. Set these to your own minimum object area.
 - **Glare degradation is real and measured**: under the glare-storm control `watershed_dt` mask AP collapses to
-  0.081 (from ~0.39 on clean coarse froth). Do not treat the floor as robust to specular saturation; that is
-  precisely the failure the foundation model is brought in to fix.
+  0.081 (from 0.394 on clean coarse froth). Do not treat the floor as robust to specular saturation; that is
+  precisely the failure the foundation model is brought in to fix. Since the 2026-08-01 adoption the best
+  classical method on that case is `valley_edge` at 0.182, which is better and still poor. Both figures are
+  `data/derived/synth/glare-storm/benchmark.json`.
 - **h-maxima fallback**: when `h_maxima` finds no marker (`markers.max() == 0`) `watershed_hmax` silently falls
   back to `watershed_dt`, so a highlight-free frame does not crash but also does not benefit from highlight seeding.
 - **SLIC is not instance-exact**: `slic_merge` produces a texture partition, not clean bubble instances; it is the

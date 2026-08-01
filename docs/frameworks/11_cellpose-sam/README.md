@@ -22,5 +22,8 @@ current matrix. It remains a synthetic-harness result, not a plant-accuracy
 claim.
 
 Cellpose code is BSD-3-Clause; pretrained-data/model terms are recorded in the
-run manifest and attribution. Reference: Pachitariu et al. 2025,
-DOI 10.1101/2025.04.28.651001.
+run manifest and attribution. The upstream README shows a badge whose alt-text
+says "Licence: GPL v3"; that alt-text is stale and the LICENSE file plus the
+GitHub SPDX identifier are the authority. Do not change the registry on the
+strength of the badge. See ATTRIBUTION.md, "Upstream licence provenance, L5
+Cellpose-SAM". Reference: Pachitariu et al. 2025, DOI 10.1101/2025.04.28.651001.
