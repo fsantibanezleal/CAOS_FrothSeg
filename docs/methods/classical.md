@@ -1,5 +1,7 @@
 # Classical segmentation tier (C1..C7)
 
+> Correction 2026-07-31: earlier revisions of the canonical per-method numbers in this file came from a seed-42 bake that no longer exists. The shipped canonical case is seed 102; every canonical figure here now comes from data/derived/synth/poly-normal/benchmark.json (C1 otsu_cc 76 predictions AP 0.137 · C2 watershed_immersion 1519 basins AP 0.005 · C4 watershed_dt 177 predictions AP 0.401, the classical leader on this scene · C7 valley_edge 166 predictions AP 0.364).
+
 The classical ladder is the honest, no-training floor that the learned tier must beat. Every method runs offline
 in `data-pipeline/fslab/science/segment.py` (the pre-validated Benchmark references). C1, C3, and C4 also have
 validated TypeScript twins in the live App; C2, C5, C6, and C7 remain offline and appear on the web as committed
@@ -43,7 +45,7 @@ term.
 | **valley_edge (C7)** | 166 | **0.438** | **0.681** | 24 | 0 |
 
 The numbers match the froth literature: the naive Otsu baseline under-segments (few instances, many merges), the
-marker-less immersion watershed grossly over-segments (8246 basins for 197 bubbles), and the domain-specific
+marker-less immersion watershed grossly over-segments (1519 basins for 197 bubbles), and the domain-specific
 valley-edge detector is the strongest classical method, narrowly ahead of the distance-transform watershed. These
 are the references the learned tier (StarDist, U-Net+watershed, Deep-Watershed, and the novel LamellaStar) must
 beat; see [../../plans/frothseg](the redesign plan) and the learned-tier docs.

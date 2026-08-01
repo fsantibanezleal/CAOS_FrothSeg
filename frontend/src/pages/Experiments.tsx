@@ -1015,12 +1015,12 @@ function ErrorAnatomy({ es, methods }: { es: boolean; methods: MethodBenchmarkDo
                     </caption>
                     <tbody>
                       <tr>
-                        <th>{es ? 'instancias verdaderas' : 'true instances'}</th><td className="num">{test.micro.nGt.toLocaleString()}</td>
-                        <th>{es ? 'instancias predichas' : 'predicted instances'}</th><td className="num">{test.micro.nPred.toLocaleString()}</td>
+                        <th>{es ? 'instancias verdaderas' : 'true instances'}</th><td className="num">{test.micro.nGt.toLocaleString(es ? 'es' : 'en')}</td>
+                        <th>{es ? 'instancias predichas' : 'predicted instances'}</th><td className="num">{test.micro.nPred.toLocaleString(es ? 'es' : 'en')}</td>
                       </tr>
                       <tr>
-                        <th>TP</th><td className="num">{test.micro.tp.toLocaleString()}</td>
-                        <th>FP / FN</th><td className="num">{test.micro.fp.toLocaleString()} / {test.micro.fn.toLocaleString()}</td>
+                        <th>TP</th><td className="num">{test.micro.tp.toLocaleString(es ? 'es' : 'en')}</td>
+                        <th>FP / FN</th><td className="num">{test.micro.fp.toLocaleString(es ? 'es' : 'en')} / {test.micro.fn.toLocaleString(es ? 'es' : 'en')}</td>
                       </tr>
                       <tr>
                         <th>{es ? 'precisión / exhaustividad' : 'precision / recall'}</th>

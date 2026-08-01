@@ -67,39 +67,15 @@ const config: ShellConfig = {
   },
 };
 
-/** The shared shell hardcodes "MIT licensed" in its footer. This repository is Apache-2.0
- *  (ADR-0065), so without a correction the footer states the wrong licence, which is a
- *  factual error about a legal term rather than a cosmetic one.
- *
- *  The proper fix is a `license` field on ShellConfig; the shell has none today, and adding
- *  one means publishing a shell version that all 16 CAOS products depend on. That is a
- *  cross-product release, so it is tracked as BL-015 rather than done from here.
- *
- *  Until then this patches the DOM, and it matches on the TEXT rather than on a selector
- *  chain. The previous version keyed off `.footer-meta a[href*="github"] + span + .faint`,
- *  which any shell markup change would silently break, leaving the footer quietly asserting
- *  MIT. Matching the text fails safe: if the shell stops saying "MIT licensed" there is
- *  nothing to correct, and if it says it somewhere else this still finds it. */
-const LICENSE_TEXT = {
-  en: 'Apache-2.0 licensed · open source',
-  es: 'Licencia Apache-2.0 · código abierto',
-} as const;
-
-function ShellLicenseCorrection() {
+/** The shared shell hardcodes "MIT licensed" in its footer, and this repository IS MIT: the
+ *  CAOS product line standardized on MIT (line-wide decision, 2026-07-14; LICENSE and
+ *  pyproject.toml carry it). The DOM patch that used to rewrite the footer to Apache-2.0
+ *  corrected a footer that is no longer wrong, so it is gone. What remains is the html `lang`
+ *  attribute, which the shell does not set and the patch used to set as a side effect. */
+function ShellDocumentLang() {
   const lang = useShellLang();
   useEffect(() => {
     document.documentElement.lang = lang;
-    const correct = LICENSE_TEXT[lang === 'es' ? 'es' : 'en'];
-    const footer = document.querySelector('footer') ?? document.body;
-    const candidates = footer.querySelectorAll<HTMLElement>('span, p, div, small');
-    for (const node of candidates) {
-      // Only leaf nodes, so a wrapper containing the phrase is not flattened.
-      if (node.children.length > 0) continue;
-      const text = node.textContent ?? '';
-      if (/MIT\s+licensed|Licencia\s+MIT/i.test(text)) {
-        node.textContent = correct;
-      }
-    }
   }, [lang]);
   return null;
 }
@@ -115,7 +91,7 @@ if (el) {
         {/* Old deep links carried no lane and were always sequences; they keep working. */}
         <Route path="/focus/:caseId" element={<Focus />} />
             <Route path="*" element={<AppShell config={config}>
-            <ShellLicenseCorrection />
+            <ShellDocumentLang />
             <Routes>
               <Route path="/" element={<Tool />} />
               <Route path="/introduction" element={<Introduction />} />

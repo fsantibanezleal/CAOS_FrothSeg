@@ -70,6 +70,13 @@ export default function Tool() {
   const [gt, setGt] = useState<Int32Array | null>(null);
   const [ap, setAp] = useState<MaskApResult | null>(null);
   const [tab, setTab] = useState<Tab>('segment');
+  // The shell Tabs is uncontrolled: it copies `initial` into useState once at mount, so the
+  // app can only steer the active group by remounting it. Without this counter the
+  // "Pick a point to replay it in Segmentation" flow changed the rail select but never left
+  // the Methods group (measured 2026-07-31: aria-selected stayed on Methods after the click).
+  // Each pick bumps the epoch, the epoch is part of the Tabs key, and `initial` is computed
+  // from the tab state, so a pick remounts the strip with Segmentation active.
+  const [tabEpoch, setTabEpoch] = useState(0);
   const [analysisFrame, setAnalysisFrame] = useState<Float32Array | null>(null);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -79,20 +86,45 @@ export default function Tool() {
   const restoredCase = searchParams.get('case');
   const restoredMethod = searchParams.get('method');
   const restoredRef = useRef(false);
-  // Returning from a STILL focus restores the case and the method directly.
+  const stillRestoredRef = useRef(false);
+  const seqMethodRestoredRef = useRef(false);
+  // Returning from a STILL focus restores the case and the method, VALIDATED against the same
+  // catalogues the selects render (data/manifests/index.json primary cases and
+  // data/method-benchmark.json). An unvalidated restore left the App in a lying state: the
+  // select displayed index 0 while the internal id was junk and the stage showed a broken
+  // artifact (measured with case=empty-control and case=not-a-case, 2026-07-31).
   useEffect(() => {
-    if (!restoredCase || workbenchSource !== 'still') return;
+    if (stillRestoredRef.current || !restoredCase || workbenchSource !== 'still') return;
+    if (!index || !methodBenchmark) return;
+    stillRestoredRef.current = true;
+    if (!primaryShowcaseCases(index.cases).some((c) => c.case_id === restoredCase)) return;
     setSampleId(restoredCase);
-    if (restoredMethod) setShowcaseMethodId(restoredMethod);
+    if (restoredMethod && methodBenchmark.methods.some((m) => m.id === restoredMethod)) {
+      setShowcaseMethodId(restoredMethod);
+    }
     // Restore once; later user changes must not be fought by the URL.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [restoredCase, restoredMethod, workbenchSource, index, methodBenchmark]);
   useEffect(() => {
     if (restoredRef.current || !restoredCase || workbenchSource !== 'sequence' || !lane.manifest) return;
     const index = lane.manifest.sequences.findIndex((s) => s.case_id === restoredCase);
     if (index >= 0) lane.setSequenceIndex(index);
     restoredRef.current = true;
   }, [restoredCase, workbenchSource, lane]);
+  // Returning from a SEQUENCE focus restores the prediction method as well (ADR-0070 8). This
+  // waits for the restored sequence to be current: the lane resets predictionIndex to 0 on a
+  // sequence change, and that reset and this restore land in the same commit, restore last.
+  useEffect(() => {
+    if (seqMethodRestoredRef.current || !restoredCase || !restoredMethod
+      || workbenchSource !== 'sequence' || !lane.manifest) return;
+    if (!lane.manifest.sequences.some((s) => s.case_id === restoredCase)) {
+      seqMethodRestoredRef.current = true;
+      return;
+    }
+    if (lane.sequence?.case_id !== restoredCase) return;
+    const predIndex = lane.predictions.findIndex((p) => p.method_id === restoredMethod);
+    if (predIndex >= 0) lane.setPredictionIndex(predIndex);
+    seqMethodRestoredRef.current = true;
+  }, [restoredCase, restoredMethod, workbenchSource, lane]);
 
   useEffect(() => {
     loadIndex().then(setIndex).catch(() => setIndex(null));
@@ -246,6 +278,14 @@ export default function Tool() {
             throw segErr;
           }
         }
+        // The generator reports the masks it KEPT, but overlap resolution paints them into one
+        // disjoint label map and a mask can be fully painted over, so the kept-mask count can
+        // exceed the labels that survive. The overlay header and bsdFromLabels both count the
+        // painted labels, and the KPI must agree with them on the same screen (measured
+        // 2026-07-31: KPI 66 bubbles against overlay 59 on the same SlimSAM upload result).
+        const painted = new Set<number>();
+        for (const value of r.labels) if (value > 0) painted.add(value);
+        r = { ...r, nInstances: painted.size };
       }
       setResult(r);
       setStatus('done');
@@ -521,7 +561,7 @@ export default function Tool() {
                         ms: m.compute.mean_inference_ms,
                       }))}
                     selectedId={showcaseMethodId}
-                    onSelect={(id) => { setShowcaseMethodId(id); setTab('segment'); }}
+                    onSelect={(id) => { setShowcaseMethodId(id); setTab('segment'); setTabEpoch((epoch) => epoch + 1); }}
                     es={es}
                     ariaLabel={es ? 'AP contra milisegundos por imagen' : 'AP against milliseconds per image'}
                   />
@@ -540,7 +580,7 @@ export default function Tool() {
                       {methodBenchmark?.methods.map((candidate) => (
                         <tr key={candidate.id} className={candidate.id === showcaseMethodId ? 'fs-selected-row' : undefined}>
                           <td className="mono">{candidate.id}</td>
-                          <th><button className="fs-method-pick" onClick={() => { setShowcaseMethodId(candidate.id); setTab('segment'); }}>{candidate.name}</button></th>
+                          <th><button className="fs-method-pick" onClick={() => { setShowcaseMethodId(candidate.id); setTab('segment'); setTabEpoch((epoch) => epoch + 1); }}>{candidate.name}</button></th>
                           <td>{methodFamily(candidate, es)}</td>
                           <td className="num">{candidate.test?.mean_ap.toFixed(3) ?? '--'}</td>
                           <td className="num">{candidate.test?.mean_ap50.toFixed(3) ?? '--'}</td>
@@ -644,9 +684,32 @@ export default function Tool() {
             as the scenario selector. It sat BELOW the input and method blocks, so on the
             sequence lane it was the seventh thing down the rail and read as a footnote to the
             controls rather than the way into the view. It leads the rail now. */}
-        <button type="button" className="fs-focus-enter" onClick={() => navigate(sequenceMode
-          ? `/focus/sequence/${lane.sequence?.case_id ?? ''}`
-          : `/focus/still/${sampleId}?method=${encodeURIComponent(showcaseMethodId)}`)}>
+        {/* Focus shows precomputed showcase artifacts only, so with a local image there is
+            nothing of the user's to focus on: entering silently opened the last gallery case
+            (measured 2026-07-31). The entry is disabled and says why. The sequence entry also
+            waits for the manifest (an empty case_id routed to "Scenario not found") and
+            carries the selected prediction method, like the still entry (ADR-0070 8). */}
+        <button
+          type="button"
+          className="fs-focus-enter"
+          disabled={(!sequenceMode && source === 'upload') || (sequenceMode && !lane.sequence)}
+          style={(!sequenceMode && source === 'upload') || (sequenceMode && !lane.sequence)
+            ? { opacity: 0.55, cursor: 'not-allowed' } : undefined}
+          title={!sequenceMode && source === 'upload'
+            ? (es
+              ? 'El modo foco muestra solo artefactos precalculados; no está disponible para una imagen local.'
+              : 'Focus mode shows precomputed artifacts only; it is not available for a local image.')
+            : undefined}
+          onClick={() => {
+            if (sequenceMode) {
+              if (!lane.sequence) return;
+              const method = lane.prediction ? `?method=${encodeURIComponent(lane.prediction.method_id)}` : '';
+              navigate(`/focus/sequence/${lane.sequence.case_id}${method}`);
+            } else {
+              navigate(`/focus/still/${sampleId}?method=${encodeURIComponent(showcaseMethodId)}`);
+            }
+          }}
+        >
           <Maximize2 size={15} aria-hidden="true" />
           {es ? 'Abrir en modo foco' : 'Open focus mode'}
         </button>
@@ -768,7 +831,13 @@ export default function Tool() {
       <div className="fs-main">
         {sequenceMode
           ? <SequenceStage lane={lane} es={es} />
-          : <Tabs key={`${source}-${activeGroup}`} initial={activeGroup} tabs={stillTabs} ariaLabel={es ? 'Analisis de imagen fija' : 'Still-image analysis'} />}
+          : groups.length === 0
+            /* Upload before a run has no tab groups, so without this branch the stage rendered
+               NOTHING from the tab bar to the footer (measured 2026-07-31: `.fs-main` innerText
+               empty both before and after picking a file). The frame preview and the next-step
+               guidance render directly instead of waiting for an unreachable panel mount. */
+            ? pending(true)
+            : <Tabs key={`${source}-${activeGroup}-${tabEpoch}`} initial={activeGroup} tabs={stillTabs} ariaLabel={es ? 'Analisis de imagen fija' : 'Still-image analysis'} />}
       </div>
     </div>
   );

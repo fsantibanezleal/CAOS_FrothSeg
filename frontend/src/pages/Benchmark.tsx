@@ -825,6 +825,14 @@ function ComputeAnalysis({ es, benchmark }: BenchmarkProps) {
   const rows = benchmark.methods.filter((method) => method.test && method.compute.mean_inference_ms > 0);
   const maxLatency = maxOr(rows.map((method) => method.compute.mean_inference_ms), 10);
   const fastest = [...rows].sort((a, b) => a.compute.mean_inference_ms - b.compute.mean_inference_ms);
+  // The table under the frontier definition must BE the frontier. fastest.slice(0, 6) was
+  // rendered there and it is not one: it kept dominated C5 and C3 and omitted frontier members
+  // L1 and N1. This computes the stated formula exactly: m stays unless some other method is at
+  // least as good on BOTH axes and strictly better on one.
+  const frontierRows = fastest.filter((m) => !rows.some((o) => o !== m
+    && o.test!.mean_ap >= m.test!.mean_ap
+    && o.compute.mean_inference_ms <= m.compute.mean_inference_ms
+    && (o.test!.mean_ap > m.test!.mean_ap || o.compute.mean_inference_ms < m.compute.mean_inference_ms)));
   return (
     <div className="prose">
       <h2>{es ? 'La frontera entre calidad y costo' : 'The frontier between quality and cost'}</h2>
@@ -862,7 +870,7 @@ function ComputeAnalysis({ es, benchmark }: BenchmarkProps) {
             </tr>
           </thead>
           <tbody>
-            {fastest.slice(0, 6).map((method) => (
+            {frontierRows.map((method) => (
               <tr key={method.id}>
                 <td>{method.id}</td><td>{method.name}</td><td>{method.compute.hardware_lane.toUpperCase()}</td>
                 <td className="num">{fmt(method.compute.mean_inference_ms, 1)}</td>

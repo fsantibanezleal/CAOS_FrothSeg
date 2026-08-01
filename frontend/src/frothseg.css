@@ -666,8 +666,8 @@
 
 /* ADR-0070 2: one parameter column on the right, scrolling independently of the stage. */
 .fs-focus-rail {
-  display: flex; flex-direction: column; gap: 0.7rem;
-  padding: 0.9rem; overflow-y: auto; overscroll-behavior: contain;
+  display: flex; flex-direction: column; gap: 0.55rem;
+  padding: 0.85rem 1rem; overflow-y: auto; overscroll-behavior: contain;
   border-left: 1px solid var(--color-border); background: var(--color-surface);
 }
 .fs-focus-railhead { display: flex; flex-direction: column; gap: 0.15rem; }

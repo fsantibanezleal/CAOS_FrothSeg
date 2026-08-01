@@ -155,6 +155,6 @@ of record remains in the CAOS management repository.
 
 ## License
 
-The in-repository code is Apache-2.0. Individual engines and checkpoints retain their
+The in-repository code is MIT licensed (the CAOS product-line standard). Individual engines and checkpoints retain their
 upstream licenses; consult [ATTRIBUTION.md](ATTRIBUTION.md) and each framework
 card before redistribution or deployment.

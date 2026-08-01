@@ -12,7 +12,8 @@ version = "0.5.0"
 description = "FrothSeg · offline-first flotation-froth instance segmentation, training, evaluation, export, temporal analysis, and companion web."
 readme = "README.md"
 requires-python = ">=3.11"
-license = { text = "Apache-2.0" }
+# The CAOS product line is standardized on MIT (line-wide decision, 2026-07-14).
+license = { text = "MIT" }
 authors = [{ name = "Felipe Santibáñez-Leal" }]
 dependencies = ["numpy>=1.26"]
 

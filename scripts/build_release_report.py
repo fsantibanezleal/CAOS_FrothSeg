@@ -453,9 +453,10 @@ def build() -> dict:
         errors.append(
             f"fslab.__version__ {_fslab_display_version()} disagrees with VERSION {display_version}"
         )
+    # The CAOS product line is standardized on MIT (line-wide decision, 2026-07-14).
     license_text = (ROOT / "LICENSE").read_text(encoding="utf-8")
-    if "Apache License" not in license_text:
-        errors.append("repository code license is not Apache-2.0")
+    if "MIT License" not in license_text:
+        errors.append("repository code license is not MIT")
 
     return {
         "schema": "frothseg.release/v2",

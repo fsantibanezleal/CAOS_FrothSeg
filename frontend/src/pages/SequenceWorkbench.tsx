@@ -28,6 +28,13 @@ export function useSequenceLane(es: boolean) {
   const [speed, setSpeed] = useState(2);
   const [view, setView] = useState<SequenceView>('overlay');
   const [tab, setTab] = useState<SequenceTab>('replay');
+  // The shell Tabs is uncontrolled: it copies `initial` into useState once at mount, so
+  // `setTab` alone cannot steer it afterwards. Same trap as the Events fetch documented
+  // below, and the same fix as the still lane's pick-to-replay (Tool.tsx `tabEpoch`):
+  // each Methods-row pick bumps this counter, the counter is part of the SequenceStage
+  // Tabs key, and the remount honours `initial={tab}`. Without it the pick moved the
+  // rail selection but the active tab stayed on Methods (measured 2026-07-31).
+  const [tabEpoch, setTabEpoch] = useState(0);
   const [eventLog, setEventLog] = useState<TemporalEventLog | null>(null);
   const [eventError, setEventError] = useState('');
 
@@ -136,6 +143,7 @@ export function useSequenceLane(es: boolean) {
   return {
     manifest, loadError, sequence, frames, frame, predictions, framewisePredictions,
     nativePredictions, prediction, displayFrame, metrics, views, tabs, tab, setTab,
+    tabEpoch, setTabEpoch,
     sequenceIndex, setSequenceIndex, predictionIndex, setPredictionIndex,
     frameIndex, setFrameIndex, playing, setPlaying, speed, setSpeed, view, setView,
     eventLog, eventError, requestEvents: setEventsWanted, frameLabel, displayLabel,
@@ -224,6 +232,7 @@ export function SequenceStage({ lane, es }: { lane: SequenceLane; es: boolean })
   const {
     manifest, loadError, sequence, frames, frame, predictions, framewisePredictions,
     nativePredictions, prediction, displayFrame, metrics, views, tabs, tab, setTab,
+    tabEpoch, setTabEpoch,
     setPredictionIndex, frameIndex, setFrameIndex, playing, setPlaying, speed, setSpeed,
     view, setView, eventLog, eventError, requestEvents, frameLabel, displayLabel,
   } = lane;
@@ -334,7 +343,7 @@ export function SequenceStage({ lane, es }: { lane: SequenceLane; es: boolean })
                   <tbody>
                     <tr><th>{es ? 'cuadro' : 'frame'}</th><td className="num">{frameIndex + 1} / {frames.length}</td></tr>
                     <tr><th>{es ? 'vista' : 'view'}</th><td>{sequenceViewLabel(view, displayFrame ?? frame, es, prediction?.method_id)}</td></tr>
-                    <tr><th>{es ? 'metodo' : 'method'}</th><td>{prediction ? `${prediction.method_id} · ${temporalMethodLabel(prediction.method_id, prediction.method_slug)}` : '--'}</td></tr>
+                    <tr><th>{es ? 'método' : 'method'}</th><td>{prediction ? `${prediction.method_id} · ${temporalMethodLabel(prediction.method_id, prediction.method_slug)}` : '--'}</td></tr>
                     <tr><th>{es ? 'artefacto' : 'artifact'}</th><td className="mono">{(displayFrame?.prediction_sha256 ?? displayFrame?.truth_sha256 ?? '').slice(0, 10) || '--'}</td></tr>
                   </tbody>
                 </table>
@@ -350,9 +359,13 @@ export function SequenceStage({ lane, es }: { lane: SequenceLane; es: boolean })
                       <tr><th>{es ? 'cambios de ID' : 'ID switches'}</th><td className="num">{(metrics.id_switch_rate * 100).toFixed(2)}%</td></tr>
                     </tbody>
                   </table>
-                  <p className="fs-hint small">{isNativeVideoMode(prediction?.method_id ?? '')
-                    ? (es ? 'Protocolo de propagacion nativa: no se ordena junto al protocolo por cuadro.' : 'Native propagation protocol: not ranked against the framewise protocol.')
-                    : (es ? 'Protocolo por cuadro con asociacion por IoU.' : 'Framewise protocol with IoU association.')}</p>
+                  {/* isNativeVideoMode compares against the MODE string, never the method id.
+                      Passing method_id here made the hint claim the framewise protocol for L7,
+                      the one method whose numbers that separation exists to flag (adversarial
+                      review 2026-07-31, D2). */}
+                  <p className="fs-hint small">{isNativeVideoMode(prediction?.mode)
+                    ? (es ? 'Protocolo de propagación nativa: no se ordena junto al protocolo por cuadro.' : 'Native propagation protocol: not ranked against the framewise protocol.')
+                    : (es ? 'Protocolo por cuadro con asociación por IoU.' : 'Framewise protocol with IoU association.')}</p>
                 </div>
               )}
             </aside>
@@ -360,7 +373,7 @@ export function SequenceStage({ lane, es }: { lane: SequenceLane; es: boolean })
           </div>
         ),
     tracking: metrics ? (
-      <TrackingEvidence metrics={metrics} methodId={prediction?.method_id} es={es} />
+      <TrackingEvidence metrics={metrics} methodId={prediction?.method_id} mode={prediction?.mode} es={es} />
     ) : null,
     events: metrics ? (
           <EventEvidence
@@ -382,7 +395,13 @@ export function SequenceStage({ lane, es }: { lane: SequenceLane; es: boolean })
             selectedMethodId={prediction?.method_id}
             onSelect={(methodId) => {
               const index = predictions.findIndex((item) => item.method_id === methodId);
-              if (index >= 0) { setPredictionIndex(index); setTab('replay'); }
+              if (index >= 0) {
+                setPredictionIndex(index);
+                setTab('replay');
+                // Remount the uncontrolled Tabs so `initial={tab}` takes effect (see
+                // tabEpoch in useSequenceLane).
+                setTabEpoch((epoch) => epoch + 1);
+              }
             }}
             es={es}
           />
@@ -403,9 +422,9 @@ export function SequenceStage({ lane, es }: { lane: SequenceLane; es: boolean })
 
   return (
     <Tabs
-      key={sequence.case_id}
+      key={`${sequence.case_id}-${tabEpoch}`}
       initial={tab}
-      ariaLabel={es ? 'Analisis de secuencia' : 'Sequence analysis'}
+      ariaLabel={es ? 'Análisis de secuencia' : 'Sequence analysis'}
       tabs={tabs.map((item) => ({
         id: item,
         label: sequenceTabLabel(item, es),
@@ -542,15 +561,22 @@ function InstanceRaster({
 function TrackingEvidence({
   metrics,
   methodId,
+  mode,
   es,
 }: {
   metrics: TemporalSequenceMetrics;
   methodId?: string;
+  mode?: string;
   es: boolean;
 }) {
   const method = methodId ?? (es ? 'método publicado' : 'published method');
   return (
     <div className="fs-evidence-panel">
+      {isNativeVideoMode(mode) && (
+        <p className="fs-note">{es
+          ? 'Este método recibe las máscaras exactas del primer cuadro y solo debe conservarlas, así que sus puntuaciones de identidad describen el protocolo, no una detección: no son comparables con los métodos por cuadro.'
+          : 'This method is given the exact first-frame masks and only has to keep them, so its identity scores describe the protocol, not a detection: they are not comparable with the framewise methods.'}</p>
+      )}
       <header>
         <span>{es ? 'Asociación cuadro a cuadro' : 'Frame-to-frame association'}</span>
         <h3>{es ? 'La identidad se evalúa separada de la detección' : 'Identity is evaluated separately from detection'}</h3>
@@ -624,7 +650,7 @@ function SequenceComparison({
             : 'Every method ran frame by frame under the same protocol and received identities by IoU association. The table is ordered by HOTA, which balances detection and association. Pick a row to replay it.'}
         </p>
       </header>
-      <div style={{ overflowX: 'auto' }}>
+      <div className="fs-scrollbox">
         <table className="fs-table">
           <thead>
             <tr>
@@ -784,7 +810,7 @@ function EventEvidence({
             </div>
           </div>
           <div className="fs-event-track">
-            <span>{es ? 'prediccion' : 'prediction'}</span>
+            <span>{es ? 'predicción' : 'prediction'}</span>
             <div>
               {Array.from({ length: frameCount }, (_, i) => {
                 const n = predictedEvents.filter((e) => e.frame_index === i).length;
@@ -799,7 +825,7 @@ function EventEvidence({
             </div>
           </div>
           <p className="fs-hint small">{es
-            ? 'Cada casilla es un cuadro; el numero es cuantos eventos se reportaron en el. El cuadro seleccionado esta resaltado.'
+            ? 'Cada casilla es un cuadro; el número es cuántos eventos se reportaron en él. El cuadro seleccionado está resaltado.'
             : 'Each cell is a frame; the number is how many events were reported in it. The selected frame is highlighted.'}</p>
         </div>
       )}
@@ -926,9 +952,18 @@ function sequenceViewLabel(
     const method = methodId ?? 'prediction';
     return es ? `Predicción ${method}` : `${method} prediction`;
   }
-  return frame.prediction_overlay_path
-    ? (es ? 'Fuente + predicción' : 'Source + prediction')
-    : (es ? 'Fuente + referencia' : 'Source + truth');
+  // Mirrors SequenceFrame's overlay branch exactly: the composite draws
+  // frame.prediction_path when present (the SELECTED METHOD's labels over the source),
+  // falls back to truth_path, and only then to the pre-rendered overlay.png, which is
+  // source + truth (data-pipeline/fslab/showcase.py line 359). The old check keyed on
+  // prediction_overlay_path, a field no manifest frame carries, so the lane's default
+  // view named the method's prediction "Source + truth" (adversarial review 2026-07-31,
+  // D1: overlay pixels measurably change with the selected method).
+  if (frame.prediction_path) {
+    const method = methodId ? ` ${methodId}` : '';
+    return es ? `Fuente + predicción${method}` : `Source +${method} prediction`;
+  }
+  return es ? 'Fuente + referencia' : 'Source + truth';
 }
 
 /** Same vocabulary as the still lane (see `groupLabel` in Tool.tsx): short noun phrases, with

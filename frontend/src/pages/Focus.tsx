@@ -13,13 +13,20 @@
  *  2. The scenario switcher was a wrapping list of five chip buttons. ADR-0071 rule 7: a
  *     one-of-N choice from a categorised set is a `select` with `optgroup`, not N buttons. The
  *     ADR-0070 style note that asked for chips is Proposed and predates that accepted rule; one
- *     grouped select now covers all 17 scenarios (12 still, 5 sequences) instead of listing 5.
+ *     grouped select now covers every scenario the App itself offers: the primary still cases
+ *     (empty-control is excluded exactly as in the App, because no showcase artifacts exist
+ *     for it) plus the temporal sequences. The count in the label is derived from those two
+ *     catalogues, never hard-coded.
  *
  *  3. The in-stage label and the HUD were anchored to the STAGE, but the frame letterboxes
  *     inside it: at 1600x900 the picture starts 198px in, so the label straddled the dead
  *     margin and the image with a broken shape, and the HUD floated in the black. Every overlay
- *     now anchors to `.fs-focus-frame`, a box that carries the source aspect, so labels sit ON
- *     the picture at every viewport.
+ *     now lives in the info column beside `.fs-focus-frame`, so nothing covers the picture.
+ *
+ *  The 2026-07-31 adversarial pass added: method preservation for the SEQUENCE lane in both
+ *  directions (`?method=` on entry, exit, and scenario switches), a keydown handler that leaves
+ *  form controls alone, and a friendly bilingual error state that keeps the rail mounted so an
+ *  unknown id, an unknown method, or a broken artifact never strands the user.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
@@ -33,7 +40,9 @@ import { decodeLabels } from '../lib/rle';
 import { decodeShowcaseLabels } from '../lib/showcaseLabels';
 import { bsdFromLabels } from '../sam/morphometry';
 import { maskAp, type MaskApResult } from '../sam/score';
-import { isNativeVideoMode, type TemporalShowcaseManifest } from '../lib/workbench';
+import {
+  isNativeVideoMode, primaryShowcaseCases, type TemporalShowcaseManifest,
+} from '../lib/workbench';
 import { temporalMethodLabel } from './SequenceWorkbench';
 
 const PLAY_SPEEDS = [1, 2, 4] as const;
@@ -49,11 +58,13 @@ export default function Focus() {
   const laneKind: LaneKind = params.laneKind === 'still' ? 'still' : 'sequence';
   const caseId = params.caseId ?? '';
 
-  // Both catalogues load regardless of lane: the scenario select lists all 17.
+  // Both catalogues load regardless of lane: the scenario select lists them all.
   const [manifest, setManifest] = useState<TemporalShowcaseManifest | null>(null);
   const [index, setIndex] = useState<CaseIndex | null>(null);
   const [bench, setBench] = useState<MethodBenchmarkDoc | null>(null);
-  const [error, setError] = useState('');
+  // A raw decoder or JSON-parse string is never shown to the user; the flag selects the
+  // bilingual message and the detail goes to the console for whoever is debugging.
+  const [artifactError, setArtifactError] = useState(false);
 
   const [frameIndex, setFrameIndex] = useState(0);
   const [predictionIndex, setPredictionIndex] = useState(0);
@@ -63,7 +74,7 @@ export default function Focus() {
   const [showTruth, setShowTruth] = useState(false);
   const [opacity, setOpacity] = useState(0.55);
   const [advanced, setAdvanced] = useState(false);
-  const [stillStats, setStillStats] = useState<{ ap: MaskApResult; d32: number | null; n: number } | null>(null);
+  const [stillStats, setStillStats] = useState<{ ap: MaskApResult; d32: number | null; n: number; truthD32: number | null; truthN: number } | null>(null);
   const [frameAspect, setFrameAspect] = useState('1 / 1');
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -75,11 +86,10 @@ export default function Focus() {
     return () => { cancelled = true; };
   }, []);
 
-  // ADR-0070 8: leaving returns to the App on the SAME scenario, same lane, same method.
-  const backToApp = useCallback(() => {
-    const method = laneKind === 'still' ? `&method=${encodeURIComponent(methodId)}` : '';
-    navigate(`/?source=${laneKind}&case=${encodeURIComponent(caseId)}${method}`);
-  }, [navigate, laneKind, caseId, methodId]);
+  // The still list mirrors the App exactly: primaryShowcaseCases excludes empty-control, for
+  // which no showcase/<method>/<case>/ artifacts exist (data/manifests/index.json lists it,
+  // the showcase bake skips it). Offering it here broke the view AND the round trip.
+  const primaryCases = useMemo(() => primaryShowcaseCases(index?.cases ?? []), [index]);
 
   const sequence = useMemo(
     () => (laneKind === 'sequence'
@@ -88,8 +98,8 @@ export default function Focus() {
     [manifest, laneKind, caseId],
   );
   const stillCase = useMemo(
-    () => (laneKind === 'still' ? index?.cases.find((c) => c.case_id === caseId) ?? null : null),
-    [index, laneKind, caseId],
+    () => (laneKind === 'still' ? primaryCases.find((c) => c.case_id === caseId) ?? null : null),
+    [primaryCases, laneKind, caseId],
   );
   const frames = sequence?.frames ?? [];
   const predictions = useMemo(() => sequence?.predictions ?? [], [sequence]);
@@ -98,6 +108,25 @@ export default function Focus() {
   const predictionFrame = prediction?.frames.find((f) => f.frame_index === frameIndex) ?? null;
   const metrics = prediction?.metrics ?? null;
   const benchMethod = bench?.methods.find((m) => m.id === methodId) ?? null;
+
+  // ADR-0070 8: entering preserves the selected method in BOTH lanes. The sequence entry and
+  // every scenario switch carry `?method=<id>`; this starts the lane on it (or on the first
+  // prediction when the sequence does not publish that method).
+  const requestedMethod = searchParams.get('method');
+  useEffect(() => {
+    if (laneKind !== 'sequence' || !sequence) return;
+    const wanted = requestedMethod
+      ? (sequence.predictions ?? []).findIndex((p) => p.method_id === requestedMethod)
+      : -1;
+    setPredictionIndex(wanted >= 0 ? wanted : 0);
+  }, [laneKind, sequence, requestedMethod]);
+
+  // ADR-0070 8: leaving returns to the App on the SAME scenario, same lane, same method.
+  const backToApp = useCallback(() => {
+    const method = laneKind === 'still' ? methodId : prediction?.method_id;
+    const suffix = method ? `&method=${encodeURIComponent(method)}` : '';
+    navigate(`/?source=${laneKind}&case=${encodeURIComponent(caseId)}${suffix}`);
+  }, [navigate, laneKind, caseId, methodId, prediction]);
 
   // ADR-0070 6: every exposed parameter redraws live; motion starts paused and stops hidden.
   useEffect(() => {
@@ -117,6 +146,12 @@ export default function Focus() {
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
+      // A key aimed at a rail control must act on that control only: without this guard the
+      // arrows on the opacity slider also stepped frames and Space on a select started
+      // playback (measured 2026-07-31). Form controls keep their native keyboard behaviour.
+      const target = event.target;
+      if (target instanceof HTMLInputElement || target instanceof HTMLSelectElement
+        || target instanceof HTMLTextAreaElement || target instanceof HTMLButtonElement) return;
       if (event.key === 'Escape') backToApp();
       if (laneKind !== 'sequence') return;
       if (event.key === ' ') { event.preventDefault(); setPlaying((v) => !v); }
@@ -173,18 +208,29 @@ export default function Focus() {
         const labels = labelPath
           ? decodeShowcaseLabels(await (await fetch(artifactUrl(labelPath))).arrayBuffer())
           : null;
-        if (!cancelled) await paint(frame.source_path, labels);
+        if (!cancelled) { await paint(frame.source_path, labels); setArtifactError(false); }
       } catch (reason) {
-        if (!cancelled) setError(String(reason instanceof Error ? reason.message : reason));
+        if (!cancelled) { console.error('focus sequence artifact failed', reason); setArtifactError(true); }
       }
     })();
     return () => { cancelled = true; };
   }, [laneKind, frame, predictionFrame, showTruth, paint]);
 
+  // An id the index lists but the App never offers (empty-control), or one it does not list at
+  // all, must never reach the artifact fetches: the SPA fallback answers 200 with index.html
+  // and the decoder throws an internal string.
+  const missing = laneKind === 'sequence'
+    ? (manifest != null && !sequence)
+    : (index != null && !stillCase);
+  // An unknown `?method=` (e.g. hand-edited to ZZ) has no artifact directory either.
+  const invalidMethod = laneKind === 'still' && bench != null
+    && !bench.methods.some((m) => m.id === methodId);
+
   // Still lane: the selected method's precomputed mask (or truth) over the canonical frame,
   // with the same per-case AP the App reports. All artifacts, nothing recomputed.
   useEffect(() => {
     if (laneKind !== 'still' || !caseId || !index) return;
+    if (!stillCase || invalidMethod) return;
     let cancelled = false;
     (async () => {
       try {
@@ -203,131 +249,157 @@ export default function Focus() {
           : decoded;
         await paint(`synth/${caseId}/frame.png`, shown);
         const ids = new Set(decoded.labels); ids.delete(0);
+        const truthIds = new Set(truth); truthIds.delete(0);
         setStillStats({
           ap: maskAp(decoded.labels, truth),
           d32: bsdFromLabels(decoded.labels).d32 ?? null,
           n: ids.size,
+          truthD32: bsdFromLabels(truth).d32 ?? null,
+          truthN: truthIds.size,
         });
-        setError('');
+        setArtifactError(false);
       } catch (reason) {
-        if (!cancelled) setError(String(reason instanceof Error ? reason.message : reason));
+        if (!cancelled) { console.error('focus still artifact failed', reason); setArtifactError(true); }
       }
     })();
     return () => { cancelled = true; };
-  }, [laneKind, caseId, index, methodId, showTruth, paint]);
+  }, [laneKind, caseId, index, stillCase, invalidMethod, methodId, showTruth, paint]);
 
-  const missing = laneKind === 'sequence'
-    ? (manifest != null && !sequence)
-    : (index != null && !stillCase);
-  if (error || missing) {
-    return (
-      <div className="fs-focus">
-        <div className="fs-focus-stage fs-focus-empty">
-          <p>{error || (es ? 'Escenario no encontrado.' : 'Scenario not found.')}</p>
-          <button className="fs-focus-exit" onClick={backToApp}>
-            <Minimize2 size={15} />{es ? 'Volver a la App' : 'Back to the App'}
-          </button>
-        </div>
-      </div>
-    );
-  }
+  const problem = missing
+    ? (es ? 'Escenario no encontrado.' : 'Scenario not found.')
+    : (invalidMethod || artifactError)
+      ? (es ? 'Artefacto no disponible para este escenario o método.' : 'Artifact not available for this scenario or method.')
+      : '';
 
   const name = laneKind === 'sequence'
     ? scenarioName(caseId, es)
     : (stillCase ? caseLabel(stillCase.case_id, stillCase.category) : caseId);
   const goTo = (kind: LaneKind, id: string) => {
-    setFrameIndex(0); setPlaying(false); setStillStats(null);
-    navigate(`/focus/${kind}/${id}${kind === 'still' ? `?method=${encodeURIComponent(methodId)}` : ''}`);
+    setFrameIndex(0); setPlaying(false); setStillStats(null); setArtifactError(false);
+    // Scenario switches preserve the current method too: the still method ladder id, or the
+    // sequence prediction's method id when moving between sequences.
+    const method = kind === 'still'
+      ? methodId
+      : (laneKind === 'sequence' ? prediction?.method_id : undefined);
+    navigate(`/focus/${kind}/${id}${method ? `?method=${encodeURIComponent(method)}` : ''}`);
   };
+
+  // The scenario count is derived from the two catalogues rendered in the select below
+  // (data/manifests/index.json primary cases + data/showcase/temporal/manifest.json
+  // sequences); a hard-coded count shipped false once already.
+  const scenarioCount = primaryCases.length + (manifest?.sequences.length ?? 0);
+  const scenarioLabel = scenarioCount > 0
+    ? `${es ? 'escenario' : 'scenario'} (${scenarioCount})`
+    : (es ? 'escenario' : 'scenario');
 
   return (
     <div className="fs-focus">
       <div className="fs-focus-stage">
-        {/* The stage is [info column][picture]. Anchoring the label and HUD ON the picture hid
-            the bubbles under them, which Felipe rejected: the image is the whole point of this
-            view. The info column occupies the letterbox band the picture cannot use, so the
-            stage stays fully owned (ADR-0070 1) and the picture is never covered by anything. */}
-        <aside className="fs-focus-side">
-          <button className="fs-focus-exit" onClick={backToApp} title={es ? 'Salir (Esc)' : 'Exit (Esc)'}>
-            <Minimize2 size={15} aria-hidden="true" />{es ? 'Salir del foco' : 'Exit focus'}
-          </button>
-
-          {/* ADR-0070 4: the stage is labelled in place, so the view teaches on its own. */}
-          <div className="fs-focus-label">
-            <strong>{name}</strong>
-            <p>{laneKind === 'sequence' ? scenarioBlurb(caseId, es) : (stillCase ? categoryBlurb(stillCase.category, es) : '')}</p>
-            <em>{showTruth
-              ? (es ? 'Mostrando la referencia exacta' : 'Showing the exact reference')
-              : laneKind === 'sequence'
-                ? (prediction
-                  ? `${prediction.method_id} · ${temporalMethodLabel(prediction.method_id, prediction.method_slug)}`
-                  : (es ? 'Sin prediccion publicada' : 'No published prediction'))
-                : `${methodId} · ${benchMethod?.name ?? ''}`}</em>
+        {problem ? (
+          /* The rail stays mounted beside this message, so the scenario and method selects
+             remain the recovery path; "Back to the App" is never the only way out. */
+          <div
+            className="fs-focus-empty"
+            style={{
+              margin: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center',
+              gap: '1rem', padding: '1rem', textAlign: 'center', color: '#eafffc',
+            }}
+          >
+            <p>{problem}</p>
+            <button className="fs-focus-exit" onClick={backToApp}>
+              <Minimize2 size={15} />{es ? 'Volver a la App' : 'Back to the App'}
+            </button>
           </div>
-
-          {/* ADR-0070 3: value first, label second, a left column under the label. */}
-          {laneKind === 'sequence' && metrics && (
-            <div className="fs-focus-hud">
-              <div><span>{es ? 'cobertura' : 'coverage'}</span><strong>{(metrics.mean_frame_coverage * 100).toFixed(1)}%</strong></div>
-              <div><span>IDF1</span><strong>{metrics.idf1.toFixed(3)}</strong></div>
-              <div><span>HOTA</span><strong>{metrics.hota.toFixed(3)}</strong></div>
-              <div><span>{es ? 'cambios ID' : 'ID switches'}</span><strong>{metrics.id_switches ?? '--'}</strong></div>
-              <div><span>{es ? 'cuadro' : 'frame'}</span><strong>{String(frameIndex + 1).padStart(2, '0')}/{String(frames.length).padStart(2, '0')}</strong></div>
-            </div>
-          )}
-          {laneKind === 'still' && stillStats && (
-            <div className="fs-focus-hud">
-              <div><span>{es ? 'burbujas' : 'bubbles'}</span><strong>{stillStats.n}</strong></div>
-              <div><span>d32 (px)</span><strong>{stillStats.d32 ?? '--'}</strong></div>
-              <div><span>{es ? 'AP vs verdad' : 'AP vs truth'}</span><strong>{stillStats.ap.ap?.toFixed(3) ?? '--'}</strong></div>
-              <div><span>AP50</span><strong>{stillStats.ap.ap50?.toFixed(3) ?? '--'}</strong></div>
-            </div>
-          )}
-
-          {laneKind === 'sequence' && frames.length > 1 && (
-            <div className="fs-focus-transport">
-              <button className="fs-play-button" aria-label={es ? 'Cuadro anterior' : 'Previous frame'}
-                onClick={() => { setPlaying(false); setFrameIndex((c) => (c - 1 + frames.length) % frames.length); }}>
-                <ChevronLeft size={18} />
+        ) : (
+          <>
+            {/* The stage is [info column][picture]. Anchoring the label and HUD ON the picture hid
+                the bubbles under them, which Felipe rejected: the image is the whole point of this
+                view. The info column occupies the letterbox band the picture cannot use, so the
+                stage stays fully owned (ADR-0070 1) and the picture is never covered by anything. */}
+            <aside className="fs-focus-side">
+              <button className="fs-focus-exit" onClick={backToApp} title={es ? 'Salir (Esc)' : 'Exit (Esc)'}>
+                <Minimize2 size={15} aria-hidden="true" />{es ? 'Salir del foco' : 'Exit focus'}
               </button>
-              <button className="fs-play-button primary" aria-label={playing ? (es ? 'Pausar' : 'Pause') : (es ? 'Reproducir' : 'Play')}
-                onClick={() => setPlaying((v) => !v)}>
-                {playing ? <Pause size={18} /> : <Play size={18} />}
-              </button>
-              <button className="fs-play-button" aria-label={es ? 'Cuadro siguiente' : 'Next frame'}
-                onClick={() => { setPlaying(false); setFrameIndex((c) => (c + 1) % frames.length); }}>
-                <ChevronRight size={18} />
-              </button>
-              <input type="range" min={0} max={frames.length - 1} value={frameIndex}
-                onChange={(event) => { setPlaying(false); setFrameIndex(Number(event.target.value)); }}
-                aria-label={es ? 'Cuadro de secuencia' : 'Sequence frame'} />
-            </div>
-          )}
-        </aside>
 
-        {/* The picture: canvas only. Nothing is ever drawn over it. */}
-        <div className="fs-focus-frame">
-          <div className="fs-focus-picture" style={{ ['--fs-focus-ar' as string]: frameAspect }}>
-            <canvas ref={canvasRef} role="img" aria-label={name} />
-          </div>
-        </div>
+              {/* ADR-0070 4: the stage is labelled in place, so the view teaches on its own. */}
+              <div className="fs-focus-label">
+                <strong>{name}</strong>
+                <p>{laneKind === 'sequence' ? scenarioBlurb(caseId, es) : (stillCase ? categoryBlurb(stillCase.category, es) : '')}</p>
+                <em>{showTruth
+                  ? (es ? 'Mostrando la referencia exacta' : 'Showing the exact reference')
+                  : laneKind === 'sequence'
+                    ? (prediction
+                      ? `${prediction.method_id} · ${temporalMethodLabel(prediction.method_id, prediction.method_slug)}`
+                      : (es ? 'Sin predicción publicada' : 'No published prediction'))
+                    : `${methodId} · ${benchMethod?.name ?? ''}`}</em>
+              </div>
+
+              {/* ADR-0070 3: value first, label second, a left column under the label. */}
+              {laneKind === 'sequence' && metrics && (
+                <div className="fs-focus-hud">
+                  <div><span>{es ? 'cobertura' : 'coverage'}</span><strong>{(metrics.mean_frame_coverage * 100).toFixed(1)}%</strong></div>
+                  <div><span>IDF1</span><strong>{metrics.idf1.toFixed(3)}</strong></div>
+                  <div><span>HOTA</span><strong>{metrics.hota.toFixed(3)}</strong></div>
+                  <div><span>{es ? 'cambios ID' : 'ID switches'}</span><strong>{metrics.id_switches ?? '--'}</strong></div>
+                  <div><span>{es ? 'cuadro' : 'frame'}</span><strong>{String(frameIndex + 1).padStart(2, '0')}/{String(frames.length).padStart(2, '0')}</strong></div>
+                </div>
+              )}
+              {laneKind === 'still' && stillStats && (
+                <div className="fs-focus-hud">
+                  <div><span>{es ? 'burbujas' : 'bubbles'}</span><strong>{showTruth ? stillStats.truthN : stillStats.n}</strong></div>
+                  <div><span>d32 (px)</span><strong>{(showTruth ? stillStats.truthD32 : stillStats.d32) ?? '--'}</strong></div>
+                  <div><span>{es ? 'AP vs verdad' : 'AP vs truth'}</span><strong>{stillStats.ap.ap?.toFixed(3) ?? '--'}</strong></div>
+                  <div><span>AP50</span><strong>{stillStats.ap.ap50?.toFixed(3) ?? '--'}</strong></div>
+                </div>
+              )}
+
+              {laneKind === 'sequence' && frames.length > 1 && (
+                <div className="fs-focus-transport">
+                  <button className="fs-play-button" aria-label={es ? 'Cuadro anterior' : 'Previous frame'}
+                    onClick={() => { setPlaying(false); setFrameIndex((c) => (c - 1 + frames.length) % frames.length); }}>
+                    <ChevronLeft size={18} />
+                  </button>
+                  <button className="fs-play-button primary" aria-label={playing ? (es ? 'Pausar' : 'Pause') : (es ? 'Reproducir' : 'Play')}
+                    onClick={() => setPlaying((v) => !v)}>
+                    {playing ? <Pause size={18} /> : <Play size={18} />}
+                  </button>
+                  <button className="fs-play-button" aria-label={es ? 'Cuadro siguiente' : 'Next frame'}
+                    onClick={() => { setPlaying(false); setFrameIndex((c) => (c + 1) % frames.length); }}>
+                    <ChevronRight size={18} />
+                  </button>
+                  <input type="range" min={0} max={frames.length - 1} value={frameIndex}
+                    onChange={(event) => { setPlaying(false); setFrameIndex(Number(event.target.value)); }}
+                    aria-label={es ? 'Cuadro de secuencia' : 'Sequence frame'} />
+                </div>
+              )}
+            </aside>
+
+            {/* The picture: canvas only. Nothing is ever drawn over it. */}
+            <div className="fs-focus-frame">
+              <div className="fs-focus-picture" style={{ ['--fs-focus-ar' as string]: frameAspect }}>
+                <canvas ref={canvasRef} role="img" aria-label={name} />
+              </div>
+            </div>
+          </>
+        )}
       </div>
 
       {/* ADR-0070 2: one parameter column on the right, scrollable independently of the stage. */}
       <aside className="fs-focus-rail">
         <div className="fs-focus-railhead">
-          <span>{laneKind === 'sequence' ? (es ? 'Secuencia' : 'Sequence') : (es ? 'Caso canonico' : 'Canonical case')}</span>
+          <span>{laneKind === 'sequence' ? (es ? 'Secuencia' : 'Sequence') : (es ? 'Caso canónico' : 'Canonical case')}</span>
           <strong>{name}</strong>
           <code>{caseId}</code>
         </div>
 
         <button className="fs-focus-more" onClick={() => setAdvanced((v) => !v)}>
-          {advanced ? (es ? 'Menos detalle' : 'Less detail') : (es ? 'Mas detalle' : 'More detail')}
+          {advanced ? (es ? 'Menos detalle' : 'Less detail') : (es ? 'Más detalle' : 'More detail')}
         </button>
 
         {/* ADR-0071 rule 7: a one-of-N choice from a categorised set is a select with optgroup.
-            The previous chip list showed 5 of the 17 scenarios and wrapped badly. */}
-        <label className="fs-ctl">{es ? 'escenario (17)' : 'scenario (17)'}
+            The previous chip list showed 5 of the scenarios and wrapped badly. The still group
+            is the App's primary list (empty-control excluded: it has no showcase artifacts). */}
+        <label className="fs-ctl">{scenarioLabel}
           <select
             className="fs-sel"
             value={`${laneKind}:${caseId}`}
@@ -336,8 +408,11 @@ export default function Focus() {
               goTo(kind as LaneKind, id);
             }}
           >
-            <optgroup label={es ? 'Casos canonicos (imagen fija)' : 'Canonical cases (still image)'}>
-              {index?.cases.map((c) => (
+            {/* An id outside the catalogues (bad deep link) must not make the select DISPLAY
+                the first real option while holding junk; the placeholder keeps it honest. */}
+            {missing && <option value={`${laneKind}:${caseId}`} disabled>{caseId}</option>}
+            <optgroup label={es ? 'Casos canónicos (imagen fija)' : 'Canonical cases (still image)'}>
+              {primaryCases.map((c) => (
                 <option key={c.case_id} value={`still:${c.case_id}`}>{caseLabel(c.case_id, c.category)}</option>
               ))}
             </optgroup>
@@ -350,7 +425,7 @@ export default function Focus() {
         </label>
 
         {laneKind === 'sequence' && predictions.length > 0 && (
-          <label className="fs-ctl">{es ? 'metodo' : 'method'}
+          <label className="fs-ctl">{es ? 'método' : 'method'}
             <select className="fs-sel" value={predictionIndex} onChange={(e) => setPredictionIndex(Number(e.target.value))}>
               {predictions.map((item, i) => (
                 <option key={item.method_id} value={i}>
@@ -362,9 +437,11 @@ export default function Focus() {
           </label>
         )}
         {laneKind === 'still' && bench && (
-          <label className="fs-ctl">{es ? 'metodo (15 evaluados)' : 'method (15 evaluated)'}
+          /* The evaluated-method count is bench.methods.length from data/method-benchmark.json,
+             the same document that fills the options; never a literal. */
+          <label className="fs-ctl">{es ? `método (${bench.methods.length} evaluados)` : `method (${bench.methods.length} evaluated)`}
             <select className="fs-sel" value={methodId} onChange={(e) => setMethodId(e.target.value)}>
-              <optgroup label={es ? 'Clasicos' : 'Classical'}>
+              <optgroup label={es ? 'Clásicos' : 'Classical'}>
                 {bench.methods.filter((m) => m.id.startsWith('C')).map((m) => (
                   <option key={m.id} value={m.id}>{m.id} · {m.name}</option>))}
               </optgroup>
@@ -372,7 +449,7 @@ export default function Focus() {
                 {bench.methods.filter((m) => m.id.startsWith('L')).map((m) => (
                   <option key={m.id} value={m.id}>{m.id} · {m.name}</option>))}
               </optgroup>
-              <optgroup label={es ? 'Investigacion' : 'Research'}>
+              <optgroup label={es ? 'Investigación' : 'Research'}>
                 {bench.methods.filter((m) => m.id.startsWith('N')).map((m) => (
                   <option key={m.id} value={m.id}>{m.id} · {m.name}</option>))}
               </optgroup>
@@ -381,11 +458,11 @@ export default function Focus() {
         )}
 
         <div className="fs-seg">
-          <button className={showTruth ? 'chip' : 'chip on'} onClick={() => setShowTruth(false)}>{es ? 'Prediccion' : 'Prediction'}</button>
+          <button className={showTruth ? 'chip' : 'chip on'} onClick={() => setShowTruth(false)}>{es ? 'Predicción' : 'Prediction'}</button>
           <button className={showTruth ? 'chip on' : 'chip'} onClick={() => setShowTruth(true)}>{es ? 'Referencia' : 'Truth'}</button>
         </div>
 
-        <label className="fs-ctl">{es ? 'opacidad de mascara' : 'mask opacity'}: {opacity.toFixed(2)}
+        <label className="fs-ctl">{es ? 'opacidad de máscara' : 'mask opacity'}: {opacity.toFixed(2)}
           <input type="range" min={0} max={1} step={0.05} value={opacity} onChange={(e) => setOpacity(Number(e.target.value))} />
         </label>
 
@@ -402,7 +479,7 @@ export default function Focus() {
             <table className="fs-table">
               <tbody>
                 <tr><th>{es ? 'fragmentaciones' : 'fragmentations'}</th><td className="num">{metrics.track_fragmentations}</td></tr>
-                <tr><th>{es ? 'precision ID' : 'ID precision'}</th><td className="num">{metrics.id_precision?.toFixed(3) ?? 'n/a'}</td></tr>
+                <tr><th>{es ? 'precisión ID' : 'ID precision'}</th><td className="num">{metrics.id_precision?.toFixed(3) ?? 'n/a'}</td></tr>
                 <tr><th>{es ? 'recobrado ID' : 'ID recall'}</th><td className="num">{metrics.id_recall?.toFixed(3) ?? 'n/a'}</td></tr>
                 <tr><th>flow EPE px</th><td className="num">{metrics.flow_epe_px?.toFixed(2) ?? 'n/a'}</td></tr>
                 <tr><th>{es ? 'eventos F1' : 'event F1'}</th><td className="num">{metrics.event_f1?.toFixed(3) ?? 'n/a'}</td></tr>
@@ -410,7 +487,7 @@ export default function Focus() {
             </table>
             {prediction && isNativeVideoMode(prediction.mode) && (
               <p className="fs-note">{es
-                ? 'Recibe las mascaras exactas del primer cuadro y solo debe conservarlas; sus metricas de identidad no son comparables.'
+                ? 'Recibe las máscaras exactas del primer cuadro y solo debe conservarlas; sus métricas de identidad no son comparables.'
                 : 'It is given the exact first-frame masks and only has to keep them; its identity metrics are not comparable.'}</p>
             )}
           </div>
@@ -433,7 +510,7 @@ export default function Focus() {
         <div className="fs-focus-prov">
           <span>{es ? 'Proveniencia' : 'Provenance'}</span>
           <p>{es
-            ? 'Cuadros y mascaras precalculados offline y servidos como artefactos verificados por sha256. El navegador no ejecuta el modelo.'
+            ? 'Cuadros y máscaras precalculados offline y servidos como artefactos verificados por sha256. El navegador no ejecuta el modelo.'
             : 'Frames and masks are precomputed offline and served as sha256-verified artifacts. The browser does not run the model.'}</p>
           {laneKind === 'sequence' && prediction && (
             <p className="mono">{prediction.method_id} · {temporalMethodLabel(prediction.method_id, prediction.method_slug)}
@@ -448,7 +525,7 @@ export default function Focus() {
 
         <p className="fs-hint small fs-focus-foot">{laneKind === 'sequence'
           ? (es ? 'Espacio reproduce, flechas avanzan cuadro, Esc vuelve a la App.' : 'Space plays, arrows step frames, Esc returns to the App.')
-          : (es ? 'Esc vuelve a la App con este caso y este metodo seleccionados.' : 'Esc returns to the App with this case and method selected.')}</p>
+          : (es ? 'Esc vuelve a la App con este caso y este método seleccionados.' : 'Esc returns to the App with this case and method selected.')}</p>
       </aside>
     </div>
   );
@@ -458,9 +535,9 @@ function scenarioName(caseId: string, es: boolean): string {
   const labels: Record<string, [string, string]> = {
     'poly-normal': ['Nominal polydisperse flow', 'Flujo polidisperso nominal'],
     'fine-froth': ['Fine-bubble field', 'Campo de burbujas finas'],
-    'glare-storm': ['Specular-glare stress', 'Estres por brillo especular'],
-    'motion-fast': ['Fast surface motion', 'Movimiento rapido de superficie'],
-    bursting: ['Bursting and topology change', 'Ruptura y cambio topologico'],
+    'glare-storm': ['Specular-glare stress', 'Estrés por brillo especular'],
+    'motion-fast': ['Fast surface motion', 'Movimiento rápido de superficie'],
+    bursting: ['Bursting and topology change', 'Ruptura y cambio topológico'],
   };
   return labels[caseId]?.[es ? 1 : 0] ?? caseId;
 }
@@ -469,19 +546,19 @@ function scenarioBlurb(caseId: string, es: boolean): string {
   const blurbs: Record<string, [string, string]> = {
     'poly-normal': [
       'Bubbles advect steadily and keep their identities. This is what a healthy cell looks like: colours persist frame to frame.',
-      'Las burbujas avanzan de forma estable y conservan su identidad. Asi se ve una celda sana: los colores persisten entre cuadros.'],
+      'Las burbujas avanzan de forma estable y conservan su identidad. Así se ve una celda sana: los colores persisten entre cuadros.'],
     'fine-froth': [
       'Dense fine bubbles. Watch identities flicker where neighbours touch: separation, not detection, is the limit here.',
-      'Burbujas finas y densas. Observe el parpadeo de identidades donde se tocan: el limite es la separacion, no la deteccion.'],
+      'Burbujas finas y densas. Observe el parpadeo de identidades donde se tocan: el límite es la separación, no la detección.'],
     'glare-storm': [
       'Moving highlights erase the lamella between bubbles, so a single bubble can split into two and back again.',
-      'Los brillos moviles borran la lamela entre burbujas, asi que una burbuja puede dividirse en dos y volver.'],
+      'Los brillos móviles borran la lamela entre burbujas, así que una burbuja puede dividirse en dos y volver.'],
     'motion-fast': [
       'Rapid advection. Association has to bridge a larger displacement each frame, and identity is the first thing lost.',
-      'Adveccion rapida. La asociacion debe salvar un desplazamiento mayor por cuadro, y la identidad es lo primero que se pierde.'],
+      'Advección rápida. La asociación debe salvar un desplazamiento mayor por cuadro, y la identidad es lo primero que se pierde.'],
     bursting: [
       'Bubbles burst and merge, so instances genuinely appear and vanish. Not every identity change here is an error.',
-      'Las burbujas revientan y se fusionan, asi que las instancias aparecen y desaparecen de verdad. No todo cambio de identidad es un error.'],
+      'Las burbujas revientan y se fusionan, así que las instancias aparecen y desaparecen de verdad. No todo cambio de identidad es un error.'],
   };
   return blurbs[caseId]?.[es ? 1 : 0] ?? '';
 }
@@ -493,7 +570,7 @@ function caseLabel(caseId: string, category: string): string {
 
 function categoryBlurb(category: string, es: boolean): string {
   return es
-    ? `Caso canonico de la categoria "${category}". La mascara mostrada es el artefacto precalculado del metodo seleccionado.`
+    ? `Caso canónico de la categoría "${category}". La máscara mostrada es el artefacto precalculado del método seleccionado.`
     : `Canonical case in the "${category}" category. The mask shown is the selected method's precomputed artifact.`;
 }
 

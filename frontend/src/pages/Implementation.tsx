@@ -175,7 +175,7 @@ function ArchitectureSVG({ es }: { es: boolean }) {
       edge: es ? 'etiquetas, métricas por celda, manifiestos' : 'labels, per-cell metrics, run manifests',
     },
     {
-      title: es ? '3 · Evidencia versionada (data/derived)' : '3 · Versioned evidence (data/derived)',
+      title: es ? '3 · Evidencia versionada' : '3 · Versioned evidence',
       lines: es
         ? ['13 manifiestos de caso · frothseg.manifest/v1', 'benchmark unificado: 15 x 64 = 960 celdas', 'showcase 180 pares · temporal 795 archivos']
         : ['13 case manifests · frothseg.manifest/v1', 'unified benchmark: 15 x 64 = 960 cells', 'showcase 180 pairs · temporal 795 files'],
@@ -197,8 +197,8 @@ function ArchitectureSVG({ es }: { es: boolean }) {
     {
       title: es ? '5 · Bundle estático' : '5 · Static bundle',
       lines: es
-        ? ['copy-data superpone data/derived en public/data', 'frontend/dist en Pages: sin servidor, sin BD', 'pesos slimsam-77 desde el hub al cargar']
-        : ['copy-data overlays data/derived into public/data', 'frontend/dist on Pages: no server, no database', 'slimsam-77 weights from the hub at load'],
+        ? ['el paso de copia superpone la evidencia versionada en el paquete estático', 'estático en Pages: sin servidor, sin BD', 'pesos slimsam-77 desde el hub al cargar']
+        : ['the copy step overlays the versioned evidence into the static bundle', 'static on Pages: no server, no database', 'slimsam-77 weights from the hub at load'],
       tag: es ? 'GitHub Pages' : 'GitHub Pages',
       edge: es ? 'artefactos leídos, nunca recalculados' : 'artifacts read, never recomputed',
     },
