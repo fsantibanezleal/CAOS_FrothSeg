@@ -1,0 +1,38 @@
+{
+  "schema": "frothseg.reserve-ledger/v1",
+  "purpose": "Running count of the Phase 2 reserve slices a study has spent. The pre-registration in verification/phase2-data-preregistration.json is a frozen snapshot of the data step and is never back-edited; this file changes instead.",
+  "rule": "A study spends the reserve slice named after it, at most once. A second entry for the same slice means the slice was observed twice and its guarantee is void.",
+  "entries": [
+    {
+      "reserve_study": "p2",
+      "spent_by": "p2-domain-randomization-matched-and-extended-budget",
+      "date": "2026-08-01",
+      "evidence": "verification/p2-domain-randomization.json",
+      "sample_count": 64,
+      "group_ids_sha256": "859ad6b2d402b0ba5a61b827c875546d1095abdb5c41dd14dd6332455429c0e3",
+      "sample_ids_sha256": "7f589b4b9bf9f4871125bebfd759cbaf91bbb4f971411e0ebf5c03328163b7bf",
+      "test_evaluations_spent": 2,
+      "fresh_real_split_read": {
+        "split": "fresh-test",
+        "sample_count": 72,
+        "group_count": 5,
+        "sample_ids_sha256": "d8372087aa0544a6b542b6c5835958dbbed3b292effbaebb43951e53756a9052"
+      },
+      "ensembles_scored": [
+        "A"
+      ],
+      "note": "Two non-iterated passes, one per surface, scoring one ensemble each. The pre-registered scope was the arm selected on validation plus the no-augmentation control; validation selected the control itself, so they coincided. Both surfaces are now burned for the published no-augmentation N1 ensemble."
+    },
+    {
+      "reserve_study": "p3",
+      "spent_by": "p3-conformal-intervals",
+      "date": "2026-08-01",
+      "evidence": "verification/p3-conformal-intervals.json",
+      "sample_count": 64,
+      "group_ids_sha256": "047500786d8010215d765f059d6bda84a609e6443a73a1fa40c9a9a6ee9fc5f4",
+      "sample_ids_sha256": "2f35ae349c0cac8350da0ebb6b45a5517a465bc2252e0d9204e1c8579bebc9d0",
+      "test_evaluations_spent": 0
+    }
+  ],
+  "slices_spent": 2
+}

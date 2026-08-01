@@ -1,0 +1,894 @@
+{
+  "experiment": "p2-domain-randomization-matched-and-extended-budget",
+  "preregistration": "CAOS_MANAGE plans/frothseg/research-2026-07-31/p2-domain-randomization-preregistration-2026-08-01.md",
+  "parent_design": "CAOS_MANAGE plans/frothseg/research-2026-07-31/PLAN-PROPOSAL.md section P-2",
+  "date": "2026-08-01",
+  "hypothesis": "the -0.394 real-domain collapse is substantially an augmentation deficit, and training with domain randomization at a matched budget raises real-split AP without materially costing synthetic AP",
+  "mandatory_caveat": "The 0.709 Cellpose-SAM figure is an IN-DISTRIBUTION CEILING FOR THE TEACHER, not achievable student headroom. It compares a synthetic-froth-only model against a foundation model evaluated on cell-nucleus photographs, which is that model's own declared domain. Whether BBBC038 images sit inside the Cellpose-SAM pretraining corpus is UNVERIFIED. The bar below is not set from it, is not a fraction of it, and no result here may be expressed as a percentage of it.",
+  "cellpose_sam_teacher_ceiling": 0.7087656250000001,
+  "scope": "The real axis is adjacent-domain cell-nucleus microscopy (BBBC038, CC0-1.0), not froth. Nothing here supports a flotation accuracy claim. BL-012 unchanged.",
+  "beyond_sota_claim": false,
+  "bar": {
+    "real": {
+      "metric": "fresh-real-split mean AP",
+      "requirement": "above 0.25",
+      "threshold": 0.25,
+      "rises_from": 0.12485937500000001,
+      "rises_from_source": "data/derived/real-adjacent-benchmark.json, methods[] id == N1, measured on the BURNED 64-sample split of 2026-07-28"
+    },
+    "synthetic": {
+      "metric": "synthetic mean AP",
+      "requirement": "within 0.03 of 0.51859375",
+      "tolerance": 0.03,
+      "reference": 0.51859375,
+      "reference_source": "E:/_Temp/n1-v3/FINAL-TEST-ensemble-logitmean-e120/run.json evaluation.mean_ap, mirrored in data/derived/method-benchmark.json, measured on the BURNED synthetic test split"
+    },
+    "rule": "both clauses must hold on the arm selected by validation. Anything less on the real axis is a NULL however good the synthetic number looks. The bar is absolute and was not re-expressed as a delta after the control's numbers were known."
+  },
+  "surfaces": {
+    "train": {
+      "cache": "data/cache/learned-v2-192.npz",
+      "split": "train",
+      "samples": 192
+    },
+    "selection": {
+      "cache": "data/cache/learned-v2-192.npz",
+      "split": "validation",
+      "test_evaluations_spent": 0
+    },
+    "fresh_real": {
+      "source": "BBBC038/DSB2018, CC0-1.0",
+      "split": "fresh-test",
+      "groups": 5,
+      "samples": 72,
+      "sample_ids_sha256": "d8372087aa0544a6b542b6c5835958dbbed3b292effbaebb43951e53756a9052",
+      "preregistered_in": "verification/phase2-data-preregistration.json",
+      "disjoint_from_burned_64": true
+    },
+    "synthetic_reserve": {
+      "cache": "data/cache/learned-v2-192-reserve.npz",
+      "slice": "p2",
+      "preregistered_in": "verification/phase2-data-preregistration.json"
+    }
+  },
+  "design": {
+    "architecture": "lamellastar, base_channels 24, lr 8e-4, batch 8, cuda",
+    "arms": {
+      "A": {
+        "label": "no augmentation, e120 (control, published N1 ensemble)",
+        "members": [
+          {
+            "id": "c24-e120-s20260725",
+            "path": "E:/_Temp/n1-v3/c24-e120-s20260725",
+            "seed": 20260725,
+            "epochs": 120,
+            "augmentation": "none",
+            "validation_mean_ap": 0.49565624999999996
+          },
+          {
+            "id": "c24-e120-s20260726",
+            "path": "E:/_Temp/n1-v3/c24-e120-s20260726",
+            "seed": 20260726,
+            "epochs": 120,
+            "augmentation": "none",
+            "validation_mean_ap": 0.48642187500000006
+          },
+          {
+            "id": "c24-e120-s20260727",
+            "path": "E:/_Temp/n1-v3/c24-e120-s20260727",
+            "seed": 20260727,
+            "epochs": 120,
+            "augmentation": "none",
+            "validation_mean_ap": 0.523859375
+          }
+        ],
+        "ensemble_path": "E:/_Temp/p2-domain-randomization/A-ensemble-validation",
+        "validation_mean_ap": 0.524,
+        "calibration": {
+          "split": "calibration",
+          "n_groups": 32,
+          "mean_ap": 0.53184375,
+          "foreground_threshold": 0.6,
+          "boundary_threshold": 0.65,
+          "marker_threshold": 0.15,
+          "min_distance": 3,
+          "center_weight": 0.5
+        }
+      },
+      "B": {
+        "label": "domain randomization, e120 (matched budget)",
+        "members": [
+          {
+            "id": "B-c24-e120-dr-s20260725",
+            "path": "E:/_Temp/p2-domain-randomization/B-c24-e120-dr-s20260725",
+            "seed": 20260725,
+            "epochs": 120,
+            "augmentation": "domain-randomization",
+            "variant_bank_key": "3f9d7f5c257d9f84d229ca3f0a0cc9e75d5888665a39c8f16491c8dc053e400a",
+            "validation_mean_ap": 0.27707812499999995,
+            "duration_seconds": 630.922
+          },
+          {
+            "id": "B-c24-e120-dr-s20260726",
+            "path": "E:/_Temp/p2-domain-randomization/B-c24-e120-dr-s20260726",
+            "seed": 20260726,
+            "epochs": 120,
+            "augmentation": "domain-randomization",
+            "variant_bank_key": "3f9d7f5c257d9f84d229ca3f0a0cc9e75d5888665a39c8f16491c8dc053e400a",
+            "validation_mean_ap": 0.337296875,
+            "duration_seconds": 832.314
+          },
+          {
+            "id": "B-c24-e120-dr-s20260727",
+            "path": "E:/_Temp/p2-domain-randomization/B-c24-e120-dr-s20260727",
+            "seed": 20260727,
+            "epochs": 120,
+            "augmentation": "domain-randomization",
+            "variant_bank_key": "3f9d7f5c257d9f84d229ca3f0a0cc9e75d5888665a39c8f16491c8dc053e400a",
+            "validation_mean_ap": 0.30560937499999996,
+            "duration_seconds": 594.629
+          }
+        ],
+        "ensemble_path": "E:/_Temp/p2-domain-randomization/B-ensemble-validation",
+        "validation_mean_ap": 0.33478125000000003,
+        "calibration": {
+          "split": "calibration",
+          "n_groups": 32,
+          "mean_ap": 0.34009375000000003,
+          "foreground_threshold": 0.6,
+          "boundary_threshold": 0.65,
+          "marker_threshold": 0.15,
+          "min_distance": 3,
+          "center_weight": 0.5
+        }
+      },
+      "C": {
+        "label": "domain randomization, e240 (extended budget)",
+        "members": [
+          {
+            "id": "C-c24-e240-dr-s20260725",
+            "path": "E:/_Temp/p2-domain-randomization/C-c24-e240-dr-s20260725",
+            "seed": 20260725,
+            "epochs": 240,
+            "augmentation": "domain-randomization",
+            "variant_bank_key": "3f9d7f5c257d9f84d229ca3f0a0cc9e75d5888665a39c8f16491c8dc053e400a",
+            "validation_mean_ap": 0.3150625,
+            "duration_seconds": 1683.142
+          },
+          {
+            "id": "C-c24-e240-dr-s20260726",
+            "path": "E:/_Temp/p2-domain-randomization/C-c24-e240-dr-s20260726",
+            "seed": 20260726,
+            "epochs": 240,
+            "augmentation": "domain-randomization",
+            "variant_bank_key": "3f9d7f5c257d9f84d229ca3f0a0cc9e75d5888665a39c8f16491c8dc053e400a",
+            "validation_mean_ap": 0.347203125,
+            "duration_seconds": 2042.813
+          },
+          {
+            "id": "C-c24-e240-dr-s20260727",
+            "path": "E:/_Temp/p2-domain-randomization/C-c24-e240-dr-s20260727",
+            "seed": 20260727,
+            "epochs": 240,
+            "augmentation": "domain-randomization",
+            "variant_bank_key": "3f9d7f5c257d9f84d229ca3f0a0cc9e75d5888665a39c8f16491c8dc053e400a",
+            "validation_mean_ap": 0.30659375,
+            "duration_seconds": 1446.331
+          }
+        ],
+        "ensemble_path": "E:/_Temp/p2-domain-randomization/C-ensemble-validation",
+        "validation_mean_ap": 0.34696875000000005,
+        "calibration": {
+          "split": "calibration",
+          "n_groups": 32,
+          "mean_ap": 0.354,
+          "foreground_threshold": 0.6,
+          "boundary_threshold": 0.65,
+          "marker_threshold": 0.15,
+          "min_distance": 3,
+          "center_weight": 0.5
+        }
+      }
+    },
+    "seeds": [
+      20260725,
+      20260726,
+      20260727
+    ],
+    "seeds_shared_across_arms": true,
+    "augmentation": {
+      "mode": "domain-randomization",
+      "module": "data-pipeline/fslab/learning/domain_randomization.py",
+      "elements": [
+        "scale jitter on the label map with exactly rebuilt targets, ladder (1.0, 1.3, 1.7, 0.5)",
+        "D4 geometry, image and targets together",
+        "randomized smooth illumination field, multiplicative and additive",
+        "blur kernels: none, isotropic, anisotropic, motion",
+        "sensor noise: Poisson shot, Gaussian read, intensity quantization",
+        "contrast inversion at probability 0.5",
+        "gamma, gain, bias, and resolution loss"
+      ],
+      "variant_bank_key": "3f9d7f5c257d9f84d229ca3f0a0cc9e75d5888665a39c8f16491c8dc053e400a"
+    },
+    "training_failures": [],
+    "training_seconds": 6382.9
+  },
+  "selection": {
+    "metric": "validation mean AP of the three-seed logit-mean ensemble",
+    "rule": "highest validation mean AP of the three-seed logit-mean ensemble; no tiebreak; fixed at the moment the validation numbers were read and not revisited",
+    "selected_arm": "A",
+    "validation_mean_ap_by_arm": {
+      "A": 0.524,
+      "B": 0.33478125000000003,
+      "C": 0.34696875000000005
+    },
+    "single_model_seed_spread": 0.03744,
+    "ensemble_to_ensemble_spread": 0.011828124999999967,
+    "ensemble_to_ensemble_spread_source": "verification/p1-ensemble-spread.json",
+    "selected_lead_over_runner_up": 0.17703125,
+    "selection_inside_the_noise_band": false,
+    "note": "validation differences below the P-1 ensemble-to-ensemble spread are reported as indistinguishable, never as a lead. The selection rule is still argmax validation and was fixed in advance; when the lead sits inside the noise band the selection is a coin toss and says so."
+  },
+  "test_budget": {
+    "events_available": 2,
+    "events_spent": 2,
+    "event_1": "one pass on the fresh real split",
+    "event_2": "one pass on the untouched synthetic reserve slice p2",
+    "arms_scored_per_event": [
+      "A"
+    ],
+    "scope_fixed_before_running": true,
+    "control_is_context_not_verdict_bearing": true,
+    "hard_stop": "no further evaluation on either surface, for any reason, including a B against C comparison or a per-condition drill-down"
+  },
+  "results": {
+    "A": {
+      "fresh_real_mean_ap": 0.04455555555555555,
+      "fresh_real_mean_ap50": 0.10819444444444443,
+      "fresh_real_mean_pq": 0.11990277777777776,
+      "fresh_real_n": 72,
+      "synthetic_reserve_mean_ap": 0.5226875,
+      "synthetic_reserve_mean_pq": 0.736421875,
+      "synthetic_reserve_n": 64
+    }
+  },
+  "per_sample": {
+    "A": [
+      {
+        "sample_id": "08275a5b1c2dfcd739e8c4888a5ee2d29f83eccfa75185404ced1dc0866ea992",
+        "ap": 0.0,
+        "ap50": 0.0,
+        "pq": 0.0,
+        "nGt": 98,
+        "nPred": 169
+      },
+      {
+        "sample_id": "091944f1d2611c916b98c020bd066667e33f4639159b2a92407fe5a40788856d",
+        "ap": 0.0,
+        "ap50": 0.0,
+        "pq": 0.0,
+        "nGt": 44,
+        "nPred": 163
+      },
+      {
+        "sample_id": "0b0d577159f0d6c266f360f7b8dfde46e16fa665138bf577ec3c6f9c70c0cd1e",
+        "ap": 0.014,
+        "ap50": 0.143,
+        "pq": 0.135,
+        "nGt": 7,
+        "nPred": 1
+      },
+      {
+        "sample_id": "10ba6cbee4873b32d5626a118a339832ba2b15d8643f66dddcd7cb2ec80fbc28",
+        "ap": 0.142,
+        "ap50": 0.268,
+        "pq": 0.317,
+        "nGt": 67,
+        "nPred": 23
+      },
+      {
+        "sample_id": "1400420310c9094361a8a243545187f1d4c2365e081b3bb08c5fa29c7491a55b",
+        "ap": 0.046,
+        "ap50": 0.12,
+        "pq": 0.143,
+        "nGt": 25,
+        "nPred": 3
+      },
+      {
+        "sample_id": "175dbb364bfefc9537931144861c9b6e08934df3992782c669c6fe4234319dfc",
+        "ap": 0.021,
+        "ap50": 0.055,
+        "pq": 0.069,
+        "nGt": 179,
+        "nPred": 13
+      },
+      {
+        "sample_id": "1b44d22643830cd4f23c9deadb0bd499fb392fb2cd9526d81547d93077d983df",
+        "ap": 0.0,
+        "ap50": 0.0,
+        "pq": 0.0,
+        "nGt": 96,
+        "nPred": 133
+      },
+      {
+        "sample_id": "1b518cd2ea84a389c267662840f3d902d0129fab27696215db2488de6d4316c5",
+        "ap": 0.101,
+        "ap50": 0.177,
+        "pq": 0.23,
+        "nGt": 76,
+        "nPred": 17
+      },
+      {
+        "sample_id": "1c8b905c9519061d6d091e702b45274f4485c80dcf7fb1491e6b2723f5002180",
+        "ap": 0.076,
+        "ap50": 0.183,
+        "pq": 0.216,
+        "nGt": 136,
+        "nPred": 32
+      },
+      {
+        "sample_id": "1f6b7cead15344593b32d5f2345fc26713dc74d9b31306c824209d67da401fd8",
+        "ap": 0.078,
+        "ap50": 0.147,
+        "pq": 0.191,
+        "nGt": 146,
+        "nPred": 26
+      },
+      {
+        "sample_id": "20b20ab049372d184c705acebe7af026d3580f5fd5a72ed796e3622e1685af2f",
+        "ap": 0.0,
+        "ap50": 0.0,
+        "pq": 0.0,
+        "nGt": 289,
+        "nPred": 1
+      },
+      {
+        "sample_id": "20c37b1ad2f510ed7396969e855fe93d0d05611738f6e706e8ca1d1aed3ded45",
+        "ap": 0.041,
+        "ap50": 0.083,
+        "pq": 0.109,
+        "nGt": 24,
+        "nPred": 2
+      },
+      {
+        "sample_id": "20e209f6ffa120a72712e1b4c1d3e24d1339227e2936abd4bbd49a636fada423",
+        "ap": 0.127,
+        "ap50": 0.226,
+        "pq": 0.283,
+        "nGt": 31,
+        "nPred": 7
+      },
+      {
+        "sample_id": "29ea4f6eb4545f43868a9b40a60000426bf8dfd9d062546656a37bd2a2aaf9ec",
+        "ap": 0.046,
+        "ap50": 0.077,
+        "pq": 0.111,
+        "nGt": 13,
+        "nPred": 1
+      },
+      {
+        "sample_id": "2a1a294e21d76efd0399e4eb321b45f44f7510911acd92c988480195c5b4c812",
+        "ap": 0.0,
+        "ap50": 0.0,
+        "pq": 0.0,
+        "nGt": 57,
+        "nPred": 169
+      },
+      {
+        "sample_id": "2abc40c118bc7303592c8bb95a80361e27560854b8971ab34dcf91966575b1f2",
+        "ap": 0.212,
+        "ap50": 0.7,
+        "pq": 0.542,
+        "nGt": 18,
+        "nPred": 16
+      },
+      {
+        "sample_id": "2cfa61bef6542dd359717e9131ce6f076c415a3bd7f48cb093b0d7f3b2ca785d",
+        "ap": 0.029,
+        "ap50": 0.075,
+        "pq": 0.094,
+        "nGt": 107,
+        "nPred": 8
+      },
+      {
+        "sample_id": "3594684b9ea0e16196f498815508f8d364d55fea2933a2e782122b6f00375d04",
+        "ap": 0.0,
+        "ap50": 0.0,
+        "pq": 0.0,
+        "nGt": 55,
+        "nPred": 133
+      },
+      {
+        "sample_id": "40b00d701695d8ea5d59f95ac39e18004040c96d17fbc1a539317c674eca084b",
+        "ap": 0.094,
+        "ap50": 0.32,
+        "pq": 0.308,
+        "nGt": 24,
+        "nPred": 9
+      },
+      {
+        "sample_id": "4217e25defac94ff465157d53f5a24b8a14045b763d8606ec4a97d71d99ee381",
+        "ap": 0.0,
+        "ap50": 0.0,
+        "pq": 0.0,
+        "nGt": 132,
+        "nPred": 153
+      },
+      {
+        "sample_id": "4596961c789d3b41916492918797724fe75128239fefc516c3ee75322b7926f0",
+        "ap": 0.027,
+        "ap50": 0.059,
+        "pq": 0.08,
+        "nGt": 133,
+        "nPred": 10
+      },
+      {
+        "sample_id": "49edc2f7715100fb0390916e52b3fd11a921f02e59509dc987f67840a36250fc",
+        "ap": 0.093,
+        "ap50": 0.173,
+        "pq": 0.224,
+        "nGt": 70,
+        "nPred": 18
+      },
+      {
+        "sample_id": "4d2cff9a0c8df3a7ef6100fda6f66e865a7670af6a18564767d8019b9ed2fd7b",
+        "ap": 0.026,
+        "ap50": 0.042,
+        "pq": 0.063,
+        "nGt": 119,
+        "nPred": 6
+      },
+      {
+        "sample_id": "4e07a653352b30bb95b60ebc6c57afbc7215716224af731c51ff8d430788cd40",
+        "ap": 0.0,
+        "ap50": 0.0,
+        "pq": 0.0,
+        "nGt": 136,
+        "nPred": 147
+      },
+      {
+        "sample_id": "53ad09e4348767bece0165884bf40c10b72ae18444e3f414a850442f02385efc",
+        "ap": 0.053,
+        "ap50": 0.121,
+        "pq": 0.153,
+        "nGt": 123,
+        "nPred": 16
+      },
+      {
+        "sample_id": "54793624413c7d0e048173f7aeee85de3277f7e8d47c82e0a854fe43e879cd12",
+        "ap": 0.0,
+        "ap50": 0.0,
+        "pq": 0.0,
+        "nGt": 73,
+        "nPred": 147
+      },
+      {
+        "sample_id": "5d21acedb3015c1208b31778561f8b1079cca7487399300390c3947f691e3974",
+        "ap": 0.055,
+        "ap50": 0.154,
+        "pq": 0.176,
+        "nGt": 37,
+        "nPred": 8
+      },
+      {
+        "sample_id": "5d58600efa0c2667ec85595bf456a54e2bd6e6e9a5c0dff42d807bc9fe2b822e",
+        "ap": 0.0,
+        "ap50": 0.0,
+        "pq": 0.0,
+        "nGt": 83,
+        "nPred": 160
+      },
+      {
+        "sample_id": "5e263abff938acba1c0cff698261c7c00c23d7376e3ceacc3d5d4a655216b16d",
+        "ap": 0.0,
+        "ap50": 0.0,
+        "pq": 0.0,
+        "nGt": 78,
+        "nPred": 166
+      },
+      {
+        "sample_id": "602f267432e7a573e1092f1cf48135c82d0fbc8722bc028b9330ec801a40bb18",
+        "ap": 0.212,
+        "ap50": 0.45,
+        "pq": 0.441,
+        "nGt": 19,
+        "nPred": 10
+      },
+      {
+        "sample_id": "61dc249314d7b965eb4561ec739eab9b0f60af55c97b25ced8cb2a42a0be128e",
+        "ap": 0.023,
+        "ap50": 0.048,
+        "pq": 0.065,
+        "nGt": 101,
+        "nPred": 9
+      },
+      {
+        "sample_id": "62057502c387145ed4f8f7f0d5e5bedcb72d3bcec15fa71cb0310dee32871461",
+        "ap": 0.156,
+        "ap50": 0.377,
+        "pq": 0.38,
+        "nGt": 101,
+        "nPred": 45
+      },
+      {
+        "sample_id": "6b6d4e6ff52de473a4b6f8bd0f11ae22242d508cc4117ff38ec39cbb88088aaa",
+        "ap": 0.01,
+        "ap50": 0.032,
+        "pq": 0.039,
+        "nGt": 61,
+        "nPred": 3
+      },
+      {
+        "sample_id": "6b72b61b80060a9e79a4747f9c5d5af135af9db466681c2d1086f784c7130699",
+        "ap": 0.01,
+        "ap50": 0.037,
+        "pq": 0.039,
+        "nGt": 191,
+        "nPred": 7
+      },
+      {
+        "sample_id": "724b6b7044522f6d5ea35b55f8fa71d0a45a28687be2b7cac3149943ab816eec",
+        "ap": 0.105,
+        "ap50": 0.167,
+        "pq": 0.221,
+        "nGt": 18,
+        "nPred": 3
+      },
+      {
+        "sample_id": "76faaed50ed6ea6814ac36199964b86fb09ba7f41a6f213bceaa80d625adc2e1",
+        "ap": 0.011,
+        "ap50": 0.027,
+        "pq": 0.034,
+        "nGt": 111,
+        "nPred": 5
+      },
+      {
+        "sample_id": "7f38885521586fc6011bef1314a9fb2aa1e4935bd581b2991e1d963395eab770",
+        "ap": 0.0,
+        "ap50": 0.0,
+        "pq": 0.0,
+        "nGt": 101,
+        "nPred": 148
+      },
+      {
+        "sample_id": "80632d6be60c8462e50d51bcf5caf15308931603095d6b5e772a115cd0d0470c",
+        "ap": 0.045,
+        "ap50": 0.15,
+        "pq": 0.163,
+        "nGt": 36,
+        "nPred": 10
+      },
+      {
+        "sample_id": "866a8cba7bfe1ea73e383d6cf492e53752579140c8b833bb56839a55bf79d855",
+        "ap": 0.147,
+        "ap50": 0.4,
+        "pq": 0.38,
+        "nGt": 5,
+        "nPred": 2
+      },
+      {
+        "sample_id": "876423522bdec1602917b94163a21e05fc7b692045219b7bc96cdaf638c33c25",
+        "ap": 0.095,
+        "ap50": 0.205,
+        "pq": 0.242,
+        "nGt": 119,
+        "nPred": 28
+      },
+      {
+        "sample_id": "8d05fb18ee0cda107d56735cafa6197a31884e0a5092dc6d41760fb92ae23ab4",
+        "ap": 0.0,
+        "ap50": 0.0,
+        "pq": 0.0,
+        "nGt": 94,
+        "nPred": 165
+      },
+      {
+        "sample_id": "8f94a80b95a881d0efdec36affc915dca9609f4cba8134c4a91b219d418778aa",
+        "ap": 0.0,
+        "ap50": 0.0,
+        "pq": 0.0,
+        "nGt": 75,
+        "nPred": 154
+      },
+      {
+        "sample_id": "9520aff4efe87bd8f3901652fa2dde9b4bc9c679325966145ce00c1ca33f35de",
+        "ap": 0.0,
+        "ap50": 0.0,
+        "pq": 0.0,
+        "nGt": 44,
+        "nPred": 0
+      },
+      {
+        "sample_id": "958114e5f37d5e1420b410bd716753b3e874b175f2b6958ebf1ec2bdf776e41f",
+        "ap": 0.036,
+        "ap50": 0.081,
+        "pq": 0.105,
+        "nGt": 147,
+        "nPred": 13
+      },
+      {
+        "sample_id": "98a463483fe3a56deacc8bc00ab8aa62668bd40ad0c70bbe7deb10d3e4aeb0c0",
+        "ap": 0.002,
+        "ap50": 0.008,
+        "pq": 0.01,
+        "nGt": 125,
+        "nPred": 2
+      },
+      {
+        "sample_id": "9ebcfaf2322932d464f15b5662cae4d669b2d785b8299556d73fffcae8365d32",
+        "ap": 0.05,
+        "ap50": 0.155,
+        "pq": 0.172,
+        "nGt": 58,
+        "nPred": 54
+      },
+      {
+        "sample_id": "a02ec007ae8feddb758078b1dfb8010c26886fd3c8babdc308ead8b4a63acbdb",
+        "ap": 0.107,
+        "ap50": 0.247,
+        "pq": 0.277,
+        "nGt": 71,
+        "nPred": 30
+      },
+      {
+        "sample_id": "a102535b0e88374bea4a1cfd9ee7cb3822ff54f4ab2a9845d428ec22f9ee2288",
+        "ap": 0.0,
+        "ap50": 0.0,
+        "pq": 0.0,
+        "nGt": 375,
+        "nPred": 1
+      },
+      {
+        "sample_id": "a486f6ed4b8781e7883e433d06a83dd66db3e8b36d45b9976c4214820ee22629",
+        "ap": 0.0,
+        "ap50": 0.0,
+        "pq": 0.0,
+        "nGt": 53,
+        "nPred": 0
+      },
+      {
+        "sample_id": "a5e695fce80dc03efb6665a9ec14500ab47f4ee9f6437531388dd3cc32c90db1",
+        "ap": 0.024,
+        "ap50": 0.041,
+        "pq": 0.061,
+        "nGt": 49,
+        "nPred": 2
+      },
+      {
+        "sample_id": "a7a581e6760df4701941670e73d72533e3b0fbd7563488ad92772b41f7709710",
+        "ap": 0.079,
+        "ap50": 0.171,
+        "pq": 0.206,
+        "nGt": 124,
+        "nPred": 27
+      },
+      {
+        "sample_id": "aaa52100fafaa50877e777229cdf6cde7c422f145ff6719449b80631d9a3b0f6",
+        "ap": 0.032,
+        "ap50": 0.077,
+        "pq": 0.098,
+        "nGt": 141,
+        "nPred": 13
+      },
+      {
+        "sample_id": "ad9d305cbf193d4250743ead466bdaefe910835d7e352c544e22320e8336f5c1",
+        "ap": 0.078,
+        "ap50": 0.143,
+        "pq": 0.186,
+        "nGt": 34,
+        "nPred": 6
+      },
+      {
+        "sample_id": "b1f23c4d27afed8af7b6b64793a3760bfea31b65f582d48aaa62d2b988ef2eac",
+        "ap": 0.074,
+        "ap50": 0.173,
+        "pq": 0.206,
+        "nGt": 126,
+        "nPred": 30
+      },
+      {
+        "sample_id": "b76ff33ae9da28f9cd8bdce465d45f1eca399db3ffa83847535708e0d511fe38",
+        "ap": 0.019,
+        "ap50": 0.033,
+        "pq": 0.049,
+        "nGt": 90,
+        "nPred": 4
+      },
+      {
+        "sample_id": "bb8ebf465c968a5f6f715de5d9e2e664afd1bcaa533e0e3352ecea1cc5b6fb0d",
+        "ap": 0.007,
+        "ap50": 0.019,
+        "pq": 0.024,
+        "nGt": 106,
+        "nPred": 3
+      },
+      {
+        "sample_id": "bbfc4aab5645637680fa0ef00925eea733b93099f1944c0aea09b78af1d4eef2",
+        "ap": 0.092,
+        "ap50": 0.375,
+        "pq": 0.331,
+        "nGt": 12,
+        "nPred": 10
+      },
+      {
+        "sample_id": "bde3727f3a9e8b2b58f383ebc762b2157eb50cdbff23e69b025418b43967556b",
+        "ap": 0.003,
+        "ap50": 0.009,
+        "pq": 0.012,
+        "nGt": 106,
+        "nPred": 1
+      },
+      {
+        "sample_id": "c395870ad9f5a3ae651b50efab9b20c3e6b9aea15d4c731eb34c0cf9e3800a72",
+        "ap": 0.0,
+        "ap50": 0.0,
+        "pq": 0.0,
+        "nGt": 114,
+        "nPred": 173
+      },
+      {
+        "sample_id": "c44ed955eb2e5c8d820b01477e122b32eff6dd475343e11229c33d8af3473b22",
+        "ap": 0.062,
+        "ap50": 0.129,
+        "pq": 0.163,
+        "nGt": 123,
+        "nPred": 17
+      },
+      {
+        "sample_id": "cb4df20a83b2f38b394c67f1d9d4aef29f9794d5345da3576318374ec3a11490",
+        "ap": 0.0,
+        "ap50": 0.0,
+        "pq": 0.0,
+        "nGt": 250,
+        "nPred": 1
+      },
+      {
+        "sample_id": "cc88627344305b9a9b07f8bd042cb074c7a834c13de67ff4b24914ac68f07f6e",
+        "ap": 0.041,
+        "ap50": 0.081,
+        "pq": 0.109,
+        "nGt": 135,
+        "nPred": 12
+      },
+      {
+        "sample_id": "d256b32adda37f2301c9e46f34b7f9a36cce273256369ceb5dc2c73c3007e3c4",
+        "ap": 0.062,
+        "ap50": 0.231,
+        "pq": 0.235,
+        "nGt": 33,
+        "nPred": 31
+      },
+      {
+        "sample_id": "d52958107d0b1f0288f50f346a833df3df485b92d5516cfcb536e73ab7adafd0",
+        "ap": 0.017,
+        "ap50": 0.04,
+        "pq": 0.053,
+        "nGt": 126,
+        "nPred": 5
+      },
+      {
+        "sample_id": "dd54adb80393de7769b9853c0aa2ee9b240905d0e99c59d4ccd99401f327aa05",
+        "ap": 0.001,
+        "ap50": 0.007,
+        "pq": 0.008,
+        "nGt": 141,
+        "nPred": 4
+      },
+      {
+        "sample_id": "df5cdd0ebe1bdf8dc870bc294b8f08961e083bc7f9be69e268454aa9091808b9",
+        "ap": 0.145,
+        "ap50": 0.32,
+        "pq": 0.346,
+        "nGt": 22,
+        "nPred": 11
+      },
+      {
+        "sample_id": "e52960d31f8bddf85400259beb4521383f5ceface1080be3429f2f926cc9b5c2",
+        "ap": 0.024,
+        "ap50": 0.054,
+        "pq": 0.071,
+        "nGt": 130,
+        "nPred": 7
+      },
+      {
+        "sample_id": "e5a6c5e01e6a4ef676a2d975374e995dd55792ea317a8e110bebc37da83a4ce8",
+        "ap": 0.071,
+        "ap50": 0.194,
+        "pq": 0.216,
+        "nGt": 26,
+        "nPred": 11
+      },
+      {
+        "sample_id": "e7a3a7c99483c243742b6cfa74e81cd48f126dcef004016ad0151df6c16a6243",
+        "ap": 0.041,
+        "ap50": 0.079,
+        "pq": 0.107,
+        "nGt": 150,
+        "nPred": 13
+      },
+      {
+        "sample_id": "ecb36c90cdd20245d89173c106f3c6a2d124d07bdea0ae202fb1efa49b0cd169",
+        "ap": 0.013,
+        "ap50": 0.033,
+        "pq": 0.044,
+        "nGt": 120,
+        "nPred": 4
+      },
+      {
+        "sample_id": "f4c4db3df4ff0de90f44b027fc2e28c16bf7e5c75ea75b0a9762bbb7ac86e7a3",
+        "ap": 0.0,
+        "ap50": 0.0,
+        "pq": 0.0,
+        "nGt": 68,
+        "nPred": 0
+      },
+      {
+        "sample_id": "f728de04267283f0b4daab9a840e7433b2c6034baf195fd526850439c9297687",
+        "ap": 0.033,
+        "ap50": 0.074,
+        "pq": 0.096,
+        "nGt": 54,
+        "nPred": 4
+      }
+    ]
+  },
+  "verdict": "null",
+  "verdict_detail": {
+    "real_clause": {
+      "measured": 0.04455555555555555,
+      "threshold": 0.25,
+      "passed": false
+    },
+    "synthetic_clause": {
+      "measured": 0.5226875,
+      "reference": 0.51859375,
+      "tolerance": 0.03,
+      "absolute_difference": 0.004093750000000007,
+      "passed": true
+    }
+  },
+  "preregistered_claim_language": {
+    "branch_taken": "fail",
+    "if_it_passes": "training LamellaStar with domain randomization raises adjacent-domain real AP above the pre-registered 0.25 on a fresh pre-registered split, with the synthetic number reported alongside and never in front of it; adjacent domain, cell nuclei, not froth",
+    "if_it_fails": "domain randomization at a matched and an extended budget did not move adjacent-domain real AP above the pre-registered 0.25; the real-domain collapse is therefore not explained by an augmentation deficit alone. A synthetic-only gain is recorded as a failure of the study, not as a partial success."
+  },
+  "surface_replication": {
+    "what_this_is": "the published no-augmentation N1 ensemble scored on a BURNED surface and on a CLEAN pre-registered surface, with the arm, the weights and the post-processing thresholds held fixed. The only thing that changes is the split.",
+    "real_axis": {
+      "burned_split_mean_ap": 0.12485937500000001,
+      "burned_split_n": 64,
+      "burned_split_source": "data/derived/real-adjacent-benchmark.json, id == N1",
+      "fresh_split_mean_ap": 0.04455555555555555,
+      "fresh_split_n": 72,
+      "delta": -0.08030382,
+      "replicated": false,
+      "burned_mean_instances_truth": 77.796875,
+      "burned_mean_instances_predicted": 87.390625,
+      "fresh_mean_instances_truth": 92.51388888888889,
+      "fresh_mean_instances_predicted": 39.375,
+      "fresh_samples_scoring_zero": 20,
+      "reading": "the fresh split carries more instances per frame and the synthetic-fitted thresholds under-detect badly on it. The published 0.1249 is therefore partly a property of the two groups it was drawn from, and the real-domain gap is WIDER than the repository has been reporting, not narrower."
+    },
+    "synthetic_axis": {
+      "burned_test_mean_ap": 0.51859375,
+      "burned_test_source": "E:/_Temp/n1-v3/FINAL-TEST-ensemble-logitmean-e120/run.json evaluation.mean_ap",
+      "reserve_mean_ap": 0.5226875,
+      "reserve_n": 64,
+      "delta": 0.00409375,
+      "replicated": true,
+      "reading": "the synthetic number reproduces on a never-observed reserve slice of the same generator to within a fraction of the single-model seed spread, so the burned synthetic test split was not being overfitted by selection. That is a positive result for the synthetic lane and it is independent of P-2's own hypothesis."
+    },
+    "protocol_identity_evidence": "arm A's ensemble calibration (foreground 0.6, boundary 0.65, marker 0.15, min_distance 3, center_weight 0.5) is identical to the calibration recorded in models/lamellastar-v1/run.json, and the fresh-real code path reproduced the published per-sample AP exactly on burned sample ids before any budget was spent"
+  },
+  "outcome_statement": {
+    "treatment_rejected_at_validation_selection": true,
+    "best_treatment_arm": "C",
+    "statement": [
+      "Domain randomization was rejected by the pre-registered selection rule before any test evaluation: the best domain-randomized arm scored 0.34697 validation mean AP against the no-augmentation control's 0.52400, a gap of 0.17703, which is 4.7 times the single-model seed spread and far outside the P-1 ensemble spread.",
+      "The synthetic clause of the bar was therefore already unreachable for the domain-randomized arms at the validation stage, so the study is a NULL that needed no test evaluation to establish.",
+      "The pre-registered fail-branch sentence assumes a domain-randomized arm reached the real split. It did not. That sentence is kept in this file verbatim under preregistered_claim_language, and is NOT asserted as this study's finding.",
+      "What the two pre-registered evaluation events measured is the SELECTED arm, which is the published no-augmentation ensemble, on two clean surfaces: fresh-real mean AP 0.04455555555555555, synthetic reserve mean AP 0.5226875. Those separate surface effects from arm effects for the numbers 0.1249 and 0.51859, and they say nothing about domain randomization.",
+      "Recorded as a defect of the DESIGN, for the next pre-registration and not as a change to this one: selecting on synthetic in-distribution validation cannot select a robustness-oriented training regime, because that regime trades in-distribution fit for out-of-distribution behaviour by construction. A study aimed at the real axis needs a selection surface that is not the synthetic validation split."
+    ]
+  }
+}

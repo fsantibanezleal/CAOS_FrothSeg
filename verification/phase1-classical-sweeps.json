@@ -1,0 +1,407 @@
+{
+  "schema": "frothseg.phase1-classical-sweeps/v1",
+  "generated_utc": "2026-08-01T08:51:51+00:00",
+  "phase": "Phase 1, classical lane measured",
+  "plan": "CAOS_MANAGE/plans/frothseg/research-2026-07-31/PLAN-PROPOSAL.md section 3",
+  "surface": {
+    "cache": "data/cache/learned-v2-192.npz",
+    "split": "test",
+    "n_images": 64,
+    "learned_lane_test_evaluations_spent": 0,
+    "note": "Phase 1 contains no model-selection experiment and trains nothing. It spends none of the learned-lane test-evaluation budget."
+  },
+  "published_defaults_changed": [],
+  "baseline_reproduction": {
+    "artifact": "data/derived/phase1/baseline-reproduction.json",
+    "all_seven_engines_identical_to_committed_artifact": true,
+    "tolerance": 1e-12,
+    "reference": "data/derived/classical-heldout.json"
+  },
+  "committed_baseline_for_reference": {
+    "C1": {
+      "method": "otsu_cc",
+      "mean_ap": 0.06521875,
+      "mean_pq": 0.17062500000000003,
+      "mean_boundary_fscore": 0.81125,
+      "mean_bsd_wasserstein": 10.164109375,
+      "mean_count_absolute_error": 220.09375,
+      "mean_d32_relative_error": 5.0063249999999995,
+      "source": "data/derived/classical-heldout.json"
+    },
+    "C2": {
+      "method": "watershed_immersion",
+      "mean_ap": 0.017265625,
+      "mean_pq": 0.063453125,
+      "mean_boundary_fscore": 0.7423500000000001,
+      "mean_bsd_wasserstein": 7.3928125,
+      "mean_count_absolute_error": 849.34375,
+      "mean_d32_relative_error": 0.5757453125,
+      "source": "data/derived/classical-heldout.json"
+    },
+    "C3": {
+      "method": "watershed_hmax",
+      "mean_ap": 0.103109375,
+      "mean_pq": 0.24903124999999998,
+      "mean_boundary_fscore": 0.832290625,
+      "mean_bsd_wasserstein": 6.032187499999999,
+      "mean_count_absolute_error": 178.875,
+      "mean_d32_relative_error": 0.4310671875,
+      "source": "data/derived/classical-heldout.json"
+    },
+    "C4": {
+      "method": "watershed_dt",
+      "mean_ap": 0.19768750000000002,
+      "mean_pq": 0.40221875,
+      "mean_boundary_fscore": 0.834403125,
+      "mean_bsd_wasserstein": 2.5898125,
+      "mean_count_absolute_error": 139.8125,
+      "mean_d32_relative_error": 1.1554515625000001,
+      "source": "data/derived/classical-heldout.json"
+    },
+    "C5": {
+      "method": "watershed_hmin",
+      "mean_ap": 0.132984375,
+      "mean_pq": 0.28446875,
+      "mean_boundary_fscore": 0.7967640624999999,
+      "mean_bsd_wasserstein": 16.5679375,
+      "mean_count_absolute_error": 176.453125,
+      "mean_d32_relative_error": 1.922390625,
+      "source": "data/derived/classical-heldout.json"
+    },
+    "C6": {
+      "method": "slic_merge",
+      "mean_ap": 0.01859375,
+      "mean_pq": 0.0720625,
+      "mean_boundary_fscore": 0.78645,
+      "mean_bsd_wasserstein": 8.382609375000001,
+      "mean_count_absolute_error": 451.9375,
+      "mean_d32_relative_error": 0.7748187499999999,
+      "source": "data/derived/classical-heldout.json"
+    },
+    "C7": {
+      "method": "valley_edge",
+      "mean_ap": 0.1673125,
+      "mean_pq": 0.36321875,
+      "mean_boundary_fscore": 0.86284375,
+      "mean_bsd_wasserstein": 3.564171875,
+      "mean_count_absolute_error": 114.234375,
+      "mean_d32_relative_error": 1.2583640624999999,
+      "source": "data/derived/classical-heldout.json"
+    }
+  },
+  "studies": {
+    "1.1": {
+      "study": "1.1 C4 compact watershed",
+      "artifact": "data/derived/phase1/c4-compactness-sweep.json",
+      "point_count": 24,
+      "grid": {
+        "compactness": [
+          0.0,
+          0.0001,
+          0.001,
+          0.01,
+          0.03,
+          0.1,
+          0.3,
+          1.0,
+          3.0,
+          10.0,
+          30.0,
+          100.0
+        ],
+        "watershed_line": [
+          false,
+          true
+        ]
+      },
+      "baseline_config": {
+        "compactness": 0.0,
+        "watershed_line": false
+      }
+    },
+    "1.2": {
+      "study": "1.2 _foreground Otsu factor",
+      "artifact": "data/derived/phase1/foreground-factor-sweep.json",
+      "point_count": 65,
+      "grid": {
+        "otsu_factor": [
+          0.5,
+          0.55,
+          0.6,
+          0.65,
+          0.7,
+          0.75,
+          0.8,
+          0.85,
+          0.9,
+          0.95,
+          1.0,
+          1.05,
+          1.1
+        ],
+        "methods": [
+          "otsu_cc",
+          "watershed_hmax",
+          "watershed_dt",
+          "watershed_hmin",
+          "valley_edge"
+        ]
+      },
+      "baseline_config": {
+        "otsu_factor": 0.75
+      }
+    },
+    "1.2b": {
+      "study": "1.2b _foreground cleanup areas",
+      "artifact": "data/derived/phase1/foreground-cleanup-sweep.json",
+      "point_count": 60,
+      "grid": {
+        "hole_max_size": [
+          0,
+          4,
+          8,
+          16,
+          32,
+          64
+        ],
+        "object_max_size": [
+          0,
+          4,
+          8,
+          12,
+          24,
+          48
+        ],
+        "methods": [
+          "otsu_cc",
+          "watershed_hmax",
+          "watershed_dt",
+          "watershed_hmin",
+          "valley_edge"
+        ]
+      },
+      "baseline_config": {
+        "hole_max_size": 16,
+        "object_max_size": 12
+      }
+    },
+    "1.3": {
+      "study": "1.3 C7 as a real constrained watershed",
+      "artifact": "data/derived/phase1/c7-constrained-watershed.json",
+      "point_count": 12,
+      "grid": {
+        "seam_radius": [
+          2,
+          3,
+          4,
+          5
+        ],
+        "mode": [
+          "subtract",
+          "watershed"
+        ],
+        "watershed_line": [
+          false,
+          true
+        ]
+      },
+      "baseline_config": {
+        "seam_radius": 3,
+        "mode": "subtract",
+        "watershed_line": false
+      }
+    },
+    "1.4": {
+      "study": "1.4 C3 flooding surface",
+      "artifact": "data/derived/phase1/c3-flooding-surface.json",
+      "point_count": 8,
+      "grid": {
+        "surface": [
+          "neg_edt",
+          "gray",
+          "neg_gray",
+          "gradient"
+        ],
+        "watershed_line": [
+          false,
+          true
+        ]
+      },
+      "baseline_config": {
+        "surface": "neg_edt",
+        "watershed_line": false
+      }
+    },
+    "1.5": {
+      "study": "1.5 residual per-method constants",
+      "artifact": "data/derived/phase1/residual-constants-sweep.json",
+      "point_count": 28,
+      "grid": {
+        "watershed_immersion.min_distance": [
+          1,
+          2,
+          3,
+          4,
+          6
+        ],
+        "watershed_hmax.h": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.12,
+          0.2
+        ],
+        "watershed_dt.min_distance": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          8
+        ],
+        "watershed_hmin.h": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.12,
+          0.2
+        ],
+        "valley_edge.min_cap_size": [
+          0,
+          4,
+          8,
+          16,
+          32
+        ]
+      },
+      "baseline_config": {
+        "watershed_immersion.min_distance": 2,
+        "watershed_hmax.h": 0.06,
+        "watershed_dt.min_distance": 4,
+        "watershed_hmin.h": 0.08,
+        "valley_edge.min_cap_size": 8
+      }
+    }
+  },
+  "study_artifacts": {
+    "1.1": "data/derived/phase1/c4-compactness-sweep.json",
+    "1.2": "data/derived/phase1/foreground-factor-sweep.json",
+    "1.2b": "data/derived/phase1/foreground-cleanup-sweep.json",
+    "1.3": "data/derived/phase1/c7-constrained-watershed.json",
+    "1.4": "data/derived/phase1/c3-flooding-surface.json",
+    "1.5": "data/derived/phase1/residual-constants-sweep.json",
+    "ledger": "data/derived/phase1/classical-constant-ledger.json"
+  },
+  "best_points_recorded": {
+    "1.1 C4 best mean AP over the compactness grid": {
+      "config": {
+        "compactness": 0.0,
+        "watershed_line": false
+      },
+      "mean_ap": 0.19768750000000002,
+      "mean_pq": 0.40221875,
+      "mean_boundary_fscore": 0.834403125,
+      "mean_bsd_wasserstein": 2.5898125,
+      "mean_count_absolute_error": 139.8125,
+      "mean_d32_relative_error": 1.1554515625000001,
+      "mean_inference_ms": 15.445401559645688
+    },
+    "1.3 C7 best mean AP over mode and seam radius": {
+      "config": {
+        "seam_radius": 4,
+        "mode": "watershed",
+        "watershed_line": false
+      },
+      "mean_ap": 0.24301562499999999,
+      "mean_pq": 0.4565625,
+      "mean_boundary_fscore": 0.8935015625,
+      "mean_bsd_wasserstein": 3.26459375,
+      "mean_count_absolute_error": 117.46875,
+      "mean_d32_relative_error": 1.2437765625,
+      "mean_inference_ms": 17.226306250449852
+    },
+    "1.4 C3 best mean AP over the flooding surfaces": {
+      "config": {
+        "surface": "neg_gray",
+        "watershed_line": false
+      },
+      "mean_ap": 0.21957812499999999,
+      "mean_pq": 0.440921875,
+      "mean_boundary_fscore": 0.881734375,
+      "mean_bsd_wasserstein": 3.62646875,
+      "mean_count_absolute_error": 178.875,
+      "mean_d32_relative_error": 0.19074375,
+      "mean_inference_ms": 22.503840624722216
+    }
+  },
+  "constant_ledger": {
+    "artifact": "data/derived/phase1/classical-constant-ledger.json",
+    "constant_count": 19,
+    "swept_count": 14,
+    "not_swept": [
+      "watershed_immersion.gradient_radius",
+      "slic_merge.n_segments",
+      "slic_merge.compactness",
+      "slic_merge.sigma",
+      "slic_merge.rag_threshold"
+    ],
+    "acceptance_met_for_scored_methods_c1_c3_c4_c5_c7": true
+  },
+  "hypothesis_checks": {
+    "c7_d32_bias_direction": {
+      "source": "data/derived/classical-heldout.json, valley_edge cases",
+      "n_cases": 64,
+      "mean_predicted_d32_px": 36.74153125,
+      "mean_truth_d32_px": 16.853559375,
+      "ratio_predicted_over_truth": 2.1800457952224113,
+      "proposal_hypothesis": "seam subtraction biases the diameter downward",
+      "verdict": "REFUTED. C7 over-estimates d32 by a factor above 2 on the committed artifact, so the seam-subtraction bias is not the source of its d32 relative error, and growing the caps back cannot fix it by that mechanism."
+    },
+    "c7_best_watershed_condition_regressions": {
+      "baseline_config": {
+        "seam_radius": 3,
+        "mode": "subtract",
+        "watershed_line": false
+      },
+      "candidate_config": {
+        "seam_radius": 4,
+        "mode": "watershed",
+        "watershed_line": false
+      },
+      "n_conditions": 16,
+      "n_regressed": 0,
+      "regressed": {}
+    },
+    "c3_neg_gray_condition_regressions": {
+      "baseline_config": {
+        "surface": "neg_edt",
+        "watershed_line": false
+      },
+      "candidate_config": {
+        "surface": "neg_gray",
+        "watershed_line": false
+      },
+      "n_conditions": 16,
+      "n_regressed": 2,
+      "regressed": {
+        "dark-defocus-compound": {
+          "baseline": 0.00975,
+          "candidate": 0.0085,
+          "delta": -0.0012499999999999994
+        },
+        "low-light-noise": {
+          "baseline": 0.017,
+          "candidate": 0.01125,
+          "delta": -0.005750000000000002
+        }
+      }
+    }
+  },
+  "adoption_status": {
+    "defaults_changed": "none",
+    "why": "Two independent reasons, both recorded before any adoption is proposed. First, every sweep above was measured on the 64-image test split, so adopting the argmax measured there is selection on that surface and the gain would not be quotable; a confirmation on a surface not used to pick the value is required. Second, the classical tier has a JavaScript twin in the live lane under an AP-delta parity gate, so a default change is a two-lane change plus a full re-bake of every committed classical artifact.",
+    "decision_owner": "Felipe"
+  }
+}

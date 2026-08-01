@@ -71,6 +71,10 @@ METHODS: tuple[MethodSpec, ...] = (
     MethodSpec("L4", "stardist_2d", "StarDist 2D", "domain-sota", "offline+live-candidate",
                "official stardist", "Schmidt et al. 2018, DOI 10.1007/978-3-030-00934-2_30", "BSD-3-Clause",
                True, True, "accepted", "docs/frameworks/10_stardist/README.md"),
+    # BSD-3-Clause is correct and is NOT to be "corrected" to GPL-3.0. MouseLand/cellpose ships the
+    # BSD 3-Clause text in LICENSE and the GitHub API reports spdx_id BSD-3-Clause; only the README's
+    # shields.io badge carries the stale alt-text "Licence: GPL v3". Evidence and the CC-BY-NC
+    # training-data caveat: ATTRIBUTION.md, "Upstream licence provenance, L5 Cellpose-SAM".
     MethodSpec("L5", "cellpose_sam", "Cellpose-SAM", "foundation", "offline", "official cellpose",
                "Pachitariu et al. 2025, DOI 10.1101/2025.04.28.651001",
                "BSD-3-Clause; pretrained checkpoint provenance recorded", True, True, "accepted",

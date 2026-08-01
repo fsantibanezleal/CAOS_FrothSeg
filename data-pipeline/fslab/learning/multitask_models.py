@@ -12,6 +12,12 @@ METHOD_CHANNELS = {
     "deep_marker_watershed": 3,
     "gc_fsegnet": 3,
     "lamellastar": 4,
+    # Pre-registered experiment P-5 / A-1: the scalar distance head replaced by a
+    # two-channel centroid-offset field, so 4 - 1 + 2 = 5. Registered as a sibling method
+    # rather than as a redefinition of "lamellastar" so that the published four-channel
+    # checkpoints, ONNX exports and artifacts keep loading unchanged. Targets and decode
+    # live in fslab.learning.offset_head.
+    "lamellastar_offset": 5,
 }
 
 
@@ -121,10 +127,24 @@ def build_model(method: str, base_channels: int = 16):
             gated1 = e1 * self.gate1(torch.cat((up1, e1), dim=1))
             return self.head(self.d1(torch.cat((up1, gated1), dim=1)))
 
+    class LamellaStarOffset(LamellaStar):
+        """LamellaStar with the scalar distance head replaced by a centroid-offset field.
+
+        Identical encoder, bridge, gates and decoder; only the 1x1 output head widens from
+        four channels to five. Channel order is
+        ``(foreground, boundary, offset_y, offset_x, center)``: the distance channel is
+        gone and the two offset channels take its place. Pre-registered as P-5 / A-1.
+        """
+
+        def __init__(self) -> None:
+            super().__init__()
+            self.head = nn.Conv2d(base_channels, METHOD_CHANNELS["lamellastar_offset"], 1)
+
     constructors = {
         "deep_marker_watershed": DeepMarkerWatershed,
         "gc_fsegnet": GlobalContextFSegNet,
         "lamellastar": LamellaStar,
+        "lamellastar_offset": LamellaStarOffset,
     }
     return constructors[method]()
 
@@ -165,7 +185,7 @@ class MultiTaskPrediction:
     probabilities: np.ndarray
 
 
-def probabilities_to_instances(
+def marker_coordinates(
     probabilities: np.ndarray,
     *,
     foreground_threshold: float,
@@ -173,13 +193,19 @@ def probabilities_to_instances(
     marker_threshold: float,
     min_distance: int,
     center_weight: float = 0.5,
-) -> np.ndarray:
+) -> tuple[np.ndarray, np.ndarray]:
+    """Return ``(foreground mask, marker coordinates)`` for the watershed decode.
+
+    Split out of :func:`probabilities_to_instances` so a diagnostic can count the markers a
+    given probability field yields without re-deriving the seed surface. Both functions share
+    this one implementation, so the count a diagnostic reports is by construction the count
+    the decode used.
+    """
     if not 0.0 <= center_weight <= 1.0:
         raise ValueError("center_weight must be between 0 and 1")
     foreground = probabilities[0] >= foreground_threshold
     boundary = probabilities[1]
-    learned_distance = probabilities[2]
-    seed_surface = learned_distance * (1.0 - boundary)
+    seed_surface = probabilities[2] * (1.0 - boundary)
     if probabilities.shape[0] > 3:
         center = probabilities[3]
         seed_surface = (1.0 - center_weight) * seed_surface + center_weight * center
@@ -192,6 +218,28 @@ def probabilities_to_instances(
         labels=foreground,
         exclude_border=False,
     )
+    return foreground, coords
+
+
+def probabilities_to_instances(
+    probabilities: np.ndarray,
+    *,
+    foreground_threshold: float,
+    boundary_threshold: float,
+    marker_threshold: float,
+    min_distance: int,
+    center_weight: float = 0.5,
+) -> np.ndarray:
+    foreground, coords = marker_coordinates(
+        probabilities,
+        foreground_threshold=foreground_threshold,
+        boundary_threshold=boundary_threshold,
+        marker_threshold=marker_threshold,
+        min_distance=min_distance,
+        center_weight=center_weight,
+    )
+    boundary = probabilities[1]
+    learned_distance = probabilities[2]
     markers = np.zeros(foreground.shape, dtype=np.int32)
     for index, (y, x) in enumerate(coords, start=1):
         markers[y, x] = index

@@ -1065,6 +1065,10 @@ const TRANSFER_ROWS: Array<{ id: string; name: string; tier: Tier; real: number;
   { id: 'C7', name: 'Lamella-valley detector', tier: 'classical', real: 0.193, froth: 0.167 },
   { id: 'C3', name: 'Marker-controlled watershed', tier: 'classical', real: 0.182, froth: 0.103 },
   { id: 'L6', name: 'YOLO froth segmentation', tier: 'trained', real: 0.144, froth: 0.293 },
+  // Every row here is measured on the SAME burned 64-image split, so the values stay
+  // comparable to each other. N1 was later re-measured alone on a fresh pre-registered
+  // 72-sample split at AP 0.045 (verification/p2-domain-randomization.json); that number
+  // is not put in this table because no other method has been scored on that surface.
   { id: 'N1', name: 'LamellaStar', tier: 'trained', real: 0.125, froth: 0.519 },
   { id: 'L3', name: 'GC-FSegNet', tier: 'trained', real: 0.110, froth: 0.319 },
   { id: 'L1', name: 'Boundary/distance U-Net', tier: 'trained', real: 0.094, froth: 0.415 },

@@ -27,39 +27,130 @@ from scipy import ndimage as ndi
 from skimage import feature, filters, graph, measure, morphology, segmentation
 
 
-def _foreground(gray: np.ndarray) -> np.ndarray:
-    """Froth foreground (bubbles vs dark Plateau borders/junctions) by Otsu, then small-hole cleanup."""
+# --------------------------------------------------------------------------------------------------
+# Published defaults for the classical tier.
+#
+# Every constant below is the value the committed benchmark artifacts were produced with
+# (data/derived/classical-heldout.json, data/derived/method-benchmark.json). They are exposed as named
+# module constants and as keyword arguments so a constant can be SWEPT without editing the engine, and
+# so a change of default is always visible as a change of one named value rather than of a literal
+# buried in a call. Phase 1 of plans/frothseg/research-2026-07-31 sweeps four of them and records the
+# sweeps under data/derived/phase1/; the ledger of which constant is swept, which is sourced and which
+# is still undefended is data/derived/phase1/classical-constant-ledger.json.
+#
+# NOTHING here changes a published number: each default equals the literal it replaced.
+# --------------------------------------------------------------------------------------------------
+
+FOREGROUND_OTSU_FACTOR = 0.75        # SWEPT, Phase 1 item 1.2. Common-mode across C1, C2, C3, C4, C5, C6, C7.
+FOREGROUND_HOLE_MAX_SIZE = 16        # SWEPT, Phase 1 item 1.2b (remove_small_holes, area in px).
+FOREGROUND_OBJECT_MAX_SIZE = 12      # SWEPT, Phase 1 item 1.2b (remove_small_objects, area in px).
+
+C2_MIN_DISTANCE = 2                  # peak_local_max separation for the negated-gradient seeds.
+C2_GRADIENT_RADIUS = 1               # rank-gradient disk radius, in px.
+
+C4_MIN_DISTANCE = 4                  # peak_local_max separation for the EDT markers.
+C4_COMPACTNESS = 0.0                 # SWEPT, Phase 1 item 1.1. 0.0 == plain watershed, the published behaviour.
+C4_WATERSHED_LINE = False            # SWEPT, Phase 1 item 1.1.
+
+C3_H_MAXIMA = 0.06                   # highlight seed depth, in units of the [0, 1] intensity image.
+C3_FLOODING_SURFACE = "neg_edt"      # SWEPT, Phase 1 item 1.4. The published surface is the negated EDT.
+
+C5_H_MINIMA = 0.08                   # fraction of the per-image EDT maximum, see watershed_hmin docstring.
+
+C7_SEAM_RADIUS = 3                   # black-tophat disk radius, in px; sets the widest seam that is detected.
+C7_MIN_CAP_SIZE = 8                  # caps of this area or fewer are dropped (skimage removes <= max_size).
+C7_MODE = "subtract"                 # SWEPT, Phase 1 item 1.3. "subtract" is published; "watershed" is Meyer.
+C7_WATERSHED_LINE = False            # SWEPT, Phase 1 item 1.3, only meaningful when mode == "watershed".
+
+FLOODING_SURFACES = ("neg_edt", "gray", "neg_gray", "gradient")
+
+
+def _foreground(
+    gray: np.ndarray,
+    *,
+    otsu_factor: float = FOREGROUND_OTSU_FACTOR,
+    hole_max_size: int = FOREGROUND_HOLE_MAX_SIZE,
+    object_max_size: int = FOREGROUND_OBJECT_MAX_SIZE,
+) -> np.ndarray:
+    """Froth foreground (bubbles vs dark Plateau borders/junctions) by Otsu, then small-hole cleanup.
+
+    `otsu_factor` scales Otsu's threshold DOWN before the cut, so what runs is not Otsu 1979's threshold
+    (`10.1109/TSMC.1979.4310076`) but a deliberately more permissive one. It is common-mode: five of the
+    seven scored methods consume this one mask. Phase 1 item 1.2 sweeps it on all five."""
     thr = filters.threshold_otsu(gray)
-    fg = gray > thr * 0.75
-    fg = morphology.remove_small_holes(fg, max_size=16)
-    return morphology.remove_small_objects(fg, max_size=12)
+    fg = gray > thr * otsu_factor
+    fg = morphology.remove_small_holes(fg, max_size=hole_max_size)
+    return morphology.remove_small_objects(fg, max_size=object_max_size)
 
 
-def watershed_dt(gray: np.ndarray) -> np.ndarray:
-    """Distance-transform marker-controlled watershed (Meyer): the generic classical floor."""
-    fg = _foreground(gray)
+def _flooding_surface(gray: np.ndarray, foreground: np.ndarray, kind: str) -> np.ndarray:
+    """The topographic surface a marker-controlled watershed floods.
+
+    `neg_edt` is the published choice for C3 and C4: the negated Euclidean distance transform of the
+    foreground, whose valleys are object centres. The other three flood the image itself, its negation,
+    or its morphological gradient, which is what Sadr-Kazemi & Cilliers 1997 (`10.1016/S0892-6875(97)00094-0`)
+    describe for highlight-seeded froth watershed. Phase 1 item 1.4 measures all four against C3's markers."""
+    if kind == "neg_edt":
+        return -ndi.distance_transform_edt(foreground)
+    if kind == "gray":
+        return gray
+    if kind == "neg_gray":
+        return -gray
+    if kind == "gradient":
+        return ndi.morphological_gradient(gray, size=3)
+    raise ValueError(f"unknown flooding surface: {kind!r}, expected one of {FLOODING_SURFACES}")
+
+
+def watershed_dt(
+    gray: np.ndarray,
+    *,
+    min_distance: int = C4_MIN_DISTANCE,
+    compactness: float = C4_COMPACTNESS,
+    watershed_line: bool = C4_WATERSHED_LINE,
+    **foreground_kwargs,
+) -> np.ndarray:
+    """Distance-transform marker-controlled watershed (Meyer): the generic classical floor.
+
+    `compactness` > 0 selects the compact watershed of Neubert & Protzel 2014 (`10.1109/ICPR.2014.181`),
+    which the pinned scikit-image 0.26.0 `watershed` docstring cites for that exact parameter; it biases
+    basins toward regular shapes, which is the froth prior. Published default is 0.0 (plain watershed)."""
+    fg = _foreground(gray, **foreground_kwargs)
     dist = ndi.distance_transform_edt(fg)
-    coords = feature.peak_local_max(dist, min_distance=4, labels=fg)
+    coords = feature.peak_local_max(dist, min_distance=min_distance, labels=fg)
     markers = np.zeros(dist.shape, dtype=np.int32)
     for j, (y, x) in enumerate(coords, start=1):
         markers[y, x] = j
     markers = ndi.label(markers)[0]
-    return segmentation.watershed(-dist, markers, mask=fg)
+    return segmentation.watershed(
+        -dist, markers, mask=fg, compactness=compactness, watershed_line=watershed_line,
+    )
 
 
-def watershed_hmax(gray: np.ndarray) -> np.ndarray:
+def watershed_hmax(
+    gray: np.ndarray,
+    *,
+    h: float = C3_H_MAXIMA,
+    surface: str = C3_FLOODING_SURFACE,
+    watershed_line: bool = False,
+    **foreground_kwargs,
+) -> np.ndarray:
     """Highlight-seeded watershed: bright specular spots (h-maxima) are the bubble markers, the canonical
-    industrial froth method. Robust on clean specular froth, degrades under glare (the honest failure)."""
-    fg = _foreground(gray)
-    hmax = morphology.h_maxima(gray, h=0.06)
+    industrial froth method. Robust on clean specular froth, degrades under glare (the honest failure).
+
+    `surface` selects what those markers flood. The published default `neg_edt` floods the negated distance
+    transform, i.e. the same surface C4 uses, so C3 and C4 differ only in their markers; Phase 1 item 1.4
+    swaps in the image and its morphological gradient to separate marker failure from surface failure."""
+    fg = _foreground(gray, **foreground_kwargs)
+    hmax = morphology.h_maxima(gray, h=h)
     markers = ndi.label(hmax)[0]
     if markers.max() == 0:                              # no clean highlights -> fall back to DT markers
-        return watershed_dt(gray)
-    dist = ndi.distance_transform_edt(fg)
-    return segmentation.watershed(-dist, markers, mask=fg)
+        return watershed_dt(gray, **foreground_kwargs)
+    return segmentation.watershed(
+        _flooding_surface(gray, fg, surface), markers, mask=fg, watershed_line=watershed_line,
+    )
 
 
-def slic_merge(gray: np.ndarray) -> np.ndarray:
+def slic_merge(gray: np.ndarray, **foreground_kwargs) -> np.ndarray:
     """SLIC superpixels + actual region-adjacency merging.
 
     The former implementation merely sorted label ids by mean intensity; it did
@@ -73,18 +164,24 @@ def slic_merge(gray: np.ndarray) -> np.ndarray:
     )
     rag = graph.rag_mean_color(rgb, sp, mode="distance")
     merged = graph.cut_threshold(sp, rag, thresh=0.08, in_place=False).astype(np.int32)
-    merged[~_foreground(gray)] = 0
+    merged[~_foreground(gray, **foreground_kwargs)] = 0
     return _split_disconnected_labels(merged)
 
 
-def otsu_cc(gray: np.ndarray) -> np.ndarray:
+def otsu_cc(gray: np.ndarray, **foreground_kwargs) -> np.ndarray:
     """C1, Otsu threshold + connected components. The naive baseline: it labels each connected bright region
     as ONE instance, so touching bubbles merge into a single blob. The 'why we need more' under-segmentation
     exhibit (Otsu 1979). No boundary reasoning at all."""
-    return ndi.label(_foreground(gray))[0].astype(np.int32)
+    return ndi.label(_foreground(gray, **foreground_kwargs))[0].astype(np.int32)
 
 
-def watershed_immersion(gray: np.ndarray) -> np.ndarray:
+def watershed_immersion(
+    gray: np.ndarray,
+    *,
+    min_distance: int = C2_MIN_DISTANCE,
+    gradient_radius: int = C2_GRADIENT_RADIUS,
+    **foreground_kwargs,
+) -> np.ndarray:
     """C2, morphological-gradient immersion watershed (Vincent-Soille 1991) seeded at the minima of the gradient
     itself rather than at chosen object markers. The seeds are the local maxima of the negated gradient with a
     minimum separation of 2 px, taken inside the froth foreground only, so this is an approximation to the
@@ -93,12 +190,12 @@ def watershed_immersion(gray: np.ndarray) -> np.ndarray:
     basin at each specular highlight and texture dip that survives that filter, which is what makes it the
     canonical OVER-segmentation exhibit on froth (one bubble fragments into many basins: 71,918 predicted
     instances against 17,846 true ones over the 64-image held-out split)."""
-    fg = _foreground(gray)
-    grad = filters.rank.gradient(_as_ubyte(gray), morphology.disk(1)) if hasattr(filters, "rank") else \
-        ndi.morphological_gradient(gray, size=3)
+    fg = _foreground(gray, **foreground_kwargs)
+    grad = filters.rank.gradient(_as_ubyte(gray), morphology.disk(gradient_radius)) \
+        if hasattr(filters, "rank") else ndi.morphological_gradient(gray, size=3)
     grad_float = grad.astype(np.float32)
     peak_coords = feature.peak_local_max(
-        -grad_float, min_distance=2, labels=fg, exclude_border=False,
+        -grad_float, min_distance=min_distance, labels=fg, exclude_border=False,
     )
     markers = np.zeros_like(grad, dtype=np.int32)
     for index, (y, x) in enumerate(peak_coords, start=1):
@@ -109,7 +206,7 @@ def watershed_immersion(gray: np.ndarray) -> np.ndarray:
     return ws.astype(np.int32)
 
 
-def watershed_hmin(gray: np.ndarray, h: float = 0.08) -> np.ndarray:
+def watershed_hmin(gray: np.ndarray, h: float = C5_H_MINIMA, **foreground_kwargs) -> np.ndarray:
     """C5, H-minima (extended-minima) marker-controlled watershed (Soille 2004). Suppress the shallow minima of
     the flooding surface before flooding, so shallow highlight/noise dips collapse and only genuine bubble-valley
     basins remain. Directly cuts the C2 over-segmentation.
@@ -121,7 +218,7 @@ def watershed_hmin(gray: np.ndarray, h: float = 0.08) -> np.ndarray:
     the constant means today and it is deliberate here only in the sense that it is what was measured; the
     unnormalized alternative, in which h would be an EDT depth in pixels, is a different engine and would move
     every C5 number, so it is a Phase 1 sweep and not a docstring fix."""
-    fg = _foreground(gray)
+    fg = _foreground(gray, **foreground_kwargs)
     dist = ndi.distance_transform_edt(fg)
     if dist.max() <= 0:
         return np.zeros_like(fg, dtype=np.int32)
@@ -129,21 +226,50 @@ def watershed_hmin(gray: np.ndarray, h: float = 0.08) -> np.ndarray:
     surface = -(dist / dist.max())                       # valleys of -dist are the bubble centres
     markers = ndi.label(morphology.h_minima(surface, h))[0]
     if markers.max() == 0:
-        return watershed_dt(gray)
+        return watershed_dt(gray, **foreground_kwargs)
     return segmentation.watershed(surface, markers, mask=fg).astype(np.int32)
 
 
-def valley_edge(gray: np.ndarray) -> np.ndarray:
+def valley_edge(
+    gray: np.ndarray,
+    *,
+    seam_radius: int = C7_SEAM_RADIUS,
+    min_cap_size: int = C7_MIN_CAP_SIZE,
+    mode: str = C7_MODE,
+    watershed_line: bool = C7_WATERSHED_LINE,
+    **foreground_kwargs,
+) -> np.ndarray:
     """C7, valley-edge / dark-seam detector, the domain-specific froth classical (Wang 2003; Wang & Chen 2015).
     Froth bubbles are delineated by the darkish inter-bubble VALLEYS (Plateau borders), not by the bright
     specular spots, so gradient/edge detectors that lock onto highlights fail. Here the dark seams are found by a
     black-top-hat (dark structures thinner than the structuring element), removed from the foreground, and the
-    enclosed bright caps are labelled as the bubbles. Robust to highlights by construction."""
-    seams = morphology.black_tophat(gray, morphology.disk(3))
+    enclosed bright caps are labelled as the bubbles. Robust to highlights by construction.
+
+    `mode` selects what happens after the caps are cleaned.
+
+    * `"subtract"` is the published behaviour: the caps ARE the instances, so every seam pixel is lost from
+      every bubble and each mask stops short of the seam centreline.
+    * `"watershed"` is the constrained watershed the registry name already claims (Meyer 1994,
+      `10.1016/0165-1684(94)90060-4`): the cleaned caps become markers and flood the black-top-hat response
+      itself, so caps grow back across the seam until they meet on its ridge. No new dependency; the
+      `watershed` primitive is the same pinned scikit-image one C3, C4 and C5 already use.
+
+    Phase 1 item 1.3 measures the two modes against each other over the 64-image test split."""
+    seams = morphology.black_tophat(gray, morphology.disk(seam_radius))
     seam_mask = seams > filters.threshold_otsu(seams) if seams.max() > 0 else np.zeros_like(gray, bool)
-    caps = np.logical_and(_foreground(gray), ~seam_mask)
-    caps = morphology.remove_small_objects(caps, max_size=8)
-    return ndi.label(caps)[0].astype(np.int32)
+    fg = _foreground(gray, **foreground_kwargs)
+    caps = np.logical_and(fg, ~seam_mask)
+    caps = morphology.remove_small_objects(caps, max_size=min_cap_size)
+    if mode == "subtract":
+        return ndi.label(caps)[0].astype(np.int32)
+    if mode != "watershed":
+        raise ValueError(f"unknown valley_edge mode: {mode!r}, expected 'subtract' or 'watershed'")
+    markers = ndi.label(caps)[0]
+    if markers.max() == 0:                              # no cap survives, nothing to flood from
+        return markers.astype(np.int32)
+    return segmentation.watershed(
+        seams, markers, mask=fg, watershed_line=watershed_line,
+    ).astype(np.int32)
 
 
 def _as_ubyte(gray: np.ndarray) -> np.ndarray:

@@ -1,8 +1,14 @@
+from dataclasses import replace
+
 from fslab.datasets import (
+    RESERVE_GROUPS_PER_CONDITION,
+    RESERVE_STUDIES,
     SampleRecord,
     grouped_split,
     learned_dataset_matrix,
+    reserve_dataset_matrix,
     validate_learned_matrix,
+    validate_reserve_matrix,
     validate_splits,
 )
 
@@ -63,3 +69,46 @@ def test_learned_matrix_is_stratified_and_keeps_appearance_variants_grouped():
     ]
     assert len({sample.spec.seed for sample in first_group}) == 1
     assert len({sample.spec.appearance_seed for sample in first_group}) == 2
+
+
+def test_reserve_matrix_gives_every_planned_study_a_stratified_untouched_slice():
+    working = learned_dataset_matrix(image_size=128, appearance_variants=2)
+    reserve = reserve_dataset_matrix(image_size=128, appearance_variants=2)
+    assert validate_reserve_matrix(reserve, working) == []
+    assert len(reserve) == 16 * len(RESERVE_STUDIES) * RESERVE_GROUPS_PER_CONDITION * 2
+    assert {sample.split for sample in reserve} == {"reserve"}
+    for study in RESERVE_STUDIES:
+        slice_rows = [row for row in reserve if row.reserve_study == study]
+        # Same shape as the burned test split: every condition, two latent groups each.
+        assert len({row.condition_id for row in slice_rows}) == 16
+        assert len({row.record.group_id for row in slice_rows}) == (
+            16 * RESERVE_GROUPS_PER_CONDITION
+        )
+
+
+def test_reserve_is_disjoint_from_the_working_matrix_on_ids_groups_and_seeds():
+    working = learned_dataset_matrix(image_size=128, appearance_variants=2)
+    reserve = reserve_dataset_matrix(image_size=128, appearance_variants=2)
+    for extract in (
+        lambda row: row.record.sample_id,
+        lambda row: row.record.group_id,
+        lambda row: row.spec.seed,
+    ):
+        assert not {extract(row) for row in reserve} & {extract(row) for row in working}
+
+
+def test_reserve_validation_rejects_a_reused_geometry_seed():
+    working = learned_dataset_matrix(image_size=128, appearance_variants=2)
+    reserve = reserve_dataset_matrix(image_size=128, appearance_variants=2)
+    # A reserve row that re-renders an observed scene under a fresh name is worthless without
+    # looking worthless, so the seed check has to catch it.
+    leaked = replace(reserve[0], spec=replace(reserve[0].spec, seed=working[0].spec.seed))
+    errors = validate_reserve_matrix([leaked, *reserve[1:]], working)
+    assert any("geometry_seed" in error for error in errors)
+
+
+def test_working_matrix_validation_rejects_a_reserve_row():
+    working = learned_dataset_matrix(image_size=128, appearance_variants=2)
+    reserve = reserve_dataset_matrix(image_size=128, appearance_variants=2)
+    errors = validate_learned_matrix([*working, reserve[0]])
+    assert any("not a working split" in error for error in errors)

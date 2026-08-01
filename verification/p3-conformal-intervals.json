@@ -1,0 +1,1878 @@
+{
+  "schema": "frothseg.p3-conformal/v1",
+  "experiment": "p3-conformal-intervals",
+  "date": "2026-08-01",
+  "preregistration": "CAOS_MANAGE plans/frothseg/research-2026-07-31/PLAN-PROPOSAL.md section 5, P-3; bars, scores, calibration source, band definition and budget fixed in scripts/run_p3_conformal_intervals.py before the run",
+  "produced_by": "scripts/run_p3_conformal_intervals.py",
+  "trained": "nothing",
+  "gpu_used_for": "inference only, 3 members x 64 reserve frames",
+  "test_evaluations_spent": 0,
+  "test_evidence_source": "models/lamellastar-v1/run.json evaluation.cases, the already published single test evaluation of the promoted ensemble; no test image was re-inferred here",
+  "hypothesis": "split conformal on a fresh calibration draw gives distribution-free intervals on per-frame D32 and bubble count that achieve nominal coverage on the untouched test split AND are narrow enough to be operationally useful",
+  "bars": {
+    "coverage": "empirical test coverage inside the equal-tailed central 95 percent interval of BetaBinomial(m, rank, n + 1 - rank)",
+    "d32_width": "median D32 interval half width below 0.15 of the point estimate",
+    "count_width": "no width bar; the proposal sets one for D32 only",
+    "null_rule": "a guarantee met by an uninformatively wide interval is a null and is recorded as one"
+  },
+  "design": {
+    "alpha": 0.1,
+    "target_coverage": 0.9,
+    "primary_score": "absolute",
+    "secondary_score": "relative",
+    "calibration_source": {
+      "reserve_study": "p3",
+      "cache_path": "data/cache/learned-v2-192-reserve.npz",
+      "cache_sha256": "514c4279017b20b0ea3644955fe0b4a8e14ebbf0eae66de579d4c838aaf11f14",
+      "group_ids_sha256": "047500786d8010215d765f059d6bda84a609e6443a73a1fa40c9a9a6ee9fc5f4",
+      "sample_ids_sha256": "2f35ae349c0cac8350da0ebb6b45a5517a465bc2252e0d9204e1c8579bebc9d0",
+      "group_count": 32,
+      "sample_count": 64,
+      "matches_phase2_preregistration": true,
+      "disjoint_from_test_groups": true
+    },
+    "hazard_discharged": "the existing calibration split was used to fit the decode thresholds by a 405 combination grid search (fslab.learning.train_multitask._calibrate), so it is not exchangeable with the test split and is NOT used here",
+    "operating_point": {
+      "foreground_threshold": 0.6,
+      "boundary_threshold": 0.65,
+      "marker_threshold": 0.15,
+      "min_distance": 3,
+      "center_weight": 0.5
+    },
+    "operating_point_source": "models/lamellastar-v1/run.json calibration",
+    "primary_device": "cuda",
+    "replication_device": "cpu"
+  },
+  "members": [
+    {
+      "seed": 20260725,
+      "study_run_id": "c24-e120-s20260725",
+      "weights_path": "members/seed-20260725/weights.npz",
+      "weights_sha256": "996d4d911724d59287ceb084273559028276895973f9c4aa94682002eed7dba8",
+      "validation_mean_ap": 0.49565624999999996
+    },
+    {
+      "seed": 20260726,
+      "study_run_id": "c24-e120-s20260726",
+      "weights_path": "members/seed-20260726/weights.npz",
+      "weights_sha256": "d9b4ef87ac34da77bd9737e798602908b0724267901361d819318674cba2fafe",
+      "validation_mean_ap": 0.48642187500000006
+    },
+    {
+      "seed": 20260727,
+      "study_run_id": "c24-e120-s20260727",
+      "weights_path": "members/seed-20260727/weights.npz",
+      "weights_sha256": "2829f56c141ec86d98a905a6ff6ca92162e269dd4ba5719d70687bd505895c4e",
+      "validation_mean_ap": 0.523859375
+    }
+  ],
+  "device_agreement": {
+    "tolerance_px": 0.001,
+    "max_abs_d32_difference": 0.010600000000000165,
+    "max_abs_count_difference": 1.0,
+    "within_tolerance": false
+  },
+  "device_robustness": {
+    "note": "the same primary lanes fitted on the CPU replication pass. Reported because the device rule was declared before the run; it decides nothing",
+    "lanes": {
+      "d32_px": {
+        "score": "absolute",
+        "alpha": 0.1,
+        "target_coverage": 0.9,
+        "calibration_n": 64,
+        "conformal_rank": 59,
+        "feasible": true,
+        "threshold": 1.2747,
+        "evaluation_n": 64,
+        "covered": 59,
+        "empirical_coverage": 0.921875,
+        "median_half_width": 1.2747,
+        "median_relative_half_width": 0.076121,
+        "mean_relative_half_width": 0.084794,
+        "quantity": "d32_px",
+        "per_condition_coverage": {
+          "bursting": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "coarse-froth": {
+            "n": 4,
+            "covered": 1,
+            "coverage": 0.25
+          },
+          "dark-defocus-compound": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "defocus": {
+            "n": 4,
+            "covered": 2,
+            "coverage": 0.5
+          },
+          "edge-framing": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "fine-froth": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "glare-motion-compound": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "glare-storm": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "high-load": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "low-light-noise": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "microbubble-cloud": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "mono-clean": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "motion-fast": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "poly-normal": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "watery": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "wide-bimodal-proxy": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          }
+        },
+        "worst_condition": "coarse-froth",
+        "worst_condition_coverage": 0.25
+      },
+      "bubble_count": {
+        "score": "absolute",
+        "alpha": 0.1,
+        "target_coverage": 0.9,
+        "calibration_n": 64,
+        "conformal_rank": 59,
+        "feasible": true,
+        "threshold": 58.0,
+        "evaluation_n": 64,
+        "covered": 58,
+        "empirical_coverage": 0.90625,
+        "median_half_width": 58.0,
+        "median_relative_half_width": 0.309441,
+        "mean_relative_half_width": 0.318971,
+        "quantity": "bubble_count",
+        "per_condition_coverage": {
+          "bursting": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "coarse-froth": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "dark-defocus-compound": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "defocus": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "edge-framing": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "fine-froth": {
+            "n": 4,
+            "covered": 2,
+            "coverage": 0.5
+          },
+          "glare-motion-compound": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "glare-storm": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "high-load": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "low-light-noise": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "microbubble-cloud": {
+            "n": 4,
+            "covered": 0,
+            "coverage": 0.0
+          },
+          "mono-clean": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "motion-fast": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "poly-normal": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "watery": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "wide-bimodal-proxy": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          }
+        },
+        "worst_condition": "microbubble-cloud",
+        "worst_condition_coverage": 0.0
+      }
+    }
+  },
+  "hazard_demonstration": {
+    "status": "INVALID, reported for size only",
+    "why_invalid": "this split was used to select the decode operating point by a 405 combination grid search, so its residuals are not exchangeable with the test split's",
+    "lanes": {
+      "d32_px": {
+        "score": "absolute",
+        "alpha": 0.1,
+        "target_coverage": 0.9,
+        "calibration_n": 64,
+        "conformal_rank": 59,
+        "feasible": true,
+        "threshold": 0.9249,
+        "evaluation_n": 64,
+        "covered": 53,
+        "empirical_coverage": 0.828125,
+        "median_half_width": 0.9249,
+        "median_relative_half_width": 0.055232,
+        "mean_relative_half_width": 0.061525,
+        "quantity": "d32_px",
+        "per_condition_coverage": {
+          "bursting": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "coarse-froth": {
+            "n": 4,
+            "covered": 0,
+            "coverage": 0.0
+          },
+          "dark-defocus-compound": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "defocus": {
+            "n": 4,
+            "covered": 2,
+            "coverage": 0.5
+          },
+          "edge-framing": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "fine-froth": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "glare-motion-compound": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "glare-storm": {
+            "n": 4,
+            "covered": 3,
+            "coverage": 0.75
+          },
+          "high-load": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "low-light-noise": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "microbubble-cloud": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "mono-clean": {
+            "n": 4,
+            "covered": 0,
+            "coverage": 0.0
+          },
+          "motion-fast": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "poly-normal": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "watery": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "wide-bimodal-proxy": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          }
+        },
+        "worst_condition": "coarse-froth",
+        "worst_condition_coverage": 0.0
+      },
+      "bubble_count": {
+        "score": "absolute",
+        "alpha": 0.1,
+        "target_coverage": 0.9,
+        "calibration_n": 64,
+        "conformal_rank": 59,
+        "feasible": true,
+        "threshold": 68.0,
+        "evaluation_n": 64,
+        "covered": 58,
+        "empirical_coverage": 0.90625,
+        "median_half_width": 68.0,
+        "median_relative_half_width": 0.362793,
+        "mean_relative_half_width": 0.373966,
+        "quantity": "bubble_count",
+        "per_condition_coverage": {
+          "bursting": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "coarse-froth": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "dark-defocus-compound": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "defocus": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "edge-framing": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "fine-froth": {
+            "n": 4,
+            "covered": 2,
+            "coverage": 0.5
+          },
+          "glare-motion-compound": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "glare-storm": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "high-load": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "low-light-noise": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "microbubble-cloud": {
+            "n": 4,
+            "covered": 0,
+            "coverage": 0.0
+          },
+          "mono-clean": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "motion-fast": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "poly-normal": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "watery": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          },
+          "wide-bimodal-proxy": {
+            "n": 4,
+            "covered": 4,
+            "coverage": 1.0
+          }
+        },
+        "worst_condition": "microbubble-cloud",
+        "worst_condition_coverage": 0.0
+      }
+    }
+  },
+  "coverage_band": {
+    "definition": "equal-tailed central interval of BetaBinomial(m, rank, n + 1 - rank), the exact law of the covered count under exchangeability with an i.i.d. evaluation draw",
+    "mass": 0.95,
+    "calibration_n": 64,
+    "evaluation_n": 64,
+    "conformal_rank": 59,
+    "beta_a": 59.0,
+    "beta_b": 6.0,
+    "expected_coverage": 0.907692,
+    "coverage_sd": 0.03563,
+    "lower_count": 51,
+    "upper_count": 63,
+    "lower_coverage": 0.796875,
+    "upper_coverage": 0.984375
+  },
+  "lanes": {
+    "d32_px.absolute": {
+      "score": "absolute",
+      "alpha": 0.1,
+      "target_coverage": 0.9,
+      "calibration_n": 64,
+      "conformal_rank": 59,
+      "feasible": true,
+      "threshold": 1.2747,
+      "evaluation_n": 64,
+      "covered": 59,
+      "empirical_coverage": 0.921875,
+      "median_half_width": 1.2747,
+      "median_relative_half_width": 0.076121,
+      "mean_relative_half_width": 0.084794,
+      "quantity": "d32_px",
+      "per_condition_coverage": {
+        "bursting": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "coarse-froth": {
+          "n": 4,
+          "covered": 1,
+          "coverage": 0.25
+        },
+        "dark-defocus-compound": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "defocus": {
+          "n": 4,
+          "covered": 2,
+          "coverage": 0.5
+        },
+        "edge-framing": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "fine-froth": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "glare-motion-compound": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "glare-storm": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "high-load": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "low-light-noise": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "microbubble-cloud": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "mono-clean": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "motion-fast": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "poly-normal": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "watery": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "wide-bimodal-proxy": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        }
+      },
+      "worst_condition": "coarse-froth",
+      "worst_condition_coverage": 0.25
+    },
+    "d32_px.relative": {
+      "score": "relative",
+      "alpha": 0.1,
+      "target_coverage": 0.9,
+      "calibration_n": 64,
+      "conformal_rank": 59,
+      "feasible": true,
+      "threshold": 0.116119,
+      "evaluation_n": 64,
+      "covered": 59,
+      "empirical_coverage": 0.921875,
+      "median_half_width": 1.944492,
+      "median_relative_half_width": 0.116119,
+      "mean_relative_half_width": 0.116119,
+      "quantity": "d32_px",
+      "per_condition_coverage": {
+        "bursting": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "coarse-froth": {
+          "n": 4,
+          "covered": 2,
+          "coverage": 0.5
+        },
+        "dark-defocus-compound": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "defocus": {
+          "n": 4,
+          "covered": 2,
+          "coverage": 0.5
+        },
+        "edge-framing": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "fine-froth": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "glare-motion-compound": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "glare-storm": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "high-load": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "low-light-noise": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "microbubble-cloud": {
+          "n": 4,
+          "covered": 3,
+          "coverage": 0.75
+        },
+        "mono-clean": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "motion-fast": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "poly-normal": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "watery": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "wide-bimodal-proxy": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        }
+      },
+      "worst_condition": "coarse-froth",
+      "worst_condition_coverage": 0.5
+    },
+    "bubble_count.absolute": {
+      "score": "absolute",
+      "alpha": 0.1,
+      "target_coverage": 0.9,
+      "calibration_n": 64,
+      "conformal_rank": 59,
+      "feasible": true,
+      "threshold": 58.0,
+      "evaluation_n": 64,
+      "covered": 58,
+      "empirical_coverage": 0.90625,
+      "median_half_width": 58.0,
+      "median_relative_half_width": 0.309441,
+      "mean_relative_half_width": 0.318971,
+      "quantity": "bubble_count",
+      "per_condition_coverage": {
+        "bursting": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "coarse-froth": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "dark-defocus-compound": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "defocus": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "edge-framing": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "fine-froth": {
+          "n": 4,
+          "covered": 2,
+          "coverage": 0.5
+        },
+        "glare-motion-compound": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "glare-storm": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "high-load": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "low-light-noise": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "microbubble-cloud": {
+          "n": 4,
+          "covered": 0,
+          "coverage": 0.0
+        },
+        "mono-clean": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "motion-fast": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "poly-normal": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "watery": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "wide-bimodal-proxy": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        }
+      },
+      "worst_condition": "microbubble-cloud",
+      "worst_condition_coverage": 0.0
+    },
+    "bubble_count.relative": {
+      "score": "relative",
+      "alpha": 0.1,
+      "target_coverage": 0.9,
+      "calibration_n": 64,
+      "conformal_rank": 59,
+      "feasible": true,
+      "threshold": 0.252747,
+      "evaluation_n": 64,
+      "covered": 58,
+      "empirical_coverage": 0.90625,
+      "median_half_width": 47.39011,
+      "median_relative_half_width": 0.252747,
+      "mean_relative_half_width": 0.252747,
+      "quantity": "bubble_count",
+      "per_condition_coverage": {
+        "bursting": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "coarse-froth": {
+          "n": 4,
+          "covered": 2,
+          "coverage": 0.5
+        },
+        "dark-defocus-compound": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "defocus": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "edge-framing": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "fine-froth": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "glare-motion-compound": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "glare-storm": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "high-load": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "low-light-noise": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "microbubble-cloud": {
+          "n": 4,
+          "covered": 0,
+          "coverage": 0.0
+        },
+        "mono-clean": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "motion-fast": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "poly-normal": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "watery": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        },
+        "wide-bimodal-proxy": {
+          "n": 4,
+          "covered": 4,
+          "coverage": 1.0
+        }
+      },
+      "worst_condition": "microbubble-cloud",
+      "worst_condition_coverage": 0.0
+    }
+  },
+  "coverage_within_band": {
+    "d32_px.absolute": true,
+    "d32_px.relative": true,
+    "bubble_count.absolute": true,
+    "bubble_count.relative": true
+  },
+  "d32_width_within_bar": true,
+  "group_level_secondary": {
+    "note": "one appearance variant per latent group on both sides, so no two frames share a geometry; this is the strictest exchangeability reading of the design",
+    "coverage_band": {
+      "definition": "equal-tailed central interval of BetaBinomial(m, rank, n + 1 - rank), the exact law of the covered count under exchangeability with an i.i.d. evaluation draw",
+      "mass": 0.95,
+      "calibration_n": 32,
+      "evaluation_n": 32,
+      "conformal_rank": 30,
+      "beta_a": 30.0,
+      "beta_b": 3.0,
+      "expected_coverage": 0.909091,
+      "coverage_sd": 0.049302,
+      "lower_count": 24,
+      "upper_count": 32,
+      "lower_coverage": 0.75,
+      "upper_coverage": 1.0
+    },
+    "lanes": {
+      "d32_px": {
+        "score": "absolute",
+        "alpha": 0.1,
+        "target_coverage": 0.9,
+        "calibration_n": 32,
+        "conformal_rank": 30,
+        "feasible": true,
+        "threshold": 1.2747,
+        "evaluation_n": 32,
+        "covered": 29,
+        "empirical_coverage": 0.90625,
+        "median_half_width": 1.2747,
+        "median_relative_half_width": 0.076295,
+        "mean_relative_half_width": 0.084912,
+        "quantity": "d32_px",
+        "per_condition_coverage": {
+          "bursting": {
+            "n": 2,
+            "covered": 2,
+            "coverage": 1.0
+          },
+          "coarse-froth": {
+            "n": 2,
+            "covered": 0,
+            "coverage": 0.0
+          },
+          "dark-defocus-compound": {
+            "n": 2,
+            "covered": 2,
+            "coverage": 1.0
+          },
+          "defocus": {
+            "n": 2,
+            "covered": 1,
+            "coverage": 0.5
+          },
+          "edge-framing": {
+            "n": 2,
+            "covered": 2,
+            "coverage": 1.0
+          },
+          "fine-froth": {
+            "n": 2,
+            "covered": 2,
+            "coverage": 1.0
+          },
+          "glare-motion-compound": {
+            "n": 2,
+            "covered": 2,
+            "coverage": 1.0
+          },
+          "glare-storm": {
+            "n": 2,
+            "covered": 2,
+            "coverage": 1.0
+          },
+          "high-load": {
+            "n": 2,
+            "covered": 2,
+            "coverage": 1.0
+          },
+          "low-light-noise": {
+            "n": 2,
+            "covered": 2,
+            "coverage": 1.0
+          },
+          "microbubble-cloud": {
+            "n": 2,
+            "covered": 2,
+            "coverage": 1.0
+          },
+          "mono-clean": {
+            "n": 2,
+            "covered": 2,
+            "coverage": 1.0
+          },
+          "motion-fast": {
+            "n": 2,
+            "covered": 2,
+            "coverage": 1.0
+          },
+          "poly-normal": {
+            "n": 2,
+            "covered": 2,
+            "coverage": 1.0
+          },
+          "watery": {
+            "n": 2,
+            "covered": 2,
+            "coverage": 1.0
+          },
+          "wide-bimodal-proxy": {
+            "n": 2,
+            "covered": 2,
+            "coverage": 1.0
+          }
+        },
+        "worst_condition": "coarse-froth",
+        "worst_condition_coverage": 0.0
+      },
+      "bubble_count": {
+        "score": "absolute",
+        "alpha": 0.1,
+        "target_coverage": 0.9,
+        "calibration_n": 32,
+        "conformal_rank": 30,
+        "feasible": true,
+        "threshold": 58.0,
+        "evaluation_n": 32,
+        "covered": 29,
+        "empirical_coverage": 0.90625,
+        "median_half_width": 58.0,
+        "median_relative_half_width": 0.30865,
+        "mean_relative_half_width": 0.317228,
+        "quantity": "bubble_count",
+        "per_condition_coverage": {
+          "bursting": {
+            "n": 2,
+            "covered": 2,
+            "coverage": 1.0
+          },
+          "coarse-froth": {
+            "n": 2,
+            "covered": 2,
+            "coverage": 1.0
+          },
+          "dark-defocus-compound": {
+            "n": 2,
+            "covered": 2,
+            "coverage": 1.0
+          },
+          "defocus": {
+            "n": 2,
+            "covered": 2,
+            "coverage": 1.0
+          },
+          "edge-framing": {
+            "n": 2,
+            "covered": 2,
+            "coverage": 1.0
+          },
+          "fine-froth": {
+            "n": 2,
+            "covered": 1,
+            "coverage": 0.5
+          },
+          "glare-motion-compound": {
+            "n": 2,
+            "covered": 2,
+            "coverage": 1.0
+          },
+          "glare-storm": {
+            "n": 2,
+            "covered": 2,
+            "coverage": 1.0
+          },
+          "high-load": {
+            "n": 2,
+            "covered": 2,
+            "coverage": 1.0
+          },
+          "low-light-noise": {
+            "n": 2,
+            "covered": 2,
+            "coverage": 1.0
+          },
+          "microbubble-cloud": {
+            "n": 2,
+            "covered": 0,
+            "coverage": 0.0
+          },
+          "mono-clean": {
+            "n": 2,
+            "covered": 2,
+            "coverage": 1.0
+          },
+          "motion-fast": {
+            "n": 2,
+            "covered": 2,
+            "coverage": 1.0
+          },
+          "poly-normal": {
+            "n": 2,
+            "covered": 2,
+            "coverage": 1.0
+          },
+          "watery": {
+            "n": 2,
+            "covered": 2,
+            "coverage": 1.0
+          },
+          "wide-bimodal-proxy": {
+            "n": 2,
+            "covered": 2,
+            "coverage": 1.0
+          }
+        },
+        "worst_condition": "microbubble-cloud",
+        "worst_condition_coverage": 0.0
+      }
+    },
+    "coverage_within_band": {
+      "d32_px": true,
+      "bubble_count": true
+    }
+  },
+  "mondrian_by_condition": {
+    "note": "the proposal's named refutation route. Reported whether or not coverage misses, because feasibility is a property of the calibration size, not of the result",
+    "alpha": 0.1,
+    "minimum_calibration_size_per_group": 9,
+    "groups": {
+      "bursting": {
+        "calibration_n": 4,
+        "conformal_rank": 5,
+        "feasible": false
+      },
+      "coarse-froth": {
+        "calibration_n": 4,
+        "conformal_rank": 5,
+        "feasible": false
+      },
+      "dark-defocus-compound": {
+        "calibration_n": 4,
+        "conformal_rank": 5,
+        "feasible": false
+      },
+      "defocus": {
+        "calibration_n": 4,
+        "conformal_rank": 5,
+        "feasible": false
+      },
+      "edge-framing": {
+        "calibration_n": 4,
+        "conformal_rank": 5,
+        "feasible": false
+      },
+      "fine-froth": {
+        "calibration_n": 4,
+        "conformal_rank": 5,
+        "feasible": false
+      },
+      "glare-motion-compound": {
+        "calibration_n": 4,
+        "conformal_rank": 5,
+        "feasible": false
+      },
+      "glare-storm": {
+        "calibration_n": 4,
+        "conformal_rank": 5,
+        "feasible": false
+      },
+      "high-load": {
+        "calibration_n": 4,
+        "conformal_rank": 5,
+        "feasible": false
+      },
+      "low-light-noise": {
+        "calibration_n": 4,
+        "conformal_rank": 5,
+        "feasible": false
+      },
+      "microbubble-cloud": {
+        "calibration_n": 4,
+        "conformal_rank": 5,
+        "feasible": false
+      },
+      "mono-clean": {
+        "calibration_n": 4,
+        "conformal_rank": 5,
+        "feasible": false
+      },
+      "motion-fast": {
+        "calibration_n": 4,
+        "conformal_rank": 5,
+        "feasible": false
+      },
+      "poly-normal": {
+        "calibration_n": 4,
+        "conformal_rank": 5,
+        "feasible": false
+      },
+      "watery": {
+        "calibration_n": 4,
+        "conformal_rank": 5,
+        "feasible": false
+      },
+      "wide-bimodal-proxy": {
+        "calibration_n": 4,
+        "conformal_rank": 5,
+        "feasible": false
+      }
+    },
+    "infeasible_groups": [
+      "bursting",
+      "coarse-froth",
+      "dark-defocus-compound",
+      "defocus",
+      "edge-framing",
+      "fine-froth",
+      "glare-motion-compound",
+      "glare-storm",
+      "high-load",
+      "low-light-noise",
+      "microbubble-cloud",
+      "mono-clean",
+      "motion-fast",
+      "poly-normal",
+      "watery",
+      "wide-bimodal-proxy"
+    ],
+    "feasible": false
+  },
+  "follow_on_instance_prediction_sets": {
+    "claim": "for each bubble the ensemble reports, at least one of the top-lambda members gives the right number of true bubbles inside that region, with probability at least 1 - alpha",
+    "selection": "conformal risk control, arXiv:2208.02814, with its finite-sample term",
+    "member_order_by": "published validation mean AP, from models/lamellastar-v1/run.json",
+    "member_order": [
+      "c24-e120-s20260727",
+      "c24-e120-s20260725",
+      "c24-e120-s20260726"
+    ],
+    "containment_fraction": 0.5,
+    "split_rule": "the 32 p3 reserve groups sorted by id; even positions fit, odd positions verify. Fixed before the run. The test split is never read by this lane",
+    "fit_frames": 32,
+    "verification_frames": 32,
+    "clusters_scored": 15482,
+    "risk_control": {
+      "alpha": 0.1,
+      "loss_upper_bound": 1.0,
+      "calibration_n": 32,
+      "risk_is_non_increasing_in_lambda": true,
+      "grid": [
+        {
+          "lambda": 1,
+          "calibration_risk": 0.130426,
+          "finite_sample_bound": 0.156777,
+          "controls": false
+        },
+        {
+          "lambda": 2,
+          "calibration_risk": 0.083956,
+          "finite_sample_bound": 0.111715,
+          "controls": false
+        },
+        {
+          "lambda": 3,
+          "calibration_risk": 0.070215,
+          "finite_sample_bound": 0.09839,
+          "controls": true
+        }
+      ],
+      "selected_lambda": 3,
+      "controlled": true
+    },
+    "verification_risk_by_lambda": {
+      "1": 0.125406,
+      "2": 0.085772,
+      "3": 0.071206
+    },
+    "verification_risk_at_selected_lambda": 0.071206
+  },
+  "verdict": {
+    "hypothesis_supported": true,
+    "reasons": []
+  },
+  "environment": {
+    "python": "3.12.10",
+    "torch": "2.13.0+cu126",
+    "cuda_runtime": "12.6",
+    "device": "NVIDIA GeForce RTX 4070 Laptop GPU"
+  },
+  "duration_seconds": 31.188,
+  "calibration_frames": [
+    {
+      "sample_id": "syn2r-mono-clean-p3-g00-a00",
+      "condition_id": "mono-clean",
+      "group_id": "syn2r-mono-clean-p3-g00",
+      "predicted_d32": 20.2995,
+      "truth_d32": 21.1922,
+      "predicted_count": 120,
+      "truth_count": 115
+    },
+    {
+      "sample_id": "syn2r-mono-clean-p3-g00-a01",
+      "condition_id": "mono-clean",
+      "group_id": "syn2r-mono-clean-p3-g00",
+      "predicted_d32": 20.1988,
+      "truth_d32": 21.1922,
+      "predicted_count": 120,
+      "truth_count": 115
+    },
+    {
+      "sample_id": "syn2r-mono-clean-p3-g01-a00",
+      "condition_id": "mono-clean",
+      "group_id": "syn2r-mono-clean-p3-g01",
+      "predicted_d32": 21.0393,
+      "truth_d32": 21.9579,
+      "predicted_count": 111,
+      "truth_count": 106
+    },
+    {
+      "sample_id": "syn2r-mono-clean-p3-g01-a01",
+      "condition_id": "mono-clean",
+      "group_id": "syn2r-mono-clean-p3-g01",
+      "predicted_d32": 20.9792,
+      "truth_d32": 21.9579,
+      "predicted_count": 115,
+      "truth_count": 106
+    },
+    {
+      "sample_id": "syn2r-poly-normal-p3-g00-a00",
+      "condition_id": "poly-normal",
+      "group_id": "syn2r-poly-normal-p3-g00",
+      "predicted_d32": 16.8386,
+      "truth_d32": 17.0804,
+      "predicted_count": 194,
+      "truth_count": 197
+    },
+    {
+      "sample_id": "syn2r-poly-normal-p3-g00-a01",
+      "condition_id": "poly-normal",
+      "group_id": "syn2r-poly-normal-p3-g00",
+      "predicted_d32": 16.8861,
+      "truth_d32": 17.0804,
+      "predicted_count": 195,
+      "truth_count": 197
+    },
+    {
+      "sample_id": "syn2r-poly-normal-p3-g01-a00",
+      "condition_id": "poly-normal",
+      "group_id": "syn2r-poly-normal-p3-g01",
+      "predicted_d32": 16.5778,
+      "truth_d32": 16.9597,
+      "predicted_count": 200,
+      "truth_count": 197
+    },
+    {
+      "sample_id": "syn2r-poly-normal-p3-g01-a01",
+      "condition_id": "poly-normal",
+      "group_id": "syn2r-poly-normal-p3-g01",
+      "predicted_d32": 16.5669,
+      "truth_d32": 16.9597,
+      "predicted_count": 201,
+      "truth_count": 197
+    },
+    {
+      "sample_id": "syn2r-fine-froth-p3-g00-a00",
+      "condition_id": "fine-froth",
+      "group_id": "syn2r-fine-froth-p3-g00",
+      "predicted_d32": 9.5358,
+      "truth_d32": 9.8055,
+      "predicted_count": 535,
+      "truth_count": 593
+    },
+    {
+      "sample_id": "syn2r-fine-froth-p3-g00-a01",
+      "condition_id": "fine-froth",
+      "group_id": "syn2r-fine-froth-p3-g00",
+      "predicted_d32": 9.5692,
+      "truth_d32": 9.8055,
+      "predicted_count": 530,
+      "truth_count": 593
+    },
+    {
+      "sample_id": "syn2r-fine-froth-p3-g01-a00",
+      "condition_id": "fine-froth",
+      "group_id": "syn2r-fine-froth-p3-g01",
+      "predicted_d32": 8.9797,
+      "truth_d32": 9.2896,
+      "predicted_count": 544,
+      "truth_count": 593
+    },
+    {
+      "sample_id": "syn2r-fine-froth-p3-g01-a01",
+      "condition_id": "fine-froth",
+      "group_id": "syn2r-fine-froth-p3-g01",
+      "predicted_d32": 8.9541,
+      "truth_d32": 9.2896,
+      "predicted_count": 548,
+      "truth_count": 593
+    },
+    {
+      "sample_id": "syn2r-coarse-froth-p3-g00-a00",
+      "condition_id": "coarse-froth",
+      "group_id": "syn2r-coarse-froth-p3-g00",
+      "predicted_d32": 26.3717,
+      "truth_d32": 27.5834,
+      "predicted_count": 80,
+      "truth_count": 68
+    },
+    {
+      "sample_id": "syn2r-coarse-froth-p3-g00-a01",
+      "condition_id": "coarse-froth",
+      "group_id": "syn2r-coarse-froth-p3-g00",
+      "predicted_d32": 26.3971,
+      "truth_d32": 27.5834,
+      "predicted_count": 78,
+      "truth_count": 68
+    },
+    {
+      "sample_id": "syn2r-coarse-froth-p3-g01-a00",
+      "condition_id": "coarse-froth",
+      "group_id": "syn2r-coarse-froth-p3-g01",
+      "predicted_d32": 26.6698,
+      "truth_d32": 30.7493,
+      "predicted_count": 91,
+      "truth_count": 68
+    },
+    {
+      "sample_id": "syn2r-coarse-froth-p3-g01-a01",
+      "condition_id": "coarse-froth",
+      "group_id": "syn2r-coarse-froth-p3-g01",
+      "predicted_d32": 27.4907,
+      "truth_d32": 30.7493,
+      "predicted_count": 91,
+      "truth_count": 68
+    },
+    {
+      "sample_id": "syn2r-glare-storm-p3-g00-a00",
+      "condition_id": "glare-storm",
+      "group_id": "syn2r-glare-storm-p3-g00",
+      "predicted_d32": 16.0779,
+      "truth_d32": 16.5492,
+      "predicted_count": 193,
+      "truth_count": 197
+    },
+    {
+      "sample_id": "syn2r-glare-storm-p3-g00-a01",
+      "condition_id": "glare-storm",
+      "group_id": "syn2r-glare-storm-p3-g00",
+      "predicted_d32": 16.4044,
+      "truth_d32": 16.5492,
+      "predicted_count": 192,
+      "truth_count": 197
+    },
+    {
+      "sample_id": "syn2r-glare-storm-p3-g01-a00",
+      "condition_id": "glare-storm",
+      "group_id": "syn2r-glare-storm-p3-g01",
+      "predicted_d32": 16.448,
+      "truth_d32": 16.8749,
+      "predicted_count": 198,
+      "truth_count": 197
+    },
+    {
+      "sample_id": "syn2r-glare-storm-p3-g01-a01",
+      "condition_id": "glare-storm",
+      "group_id": "syn2r-glare-storm-p3-g01",
+      "predicted_d32": 16.2658,
+      "truth_d32": 16.8749,
+      "predicted_count": 203,
+      "truth_count": 197
+    },
+    {
+      "sample_id": "syn2r-watery-p3-g00-a00",
+      "condition_id": "watery",
+      "group_id": "syn2r-watery-p3-g00",
+      "predicted_d32": 17.5621,
+      "truth_d32": 17.1639,
+      "predicted_count": 215,
+      "truth_count": 231
+    },
+    {
+      "sample_id": "syn2r-watery-p3-g00-a01",
+      "condition_id": "watery",
+      "group_id": "syn2r-watery-p3-g00",
+      "predicted_d32": 17.162,
+      "truth_d32": 17.1639,
+      "predicted_count": 224,
+      "truth_count": 231
+    },
+    {
+      "sample_id": "syn2r-watery-p3-g01-a00",
+      "condition_id": "watery",
+      "group_id": "syn2r-watery-p3-g01",
+      "predicted_d32": 15.5864,
+      "truth_d32": 15.621,
+      "predicted_count": 224,
+      "truth_count": 231
+    },
+    {
+      "sample_id": "syn2r-watery-p3-g01-a01",
+      "condition_id": "watery",
+      "group_id": "syn2r-watery-p3-g01",
+      "predicted_d32": 15.7107,
+      "truth_d32": 15.621,
+      "predicted_count": 221,
+      "truth_count": 231
+    },
+    {
+      "sample_id": "syn2r-motion-fast-p3-g00-a00",
+      "condition_id": "motion-fast",
+      "group_id": "syn2r-motion-fast-p3-g00",
+      "predicted_d32": 18.0124,
+      "truth_d32": 18.1055,
+      "predicted_count": 189,
+      "truth_count": 197
+    },
+    {
+      "sample_id": "syn2r-motion-fast-p3-g00-a01",
+      "condition_id": "motion-fast",
+      "group_id": "syn2r-motion-fast-p3-g00",
+      "predicted_d32": 18.1548,
+      "truth_d32": 18.1055,
+      "predicted_count": 182,
+      "truth_count": 197
+    },
+    {
+      "sample_id": "syn2r-motion-fast-p3-g01-a00",
+      "condition_id": "motion-fast",
+      "group_id": "syn2r-motion-fast-p3-g01",
+      "predicted_d32": 15.2745,
+      "truth_d32": 15.5574,
+      "predicted_count": 192,
+      "truth_count": 197
+    },
+    {
+      "sample_id": "syn2r-motion-fast-p3-g01-a01",
+      "condition_id": "motion-fast",
+      "group_id": "syn2r-motion-fast-p3-g01",
+      "predicted_d32": 15.3663,
+      "truth_d32": 15.5574,
+      "predicted_count": 191,
+      "truth_count": 197
+    },
+    {
+      "sample_id": "syn2r-defocus-p3-g00-a00",
+      "condition_id": "defocus",
+      "group_id": "syn2r-defocus-p3-g00",
+      "predicted_d32": 17.3552,
+      "truth_d32": 17.448,
+      "predicted_count": 160,
+      "truth_count": 170
+    },
+    {
+      "sample_id": "syn2r-defocus-p3-g00-a01",
+      "condition_id": "defocus",
+      "group_id": "syn2r-defocus-p3-g00",
+      "predicted_d32": 17.3797,
+      "truth_d32": 17.448,
+      "predicted_count": 160,
+      "truth_count": 170
+    },
+    {
+      "sample_id": "syn2r-defocus-p3-g01-a00",
+      "condition_id": "defocus",
+      "group_id": "syn2r-defocus-p3-g01",
+      "predicted_d32": 16.1251,
+      "truth_d32": 16.262,
+      "predicted_count": 165,
+      "truth_count": 170
+    },
+    {
+      "sample_id": "syn2r-defocus-p3-g01-a01",
+      "condition_id": "defocus",
+      "group_id": "syn2r-defocus-p3-g01",
+      "predicted_d32": 15.9859,
+      "truth_d32": 16.262,
+      "predicted_count": 172,
+      "truth_count": 170
+    },
+    {
+      "sample_id": "syn2r-high-load-p3-g00-a00",
+      "condition_id": "high-load",
+      "group_id": "syn2r-high-load-p3-g00",
+      "predicted_d32": 14.9154,
+      "truth_d32": 15.432,
+      "predicted_count": 230,
+      "truth_count": 231
+    },
+    {
+      "sample_id": "syn2r-high-load-p3-g00-a01",
+      "condition_id": "high-load",
+      "group_id": "syn2r-high-load-p3-g00",
+      "predicted_d32": 14.8812,
+      "truth_d32": 15.432,
+      "predicted_count": 229,
+      "truth_count": 231
+    },
+    {
+      "sample_id": "syn2r-high-load-p3-g01-a00",
+      "condition_id": "high-load",
+      "group_id": "syn2r-high-load-p3-g01",
+      "predicted_d32": 15.6277,
+      "truth_d32": 16.1025,
+      "predicted_count": 228,
+      "truth_count": 231
+    },
+    {
+      "sample_id": "syn2r-high-load-p3-g01-a01",
+      "condition_id": "high-load",
+      "group_id": "syn2r-high-load-p3-g01",
+      "predicted_d32": 15.6114,
+      "truth_d32": 16.1025,
+      "predicted_count": 229,
+      "truth_count": 231
+    },
+    {
+      "sample_id": "syn2r-low-light-noise-p3-g00-a00",
+      "condition_id": "low-light-noise",
+      "group_id": "syn2r-low-light-noise-p3-g00",
+      "predicted_d32": 16.1668,
+      "truth_d32": 16.6502,
+      "predicted_count": 198,
+      "truth_count": 197
+    },
+    {
+      "sample_id": "syn2r-low-light-noise-p3-g00-a01",
+      "condition_id": "low-light-noise",
+      "group_id": "syn2r-low-light-noise-p3-g00",
+      "predicted_d32": 16.0433,
+      "truth_d32": 16.6502,
+      "predicted_count": 198,
+      "truth_count": 197
+    },
+    {
+      "sample_id": "syn2r-low-light-noise-p3-g01-a00",
+      "condition_id": "low-light-noise",
+      "group_id": "syn2r-low-light-noise-p3-g01",
+      "predicted_d32": 15.9797,
+      "truth_d32": 16.3576,
+      "predicted_count": 200,
+      "truth_count": 197
+    },
+    {
+      "sample_id": "syn2r-low-light-noise-p3-g01-a01",
+      "condition_id": "low-light-noise",
+      "group_id": "syn2r-low-light-noise-p3-g01",
+      "predicted_d32": 16.0989,
+      "truth_d32": 16.3576,
+      "predicted_count": 196,
+      "truth_count": 197
+    },
+    {
+      "sample_id": "syn2r-bursting-p3-g00-a00",
+      "condition_id": "bursting",
+      "group_id": "syn2r-bursting-p3-g00",
+      "predicted_d32": 17.7916,
+      "truth_d32": 18.2976,
+      "predicted_count": 154,
+      "truth_count": 148
+    },
+    {
+      "sample_id": "syn2r-bursting-p3-g00-a01",
+      "condition_id": "bursting",
+      "group_id": "syn2r-bursting-p3-g00",
+      "predicted_d32": 17.9628,
+      "truth_d32": 18.2976,
+      "predicted_count": 152,
+      "truth_count": 148
+    },
+    {
+      "sample_id": "syn2r-bursting-p3-g01-a00",
+      "condition_id": "bursting",
+      "group_id": "syn2r-bursting-p3-g01",
+      "predicted_d32": 18.7288,
+      "truth_d32": 18.9585,
+      "predicted_count": 147,
+      "truth_count": 148
+    },
+    {
+      "sample_id": "syn2r-bursting-p3-g01-a01",
+      "condition_id": "bursting",
+      "group_id": "syn2r-bursting-p3-g01",
+      "predicted_d32": 18.5978,
+      "truth_d32": 18.9585,
+      "predicted_count": 151,
+      "truth_count": 148
+    },
+    {
+      "sample_id": "syn2r-edge-framing-p3-g00-a00",
+      "condition_id": "edge-framing",
+      "group_id": "syn2r-edge-framing-p3-g00",
+      "predicted_d32": 14.6024,
+      "truth_d32": 14.8248,
+      "predicted_count": 263,
+      "truth_count": 275
+    },
+    {
+      "sample_id": "syn2r-edge-framing-p3-g00-a01",
+      "condition_id": "edge-framing",
+      "group_id": "syn2r-edge-framing-p3-g00",
+      "predicted_d32": 14.4916,
+      "truth_d32": 14.8248,
+      "predicted_count": 264,
+      "truth_count": 275
+    },
+    {
+      "sample_id": "syn2r-edge-framing-p3-g01-a00",
+      "condition_id": "edge-framing",
+      "group_id": "syn2r-edge-framing-p3-g01",
+      "predicted_d32": 14.2351,
+      "truth_d32": 14.3648,
+      "predicted_count": 268,
+      "truth_count": 275
+    },
+    {
+      "sample_id": "syn2r-edge-framing-p3-g01-a01",
+      "condition_id": "edge-framing",
+      "group_id": "syn2r-edge-framing-p3-g01",
+      "predicted_d32": 14.2499,
+      "truth_d32": 14.3648,
+      "predicted_count": 263,
+      "truth_count": 275
+    },
+    {
+      "sample_id": "syn2r-microbubble-cloud-p3-g00-a00",
+      "condition_id": "microbubble-cloud",
+      "group_id": "syn2r-microbubble-cloud-p3-g00",
+      "predicted_d32": 7.3826,
+      "truth_d32": 6.585,
+      "predicted_count": 841,
+      "truth_count": 1335
+    },
+    {
+      "sample_id": "syn2r-microbubble-cloud-p3-g00-a01",
+      "condition_id": "microbubble-cloud",
+      "group_id": "syn2r-microbubble-cloud-p3-g00",
+      "predicted_d32": 7.4501,
+      "truth_d32": 6.585,
+      "predicted_count": 827,
+      "truth_count": 1335
+    },
+    {
+      "sample_id": "syn2r-microbubble-cloud-p3-g01-a00",
+      "condition_id": "microbubble-cloud",
+      "group_id": "syn2r-microbubble-cloud-p3-g01",
+      "predicted_d32": 7.2591,
+      "truth_d32": 6.5482,
+      "predicted_count": 851,
+      "truth_count": 1335
+    },
+    {
+      "sample_id": "syn2r-microbubble-cloud-p3-g01-a01",
+      "condition_id": "microbubble-cloud",
+      "group_id": "syn2r-microbubble-cloud-p3-g01",
+      "predicted_d32": 7.3147,
+      "truth_d32": 6.5482,
+      "predicted_count": 838,
+      "truth_count": 1335
+    },
+    {
+      "sample_id": "syn2r-wide-bimodal-proxy-p3-g00-a00",
+      "condition_id": "wide-bimodal-proxy",
+      "group_id": "syn2r-wide-bimodal-proxy-p3-g00",
+      "predicted_d32": 13.73,
+      "truth_d32": 13.4391,
+      "predicted_count": 142,
+      "truth_count": 148
+    },
+    {
+      "sample_id": "syn2r-wide-bimodal-proxy-p3-g00-a01",
+      "condition_id": "wide-bimodal-proxy",
+      "group_id": "syn2r-wide-bimodal-proxy-p3-g00",
+      "predicted_d32": 13.7676,
+      "truth_d32": 13.4391,
+      "predicted_count": 142,
+      "truth_count": 148
+    },
+    {
+      "sample_id": "syn2r-wide-bimodal-proxy-p3-g01-a00",
+      "condition_id": "wide-bimodal-proxy",
+      "group_id": "syn2r-wide-bimodal-proxy-p3-g01",
+      "predicted_d32": 14.3386,
+      "truth_d32": 13.9594,
+      "predicted_count": 145,
+      "truth_count": 148
+    },
+    {
+      "sample_id": "syn2r-wide-bimodal-proxy-p3-g01-a01",
+      "condition_id": "wide-bimodal-proxy",
+      "group_id": "syn2r-wide-bimodal-proxy-p3-g01",
+      "predicted_d32": 14.1987,
+      "truth_d32": 13.9594,
+      "predicted_count": 145,
+      "truth_count": 148
+    },
+    {
+      "sample_id": "syn2r-glare-motion-compound-p3-g00-a00",
+      "condition_id": "glare-motion-compound",
+      "group_id": "syn2r-glare-motion-compound-p3-g00",
+      "predicted_d32": 18.7137,
+      "truth_d32": 19.9884,
+      "predicted_count": 188,
+      "truth_count": 197
+    },
+    {
+      "sample_id": "syn2r-glare-motion-compound-p3-g00-a01",
+      "condition_id": "glare-motion-compound",
+      "group_id": "syn2r-glare-motion-compound-p3-g00",
+      "predicted_d32": 17.1034,
+      "truth_d32": 19.9884,
+      "predicted_count": 191,
+      "truth_count": 197
+    },
+    {
+      "sample_id": "syn2r-glare-motion-compound-p3-g01-a00",
+      "condition_id": "glare-motion-compound",
+      "group_id": "syn2r-glare-motion-compound-p3-g01",
+      "predicted_d32": 16.3647,
+      "truth_d32": 20.1989,
+      "predicted_count": 192,
+      "truth_count": 197
+    },
+    {
+      "sample_id": "syn2r-glare-motion-compound-p3-g01-a01",
+      "condition_id": "glare-motion-compound",
+      "group_id": "syn2r-glare-motion-compound-p3-g01",
+      "predicted_d32": 17.8637,
+      "truth_d32": 20.1989,
+      "predicted_count": 191,
+      "truth_count": 197
+    },
+    {
+      "sample_id": "syn2r-dark-defocus-compound-p3-g00-a00",
+      "condition_id": "dark-defocus-compound",
+      "group_id": "syn2r-dark-defocus-compound-p3-g00",
+      "predicted_d32": 18.1311,
+      "truth_d32": 17.89,
+      "predicted_count": 146,
+      "truth_count": 170
+    },
+    {
+      "sample_id": "syn2r-dark-defocus-compound-p3-g00-a01",
+      "condition_id": "dark-defocus-compound",
+      "group_id": "syn2r-dark-defocus-compound-p3-g00",
+      "predicted_d32": 18.2233,
+      "truth_d32": 17.89,
+      "predicted_count": 144,
+      "truth_count": 170
+    },
+    {
+      "sample_id": "syn2r-dark-defocus-compound-p3-g01-a00",
+      "condition_id": "dark-defocus-compound",
+      "group_id": "syn2r-dark-defocus-compound-p3-g01",
+      "predicted_d32": 16.9966,
+      "truth_d32": 16.6599,
+      "predicted_count": 145,
+      "truth_count": 170
+    },
+    {
+      "sample_id": "syn2r-dark-defocus-compound-p3-g01-a01",
+      "condition_id": "dark-defocus-compound",
+      "group_id": "syn2r-dark-defocus-compound-p3-g01",
+      "predicted_d32": 16.8469,
+      "truth_d32": 16.6599,
+      "predicted_count": 150,
+      "truth_count": 170
+    }
+  ]
+}

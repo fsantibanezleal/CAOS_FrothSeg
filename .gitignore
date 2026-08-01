@@ -76,7 +76,16 @@ Thumbs.db
 !/verification/classical-live-parity.json
 !/verification/n1-preregistered-ablation.json
 !/verification/p1-ensemble-spread.json
+!/verification/p2-domain-randomization.json
+!/verification/p4-marker-tta-consensus.json
+!/verification/phase1-classical-sweeps.json
 !/verification/sam3-feasibility.json
+!/verification/phase2-data-preregistration.json
+!/verification/phase2-working-cache-regeneration.json
+!/verification/p5-diagnostics.json
+!/verification/p5-a1-offset-head.json
+!/verification/p3-conformal-intervals.json
+!/verification/reserve-slice-ledger.json
 !/verification/visual-qa/
 /verification/visual-qa/*
 !/verification/visual-qa/manifest.json

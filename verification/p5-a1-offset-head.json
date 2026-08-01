@@ -1,0 +1,192 @@
+{
+  "experiment": "p5-a1-centroid-offset-head",
+  "preregistration": "CAOS_MANAGE plans/frothseg/research-2026-07-31/PLAN-PROPOSAL.md section P-5",
+  "gated_by": {
+    "evidence": "verification/p5-diagnostics.json",
+    "a1_justified": true,
+    "leg1_passes": true,
+    "leg2_passes": true
+  },
+  "date": "2026-08-01",
+  "produced_by": "scripts/run_p5_a1_offset_head.py",
+  "implementation": {
+    "method": "lamellastar_offset",
+    "channels": 5,
+    "layout": "foreground, boundary, offset_y, offset_x, center",
+    "targets_and_decode": "data-pipeline/fslab/learning/offset_head.py",
+    "architecture": "LamellaStarOffset in data-pipeline/fslab/learning/multitask_models.py: the published LamellaStar with the 1x1 output head widened from 4 to 5",
+    "marker_derivation": "centroids of connected components of the thresholded convergence surface (negative divergence of the offset field) blended with the center channel, with min_distance applied as Chebyshev separation; no peak_local_max",
+    "registered_as_sibling_method_not_a_redefinition": "P-5 says METHOD_CHANNELS['lamellastar'] 4 to 5. Redefining 'lamellastar' would break every committed four-channel checkpoint, ONNX export and artifact, so the head is registered as 'lamellastar_offset'. The hypothesis, bar, budget and claim language are unchanged.",
+    "held_fixed": [
+      "encoder, bridge, gates and decoder",
+      "AdamW at lr 8e-4, batch 8, 120 epochs, augmentation none",
+      "foreground, boundary and center loss terms and weights; the offset regression carries the same 2.0 weight the distance term carried",
+      "the 405-combination calibration grid and its exact values",
+      "logit-mean ensembling of three seeds"
+    ]
+  },
+  "design": {
+    "seeds": [
+      20260725,
+      20260726,
+      20260727
+    ],
+    "paired_with": "the published ensemble, same three seeds",
+    "train_split": "existing 192-sample train split (data/cache/learned-v2-192.npz)",
+    "evaluation_split": "validation only",
+    "test_evaluations_spent": 0,
+    "ensemble_mode": "logit-mean",
+    "tta": "none"
+  },
+  "members": [
+    {
+      "id": "offset-c24-e120-s20260725",
+      "seed": 20260725,
+      "validation_mean_ap": 0.43912500000000004
+    },
+    {
+      "id": "offset-c24-e120-s20260726",
+      "seed": 20260726,
+      "validation_mean_ap": 0.45690625000000007
+    },
+    {
+      "id": "offset-c24-e120-s20260727",
+      "seed": 20260727,
+      "validation_mean_ap": 0.46603125
+    }
+  ],
+  "training_failures": [],
+  "selected_calibration": {
+    "note": "The 405-point grid was held fixed and run unchanged for every arm. What it SELECTED is a measurement in its own right: center_weight 1.0 means the marker surface is the center channel alone and the field divergence contributed nothing to the markers of that run.",
+    "arm_ensemble": {
+      "split": "calibration",
+      "n_groups": 32,
+      "mean_ap": 0.47959375000000004,
+      "foreground_threshold": 0.6,
+      "boundary_threshold": 0.65,
+      "marker_threshold": 0.15,
+      "min_distance": 3,
+      "center_weight": 1.0
+    },
+    "baseline_ensemble": {
+      "split": "calibration",
+      "n_groups": 32,
+      "mean_ap": 0.53184375,
+      "foreground_threshold": 0.6,
+      "boundary_threshold": 0.65,
+      "marker_threshold": 0.15,
+      "min_distance": 3,
+      "center_weight": 0.5
+    },
+    "arm_members": {
+      "offset-c24-e120-s20260725": {
+        "split": "calibration",
+        "n_groups": 32,
+        "mean_ap": 0.44575,
+        "foreground_threshold": 0.6,
+        "boundary_threshold": 0.65,
+        "marker_threshold": 0.15,
+        "min_distance": 3,
+        "center_weight": 1.0
+      },
+      "offset-c24-e120-s20260726": {
+        "split": "calibration",
+        "n_groups": 32,
+        "mean_ap": 0.45771874999999995,
+        "foreground_threshold": 0.6,
+        "boundary_threshold": 0.5,
+        "marker_threshold": 0.15,
+        "min_distance": 3,
+        "center_weight": 1.0
+      },
+      "offset-c24-e120-s20260727": {
+        "split": "calibration",
+        "n_groups": 32,
+        "mean_ap": 0.47003125,
+        "foreground_threshold": 0.6,
+        "boundary_threshold": 0.65,
+        "marker_threshold": 0.15,
+        "min_distance": 3,
+        "center_weight": 1.0
+      }
+    },
+    "arm_runs_that_selected_center_weight_1": 4,
+    "arm_runs_total": 4
+  },
+  "oracle_decode_check": {
+    "what": "mean AP of each decode applied to GROUND-TRUTH target stacks over the 32 calibration groups; no network involved, so this measures the decode alone",
+    "split": "calibration",
+    "groups": 32,
+    "scalar_head_at_its_selected_calibration": {
+      "center_weight": 0.5,
+      "mean_ap": 0.6251562500000001
+    },
+    "offset_head_at_its_selected_calibration": {
+      "center_weight": 1.0,
+      "mean_ap": 0.761625
+    },
+    "offset_head_with_divergence_markers_only": {
+      "center_weight": 0.0,
+      "mean_ap": 0.7114062499999999
+    }
+  },
+  "arm": {
+    "id": "ensemble-offset-logitmean-e120",
+    "run_json": "E:/_Temp/p5-a1-offset/ensemble-offset-logitmean-e120/run.json",
+    "validation_mean_ap": 0.47928125,
+    "validation_mean_pq": 0.708,
+    "validation_mean_boundary_fscore": 0.98745,
+    "validation_mean_count_absolute_error": 25.828125,
+    "fine-froth": {
+      "n": 4,
+      "mean_merges": 33.0,
+      "mean_splits": 2.5,
+      "mean_ap": 0.41075
+    },
+    "coarse-froth": {
+      "n": 4,
+      "mean_merges": 5.75,
+      "mean_splits": 1.75,
+      "mean_ap": 0.6192500000000001
+    }
+  },
+  "baseline_published_ensemble": {
+    "id": "ensemble-published-logitmean-e120",
+    "run_json": "E:/_Temp/p5-a1-offset/ensemble-published-logitmean-e120/run.json",
+    "validation_mean_ap": 0.524,
+    "validation_mean_pq": 0.7379218750000001,
+    "validation_mean_boundary_fscore": 0.9885546875,
+    "validation_mean_count_absolute_error": 41.859375,
+    "fine-froth": {
+      "n": 4,
+      "mean_merges": 59.5,
+      "mean_splits": 7.75,
+      "mean_ap": 0.41175
+    },
+    "coarse-froth": {
+      "n": 4,
+      "mean_merges": 0.0,
+      "mean_splits": 7.0,
+      "mean_ap": 0.55575
+    },
+    "recorded_validation_mean_ap": 0.524,
+    "matches_recorded_value": true
+  },
+  "bar": {
+    "statement": "must beat the published ensemble's validation mean AP by more than 0.03744 in a three-seed paired comparison, and must reduce merges on fine-froth and splits on coarse-froth at the same time; reducing one at the cost of the other is a null",
+    "noise_floor": 0.03744,
+    "delta_validation_mean_ap": -0.04471875000000003,
+    "beats_noise_floor": false,
+    "merge_condition": "fine-froth",
+    "baseline_mean_merges": 59.5,
+    "arm_mean_merges": 33.0,
+    "reduces_merges": true,
+    "split_condition": "coarse-froth",
+    "baseline_mean_splits": 7.0,
+    "arm_mean_splits": 1.75,
+    "reduces_splits": true
+  },
+  "verdict": "null",
+  "verdict_rule": "pass only if all three clauses hold together; anything else is a null and is published as one. The rule was fixed before the runs and is not adjusted here",
+  "duration_seconds": 61.218
+}
