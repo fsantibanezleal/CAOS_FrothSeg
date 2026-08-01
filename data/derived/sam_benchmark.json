@@ -6,9 +6,9 @@
  "summary": {
   "n_cases": 13,
   "mean_sam_ap": 0.365,
-  "mean_floor_ap": 0.262,
-  "delta": 0.103,
-  "sam_wins": 10
+  "mean_floor_ap": 0.351,
+  "delta": 0.014,
+  "sam_wins": 5
  },
  "cases": [
   {
@@ -37,8 +37,8 @@
    "gt_n": 68,
    "sam_d32": 37.8,
    "gt_d32": 39.51,
-   "floor_method": "watershed_dt",
-   "floor_ap": 0.394,
+   "floor_method": "valley_edge",
+   "floor_ap": 0.555,
    "encoder_ms": 1004,
    "total_ms": 24344,
    "device": "default"
@@ -53,8 +53,8 @@
    "gt_n": 197,
    "sam_d32": 22.29,
    "gt_d32": 22.96,
-   "floor_method": "watershed_dt",
-   "floor_ap": 0.401,
+   "floor_method": "valley_edge",
+   "floor_ap": 0.458,
    "encoder_ms": 1227,
    "total_ms": 24058,
    "device": "default"
@@ -69,8 +69,8 @@
    "gt_n": 148,
    "sam_d32": 26.68,
    "gt_d32": 26.0,
-   "floor_method": "watershed_dt",
-   "floor_ap": 0.361,
+   "floor_method": "valley_edge",
+   "floor_ap": 0.438,
    "encoder_ms": 1107,
    "total_ms": 30572,
    "device": "default"
@@ -85,8 +85,8 @@
    "gt_n": 231,
    "sam_d32": 20.76,
    "gt_d32": 21.04,
-   "floor_method": "watershed_dt",
-   "floor_ap": 0.415,
+   "floor_method": "valley_edge",
+   "floor_ap": 0.442,
    "encoder_ms": 1120,
    "total_ms": 30591,
    "device": "default"
@@ -101,8 +101,8 @@
    "gt_n": 274,
    "sam_d32": 19.16,
    "gt_d32": 19.27,
-   "floor_method": "watershed_dt",
-   "floor_ap": 0.309,
+   "floor_method": "valley_edge",
+   "floor_ap": 0.415,
    "encoder_ms": 1031,
    "total_ms": 30152,
    "device": "default"
@@ -117,8 +117,8 @@
    "gt_n": 197,
    "sam_d32": 23.9,
    "gt_d32": 21.96,
-   "floor_method": "watershed_dt",
-   "floor_ap": 0.081,
+   "floor_method": "valley_edge",
+   "floor_ap": 0.182,
    "encoder_ms": 945,
    "total_ms": 23920,
    "device": "default"
@@ -133,8 +133,8 @@
    "gt_n": 593,
    "sam_d32": 12.77,
    "gt_d32": 12.92,
-   "floor_method": "watershed_dt",
-   "floor_ap": 0.266,
+   "floor_method": "valley_edge",
+   "floor_ap": 0.363,
    "encoder_ms": 987,
    "total_ms": 23628,
    "device": "default"
@@ -149,8 +149,8 @@
    "gt_n": 196,
    "sam_d32": 21.97,
    "gt_d32": 22.55,
-   "floor_method": "watershed_dt",
-   "floor_ap": 0.263,
+   "floor_method": "valley_edge",
+   "floor_ap": 0.267,
    "encoder_ms": 1051,
    "total_ms": 30607,
    "device": "default"
@@ -165,8 +165,8 @@
    "gt_n": 231,
    "sam_d32": 21.92,
    "gt_d32": 21.25,
-   "floor_method": "watershed_dt",
-   "floor_ap": 0.155,
+   "floor_method": "watershed_hmax",
+   "floor_ap": 0.373,
    "encoder_ms": 966,
    "total_ms": 23428,
    "device": "default"
@@ -181,8 +181,8 @@
    "gt_n": 170,
    "sam_d32": 17.73,
    "gt_d32": 28.46,
-   "floor_method": "watershed_dt",
-   "floor_ap": 0.066,
+   "floor_method": "watershed_hmax",
+   "floor_ap": 0.225,
    "encoder_ms": 975,
    "total_ms": 28953,
    "device": "default"
@@ -197,8 +197,8 @@
    "gt_n": 197,
    "sam_d32": 16.37,
    "gt_d32": 23.95,
-   "floor_method": "watershed_dt",
-   "floor_ap": 0.104,
+   "floor_method": "watershed_hmax",
+   "floor_ap": 0.165,
    "encoder_ms": 988,
    "total_ms": 23836,
    "device": "default"

@@ -79,6 +79,54 @@ def test_selection_was_on_validation_only(report: dict) -> None:
     assert report["selection"]["selected_arm"] == max(arms, key=arms.get)
 
 
+def test_the_control_arm_is_the_published_model_bit_for_bit(report: dict) -> None:
+    """The surface comparison is only meaningful if the arm really is the published one.
+
+    Same three seeds, and post-processing thresholds identical to the published N1 manifest.
+    If either drifts, the burned-against-clean deltas in ``surface_replication`` stop being a
+    pure surface effect and the reading in that block becomes wrong.
+    """
+    published_path = ROOT / "models/lamellastar-v1/run.json"
+    if not published_path.is_file():
+        pytest.skip("published N1 manifest not present in this checkout")
+    published = json.loads(published_path.read_text(encoding="utf-8"))
+    control = report["design"]["arms"]["A"]
+    for key in (
+        "foreground_threshold",
+        "boundary_threshold",
+        "marker_threshold",
+        "min_distance",
+        "center_weight",
+    ):
+        assert control["calibration"][key] == published["calibration"][key], key
+    assert [member["seed"] for member in control["members"]] == [
+        member["config"]["seed"] for member in published["members"]
+    ]
+    assert all(member["augmentation"] == "none" for member in control["members"])
+
+
+def test_surface_replication_deltas_match_the_numbers_they_are_derived_from(
+    report: dict,
+) -> None:
+    replication = report.get("surface_replication")
+    if replication is None:
+        pytest.skip("no control arm was scored")
+    real = replication["real_axis"]
+    synthetic = replication["synthetic_axis"]
+    assert real["delta"] == pytest.approx(
+        real["fresh_split_mean_ap"] - real["burned_split_mean_ap"]
+    )
+    assert synthetic["delta"] == pytest.approx(
+        synthetic["reserve_mean_ap"] - synthetic["burned_test_mean_ap"]
+    )
+    assert real["fresh_split_mean_ap"] == report["results"]["A"]["fresh_real_mean_ap"]
+    assert (
+        synthetic["reserve_mean_ap"] == report["results"]["A"]["synthetic_reserve_mean_ap"]
+    )
+    assert synthetic["burned_test_mean_ap"] == report["bar"]["synthetic"]["reference"]
+    assert real["burned_split_mean_ap"] == report["bar"]["real"]["rises_from"]
+
+
 def test_the_preregistered_claim_language_is_kept_verbatim_both_ways(report: dict) -> None:
     language = report["preregistered_claim_language"]
     assert language["branch_taken"] in {"pass", "fail"}

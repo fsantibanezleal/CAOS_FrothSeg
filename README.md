@@ -17,11 +17,11 @@ offline, where the required runtimes and GPU are available.
 
 ## Release evidence
 
-Version 0.04.000 implements all 15 registered methods:
+Version 0.05.000 implements all 15 registered methods:
 
 | Tier | IDs | Implementations |
 |---|---|---|
-| Classical | C1-C7 | Otsu+CC, immersion watershed, marker watershed, distance watershed, H-minima watershed, SLIC+RAG, lamella-valley dark-seam detector |
+| Classical | C1-C7 | Otsu+CC, immersion watershed, marker watershed, distance watershed, H-minima watershed, SLIC+RAG, lamella-valley constrained watershed |
 | Domain learned | L1-L4, L6 | boundary U-Net, deep-marker watershed, GC-FSegNet, official StarDist 2D, official Ultralytics YOLO segmentation |
 | Foundation | L5, L7 | official Cellpose-SAM `cpsam_v2`, official SAM 2.1 image and video |
 | Research | N1 | LamellaStar four-head research model, published as a three-seed logit-mean ensemble |
@@ -55,13 +55,19 @@ not make one.** Four reasons, all recorded with the evidence rather than omitted
 4. `beyond_sota_claim` is `false` and stays `false`; it is a claim about the domain, not
    about this table.
 
-**A real-domain transfer test on 2026-07-28 qualifies this table further.** Run unchanged
+**A real-domain transfer test qualifies this table further, first run on 2026-07-28 and
+re-run on 2026-08-01 after the C3 and C7 engine defaults were adopted.** Run unchanged
 over 64 real photographs of dense touching instances (BBBC038, CC0), N1 falls from 0.519
 to 0.125 while Cellpose-SAM rises from 0.510 to 0.709. Every in-repo trained model
-degrades (mean -0.243); six of the seven classical methods improve, at a tier mean of
-+0.088. The seventh, C2 gradient immersion watershed, was already at 0.017 on froth and
-scores exactly 0.000 on all 64 real samples, so the tier gains while its weakest member
-has nothing to gain. The froth ranking
+degrades (mean -0.243, unchanged by the adoption, which moved only classical rows); five
+of the seven classical methods improve, at a tier mean of +0.070. The two that do not are
+named rather than averaged away: C2 gradient immersion watershed was already at 0.017 on
+froth and scores exactly 0.000 on all 64 real samples, and C3 falls from 0.220 to 0.128
+because its adopted negated-intensity flooding surface assumes a specular highlight per
+bubble and a dark Plateau border between bubbles, and cell nuclei have neither. That is
+recorded, not repaired: the change was adopted on a froth source and confirmed on a froth
+reserve slice (`verification/phase1-adoption.json`), and this split supports no froth
+statement. C7 moves the other way, 0.233 to 0.301. The froth ranking
 is therefore substantially a property of the generator. That test is adjacent-domain and
 plays to Cellpose-SAM's pretraining, so it does not show Cellpose-SAM is better on froth,
 only that N1's lead does not survive a change of domain. See
@@ -88,8 +94,10 @@ Those two protocols answer different questions and are never ranked against each
 other. SAM 2.1 scores IDF1 and HOTA of 1.000 on every sequence because it is handed
 twelve identities and asked whether it still has twelve; its honest number is the mean
 identity IoU, 0.898. Framewise leader on nominal transport is Cellpose-SAM at HOTA
-0.965, then LamellaStar 0.926 and boundary U-Net 0.923, down to marker-less immersion
-watershed at 0.153 with 370 identity switches over eight frames.
+0.965, then LamellaStar 0.961 and boundary U-Net 0.923, down to marker-less immersion
+watershed at 0.153 with 370 identity switches over eight frames. C7 sits at 0.829 and C3
+at 0.738 after the 2026-08-01 adoption; C3's five-sequence mean HOTA rose from 0.435 to
+0.653 and C7's from 0.597 to 0.601 (`data/derived/temporal/`).
 
 There is no video anywhere in this repository and no module decodes video. A sequence
 is a stack of PNG frames. See `docs/temporal/02_the-full-method-matrix.md`.

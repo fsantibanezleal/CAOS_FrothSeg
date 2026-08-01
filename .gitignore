@@ -86,6 +86,7 @@ Thumbs.db
 !/verification/p5-a1-offset-head.json
 !/verification/p3-conformal-intervals.json
 !/verification/reserve-slice-ledger.json
+!/verification/phase1-adoption.json
 !/verification/visual-qa/
 /verification/visual-qa/*
 !/verification/visual-qa/manifest.json

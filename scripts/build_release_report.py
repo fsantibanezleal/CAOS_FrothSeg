@@ -407,6 +407,8 @@ def build() -> dict:
     for relative, label in (
         ("verification/workbench-contract.json", "workbench acceptance evidence"),
         ("verification/classical-live-parity.json", "classical live parity evidence"),
+        ("verification/phase1-adoption.json", "classical default adoption, confirmed off-sweep"),
+        ("verification/reserve-slice-ledger.json", "reserve slice spend ledger"),
         ("verification/visual-qa/manifest.json", "full visual QA manifest"),
         ("VERSION", "root version file"),
     ):

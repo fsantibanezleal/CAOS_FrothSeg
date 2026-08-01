@@ -6,6 +6,95 @@ On `develop`. The release gate still reports `complete: false`: BBBC038 satisfie
 real-data lane for the adjacent domain only, and the blocker is specifically a licensed
 real **froth** held-out source, which no search has yet found.
 
+### Adopted (2026-08-01): two classical defaults, both on their primary source
+
+Phase 1 swept every constant in the classical critical path and changed nothing, because every
+sweep ran on the observed 64-image test split. Two of those constants have now moved, and neither
+moved for winning its sweep. Each moved because the engine was not implementing the froth method its
+own registry entry documents, and each was confirmed BEFORE and AFTER on an untouched reserve slice
+that no sweep had seen (`verification/phase1-adoption.json`; slice spend in
+`verification/reserve-slice-ledger.json`, which now shows 3 of 5 slices burned).
+
+- **C3 `watershed_hmax` floods `neg_gray`, was `neg_edt`.** Flooding the negated grayscale from
+  h-maxima markers is the method Sadr-Kazemi & Cilliers 1997 publish
+  (`10.1016/S0892-6875(97)00094-0`), the source C3 already cited; it had been flooding the negated
+  distance transform, which is C4's surface, so C3 and C4 differed only in their markers. Held-out
+  AP 0.1031 to 0.2196, PQ 0.2490 to 0.4409, boundary F 0.8323 to 0.8817, d32 relative error 0.4311
+  to 0.1907. On the reserve slice the paired mean AP delta is +0.1147, bootstrap 95 percent interval
+  [+0.0919, +0.1391], 59 of 64 images improved.
+- **C7 `valley_edge` runs `mode="watershed"`, was `"subtract"`.** The constrained watershed of
+  Meyer 1994 (`10.1016/0165-1684(94)90060-4`), at the UNCHANGED seam radius 3. Held-out AP 0.1673 to
+  0.2326, PQ 0.3632 to 0.4382, boundary F 0.8628 to 0.8837. Reserve paired mean AP delta +0.0643,
+  [+0.0539, +0.0748], 60 of 64 improved. **Stated cost: d32 relative error gets WORSE**, 1.2584 to
+  1.4371 on the test split and 1.3160 to 1.4972 on the reserve, because growing every cap back to
+  the seam ridge enlarges bubbles C7 already over-estimated.
+
+C7 now leads the classical tier on AP, C3 is second, C4 third. Nothing else moved: C7's seam radius
+and watershed line, C4's compactness and the shared 0.75 Otsu factor are all recorded as deliberate
+defaults with their sweeps as evidence, because a higher number on the split the number was read on
+is not a reason.
+
+Everything downstream was re-baked from the new defaults: `classical-heldout.json`, the 13 canonical
+per-case bakes, `method-benchmark.json`, the C3/C7 temporal reports, all 180 showcase artifacts, the
+real-adjacent benchmark, `sam_benchmark.json`, `classical-live-parity.json`, `method-registry.json`
+and `release-report.json`. `check_artifacts.py`, `validate_classical_live_parity.py` and
+`check_product_completeness.py --profile development` all accept.
+
+**`sam_benchmark.json` was the artifact this re-bake nearly missed, and it carried the largest
+published change of the whole adoption.** Its `floor_ap` per case is the BEST classical method on
+that case, read from `data/derived/synth/<case>/benchmark.json`, so re-baking the per-case files
+moved it without touching one SlimSAM prediction. C7 took the floor on 8 of the 12 scored cases and
+C3 on 3, leaving `watershed_dt` holding only `mono-clean`. Mean floor AP **0.262 to 0.351**, mean
+SAM advantage **+0.103 to +0.014**, SAM wins **10 to 5** of 12. The glare headline, the one
+operational win the study was quoted for, goes from 0.407 against 0.081 (a 5x gap) to 0.407 against
+0.182 (2.2x). Corrected in `docs/cases/01_coverage.md`, `docs/guides/03_verify-sam.md`,
+`docs/guides.md`, `docs/frameworks/01_transformers-js/`, `docs/frameworks/06_pycocotools/`,
+`docs/frameworks/03_scikit-image/`, `docs/frameworks/07_unet-watershed/` and the Experiments page.
+
+Two more corrections from the same sweep:
+
+- **The real-domain transfer count changed from six of seven classical methods improving to five**,
+  at a tier mean of **+0.070** rather than +0.088, because C3 now falls on that split (0.220 to
+  0.128) alongside C2. `current_bar.leader_note` in `build_method_benchmark.py` had also been
+  rewritten to say the in-repo trained mean was -0.180; that figure is the mean over all seven
+  learned and foundation rows, which do not all degrade. It is back to **-0.243** over the six
+  in-repo trained models, which the adoption did not move at all.
+- **The classical `ms/image` column is a timing of its bake, not of the algorithm.** It moved again
+  on this re-run (C1 6.2, C2 103.5, C3 39.7, C4 36.7, C5 40.2, C6 673.8, C7 26.3) and the docs now
+  say so instead of explaining one bake's drift as a machine load story.
+- **"C7 has the tier's worst d32 relative error" was false** where the adoption cost was stated. The
+  classical d32 ordering is C3 0.1907, C2 0.5757, C6 0.7748, C4 1.1555, C7 1.4371, C5 1.9224, C1
+  5.0063, so C7 is the worst of the three methods in contention on AP, not the worst of the tier.
+  Corrected in the `segment.py` module docstring, `docs/methods/classical.md` and the Methodology
+  page in both languages.
+
+Found and fixed while re-validating the browser twins, older than the adoption:
+
+- **The live `watershed` invented instances outside the froth mask.** It seeded its output with every
+  marker pixel and never cleared the ones lying outside the mask, while skimage's masked watershed
+  returns 0 there. C3's h-maxima markers sit on any bright speck, so C3 carried the whole error at
+  **1.2420x the offline instance count in every parity run since the artifact was first committed**.
+  Flooding the EDT had hidden it by merging the surplus markers into shared basins; flooding the
+  negated image gave each one a basin and broke the gate. After the fix, C3 parity is the best it has
+  ever been: mean AP delta 0.0020 (was 0.0193), browser-vs-offline mask IoU 0.9343 (was 0.5226),
+  instance-count ratio 1.0011. A FIFO insertion-order tiebreak was added to the twin's flooding heap
+  in the same change, which is what decides a plateau; it took C4's IoU agreement 0.6625 to 0.7056.
+- **The C7 registry row is renamed back to "Lamella-valley constrained watershed"** with Meyer 1994
+  as a real provenance. It had been renamed to "dark-seam detector" on 2026-07-31 by a Phase 0
+  honesty pass *because the engine ran no watershed*; the adoption resolves that mismatch from the
+  other side, by implementing the method.
+- **The N1 temporal row in `docs/temporal/02_the-full-method-matrix.md` was stale** and unrelated to
+  this work: it read 0.926 HOTA against the artifact's 0.961, and a 0.843 five-sequence mean against
+  0.917. Found by rebuilding the whole table from the artifacts instead of editing the two rows that
+  moved.
+
+Recorded and NOT repaired, because it is a real result: on the adjacent real domain (BBBC038 cell
+nuclei) the two changes disagree. C7 improves, 0.193 to 0.301, and C3 gets WORSE, 0.182 to 0.128.
+C3's adopted surface is a froth mechanism that assumes a specular highlight per object and a dark
+Plateau border between objects, and nuclei have neither. The adoption stands, because it was made on
+a froth source and confirmed on a froth surface and that split supports no froth statement, but
+nobody should read C3's froth gain as evidence the surface is generally better.
+
 ### Rebuilt (2026-07-29, second pass): the App composes the shell instead of re-deriving it
 
 The first pass was built from memory of the ADRs rather than from the ADRs and the reference

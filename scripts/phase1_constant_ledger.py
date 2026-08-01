@@ -123,9 +123,15 @@ def build_ledger() -> dict:
                 "so the citation defends the threshold and not the constant."
             ),
         },
+        "decision": "kept, deliberate",
+        "decision_evidence": "data/derived/phase1/foreground-factor-sweep.json",
         "verdict": (
-            "Swept and recorded. 0.75 is the argmax for exactly one of the five scored dependants and "
-            "the tier-mean argmax is a different value. Not adopted here: see the adoption note."
+            "Swept and recorded, and KEPT at 0.75 as a deliberate default with that sweep as its "
+            "evidence. 0.75 is the argmax for exactly one of the five scored dependants and the "
+            "tier-mean argmax is a different value, so moving it would be picking a per-method winner "
+            "on the observed test split for a constant that five methods share. It is common-mode: a "
+            "change here moves C1, C2, C3, C4, C5, C6 and C7 at once, which is why the sweep is the "
+            "record and the value does not move on it."
         ),
     })
 
@@ -184,10 +190,20 @@ def build_ledger() -> dict:
         "published": _row(published),
         "published_is_argmax_on_mean_ap": best_ap["config"]["compactness"] == 0.0,
         "source": compact["source"],
+        "decision": "kept, deliberate",
+        "decision_evidence": "data/derived/phase1/c4-compactness-sweep.json",
+        "swept_values_worse_than_published": [
+            point["config"]["compactness"]
+            for point in plain
+            if point["mean_ap"] < published["mean_ap"]
+        ],
         "verdict": (
-            "Swept and recorded. The published 0.0 is the argmax on mean AP, so the absence of "
-            "compactness is now a measured choice rather than an unexamined one. Compactness buys a "
-            "large reduction in d32 relative error at a cost in AP, PQ and BSD Wasserstein."
+            "Swept and recorded, and KEPT at 0.0 as a deliberate default with that sweep as its "
+            "evidence. 0.0 is the argmax on mean AP and every other swept value scores lower, so the "
+            "absence of compactness is a measured choice and not an unexamined one. Compactness buys a "
+            "large reduction in d32 relative error at a cost in AP, PQ and BSD Wasserstein; that "
+            "trade is recorded here and is available if a later cycle decides the size distribution "
+            "matters more than the mask, but it is not taken on this sweep."
         ),
     })
     rows.append({
@@ -233,22 +249,38 @@ def build_ledger() -> dict:
     # ---- C3 flooding surface and h ---------------------------------------------------------------
     surface_points = _points(c3, "watershed_hmax", watershed_line=False)
     best_surface = _best(surface_points)
-    published_surface = next(
+    previous_surface = next(
         point for point in surface_points if point["config"]["surface"] == "neg_edt"
+    )
+    adopted_surface = next(
+        point for point in surface_points if point["config"]["surface"] == "neg_gray"
     )
     rows.append({
         "constant": "watershed_hmax.surface",
-        "published_value": "neg_edt",
+        "published_value": "neg_gray",
+        "previous_value": "neg_edt",
         "consumed_by": ["C3"],
         "status": "swept",
         "sweep_artifact": "data/derived/phase1/c3-flooding-surface.json",
         "grid": c3["pre_registered_grid"]["surface"],
         "argmax_mean_ap": _row(best_surface),
-        "published": _row(published_surface),
+        "published": _row(adopted_surface),
+        "previous": _row(previous_surface),
         "c4_same_surface_reference": _row(c3["c4_reference_same_surface"]),
-        "published_is_argmax_on_mean_ap": best_surface["config"]["surface"] == "neg_edt",
+        "published_is_argmax_on_mean_ap": best_surface["config"]["surface"] == "neg_gray",
         "source": c3["source"],
-        "verdict": "Swept and recorded.",
+        "decision": "ADOPTED 2026-08-01, neg_edt to neg_gray",
+        "decision_evidence": "verification/phase1-adoption.json",
+        "decision_basis": (
+            "The primary source, not the sweep score. Flooding the negated grayscale from h-maxima "
+            "markers IS the method Sadr-Kazemi and Cilliers 1997 (10.1016/S0892-6875(97)00094-0) "
+            "publish, and that source is what the C3 registry entry already cites. The code was not "
+            "implementing its own citation: it flooded the negated distance transform, which is C4's "
+            "surface, so C3 and C4 differed only in their markers. The sweep is the observed evidence "
+            "that motivated the correction and its numbers are NOT the published effect; the effect is "
+            "measured on the untouched reserve slice in verification/phase1-adoption.json."
+        ),
+        "verdict": "Swept, sourced and adopted.",
     })
     candidates = [
         point for point in residual["points"]
@@ -297,25 +329,52 @@ def build_ledger() -> dict:
     # ---- C7 -----------------------------------------------------------------------------------------
     subtract = [point for point in c7["points"] if point["config"]["mode"] == "subtract"]
     watershed = [point for point in c7["points"] if point["config"]["mode"] == "watershed"]
-    published_c7 = next(point for point in subtract if point["config"]["seam_radius"] == 3)
+    previous_c7 = next(point for point in subtract if point["config"]["seam_radius"] == 3)
+    adopted_c7 = next(
+        point for point in watershed
+        if point["config"]["seam_radius"] == 3 and point["config"]["watershed_line"] is False
+    )
     rows.append({
         "constant": "valley_edge.mode",
-        "published_value": "subtract",
+        "published_value": "watershed",
+        "previous_value": "subtract",
         "consumed_by": ["C7"],
         "status": "swept",
         "sweep_artifact": "data/derived/phase1/c7-constrained-watershed.json",
         "grid": c7["pre_registered_grid"]["mode"],
-        "published": _row(published_c7),
-        "same_radius_alternative": _row(
-            next(
-                point for point in watershed
-                if point["config"]["seam_radius"] == 3 and point["config"]["watershed_line"] is False
-            )
-        ),
+        "published": _row(adopted_c7),
+        "previous": _row(previous_c7),
         "best_watershed_point": _row(_best(watershed)),
-        "published_is_argmax_on_mean_ap": _best(c7["points"])["config"]["mode"] == "subtract",
+        "published_is_argmax_on_mean_ap": _best(c7["points"])["config"] == adopted_c7["config"],
+        "every_watershed_row_beats_every_subtract_row_on_mean_ap": (
+            min(point["mean_ap"] for point in watershed)
+            > max(point["mean_ap"] for point in subtract)
+        ),
         "source": c7["source"],
-        "verdict": "Swept and recorded.",
+        "decision": "ADOPTED 2026-08-01, subtract to watershed, at the unchanged seam_radius 3",
+        "decision_evidence": "verification/phase1-adoption.json",
+        "decision_basis": (
+            "The registry called this row a constrained watershed until 2026-07-31, when a Phase 0 "
+            "honesty pass renamed it to 'dark-seam detector' because the engine ran no watershed: it "
+            "subtracted the seam and labelled what was left, so every mask stopped short of the seam "
+            "centreline by construction. This adoption resolves the same mismatch from the other side "
+            "by implementing the method, on Meyer 1994 (10.1016/0165-1684(94)90060-4), and the "
+            "registry name and provenance were restored in the same change. The structural result "
+            "on the sweep is that EVERY watershed row beats EVERY subtract row at every swept radius, "
+            "so the mode is a finding and not a tuned optimum. seam_radius and watershed_line are NOT "
+            "moved with it. Honest cost, stated wherever this change is described: d32 relative error "
+            "moves the WRONG way at radius 3, 1.2584 to 1.4371 on the observed test split and 1.3160 "
+            "to 1.4972 on the untouched reserve slice."
+        ),
+        "cost_of_the_change": {
+            "metric": "mean_d32_relative_error",
+            "direction": "worse",
+            "test_split_before": previous_c7["mean_d32_relative_error"],
+            "test_split_after": adopted_c7["mean_d32_relative_error"],
+            "test_split_source": "data/derived/phase1/c7-constrained-watershed.json",
+            "reserve_source": "verification/phase1-adoption.json",
+        },
+        "verdict": "Swept, sourced and adopted, with a stated cost.",
     })
     rows.append({
         "constant": "valley_edge.seam_radius",
@@ -324,11 +383,20 @@ def build_ledger() -> dict:
         "status": "swept",
         "sweep_artifact": "data/derived/phase1/c7-constrained-watershed.json",
         "grid": c7["pre_registered_grid"]["seam_radius"],
-        "argmax_mean_ap_within_published_mode": _row(_best(subtract)),
-        "argmax_mean_ap_within_watershed_mode": _row(_best(watershed)),
-        "published_is_argmax_within_published_mode": _best(subtract)["config"]["seam_radius"] == 3,
+        "argmax_mean_ap_within_previous_mode": _row(_best(subtract)),
+        "argmax_mean_ap_within_published_mode": _row(_best(watershed)),
+        "published_is_argmax_within_published_mode": _best(watershed)["config"]["seam_radius"] == 3,
         "source": None,
-        "verdict": "Swept and recorded.",
+        "decision": "kept, deliberate, NOT moved with the mode",
+        "decision_evidence": "data/derived/phase1/c7-constrained-watershed.json",
+        "verdict": (
+            "Swept and recorded, and KEPT at 3. Radius 4 or 5 in the adopted watershed mode is worth "
+            "about 0.01 mean AP over radius 3 on the observed test split, which is exactly the "
+            "test-split selection this programme exists to avoid: the mode change is defended by its "
+            "primary source, a radius change would be defended by nothing but the score on the surface "
+            "the score was read on. The measurement stays on record for a later cycle that can confirm "
+            "it on an unobserved surface."
+        ),
     })
     candidates = [
         point for point in residual["points"]
@@ -353,9 +421,18 @@ def build_ledger() -> dict:
         "consumed_by": ["C7"],
         "status": "swept",
         "sweep_artifact": "data/derived/phase1/c7-constrained-watershed.json",
-        "note": "Only reachable in the watershed mode; the published subtract mode never floods.",
+        "note": (
+            "Reachable now that the watershed mode is the default; under the previous subtract mode "
+            "the engine never flooded and the flag was dead."
+        ),
         "source": None,
-        "verdict": "Swept and recorded.",
+        "decision": "kept, deliberate, NOT moved with the mode",
+        "decision_evidence": "data/derived/phase1/c7-constrained-watershed.json",
+        "verdict": (
+            "Swept and recorded, and KEPT at False. Turning the line on trades a little mean AP for a "
+            "little boundary F at every radius; neither direction is defended by a source, so the flag "
+            "stays where it was rather than moving on a test-split preference."
+        ),
     })
 
     # ---- C2 -----------------------------------------------------------------------------------------
@@ -441,28 +518,46 @@ def build_ledger() -> dict:
     }
 
 
-def _c7_d32_direction(heldout: dict) -> dict:
+def _c7_d32_direction(heldout: dict, c7: dict) -> dict:
     """Does C7 under-estimate or over-estimate the Sauter diameter?
 
     The plan proposed the constrained watershed on the reading that seam subtraction biases diameters
-    DOWN. That is a testable statement about a committed artifact, so it is tested here rather than
-    repeated: it is checked against the per-case records the benchmark already stores."""
+    DOWN. That is a testable statement, so it is tested here rather than repeated: it is checked
+    against the per-case records the benchmark stores, plus the two sweep rows for the mode.
+
+    The check outlived its own premise, which is the point of keeping it. The mode WAS adopted, on the
+    primary source rather than on this hypothesis, and `heldout` is now the watershed mode. The
+    direction the refutation predicted is exactly what the adoption paid: d32 relative error got worse,
+    not better, because growing caps back to the seam ridge enlarges bubbles that were already too
+    large."""
     cases = heldout["valley_edge"]["cases"]
     predicted = [case["predicted_bsd"]["d32"] for case in cases if case["predicted_bsd"]["d32"]]
     truth = [case["truth_bsd"]["d32"] for case in cases if case["truth_bsd"]["d32"]]
     mean_predicted = sum(predicted) / len(predicted)
     mean_truth = sum(truth) / len(truth)
+    at_radius_3 = {
+        point["config"]["mode"]: point["mean_d32_relative_error"]
+        for point in c7["points"]
+        if point["config"]["seam_radius"] == 3 and point["config"]["watershed_line"] is False
+    }
     return {
-        "source": "data/derived/classical-heldout.json, valley_edge cases",
+        "source": "data/derived/classical-heldout.json, valley_edge cases (adopted watershed mode)",
         "n_cases": len(cases),
         "mean_predicted_d32_px": mean_predicted,
         "mean_truth_d32_px": mean_truth,
         "ratio_predicted_over_truth": mean_predicted / mean_truth,
         "proposal_hypothesis": "seam subtraction biases the diameter downward",
+        "sweep_d32_relative_error_at_seam_radius_3": {
+            "subtract": at_radius_3.get("subtract"),
+            "watershed": at_radius_3.get("watershed"),
+            "source": "data/derived/phase1/c7-constrained-watershed.json",
+        },
         "verdict": (
-            "REFUTED. C7 over-estimates d32 by a factor above 2 on the committed artifact, so the "
-            "seam-subtraction bias is not the source of its d32 relative error, and growing the caps "
-            "back cannot fix it by that mechanism."
+            "REFUTED, and the refutation was paid for. C7 over-estimates d32 by a factor above 2, so "
+            "the seam-subtraction bias was never the source of its d32 relative error and growing the "
+            "caps back could not fix it by that mechanism. The mode was adopted anyway, on Meyer 1994 "
+            "and on mask quality, and d32 relative error duly got WORSE. That cost is stated in the "
+            "constant ledger, in the engine docstring and in verification/phase1-adoption.json."
         ),
     }
 
@@ -528,7 +623,28 @@ def build_verification(ledger: dict) -> dict:
                 "the learned-lane test-evaluation budget."
             ),
         },
-        "published_defaults_changed": [],
+        "published_defaults_changed": [
+            {
+                "constant": "C3_FLOODING_SURFACE",
+                "engine": "data-pipeline/fslab/science/segment.py watershed_hmax",
+                "from": "neg_edt",
+                "to": "neg_gray",
+                "adopted": "2026-08-01",
+                "basis": "primary source, Sadr-Kazemi and Cilliers 1997, 10.1016/S0892-6875(97)00094-0",
+                "confirmed_on": "verification/phase1-adoption.json",
+                "live_twin_updated": "frontend/src/classical/methods.ts watershedHmax",
+            },
+            {
+                "constant": "C7_MODE",
+                "engine": "data-pipeline/fslab/science/segment.py valley_edge",
+                "from": "subtract",
+                "to": "watershed",
+                "adopted": "2026-08-01",
+                "basis": "primary source, Meyer 1994, 10.1016/0165-1684(94)90060-4",
+                "confirmed_on": "verification/phase1-adoption.json",
+                "live_twin_updated": "frontend/src/classical/methods.ts valleyEdge",
+            },
+        ],
         "baseline_reproduction": {
             "artifact": "data/derived/phase1/baseline-reproduction.json",
             "all_seven_engines_identical_to_committed_artifact": baseline["all_identical"],
@@ -585,7 +701,7 @@ def build_verification(ledger: dict) -> dict:
                 ledger["acceptance_met_for_scored_methods_c1_c3_c4_c5_c7"],
         },
         "hypothesis_checks": {
-            "c7_d32_bias_direction": _c7_d32_direction(heldout),
+            "c7_d32_bias_direction": _c7_d32_direction(heldout, c7),
             "c7_best_watershed_condition_regressions": _condition_regressions(
                 next(
                     point for point in c7["points"]
@@ -605,15 +721,33 @@ def build_verification(ledger: dict) -> dict:
             ),
         },
         "adoption_status": {
-            "defaults_changed": "none",
-            "why": (
-                "Two independent reasons, both recorded before any adoption is proposed. First, every "
-                "sweep above was measured on the 64-image test split, so adopting the argmax measured "
-                "there is selection on that surface and the gain would not be quotable; a confirmation "
-                "on a surface not used to pick the value is required. Second, the classical tier has a "
-                "JavaScript twin in the live lane under an AP-delta parity gate, so a default change is "
-                "a two-lane change plus a full re-bake of every committed classical artifact."
+            "defaults_changed": "two, C3_FLOODING_SURFACE and C7_MODE",
+            "date": "2026-08-01",
+            "evidence": "verification/phase1-adoption.json",
+            "what_qualified_them": (
+                "Neither was adopted for winning its sweep. Each was adopted because the engine was not "
+                "implementing the source the registry already cites for that method: C3 floods the "
+                "negated grayscale per Sadr-Kazemi and Cilliers 1997, and C7 is a constrained "
+                "watershed per Meyer 1994. A sweep score alone was explicitly not sufficient, which is "
+                "why C7's seam_radius, C7's watershed_line, C4's compactness and the 0.75 Otsu factor "
+                "did not move: their only argument would have been the score on the surface the score "
+                "was read on."
             ),
+            "how_the_two_blockers_were_cleared": {
+                "observed_surface": (
+                    "Every sweep above was measured on the 64-image test split, so a sweep number is "
+                    "not quotable as the effect of the change. One untouched reserve slice from "
+                    "verification/phase2-data-preregistration.json was spent to measure BEFORE and "
+                    "AFTER on data the sweeps never saw, and the spend is recorded in "
+                    "verification/reserve-slice-ledger.json. The reserve numbers are the published "
+                    "effect; the sweep numbers are the motivation."
+                ),
+                "two_lane_change": (
+                    "The JavaScript twins in frontend/src/classical/methods.ts were moved to the same "
+                    "surface and the same mode in the same change, and every committed classical "
+                    "artifact was re-baked from the new defaults."
+                ),
+            },
             "decision_owner": "Felipe",
         },
     }

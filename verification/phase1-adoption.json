@@ -1,0 +1,617 @@
+{
+  "schema": "frothseg.phase1-adoption/v1",
+  "study": "Phase 1 classical adoption, confirmed on an unobserved reserve slice",
+  "date": "2026-08-01",
+  "generated_utc": "2026-08-01T19:09:18+00:00",
+  "produced_by": "scripts/confirm_phase1_adoption.py",
+  "plan": "CAOS_MANAGE/plans/frothseg/research-2026-07-31/PLAN-PROPOSAL.md section 3",
+  "why_a_reserve_slice_was_needed": "The Phase 1 sweeps ran on the 64-image test split of data/cache/learned-v2-192.npz, which the sweep grids observed. A configuration selected on that split cannot quote its own sweep number as the effect of the change. The reserve numbers below are the ones that get published; the sweep numbers are recorded next to them only as the observed evidence that motivated the change.",
+  "surface": {
+    "cache": "data/cache/learned-v2-192-reserve.npz",
+    "cache_sha256": "514c4279017b20b0ea3644955fe0b4a8e14ebbf0eae66de579d4c838aaf11f14",
+    "cache_sha256_matches_preregistration": true,
+    "reserve_study_slice": "p1",
+    "sample_count": 64,
+    "group_count": 32,
+    "condition_count": 16,
+    "group_ids_sha256": "47efac56e423011aed7f0f5282cc264e49c6205de7bbf65a7cb6ab857ad4a59a",
+    "sample_ids_sha256": "291d72eeda527398e1cb36b21890cc7966684ab9d17027ffb956c24dd598dace",
+    "ids_match_preregistration": true,
+    "observation_status_before_this_run": "Written and hashed, never evaluated. No script in this repository reads this archive's images or labels. A study spends only the slice named after it, once, and records that it did."
+  },
+  "design": {
+    "evaluations": 4,
+    "arms": [
+      {
+        "change_id": "c3-flooding-surface",
+        "method": "watershed_hmax",
+        "before": {
+          "surface": "neg_edt",
+          "watershed_line": false
+        },
+        "after": {
+          "surface": "neg_gray",
+          "watershed_line": false
+        }
+      },
+      {
+        "change_id": "c7-mode",
+        "method": "valley_edge",
+        "before": {
+          "seam_radius": 3,
+          "mode": "subtract",
+          "watershed_line": false
+        },
+        "after": {
+          "seam_radius": 3,
+          "mode": "watershed",
+          "watershed_line": false
+        }
+      }
+    ],
+    "primary_readout": "paired per-image mean AP delta, after minus before",
+    "interval": "10000-resample bootstrap over images, seed 20260801",
+    "verdict_rule": "The adoption stands only if the paired mean AP delta on the reserve slice is strictly positive for BOTH changes. If either is zero or negative, both changes are reverted and the reversal is the published result.",
+    "not_done_here": "No grid, no second pass, no re-optimisation. seam_radius and watershed_line are held at their current published values on purpose: radius 4 or 5 buys about 0.01 AP on the observed test split, which is exactly the kind of test-split selection this programme exists to avoid."
+  },
+  "environment": {
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "processor": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+    "numpy": "2.4.6",
+    "scipy": "1.18.0",
+    "scikit_image": "0.26.0"
+  },
+  "changes": [
+    {
+      "change_id": "c3-flooding-surface",
+      "method": "watershed_hmax",
+      "before_config": {
+        "surface": "neg_edt",
+        "watershed_line": false
+      },
+      "after_config": {
+        "surface": "neg_gray",
+        "watershed_line": false
+      },
+      "source": {
+        "citation": "H. Sadr-Kazemi and J. J. Cilliers, An image processing algorithm for measurement of flotation froth bubble size and shape distributions, Minerals Engineering 10(10), 1997",
+        "doi": "10.1016/S0892-6875(97)00094-0",
+        "already_cited_for_this_method_in": "data-pipeline/fslab/model_registry.py, C3 entry",
+        "what_the_source_carries": "Highlight-seeded flooding of the negated grayscale image. That is the surface the adopted default floods. The previous default flooded the negated Euclidean distance transform, which is C4's surface, so C3 and C4 differed only in their markers and C3's score was a marker result reported as a method result.",
+        "why_this_and_not_the_score": "The code was not implementing its own cited source. The sweep is what revealed it; the source is what justifies the change."
+      },
+      "reserve": {
+        "before": {
+          "method": "watershed_hmax",
+          "config": {
+            "surface": "neg_edt",
+            "watershed_line": false
+          },
+          "n": 64,
+          "mean_ap": 0.10265625,
+          "mean_ap50": 0.23909375,
+          "mean_ap75": 0.07696875,
+          "mean_pq": 0.248046875,
+          "mean_sq": 0.687875,
+          "mean_rq": 0.349984375,
+          "mean_boundary_precision": 0.7900796875,
+          "mean_boundary_recall": 0.8789421875000001,
+          "mean_boundary_fscore": 0.8264421875,
+          "mean_bsd_wasserstein": 6.069671875,
+          "mean_count_absolute_error": 183.234375,
+          "mean_count_relative_error": 1.0309828125,
+          "mean_d10_relative_error": 0.7229359375,
+          "mean_d32_relative_error": 0.42797031250000006,
+          "mean_d50_relative_error": 0.5698140625,
+          "mean_d90_relative_error": 0.173946875,
+          "mean_inference_ms": 61.68052343582531,
+          "total_predicted_instances": 29571,
+          "total_true_instances": 17844,
+          "total_merges": 2993,
+          "total_splits": 2625,
+          "total_tp": 7003,
+          "total_fp": 22568,
+          "total_fn": 10841,
+          "mean_ap_by_condition": {
+            "bursting": 0.198,
+            "coarse-froth": 0.1265,
+            "dark-defocus-compound": 0.006500000000000001,
+            "defocus": 0.0385,
+            "edge-framing": 0.14375,
+            "fine-froth": 0.13225,
+            "glare-motion-compound": 0.008249999999999999,
+            "glare-storm": 0.04375,
+            "high-load": 0.19525,
+            "low-light-noise": 0.022750000000000003,
+            "microbubble-cloud": 0.041,
+            "mono-clean": 0.18175,
+            "motion-fast": 0.0405,
+            "poly-normal": 0.22075,
+            "watery": 0.035,
+            "wide-bimodal-proxy": 0.208
+          }
+        },
+        "after": {
+          "method": "watershed_hmax",
+          "config": {
+            "surface": "neg_gray",
+            "watershed_line": false
+          },
+          "n": 64,
+          "mean_ap": 0.21735937499999997,
+          "mean_ap50": 0.48839062499999997,
+          "mean_ap75": 0.16596875,
+          "mean_pq": 0.438671875,
+          "mean_sq": 0.7068125000000001,
+          "mean_rq": 0.6038749999999999,
+          "mean_boundary_precision": 0.8155703125,
+          "mean_boundary_recall": 0.9663328124999999,
+          "mean_boundary_fscore": 0.8792984375,
+          "mean_bsd_wasserstein": 3.6399531250000003,
+          "mean_count_absolute_error": 183.234375,
+          "mean_count_relative_error": 1.0309828125,
+          "mean_d10_relative_error": 0.4251703125,
+          "mean_d32_relative_error": 0.192334375,
+          "mean_d50_relative_error": 0.27572343750000006,
+          "mean_d90_relative_error": 0.19138906249999998,
+          "mean_inference_ms": 53.17460625428794,
+          "total_predicted_instances": 29571,
+          "total_true_instances": 17844,
+          "total_merges": 1151,
+          "total_splits": 2039,
+          "total_tp": 12909,
+          "total_fp": 16662,
+          "total_fn": 4935,
+          "mean_ap_by_condition": {
+            "bursting": 0.26675000000000004,
+            "coarse-froth": 0.16725,
+            "dark-defocus-compound": 0.008,
+            "defocus": 0.313,
+            "edge-framing": 0.3205,
+            "fine-froth": 0.304,
+            "glare-motion-compound": 0.02625,
+            "glare-storm": 0.12375,
+            "high-load": 0.32625,
+            "low-light-noise": 0.013000000000000001,
+            "microbubble-cloud": 0.1485,
+            "mono-clean": 0.27849999999999997,
+            "motion-fast": 0.22275,
+            "poly-normal": 0.36024999999999996,
+            "watery": 0.3795,
+            "wide-bimodal-proxy": 0.2195
+          }
+        },
+        "paired_deltas": {
+          "ap": {
+            "metric": "ap",
+            "n_paired": 64,
+            "mean_delta": 0.11470312499999999,
+            "median_delta": 0.106,
+            "bootstrap_resamples": 10000,
+            "bootstrap_seed": 20260801,
+            "bootstrap_ci95": [
+              0.09187421875,
+              0.139140625
+            ],
+            "images_improved": 59,
+            "images_worsened": 4,
+            "images_unchanged": 1,
+            "win_rate": 0.921875,
+            "polarity": "higher_is_better"
+          },
+          "boundary_fscore": {
+            "metric": "boundary_fscore",
+            "n_paired": 64,
+            "mean_delta": 0.05285625,
+            "median_delta": 0.01984999999999998,
+            "bootstrap_resamples": 10000,
+            "bootstrap_seed": 20260801,
+            "bootstrap_ci95": [
+              0.03539480468749998,
+              0.071799765625
+            ],
+            "images_improved": 51,
+            "images_worsened": 13,
+            "images_unchanged": 0,
+            "win_rate": 0.796875,
+            "polarity": "higher_is_better"
+          },
+          "d32_relative_error": {
+            "metric": "d32_relative_error",
+            "n_paired": 64,
+            "mean_delta": -0.2356359375,
+            "median_delta": -0.04865,
+            "bootstrap_resamples": 10000,
+            "bootstrap_seed": 20260801,
+            "bootstrap_ci95": [
+              -0.3686546484375,
+              -0.11261726562500005
+            ],
+            "images_improved": 37,
+            "images_worsened": 27,
+            "images_unchanged": 0,
+            "win_rate": 0.578125,
+            "polarity": "lower_is_better"
+          },
+          "pq": {
+            "metric": "pq",
+            "n_paired": 64,
+            "mean_delta": 0.190625,
+            "median_delta": 0.16799999999999998,
+            "bootstrap_resamples": 10000,
+            "bootstrap_seed": 20260801,
+            "bootstrap_ci95": [
+              0.15337421875,
+              0.23071875
+            ],
+            "images_improved": 59,
+            "images_worsened": 5,
+            "images_unchanged": 0,
+            "win_rate": 0.921875,
+            "polarity": "higher_is_better"
+          },
+          "bsd_wasserstein": {
+            "metric": "bsd_wasserstein",
+            "n_paired": 64,
+            "mean_delta": -2.42971875,
+            "median_delta": -1.613,
+            "bootstrap_resamples": 10000,
+            "bootstrap_seed": 20260801,
+            "bootstrap_ci95": [
+              -2.89336328125,
+              -1.988357421875
+            ],
+            "images_improved": 64,
+            "images_worsened": 0,
+            "images_unchanged": 0,
+            "win_rate": 1.0,
+            "polarity": "lower_is_better"
+          }
+        }
+      },
+      "direction_on_reserve": "confirmed",
+      "observed_sweep_reference": {
+        "before": {
+          "artifact": "data/derived/phase1/c3-flooding-surface.json",
+          "surface": "data/cache/learned-v2-192.npz test split, OBSERVED by the sweep grid",
+          "config": {
+            "surface": "neg_edt",
+            "watershed_line": false
+          },
+          "mean_ap": 0.103109375,
+          "mean_boundary_fscore": 0.832290625,
+          "mean_d32_relative_error": 0.4310671875
+        },
+        "after": {
+          "artifact": "data/derived/phase1/c3-flooding-surface.json",
+          "surface": "data/cache/learned-v2-192.npz test split, OBSERVED by the sweep grid",
+          "config": {
+            "surface": "neg_gray",
+            "watershed_line": false
+          },
+          "mean_ap": 0.21957812499999999,
+          "mean_boundary_fscore": 0.881734375,
+          "mean_d32_relative_error": 0.19074375
+        }
+      }
+    },
+    {
+      "change_id": "c7-mode",
+      "method": "valley_edge",
+      "before_config": {
+        "seam_radius": 3,
+        "mode": "subtract",
+        "watershed_line": false
+      },
+      "after_config": {
+        "seam_radius": 3,
+        "mode": "watershed",
+        "watershed_line": false
+      },
+      "source": {
+        "citation": "F. Meyer, Topographic distance and watershed lines, Signal Processing 38(1), 1994, 113-125",
+        "doi": "10.1016/0165-1684(94)90060-4",
+        "already_cited_for_this_method_in": "data-pipeline/fslab/model_registry.py, C7 entry. Stated precisely, because the Phase 1 sweep artifact carries a claim that had already gone stale: the registry called this row 'Lamella-valley constrained watershed' until commit 8af353e on 2026-07-31, when a Phase 0 honesty pass renamed it to 'dark-seam detector' BECAUSE the engine ran no watershed. So the source was not sitting in the registry at the moment of adoption; it had just been removed from it for being untrue. This change resolves the same mismatch from the other side, by making the engine do what the earlier name claimed, and the registry name and provenance were restored in the same change.",
+        "what_the_source_carries": "Marker-controlled flooding to the ridge. The adopted default uses the cleaned caps as markers and floods the black-top-hat seam response, so caps grow back to the seam centreline. The previous default subtracted the seam and labelled what was left, so every mask stopped short of the centreline by construction.",
+        "why_this_and_not_the_score": "The repository had a documented name for a method it did not implement, and had already chosen to fix that by weakening the name. Implementing the method is the other, better resolution, and Meyer 1994 is what licenses it. Structurally, every watershed row in the sweep beats every subtract row at every swept radius, so the mode is a finding rather than a tuned optimum; but the justification that carries the change is the source, not that ordering."
+      },
+      "reserve": {
+        "before": {
+          "method": "valley_edge",
+          "config": {
+            "seam_radius": 3,
+            "mode": "subtract",
+            "watershed_line": false
+          },
+          "n": 64,
+          "mean_ap": 0.17003124999999997,
+          "mean_ap50": 0.41465625,
+          "mean_ap75": 0.12353125000000001,
+          "mean_pq": 0.365421875,
+          "mean_sq": 0.6797031250000001,
+          "mean_rq": 0.52215625,
+          "mean_boundary_precision": 0.7993250000000001,
+          "mean_boundary_recall": 0.9513390625,
+          "mean_boundary_fscore": 0.8600078124999999,
+          "mean_bsd_wasserstein": 3.09675,
+          "mean_count_absolute_error": 116.078125,
+          "mean_count_relative_error": 0.35801249999999996,
+          "mean_d10_relative_error": 0.24491718750000002,
+          "mean_d32_relative_error": 1.316009375,
+          "mean_d50_relative_error": 0.1661859375,
+          "mean_d90_relative_error": 0.17983749999999998,
+          "mean_inference_ms": 17.124660937952285,
+          "total_predicted_instances": 10893,
+          "total_true_instances": 17844,
+          "total_merges": 2028,
+          "total_splits": 38,
+          "total_tp": 7084,
+          "total_fp": 3809,
+          "total_fn": 10760,
+          "mean_ap_by_condition": {
+            "bursting": 0.2865,
+            "coarse-froth": 0.4785,
+            "dark-defocus-compound": 0.01,
+            "defocus": 0.07175,
+            "edge-framing": 0.2425,
+            "fine-froth": 0.17824999999999996,
+            "glare-motion-compound": 0.0165,
+            "glare-storm": 0.10875,
+            "high-load": 0.27725,
+            "low-light-noise": 0.0815,
+            "microbubble-cloud": 0.035,
+            "mono-clean": 0.37625,
+            "motion-fast": 0.024,
+            "poly-normal": 0.32599999999999996,
+            "watery": 0.021249999999999998,
+            "wide-bimodal-proxy": 0.1865
+          }
+        },
+        "after": {
+          "method": "valley_edge",
+          "config": {
+            "seam_radius": 3,
+            "mode": "watershed",
+            "watershed_line": false
+          },
+          "n": 64,
+          "mean_ap": 0.23429687500000002,
+          "mean_ap50": 0.4745,
+          "mean_ap75": 0.204359375,
+          "mean_pq": 0.43956249999999997,
+          "mean_sq": 0.73140625,
+          "mean_rq": 0.589484375,
+          "mean_boundary_precision": 0.9283625,
+          "mean_boundary_recall": 0.849425,
+          "mean_boundary_fscore": 0.8753859374999999,
+          "mean_bsd_wasserstein": 3.013390625,
+          "mean_count_absolute_error": 116.078125,
+          "mean_count_relative_error": 0.35801249999999996,
+          "mean_d10_relative_error": 0.16008125,
+          "mean_d32_relative_error": 1.4971625,
+          "mean_d50_relative_error": 0.1117734375,
+          "mean_d90_relative_error": 0.254703125,
+          "mean_inference_ms": 31.378659375150164,
+          "total_predicted_instances": 10893,
+          "total_true_instances": 17844,
+          "total_merges": 2686,
+          "total_splits": 384,
+          "total_tp": 8301,
+          "total_fp": 2592,
+          "total_fn": 9543,
+          "mean_ap_by_condition": {
+            "bursting": 0.34575,
+            "coarse-froth": 0.57,
+            "dark-defocus-compound": 0.05925,
+            "defocus": 0.165,
+            "edge-framing": 0.32875000000000004,
+            "fine-froth": 0.276,
+            "glare-motion-compound": 0.03725,
+            "glare-storm": 0.14825000000000002,
+            "high-load": 0.37925,
+            "low-light-noise": 0.247,
+            "microbubble-cloud": 0.0695,
+            "mono-clean": 0.4195,
+            "motion-fast": 0.04525,
+            "poly-normal": 0.42650000000000005,
+            "watery": 0.01975,
+            "wide-bimodal-proxy": 0.21175
+          }
+        },
+        "paired_deltas": {
+          "ap": {
+            "metric": "ap",
+            "n_paired": 64,
+            "mean_delta": 0.064265625,
+            "median_delta": 0.0595,
+            "bootstrap_resamples": 10000,
+            "bootstrap_seed": 20260801,
+            "bootstrap_ci95": [
+              0.05387460937500001,
+              0.074765625
+            ],
+            "images_improved": 60,
+            "images_worsened": 4,
+            "images_unchanged": 0,
+            "win_rate": 0.9375,
+            "polarity": "higher_is_better"
+          },
+          "boundary_fscore": {
+            "metric": "boundary_fscore",
+            "n_paired": 64,
+            "mean_delta": 0.015378124999999998,
+            "median_delta": 0.029100000000000015,
+            "bootstrap_resamples": 10000,
+            "bootstrap_seed": 20260801,
+            "bootstrap_ci95": [
+              -0.01570671875,
+              0.04422359375
+            ],
+            "images_improved": 46,
+            "images_worsened": 18,
+            "images_unchanged": 0,
+            "win_rate": 0.71875,
+            "polarity": "higher_is_better"
+          },
+          "d32_relative_error": {
+            "metric": "d32_relative_error",
+            "n_paired": 64,
+            "mean_delta": 0.18115312499999997,
+            "median_delta": 0.10525000000000001,
+            "bootstrap_resamples": 10000,
+            "bootstrap_seed": 20260801,
+            "bootstrap_ci95": [
+              0.13158261718749997,
+              0.2354210546875
+            ],
+            "images_improved": 6,
+            "images_worsened": 58,
+            "images_unchanged": 0,
+            "win_rate": 0.09375,
+            "polarity": "lower_is_better"
+          },
+          "pq": {
+            "metric": "pq",
+            "n_paired": 64,
+            "mean_delta": 0.07414062500000002,
+            "median_delta": 0.0655,
+            "bootstrap_resamples": 10000,
+            "bootstrap_seed": 20260801,
+            "bootstrap_ci95": [
+              0.06171875,
+              0.08717226562500001
+            ],
+            "images_improved": 61,
+            "images_worsened": 3,
+            "images_unchanged": 0,
+            "win_rate": 0.953125,
+            "polarity": "higher_is_better"
+          },
+          "bsd_wasserstein": {
+            "metric": "bsd_wasserstein",
+            "n_paired": 64,
+            "mean_delta": -0.08335937500000001,
+            "median_delta": -0.23350000000000004,
+            "bootstrap_resamples": 10000,
+            "bootstrap_seed": 20260801,
+            "bootstrap_ci95": [
+              -0.26912890625,
+              0.10228789062499988
+            ],
+            "images_improved": 40,
+            "images_worsened": 24,
+            "images_unchanged": 0,
+            "win_rate": 0.625,
+            "polarity": "lower_is_better"
+          }
+        }
+      },
+      "direction_on_reserve": "confirmed",
+      "stated_cost": {
+        "metric": "mean_d32_relative_error",
+        "direction": "worse",
+        "reserve_before": 1.316009375,
+        "reserve_after": 1.4971625,
+        "test_split_before": 1.2583640624999999,
+        "test_split_after": 1.4370609374999999,
+        "test_split_source": "data/derived/phase1/c7-constrained-watershed.json",
+        "why": "Growing the caps back to the seam ridge enlarges every bubble, and the Sauter mean diameter is what notices. C7 already over-estimated d32 by a factor above 2, so this makes the size distribution worse while making the mask better. It must be stated wherever this change is described."
+      },
+      "observed_sweep_reference": {
+        "before": {
+          "artifact": "data/derived/phase1/c7-constrained-watershed.json",
+          "surface": "data/cache/learned-v2-192.npz test split, OBSERVED by the sweep grid",
+          "config": {
+            "seam_radius": 3,
+            "mode": "subtract",
+            "watershed_line": false
+          },
+          "mean_ap": 0.1673125,
+          "mean_boundary_fscore": 0.86284375,
+          "mean_d32_relative_error": 1.2583640624999999
+        },
+        "after": {
+          "artifact": "data/derived/phase1/c7-constrained-watershed.json",
+          "surface": "data/cache/learned-v2-192.npz test split, OBSERVED by the sweep grid",
+          "config": {
+            "seam_radius": 3,
+            "mode": "watershed",
+            "watershed_line": false
+          },
+          "mean_ap": 0.2325625,
+          "mean_boundary_fscore": 0.8837046875,
+          "mean_d32_relative_error": 1.4370609374999999
+        }
+      }
+    }
+  ],
+  "deliberately_not_moved": [
+    {
+      "constant": "valley_edge.seam_radius",
+      "value": 3,
+      "evidence": "data/derived/phase1/c7-constrained-watershed.json",
+      "why": "Radius 4 or 5 in the adopted watershed mode is worth about 0.01 mean AP over radius 3 on the observed test split. That is test-split selection with no source behind it, which is the failure mode this confirmation exists to avoid."
+    },
+    {
+      "constant": "valley_edge.watershed_line",
+      "value": false,
+      "evidence": "data/derived/phase1/c7-constrained-watershed.json",
+      "why": "Turning the line on trades a little mean AP for a little boundary F at every radius, with no source preferring either direction."
+    },
+    {
+      "constant": "watershed_dt.compactness",
+      "value": 0.0,
+      "evidence": "data/derived/phase1/c4-compactness-sweep.json",
+      "why": "0.0 is the argmax on mean AP and every other swept value scores lower, so the current default is already best. Recorded as a deliberate default with its sweep as evidence rather than left as an unexamined literal."
+    },
+    {
+      "constant": "_foreground.otsu_factor",
+      "value": 0.75,
+      "evidence": "data/derived/phase1/foreground-factor-sweep.json",
+      "why": "Kept as a deliberate default with its sweep as evidence. It is common-mode across seven methods, it is the argmax for exactly one of the five scored dependants, and the tier-mean argmax is a different value, so moving it would be picking a per-method winner on the observed split for a constant the whole tier shares."
+    }
+  ],
+  "off_domain_observation": {
+    "artifact": "data/derived/real-adjacent-benchmark.json",
+    "domain": "adjacent",
+    "source_id": "bbbc038-dsb2018",
+    "n_samples": 64,
+    "status": "already-observed split, recomputed; no budget spent and nothing selected on it",
+    "scope": "Real dense-instance microscopy, NOT froth. This measures whether the ladder generalises off the in-repo generator. It supports no statement about flotation accuracy.",
+    "C3": {
+      "before": 0.182,
+      "after": 0.12782812500000001,
+      "direction": "WORSE off-domain"
+    },
+    "C7": {
+      "before": 0.193,
+      "after": 0.3013125,
+      "direction": "better off-domain"
+    },
+    "reading": "The two changes disagree here and the disagreement is mechanistic, not noise. C3's adopted surface is a FROTH mechanism: flooding the negated intensity from h-maxima markers assumes one bright specular highlight per object and a dark Plateau border between objects, and cell nuclei have neither, so on this domain the distance transform it replaced is the better surface. C7's constrained watershed assumes only that objects are separated by a thin dark seam the black-top-hat can find, which nuclei do satisfy, so it transfers. Neither result changes the adoption: both changes were justified by a froth source and confirmed on a froth reserve slice, and this split explicitly supports no froth statement. It is recorded so that nobody later reads C3's froth gain as evidence that the surface is generally better."
+  },
+  "verdict": "adopted",
+  "verdict_meaning": "Both changes moved mean AP in the adopted direction on data no sweep observed, with bootstrap intervals clear of zero, so the adoption stands and these reserve numbers are the ones that get published as the effect of the change.",
+  "engine_defaults_after_adoption": {
+    "file": "data-pipeline/fslab/science/segment.py",
+    "C3_FLOODING_SURFACE": "neg_gray",
+    "C7_MODE": "watershed",
+    "C7_SEAM_RADIUS": 3,
+    "C7_WATERSHED_LINE": false,
+    "C4_COMPACTNESS": 0.0,
+    "FOREGROUND_OTSU_FACTOR": 0.75,
+    "live_twin": "frontend/src/classical/methods.ts, watershedHmax and valleyEdge moved with them"
+  },
+  "reserve_ledger_entry": {
+    "file": "verification/reserve-slice-ledger.json",
+    "reserve_study": "p1",
+    "spent_by": "phase1-classical-adoption-c3-flooding-surface-and-c7-mode",
+    "sample_count": 64,
+    "group_ids_sha256": "47efac56e423011aed7f0f5282cc264e49c6205de7bbf65a7cb6ab857ad4a59a",
+    "sample_ids_sha256": "291d72eeda527398e1cb36b21890cc7966684ab9d17027ffb956c24dd598dace",
+    "test_evaluations_spent": 0,
+    "slices_spent_after_this_entry": 3,
+    "note": "The p1 slice was reassigned from its named study. P-1's pre-registered design consumed zero reserve groups by construction and P-1 closed on 2026-07-31 with verdict 'fail', so the slice its name reserved was never going to be spent by it. The slice is now burned for every purpose."
+  }
+}

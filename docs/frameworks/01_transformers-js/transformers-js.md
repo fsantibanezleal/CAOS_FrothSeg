@@ -102,9 +102,11 @@ an adapter is actually obtainable, otherwise `wasm` in the browser or the librar
   `frontend/src/sam/`, so it is identical across WebGPU, WASM, and Node.
 - **Contract it satisfies**: the bounded-live inference contract. The encoder runs once per image; the decoder is
   called in batches over the prompt grid (`pointBatch` default 64), which keeps memory bounded and lets the UI
-  report progress. Its historical canonical diagnostic beats the older classical floor on average (mean
-  mask AP 0.365 vs 0.262, wins 10 of 13 cases, and 0.407 vs 0.081 under the glare control); the floor stays
-  complementary on heavy motion-blur and defocus. Full per-case numbers live in the Experiments and Benchmark
+  report progress. Its historical canonical diagnostic now edges the classical floor by 0.014 rather than
+  clearing it (mean mask AP 0.365 vs 0.351, wins 5 of the 12 scored cases, and 0.407 vs 0.182 under the glare
+  control); the floor stays complementary on heavy motion-blur and defocus and has taken back several other
+  cases. Those floor figures were 0.262, 10 of 13 and 0.081 until the 2026-08-01 C3 and C7 adoption, which
+  changed no SAM prediction at all. Full per-case numbers live in the Experiments and Benchmark
   pages, transcribed from the committed `data/derived/sam_benchmark.json`. This
   is not the unified held-out leader or a plant-readiness result.
 - **Swapping the model**: the module is model-agnostic. `MobileSAM` (or another SAM student exported to ONNX)

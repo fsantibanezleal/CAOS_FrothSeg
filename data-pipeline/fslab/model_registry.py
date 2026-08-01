@@ -37,9 +37,14 @@ METHODS: tuple[MethodSpec, ...] = (
     MethodSpec("C2", "watershed_immersion", "Gradient immersion watershed", "classical", "offline",
                "scikit-image", "Vincent and Soille 1991, DOI 10.1109/34.87344", "BSD-3-Clause",
                False, False, "accepted", "docs/methods/classical.md"),
+    # Until 2026-08-01 this row cited Sadr-Kazemi and Cilliers for its markers while flooding the negated
+    # distance transform, which is C4's surface and not the one that source publishes. The engine now
+    # floods the negated image, so the citation covers the whole method and not only half of it
+    # (verification/phase1-adoption.json).
     MethodSpec("C3", "watershed_hmax", "Marker-controlled watershed", "classical", "offline+live",
                "scikit-image",
-               "markers: Sadr-Kazemi and Cilliers 1997, DOI 10.1016/S0892-6875(97)00094-0; "
+               "markers and negated-intensity flooding surface: Sadr-Kazemi and Cilliers 1997, "
+               "DOI 10.1016/S0892-6875(97)00094-0; "
                "marker-controlled flooding: Meyer 1994, DOI 10.1016/0165-1684(94)90060-4",
                "BSD-3-Clause",
                False, False, "accepted", "docs/methods/classical.md"),
@@ -52,10 +57,20 @@ METHODS: tuple[MethodSpec, ...] = (
     MethodSpec("C6", "slic_merge", "SLIC + RAG merge", "classical", "offline",
                "scikit-image", "Achanta et al. 2012, DOI 10.1109/TPAMI.2012.120", "BSD-3-Clause",
                False, False, "accepted", "docs/methods/classical.md"),
-    # No watershed and no OpenCV: the engine is a black-top-hat seam detector whose enclosed caps are
-    # labelled by scipy.ndimage.label (data-pipeline/fslab/science/segment.py valley_edge).
-    MethodSpec("C7", "valley_edge", "Lamella-valley dark-seam detector", "classical", "offline",
-               "scikit-image/SciPy", "domain valley/ridge baseline; exact citation gated", "BSD-3-Clause",
+    # This row was called "Lamella-valley constrained watershed" until 2026-07-31, when a Phase 0 honesty
+    # pass renamed it to "dark-seam detector" because the engine ran no watershed: it subtracted the
+    # black-top-hat seam from the foreground and labelled the enclosed caps with scipy.ndimage.label.
+    # On 2026-08-01 the mismatch was resolved from the other side. The engine now IS a constrained
+    # watershed (C7_MODE = "watershed"): the cleaned caps are markers and they flood the black-top-hat
+    # response until they meet on the seam ridge, so the name is restored and Meyer 1994 is now a real
+    # provenance for this row rather than an aspirational one. Adoption evidence, including the honest
+    # cost that d32 relative error got worse: verification/phase1-adoption.json.
+    # Still no OpenCV. The watershed primitive is the pinned scikit-image one C3, C4 and C5 already use.
+    MethodSpec("C7", "valley_edge", "Lamella-valley constrained watershed", "classical", "offline",
+               "scikit-image/SciPy",
+               "domain valley/ridge baseline, exact citation gated; constrained flooding: Meyer 1994, "
+               "DOI 10.1016/0165-1684(94)90060-4",
+               "BSD-3-Clause",
                False, False, "accepted", "docs/methods/classical.md"),
     MethodSpec("L1", "unet_watershed", "Boundary/distance U-Net + watershed", "domain-sota",
                "offline+live-candidate", "PyTorch/ONNX Runtime",

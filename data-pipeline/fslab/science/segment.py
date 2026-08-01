@@ -8,13 +8,19 @@ The classical ladder (C1..C7, plan section 1.1), each with its froth-vision prov
   * C1 `otsu_cc`             Otsu threshold + connected components. Under-segments (touching bubbles merge).
   * C2 `watershed_immersion` immersion watershed seeded at gradient minima. Over-segments (a basin per
                              highlight/dip). Exhibit.
-  * C3 `watershed_hmax`      highlight-seeded h-maxima markers, the classic industrial froth trick. Fails on glare.
+  * C3 `watershed_hmax`      highlight-seeded h-maxima markers flooding the NEGATED IMAGE, the classic industrial
+                             froth trick as its own source publishes it. Fails on glare. 0.2196 AP on the 64-image
+                             held-out split, and the tier's best d32 relative error at 0.1907.
   * C4 `watershed_dt`        distance-transform markers + marker-controlled watershed (Meyer). The generic floor.
   * C5 `watershed_hmin`      H-minima (extended-minima) suppression before flooding; the single knob h.
   * C6 `slic_merge`          SLIC superpixels + region-adjacency mean-intensity merge, texture-aware.
-  * C7 `valley_edge`         dark-seam / valley detector (Wang), the domain-specific froth method. On the 64-image
-                             held-out split C4 leads the tier on AP (0.1977 against C7's 0.1673) while C7 leads on
-                             boundary F (0.8628) and count error (114.2) at 9.6 ms, less than half C4's 22.1 ms.
+  * C7 `valley_edge`         dark-seam / valley detector (Wang) grown back to the seam ridge by a constrained
+                             watershed (Meyer), the domain-specific froth method. On the 64-image held-out split
+                             C7 leads the tier on AP (0.2326) and on count error (114.2), C3 is second at 0.2196
+                             and C4 third at 0.1977; C4 still leads on BSD Wasserstein-1 (2.590), and C7 has the
+                             WORST d32 relative error of the three leaders (1.4371, against C4's 1.1555 and C3's
+                             tier-best 0.1907), the stated cost of growing the caps back. C5 1.9224 and C1 5.0063
+                             are worse still on d32, but neither is in contention on AP.
 
 Morphometry uses skimage.regionprops (equivalent diameter, eccentricity, solidity). Scoring: greedy IoU matching
 -> per-image mask AP@[.5:.95], Panoptic Quality (PQ = SQ x RQ) with its merge/split decomposition, and the BSD
@@ -38,7 +44,17 @@ from skimage import feature, filters, graph, measure, morphology, segmentation
 # sweeps under data/derived/phase1/; the ledger of which constant is swept, which is sourced and which
 # is still undefended is data/derived/phase1/classical-constant-ledger.json.
 #
-# NOTHING here changes a published number: each default equals the literal it replaced.
+# TWO defaults were moved on 2026-08-01, both of them because the code was not implementing the source
+# the registry already cites for that method, and NEITHER of them because a sweep score was higher.
+# Recorded with their before/after on an unobserved reserve slice in verification/phase1-adoption.json.
+#
+#   C3_FLOODING_SURFACE  "neg_edt"  -> "neg_gray"  Sadr-Kazemi and Cilliers 1997,
+#                                                  10.1016/S0892-6875(97)00094-0
+#   C7_MODE              "subtract" -> "watershed" Meyer 1994, 10.1016/0165-1684(94)90060-4
+#
+# Nothing else moved. C4_COMPACTNESS stays 0.0 and FOREGROUND_OTSU_FACTOR stays 0.75: both are best or
+# unbeaten on their own sweeps, and C7_SEAM_RADIUS stays 3 because radius 4 or 5 buys about 0.01 AP on
+# the observed test split, which is test-split selection rather than a finding.
 # --------------------------------------------------------------------------------------------------
 
 FOREGROUND_OTSU_FACTOR = 0.75        # SWEPT, Phase 1 item 1.2. Common-mode across C1, C2, C3, C4, C5, C6, C7.
@@ -53,14 +69,14 @@ C4_COMPACTNESS = 0.0                 # SWEPT, Phase 1 item 1.1. 0.0 == plain wat
 C4_WATERSHED_LINE = False            # SWEPT, Phase 1 item 1.1.
 
 C3_H_MAXIMA = 0.06                   # highlight seed depth, in units of the [0, 1] intensity image.
-C3_FLOODING_SURFACE = "neg_edt"      # SWEPT, Phase 1 item 1.4. The published surface is the negated EDT.
+C3_FLOODING_SURFACE = "neg_gray"     # ADOPTED 2026-08-01, was "neg_edt". See verification/phase1-adoption.json.
 
 C5_H_MINIMA = 0.08                   # fraction of the per-image EDT maximum, see watershed_hmin docstring.
 
 C7_SEAM_RADIUS = 3                   # black-tophat disk radius, in px; sets the widest seam that is detected.
 C7_MIN_CAP_SIZE = 8                  # caps of this area or fewer are dropped (skimage removes <= max_size).
-C7_MODE = "subtract"                 # SWEPT, Phase 1 item 1.3. "subtract" is published; "watershed" is Meyer.
-C7_WATERSHED_LINE = False            # SWEPT, Phase 1 item 1.3, only meaningful when mode == "watershed".
+C7_MODE = "watershed"                # ADOPTED 2026-08-01, was "subtract". See verification/phase1-adoption.json.
+C7_WATERSHED_LINE = False            # SWEPT, Phase 1 item 1.3, NOT moved by the adoption. Kept at False.
 
 FLOODING_SURFACES = ("neg_edt", "gray", "neg_gray", "gradient")
 
@@ -86,10 +102,12 @@ def _foreground(
 def _flooding_surface(gray: np.ndarray, foreground: np.ndarray, kind: str) -> np.ndarray:
     """The topographic surface a marker-controlled watershed floods.
 
-    `neg_edt` is the published choice for C3 and C4: the negated Euclidean distance transform of the
-    foreground, whose valleys are object centres. The other three flood the image itself, its negation,
-    or its morphological gradient, which is what Sadr-Kazemi & Cilliers 1997 (`10.1016/S0892-6875(97)00094-0`)
-    describe for highlight-seeded froth watershed. Phase 1 item 1.4 measures all four against C3's markers."""
+    `neg_edt` is the distance-transform surface: the negated Euclidean distance transform of the
+    foreground, whose valleys are object centres. It is what C4 floods and it was C3's default until
+    2026-08-01, which made C3 and C4 differ only in their markers. `neg_gray` floods the negated image,
+    which is the surface Sadr-Kazemi & Cilliers 1997 (`10.1016/S0892-6875(97)00094-0`) describe for
+    highlight-seeded froth watershed and which the C3 registry entry already cites; it is C3's default
+    now. Phase 1 item 1.4 measured all four against C3's markers."""
     if kind == "neg_edt":
         return -ndi.distance_transform_edt(foreground)
     if kind == "gray":
@@ -137,9 +155,11 @@ def watershed_hmax(
     """Highlight-seeded watershed: bright specular spots (h-maxima) are the bubble markers, the canonical
     industrial froth method. Robust on clean specular froth, degrades under glare (the honest failure).
 
-    `surface` selects what those markers flood. The published default `neg_edt` floods the negated distance
-    transform, i.e. the same surface C4 uses, so C3 and C4 differ only in their markers; Phase 1 item 1.4
-    swaps in the image and its morphological gradient to separate marker failure from surface failure."""
+    `surface` selects what those markers flood. The default is `neg_gray`, the negated image, adopted on
+    2026-08-01 because that is the surface the method's own cited source floods; the previous default
+    `neg_edt` is the distance transform C4 already uses, which made C3 and C4 differ only in their
+    markers. Phase 1 item 1.4 separated marker failure from surface failure over all four surfaces and
+    verification/phase1-adoption.json confirms the change on a reserve slice no sweep observed."""
     fg = _foreground(gray, **foreground_kwargs)
     hmax = morphology.h_maxima(gray, h=h)
     markers = ndi.label(hmax)[0]
@@ -239,22 +259,27 @@ def valley_edge(
     watershed_line: bool = C7_WATERSHED_LINE,
     **foreground_kwargs,
 ) -> np.ndarray:
-    """C7, valley-edge / dark-seam detector, the domain-specific froth classical (Wang 2003; Wang & Chen 2015).
-    Froth bubbles are delineated by the darkish inter-bubble VALLEYS (Plateau borders), not by the bright
-    specular spots, so gradient/edge detectors that lock onto highlights fail. Here the dark seams are found by a
-    black-top-hat (dark structures thinner than the structuring element), removed from the foreground, and the
-    enclosed bright caps are labelled as the bubbles. Robust to highlights by construction.
+    """C7, lamella-valley constrained watershed, the domain-specific froth classical (Wang 2003; Wang & Chen
+    2015) with Meyer 1994 flooding. Froth bubbles are delineated by the darkish inter-bubble VALLEYS (Plateau
+    borders), not by the bright specular spots, so gradient/edge detectors that lock onto highlights fail. Here
+    the dark seams are found by a black-top-hat (dark structures thinner than the structuring element) and the
+    enclosed bright caps are cleaned; since 2026-08-01 those caps are then MARKERS that flood the seam response
+    back to its ridge, rather than the instances themselves. Robust to highlights by construction.
 
     `mode` selects what happens after the caps are cleaned.
 
-    * `"subtract"` is the published behaviour: the caps ARE the instances, so every seam pixel is lost from
-      every bubble and each mask stops short of the seam centreline.
-    * `"watershed"` is the constrained watershed the registry name already claims (Meyer 1994,
-      `10.1016/0165-1684(94)90060-4`): the cleaned caps become markers and flood the black-top-hat response
-      itself, so caps grow back across the seam until they meet on its ridge. No new dependency; the
-      `watershed` primitive is the same pinned scikit-image one C3, C4 and C5 already use.
+    * `"subtract"` was the default until 2026-08-01: the caps ARE the instances, so every seam pixel is
+      lost from every bubble and each mask stops short of the seam centreline.
+    * `"watershed"` is the default now, and is the constrained watershed the registry name already claims
+      (Meyer 1994, `10.1016/0165-1684(94)90060-4`): the cleaned caps become markers and flood the
+      black-top-hat response itself, so caps grow back across the seam until they meet on its ridge. No
+      new dependency; the `watershed` primitive is the same pinned scikit-image one C3, C4 and C5 use.
 
-    Phase 1 item 1.3 measures the two modes against each other over the 64-image test split."""
+    Phase 1 item 1.3 measured the two modes over the 64-image test split, at four seam radii, and every
+    watershed row beat every subtract row at every radius. The honest cost of the change, which must be
+    stated wherever it is described: d32 relative error moves the WRONG way, 1.2584 to 1.4371 on the
+    test split and 1.3160 to 1.4972 on the reserve slice. Growing caps back to the seam ridge enlarges
+    every bubble, and the Sauter mean diameter is what notices."""
     seams = morphology.black_tophat(gray, morphology.disk(seam_radius))
     seam_mask = seams > filters.threshold_otsu(seams) if seams.max() > 0 else np.zeros_like(gray, bool)
     fg = _foreground(gray, **foreground_kwargs)

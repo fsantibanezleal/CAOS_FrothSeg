@@ -7,7 +7,7 @@ complete product.
 
 `frontend/src/classical` implements C1-C7 in TypeScript: Otsu connected
 components, immersion watershed, marker watershed, distance-transform
-watershed, H-minima watershed, SLIC, and the lamella-valley dark-seam detector. Only C1
+watershed, H-minima watershed, SLIC, and the lamella-valley constrained watershed. Only C1
 Otsu, C3 marker watershed, and C4 distance-transform watershed passed the
 current 16-condition parity report, so only those three are exposed for an
 uploaded image. SlimSAM is the fourth upload-only interactive method.

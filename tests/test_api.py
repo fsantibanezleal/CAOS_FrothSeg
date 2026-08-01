@@ -1,3 +1,5 @@
+import pathlib
+
 import anyio
 import httpx
 
@@ -17,7 +19,12 @@ def get(path: str) -> httpx.Response:
 def test_health_and_release_evidence():
     health = get("/health")
     assert health.status_code == 200
-    assert health.json()["version"] == "0.04.000"
+    # Read from VERSION, the single source of truth, never a literal. Hardcoding it here
+    # meant a legitimate version bump broke a test that is not about versioning at all.
+    expected = (pathlib.Path(__file__).resolve().parent.parent / "VERSION").read_text(
+        encoding="utf-8"
+    ).strip()
+    assert health.json()["version"] == expected
     release = get("/api/release")
     assert release.status_code == 200
     document = release.json()

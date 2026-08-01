@@ -70,35 +70,42 @@ grid.
 Model `Xenova/slimsam-77-uniform`, grid 32x32 (1024 prompts), onnxruntime-node CPU, scored vs exact synthetic GT
 with the same `mask_ap` the classical floor uses. Transcribed from `data/derived/sam_benchmark.json`:
 
+The `floor` column is the best classical method on that case, so it moved on 2026-08-01 when the C3 and C7
+engines were corrected and every per-case bake was re-run. The SAM columns are unchanged: the browser dumps in
+`verification/sam/` were not re-collected and not one prediction moved.
+
 | case | SAM AP | SAM AP50 | floor AP | floor method | SAM n | GT n | SAM d32 | GT d32 | BSD-W |
 |---|---|---|---|---|---|---|---|---|---|
 | mono-clean | **0.741** | 0.974 | 0.329 | watershed_dt | 113 | 114 | 27.04 | 28.41 | 1.39 |
-| coarse-froth | **0.651** | 0.861 | 0.394 | watershed_dt | 79 | 68 | 37.8 | 39.51 | 2.948 |
-| poly-normal | **0.457** | 0.747 | 0.401 | watershed_dt | 212 | 197 | 22.29 | 22.96 | 0.501 |
-| bursting | **0.449** | 0.756 | 0.361 | watershed_dt | 147 | 148 | 26.68 | 26.0 | 0.578 |
-| high-load | **0.42** | 0.75 | 0.415 | watershed_dt | 245 | 231 | 20.76 | 21.04 | 0.474 |
-| edge-framing | **0.412** | 0.777 | 0.309 | watershed_dt | 261 | 274 | 19.16 | 19.27 | 0.318 |
-| glare-storm | **0.407** | 0.717 | 0.081 | watershed_dt | 179 | 197 | 23.9 | 21.96 | 0.5 |
-| fine-froth | **0.335** | 0.692 | 0.266 | watershed_dt | 446 | 593 | 12.77 | 12.92 | 0.377 |
-| low-light-noise | **0.302** | 0.633 | 0.263 | watershed_dt | 142 | 196 | 21.97 | 22.55 | 0.673 |
-| watery | **0.172** | 0.287 | 0.155 | watershed_dt | 128 | 231 | 21.92 | 21.25 | 1.686 |
-| defocus | 0.016 | 0.056 | **0.066** | watershed_dt | 37 | 170 | 17.73 | 28.46 | 5.428 |
-| motion-fast | 0.016 | 0.052 | **0.104** | watershed_dt | 25 | 197 | 16.37 | 23.95 | 3.622 |
+| coarse-froth | **0.651** | 0.861 | 0.555 | valley_edge | 79 | 68 | 37.8 | 39.51 | 2.948 |
+| poly-normal | 0.457 | 0.747 | **0.458** | valley_edge | 212 | 197 | 22.29 | 22.96 | 0.501 |
+| bursting | **0.449** | 0.756 | 0.438 | valley_edge | 147 | 148 | 26.68 | 26.0 | 0.578 |
+| high-load | 0.42 | 0.75 | **0.442** | valley_edge | 245 | 231 | 20.76 | 21.04 | 0.474 |
+| edge-framing | 0.412 | 0.777 | **0.415** | valley_edge | 261 | 274 | 19.16 | 19.27 | 0.318 |
+| glare-storm | **0.407** | 0.717 | 0.182 | valley_edge | 179 | 197 | 23.9 | 21.96 | 0.5 |
+| fine-froth | 0.335 | 0.692 | **0.363** | valley_edge | 446 | 593 | 12.77 | 12.92 | 0.377 |
+| low-light-noise | **0.302** | 0.633 | 0.267 | valley_edge | 142 | 196 | 21.97 | 22.55 | 0.673 |
+| watery | 0.172 | 0.287 | **0.373** | watershed_hmax | 128 | 231 | 21.92 | 21.25 | 1.686 |
+| defocus | 0.016 | 0.056 | **0.225** | watershed_hmax | 37 | 170 | 17.73 | 28.46 | 5.428 |
+| motion-fast | 0.016 | 0.052 | **0.165** | watershed_hmax | 25 | 197 | 16.37 | 23.95 | 3.622 |
 | empty-control | n/a | n/a | n/a | n/a | 0 | 0 | n/a | n/a | n/a |
-| **mean** | **0.365** | | **0.262** | | | | | | |
+| **mean** | **0.365** | | **0.351** | | | | | | |
 
-Summary: mean SAM AP **0.365** vs floor **0.262**, delta **+0.103**, SAM wins **10/13**.
+Summary: mean SAM AP **0.365** vs floor **0.351**, delta **+0.014**, SAM wins **5/12** scored cases.
+It read 0.262, +0.103 and 10 wins until 2026-08-01, and every point of that change is the floor.
 
 The story the numbers tell:
 
-- SAM beats the tuned classical floor on average and wins the clean, coarse, nominal, and stressed-but-structured
-  cases outright.
-- The win that matters operationally is `glare-storm`: **0.407 vs 0.081**. Under a saturated glare lobe the
-  highlight/distance-transform watershed collapses, which is the realistic froth-camera failure mode; the
-  zero-shot foundation model degrades gracefully instead.
+- SAM no longer beats the classical floor on average by any meaningful margin: +0.014 over 12 scored cases,
+  winning 5 of them. It still wins the clean control, coarse froth, bursting, low-light and the glare case.
+- The win that still matters operationally is `glare-storm`: **0.407 vs 0.182**. Under a saturated glare lobe
+  the classical tier reaches only 0.182 even with C7's constrained watershed holding the floor, which is the
+  realistic froth-camera failure mode; the zero-shot foundation model degrades gracefully instead. That gap was
+  5x against the pre-adoption `watershed_dt` floor of 0.081 and is 2.2x now.
 - The floor stays complementary on `motion-fast` and `defocus`, where the blur removes the promptable structure
-  and SAM's confident-mask count drops (25 and 37 masks against ~170-200 true bubbles). This is honest: the App
-  offers both methods for exactly this reason.
+  and SAM's confident-mask count drops (25 and 37 masks against ~170-200 true bubbles), and it now also takes
+  `watery`, `poly-normal`, `high-load`, `edge-framing` and `fine-froth`. This is honest: the App offers both
+  methods for exactly this reason.
 - `empty-control` yields 0 bubbles and a `null` AP for both, the correct behaviour on a no-froth frame.
 
 These canonical results do not establish SOTA or plant readiness. The release

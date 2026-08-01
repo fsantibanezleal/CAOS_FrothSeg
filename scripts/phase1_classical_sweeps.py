@@ -17,6 +17,15 @@ default is changed by this script and nothing here consumes the learned-lane tes
 
 Nothing this script writes changes a published number. `--verify-baseline` re-runs all seven engines through
 the newly parameterised call path and asserts they reproduce `classical-heldout.json` exactly.
+
+OUTCOME, added after the fact so nobody reads the grids without it. Two of the constants swept here were
+ADOPTED on 2026-08-01, `watershed_hmax.surface` (neg_edt to neg_gray) and `valley_edge.mode` (subtract to
+watershed), each on the primary source its registry entry documents rather than on its score here, and each
+confirmed BEFORE and AFTER on an untouched reserve slice by `scripts/confirm_phase1_adoption.py`
+(`verification/phase1-adoption.json`). The artifacts under `data/derived/phase1/` are therefore the
+PRE-ADOPTION record: they were measured with the old defaults and they are deliberately NOT re-run against
+the engine they produced, because that would replace the evidence with its own consequence. The prose in the
+study docstrings below is likewise as it was written, in the present tense of the pre-adoption engine.
 """
 
 from __future__ import annotations

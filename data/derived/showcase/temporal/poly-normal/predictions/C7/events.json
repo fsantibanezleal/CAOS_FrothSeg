@@ -89,31 +89,6 @@
     },
     {
       "frame_index": 1,
-      "instance_id": 195,
-      "type": "birth"
-    },
-    {
-      "frame_index": 1,
-      "instance_id": 196,
-      "type": "birth"
-    },
-    {
-      "frame_index": 1,
-      "instance_id": 197,
-      "type": "birth"
-    },
-    {
-      "frame_index": 1,
-      "instance_id": 198,
-      "type": "birth"
-    },
-    {
-      "frame_index": 1,
-      "instance_id": 199,
-      "type": "birth"
-    },
-    {
-      "frame_index": 1,
       "instance_id": 6,
       "type": "disappearance"
     },
@@ -144,11 +119,6 @@
     },
     {
       "frame_index": 1,
-      "instance_id": 32,
-      "type": "disappearance"
-    },
-    {
-      "frame_index": 1,
       "instance_id": 34,
       "type": "disappearance"
     },
@@ -164,22 +134,12 @@
     },
     {
       "frame_index": 1,
-      "instance_id": 54,
-      "type": "disappearance"
-    },
-    {
-      "frame_index": 1,
       "instance_id": 57,
       "type": "disappearance"
     },
     {
       "frame_index": 1,
       "instance_id": 63,
-      "type": "disappearance"
-    },
-    {
-      "frame_index": 1,
-      "instance_id": 72,
       "type": "disappearance"
     },
     {
@@ -228,14 +188,29 @@
       "type": "disappearance"
     },
     {
-      "frame_index": 1,
-      "instance_id": 160,
-      "type": "disappearance"
+      "frame_index": 2,
+      "instance_id": 195,
+      "type": "birth"
     },
     {
-      "frame_index": 1,
-      "instance_id": 167,
-      "type": "disappearance"
+      "frame_index": 2,
+      "instance_id": 196,
+      "type": "birth"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 197,
+      "type": "birth"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 198,
+      "type": "birth"
+    },
+    {
+      "frame_index": 2,
+      "instance_id": 199,
+      "type": "birth"
     },
     {
       "frame_index": 2,
@@ -299,31 +274,6 @@
     },
     {
       "frame_index": 2,
-      "instance_id": 212,
-      "type": "birth"
-    },
-    {
-      "frame_index": 2,
-      "instance_id": 213,
-      "type": "birth"
-    },
-    {
-      "frame_index": 2,
-      "instance_id": 214,
-      "type": "birth"
-    },
-    {
-      "frame_index": 2,
-      "instance_id": 215,
-      "type": "birth"
-    },
-    {
-      "frame_index": 2,
-      "instance_id": 216,
-      "type": "birth"
-    },
-    {
-      "frame_index": 2,
       "instance_id": 17,
       "type": "disappearance"
     },
@@ -369,23 +319,48 @@
     },
     {
       "frame_index": 2,
+      "instance_id": 160,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 2,
       "instance_id": 162,
       "type": "disappearance"
     },
     {
       "frame_index": 2,
-      "instance_id": 194,
+      "instance_id": 167,
       "type": "disappearance"
     },
     {
       "frame_index": 2,
-      "instance_id": 195,
+      "instance_id": 191,
       "type": "disappearance"
     },
     {
-      "frame_index": 2,
-      "instance_id": 196,
-      "type": "disappearance"
+      "frame_index": 3,
+      "instance_id": 212,
+      "type": "birth"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 213,
+      "type": "birth"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 214,
+      "type": "birth"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 215,
+      "type": "birth"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 216,
+      "type": "birth"
     },
     {
       "frame_index": 3,
@@ -415,31 +390,6 @@
     {
       "frame_index": 3,
       "instance_id": 222,
-      "type": "birth"
-    },
-    {
-      "frame_index": 3,
-      "instance_id": 223,
-      "type": "birth"
-    },
-    {
-      "frame_index": 3,
-      "instance_id": 224,
-      "type": "birth"
-    },
-    {
-      "frame_index": 3,
-      "instance_id": 225,
-      "type": "birth"
-    },
-    {
-      "frame_index": 3,
-      "instance_id": 226,
-      "type": "birth"
-    },
-    {
-      "frame_index": 3,
-      "instance_id": 227,
       "type": "birth"
     },
     {
@@ -504,7 +454,17 @@
     },
     {
       "frame_index": 3,
-      "instance_id": 185,
+      "instance_id": 183,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 186,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 188,
       "type": "disappearance"
     },
     {
@@ -514,12 +474,7 @@
     },
     {
       "frame_index": 3,
-      "instance_id": 191,
-      "type": "disappearance"
-    },
-    {
-      "frame_index": 3,
-      "instance_id": 192,
+      "instance_id": 195,
       "type": "disappearance"
     },
     {
@@ -529,12 +484,17 @@
     },
     {
       "frame_index": 3,
-      "instance_id": 205,
+      "instance_id": 202,
       "type": "disappearance"
     },
     {
       "frame_index": 3,
-      "instance_id": 207,
+      "instance_id": 204,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 3,
+      "instance_id": 208,
       "type": "disappearance"
     },
     {
@@ -543,14 +503,29 @@
       "type": "disappearance"
     },
     {
-      "frame_index": 3,
-      "instance_id": 213,
-      "type": "disappearance"
+      "frame_index": 4,
+      "instance_id": 223,
+      "type": "birth"
     },
     {
-      "frame_index": 3,
-      "instance_id": 214,
-      "type": "disappearance"
+      "frame_index": 4,
+      "instance_id": 224,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 225,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 226,
+      "type": "birth"
+    },
+    {
+      "frame_index": 4,
+      "instance_id": 227,
+      "type": "birth"
     },
     {
       "frame_index": 4,
@@ -664,38 +639,8 @@
     },
     {
       "frame_index": 4,
-      "instance_id": 250,
-      "type": "birth"
-    },
-    {
-      "frame_index": 4,
-      "instance_id": 251,
-      "type": "birth"
-    },
-    {
-      "frame_index": 4,
-      "instance_id": 252,
-      "type": "birth"
-    },
-    {
-      "frame_index": 4,
-      "instance_id": 253,
-      "type": "birth"
-    },
-    {
-      "frame_index": 4,
-      "instance_id": 254,
-      "type": "birth"
-    },
-    {
-      "frame_index": 4,
-      "instance_id": 255,
-      "type": "birth"
-    },
-    {
-      "frame_index": 4,
-      "instance_id": 256,
-      "type": "birth"
+      "instance_id": 32,
+      "type": "disappearance"
     },
     {
       "frame_index": 4,
@@ -739,43 +684,63 @@
     },
     {
       "frame_index": 4,
-      "instance_id": 182,
+      "instance_id": 193,
       "type": "disappearance"
     },
     {
       "frame_index": 4,
-      "instance_id": 198,
+      "instance_id": 196,
       "type": "disappearance"
     },
     {
       "frame_index": 4,
-      "instance_id": 201,
+      "instance_id": 207,
       "type": "disappearance"
     },
     {
       "frame_index": 4,
-      "instance_id": 202,
+      "instance_id": 219,
       "type": "disappearance"
     },
     {
       "frame_index": 4,
-      "instance_id": 212,
+      "instance_id": 222,
       "type": "disappearance"
     },
     {
-      "frame_index": 4,
-      "instance_id": 221,
-      "type": "disappearance"
+      "frame_index": 5,
+      "instance_id": 250,
+      "type": "birth"
     },
     {
-      "frame_index": 4,
-      "instance_id": 224,
-      "type": "disappearance"
+      "frame_index": 5,
+      "instance_id": 251,
+      "type": "birth"
     },
     {
-      "frame_index": 4,
-      "instance_id": 227,
-      "type": "disappearance"
+      "frame_index": 5,
+      "instance_id": 252,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 253,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 254,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 255,
+      "type": "birth"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 256,
+      "type": "birth"
     },
     {
       "frame_index": 5,
@@ -819,52 +784,17 @@
     },
     {
       "frame_index": 5,
-      "instance_id": 265,
-      "type": "birth"
-    },
-    {
-      "frame_index": 5,
-      "instance_id": 266,
-      "type": "birth"
-    },
-    {
-      "frame_index": 5,
-      "instance_id": 267,
-      "type": "birth"
-    },
-    {
-      "frame_index": 5,
-      "instance_id": 268,
-      "type": "birth"
-    },
-    {
-      "frame_index": 5,
-      "instance_id": 269,
-      "type": "birth"
-    },
-    {
-      "frame_index": 5,
-      "instance_id": 270,
-      "type": "birth"
-    },
-    {
-      "frame_index": 5,
-      "instance_id": 271,
-      "type": "birth"
-    },
-    {
-      "frame_index": 5,
-      "instance_id": 272,
-      "type": "birth"
-    },
-    {
-      "frame_index": 5,
       "instance_id": 37,
       "type": "disappearance"
     },
     {
       "frame_index": 5,
       "instance_id": 49,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 72,
       "type": "disappearance"
     },
     {
@@ -909,27 +839,32 @@
     },
     {
       "frame_index": 5,
-      "instance_id": 187,
+      "instance_id": 199,
       "type": "disappearance"
     },
     {
       "frame_index": 5,
-      "instance_id": 204,
+      "instance_id": 211,
       "type": "disappearance"
     },
     {
       "frame_index": 5,
-      "instance_id": 216,
+      "instance_id": 224,
       "type": "disappearance"
     },
     {
       "frame_index": 5,
-      "instance_id": 226,
+      "instance_id": 227,
       "type": "disappearance"
     },
     {
       "frame_index": 5,
-      "instance_id": 229,
+      "instance_id": 228,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 5,
+      "instance_id": 232,
       "type": "disappearance"
     },
     {
@@ -939,12 +874,7 @@
     },
     {
       "frame_index": 5,
-      "instance_id": 234,
-      "type": "disappearance"
-    },
-    {
-      "frame_index": 5,
-      "instance_id": 238,
+      "instance_id": 237,
       "type": "disappearance"
     },
     {
@@ -954,7 +884,7 @@
     },
     {
       "frame_index": 5,
-      "instance_id": 244,
+      "instance_id": 241,
       "type": "disappearance"
     },
     {
@@ -969,18 +899,48 @@
     },
     {
       "frame_index": 5,
-      "instance_id": 254,
+      "instance_id": 249,
       "type": "disappearance"
     },
     {
-      "frame_index": 5,
-      "instance_id": 255,
-      "type": "disappearance"
+      "frame_index": 6,
+      "instance_id": 265,
+      "type": "birth"
     },
     {
-      "frame_index": 5,
-      "instance_id": 256,
-      "type": "disappearance"
+      "frame_index": 6,
+      "instance_id": 266,
+      "type": "birth"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 267,
+      "type": "birth"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 268,
+      "type": "birth"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 269,
+      "type": "birth"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 270,
+      "type": "birth"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 271,
+      "type": "birth"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 272,
+      "type": "birth"
     },
     {
       "frame_index": 6,
@@ -1014,67 +974,22 @@
     },
     {
       "frame_index": 6,
-      "instance_id": 279,
-      "type": "birth"
-    },
-    {
-      "frame_index": 6,
-      "instance_id": 280,
-      "type": "birth"
-    },
-    {
-      "frame_index": 6,
-      "instance_id": 281,
-      "type": "birth"
-    },
-    {
-      "frame_index": 6,
-      "instance_id": 282,
-      "type": "birth"
-    },
-    {
-      "frame_index": 6,
-      "instance_id": 283,
-      "type": "birth"
-    },
-    {
-      "frame_index": 6,
-      "instance_id": 284,
-      "type": "birth"
-    },
-    {
-      "frame_index": 6,
-      "instance_id": 285,
-      "type": "birth"
-    },
-    {
-      "frame_index": 6,
-      "instance_id": 286,
-      "type": "birth"
-    },
-    {
-      "frame_index": 6,
-      "instance_id": 287,
-      "type": "birth"
-    },
-    {
-      "frame_index": 6,
-      "instance_id": 288,
-      "type": "birth"
-    },
-    {
-      "frame_index": 6,
       "instance_id": 151,
       "type": "disappearance"
     },
     {
       "frame_index": 6,
-      "instance_id": 211,
+      "instance_id": 206,
       "type": "disappearance"
     },
     {
       "frame_index": 6,
-      "instance_id": 218,
+      "instance_id": 213,
+      "type": "disappearance"
+    },
+    {
+      "frame_index": 6,
+      "instance_id": 215,
       "type": "disappearance"
     },
     {
@@ -1084,58 +999,93 @@
     },
     {
       "frame_index": 6,
-      "instance_id": 225,
+      "instance_id": 226,
       "type": "disappearance"
     },
     {
       "frame_index": 6,
-      "instance_id": 231,
+      "instance_id": 229,
       "type": "disappearance"
     },
     {
       "frame_index": 6,
-      "instance_id": 235,
+      "instance_id": 234,
       "type": "disappearance"
     },
     {
       "frame_index": 6,
-      "instance_id": 241,
+      "instance_id": 236,
       "type": "disappearance"
     },
     {
       "frame_index": 6,
-      "instance_id": 243,
+      "instance_id": 254,
       "type": "disappearance"
     },
     {
       "frame_index": 6,
-      "instance_id": 261,
+      "instance_id": 255,
       "type": "disappearance"
     },
     {
       "frame_index": 6,
-      "instance_id": 262,
+      "instance_id": 256,
       "type": "disappearance"
     },
     {
       "frame_index": 6,
-      "instance_id": 263,
+      "instance_id": 259,
       "type": "disappearance"
     },
     {
-      "frame_index": 6,
-      "instance_id": 266,
-      "type": "disappearance"
+      "frame_index": 7,
+      "instance_id": 279,
+      "type": "birth"
     },
     {
-      "frame_index": 6,
-      "instance_id": 267,
-      "type": "disappearance"
+      "frame_index": 7,
+      "instance_id": 280,
+      "type": "birth"
     },
     {
-      "frame_index": 6,
-      "instance_id": 269,
-      "type": "disappearance"
+      "frame_index": 7,
+      "instance_id": 281,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 282,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 283,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 284,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 285,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 286,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 287,
+      "type": "birth"
+    },
+    {
+      "frame_index": 7,
+      "instance_id": 288,
+      "type": "birth"
     },
     {
       "frame_index": 7,
@@ -1169,61 +1119,6 @@
     },
     {
       "frame_index": 7,
-      "instance_id": 295,
-      "type": "birth"
-    },
-    {
-      "frame_index": 7,
-      "instance_id": 296,
-      "type": "birth"
-    },
-    {
-      "frame_index": 7,
-      "instance_id": 297,
-      "type": "birth"
-    },
-    {
-      "frame_index": 7,
-      "instance_id": 298,
-      "type": "birth"
-    },
-    {
-      "frame_index": 7,
-      "instance_id": 299,
-      "type": "birth"
-    },
-    {
-      "frame_index": 7,
-      "instance_id": 300,
-      "type": "birth"
-    },
-    {
-      "frame_index": 7,
-      "instance_id": 301,
-      "type": "birth"
-    },
-    {
-      "frame_index": 7,
-      "instance_id": 302,
-      "type": "birth"
-    },
-    {
-      "frame_index": 7,
-      "instance_id": 303,
-      "type": "birth"
-    },
-    {
-      "frame_index": 7,
-      "instance_id": 304,
-      "type": "birth"
-    },
-    {
-      "frame_index": 7,
-      "instance_id": 305,
-      "type": "birth"
-    },
-    {
-      "frame_index": 7,
       "instance_id": 62,
       "type": "disappearance"
     },
@@ -1239,37 +1134,37 @@
     },
     {
       "frame_index": 7,
-      "instance_id": 190,
+      "instance_id": 187,
       "type": "disappearance"
     },
     {
       "frame_index": 7,
-      "instance_id": 197,
+      "instance_id": 192,
       "type": "disappearance"
     },
     {
       "frame_index": 7,
-      "instance_id": 199,
+      "instance_id": 194,
       "type": "disappearance"
     },
     {
       "frame_index": 7,
-      "instance_id": 210,
+      "instance_id": 205,
       "type": "disappearance"
     },
     {
       "frame_index": 7,
-      "instance_id": 228,
+      "instance_id": 223,
       "type": "disappearance"
     },
     {
       "frame_index": 7,
-      "instance_id": 236,
+      "instance_id": 230,
       "type": "disappearance"
     },
     {
       "frame_index": 7,
-      "instance_id": 257,
+      "instance_id": 250,
       "type": "disappearance"
     },
     {
@@ -1279,22 +1174,17 @@
     },
     {
       "frame_index": 7,
-      "instance_id": 265,
+      "instance_id": 262,
       "type": "disappearance"
     },
     {
       "frame_index": 7,
-      "instance_id": 270,
+      "instance_id": 269,
       "type": "disappearance"
     },
     {
       "frame_index": 7,
-      "instance_id": 277,
-      "type": "disappearance"
-    },
-    {
-      "frame_index": 7,
-      "instance_id": 285,
+      "instance_id": 275,
       "type": "disappearance"
     }
   ],

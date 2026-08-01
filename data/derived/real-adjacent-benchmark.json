@@ -20,7 +20,7 @@
       "mean_ap": 0.3389375,
       "mean_ap50": 0.44059375,
       "mean_pq": 0.455328125,
-      "seconds": 13.5,
+      "seconds": 19.0,
       "samples": [
         {
           "sample_id": "2dd3356f2dcf470aec4003800744dfec6490e75d88011e1d835f4f3d60f88e7a",
@@ -546,7 +546,7 @@
       "mean_ap": 0.0,
       "mean_ap50": 0.00020312500000000002,
       "mean_pq": 0.00025,
-      "seconds": 35.4,
+      "seconds": 60.0,
       "samples": [
         {
           "sample_id": "2dd3356f2dcf470aec4003800744dfec6490e75d88011e1d835f4f3d60f88e7a",
@@ -1069,10 +1069,10 @@
       "tier": "classical",
       "n_scored": 64,
       "n_failed": 0,
-      "mean_ap": 0.18200000000000002,
-      "mean_ap50": 0.257546875,
-      "mean_pq": 0.308140625,
-      "seconds": 17.3,
+      "mean_ap": 0.12782812500000001,
+      "mean_ap50": 0.227109375,
+      "mean_pq": 0.25021875000000005,
+      "seconds": 31.1,
       "samples": [
         {
           "sample_id": "2dd3356f2dcf470aec4003800744dfec6490e75d88011e1d835f4f3d60f88e7a",
@@ -1132,9 +1132,9 @@
         },
         {
           "sample_id": "6ab24e7e1f6c9fdd371c5edae1bbb20abeeb976811f8ab2375880b4483860f4d",
-          "ap": 0.0,
-          "ap50": 0.0,
-          "pq": 0.0,
+          "ap": 0.004,
+          "ap50": 0.019,
+          "pq": 0.021,
           "nGt": 20,
           "nPred": 34
         },
@@ -1172,9 +1172,9 @@
         },
         {
           "sample_id": "a31deaf0ac279d5f34fb2eca80cc2abce6ef30bd64e7aca40efe4b2ba8e9ad3d",
-          "ap": 0.0,
-          "ap50": 0.0,
-          "pq": 0.0,
+          "ap": 0.001,
+          "ap50": 0.013,
+          "pq": 0.013,
           "nGt": 87,
           "nPred": 72
         },
@@ -1188,17 +1188,17 @@
         },
         {
           "sample_id": "a7f6194ddbeaefb1da571226a97785d09ccafc5893ce3c77078d2040bccfcb77",
-          "ap": 0.0,
-          "ap50": 0.0,
-          "pq": 0.0,
+          "ap": 0.003,
+          "ap50": 0.008,
+          "pq": 0.011,
           "nGt": 83,
           "nPred": 43
         },
         {
           "sample_id": "a7f767ca9770b160f234780e172aeb35a50830ba10dc49c526f4712451abe1d2",
-          "ap": 0.013,
+          "ap": 0.003,
           "ap50": 0.033,
-          "pq": 0.044,
+          "pq": 0.035,
           "nGt": 11,
           "nPred": 20
         },
@@ -1228,361 +1228,361 @@
         },
         {
           "sample_id": "12aeefb1b522b283819b12e4cfaf6b13c1264c0aadac3412b4edd2ace304cb40",
-          "ap": 0.184,
-          "ap50": 0.364,
-          "pq": 0.401,
+          "ap": 0.177,
+          "ap50": 0.411,
+          "pq": 0.416,
           "nGt": 124,
           "nPred": 161
         },
         {
           "sample_id": "150b0ffa318c87b31d78af0e87d60390dbcd84b5f228a8c1fb3225cbe5df3e3f",
-          "ap": 0.111,
-          "ap50": 0.197,
-          "pq": 0.254,
+          "ap": 0.107,
+          "ap50": 0.226,
+          "pq": 0.268,
           "nGt": 198,
           "nPred": 252
         },
         {
           "sample_id": "193ffaa5272d5c421ae02130a64d98ad120ec70e4ed97a72cdcd4801ce93b066",
-          "ap": 0.059,
-          "ap50": 0.151,
-          "pq": 0.179,
+          "ap": 0.048,
+          "ap50": 0.106,
+          "pq": 0.135,
           "nGt": 157,
           "nPred": 156
         },
         {
           "sample_id": "212b858a66f0d23768b8e3e1357704fc2f4cf4bbe7eed8cd59b5d01031d553e6",
-          "ap": 0.278,
-          "ap50": 0.531,
-          "pq": 0.533,
+          "ap": 0.25,
+          "ap50": 0.49,
+          "pq": 0.5,
           "nGt": 100,
           "nPred": 122
         },
         {
           "sample_id": "2c83c86dd4e5dacc024b55629375567fb8e320a82ef86f541cfe54764040fc25",
-          "ap": 0.267,
-          "ap50": 0.553,
-          "pq": 0.527,
+          "ap": 0.225,
+          "ap50": 0.513,
+          "pq": 0.49,
           "nGt": 24,
           "nPred": 35
         },
         {
           "sample_id": "2d53d7ec0c579fffd6710c956288537d46c719a93c6a04ac0d6550f75a6a6493",
-          "ap": 0.294,
-          "ap50": 0.318,
-          "pq": 0.45,
+          "ap": 0.107,
+          "ap50": 0.115,
+          "pq": 0.195,
           "nGt": 7,
           "nPred": 22
         },
         {
           "sample_id": "2dec81a678ddcac2b110acffe82427d857695180bd841e3f9736a554acf832af",
-          "ap": 0.122,
-          "ap50": 0.161,
-          "pq": 0.24,
+          "ap": 0.03,
+          "ap50": 0.042,
+          "pq": 0.068,
           "nGt": 25,
           "nPred": 148
         },
         {
           "sample_id": "3477024fd843e46097840360f9cdee24b76bf5c593ed27a9aee7a5728a06aa51",
-          "ap": 0.219,
-          "ap50": 0.266,
-          "pq": 0.379,
+          "ap": 0.078,
+          "ap50": 0.163,
+          "pq": 0.204,
           "nGt": 23,
           "nPred": 77
         },
         {
           "sample_id": "351771edfc5db5665ded8aa4940257276b6526663c76e3b60b92a52584d8943c",
-          "ap": 0.207,
-          "ap50": 0.423,
-          "pq": 0.443,
+          "ap": 0.194,
+          "ap50": 0.439,
+          "pq": 0.435,
           "nGt": 106,
           "nPred": 143
         },
         {
           "sample_id": "3ebd2ab34ba86e515feb79ffdeb7fc303a074a98ba39949b905dbde3ff4b7ec0",
-          "ap": 0.516,
+          "ap": 0.453,
           "ap50": 0.64,
-          "pq": 0.7,
+          "pq": 0.672,
           "nGt": 138,
           "nPred": 172
         },
         {
           "sample_id": "3f9fc8e63f87e8a56d3eaef7db26f1b6db874d19f12abd5a752821b78d47661e",
-          "ap": 0.53,
-          "ap50": 0.691,
-          "pq": 0.728,
+          "ap": 0.507,
+          "ap50": 0.7,
+          "pq": 0.72,
           "nGt": 156,
           "nPred": 189
         },
         {
           "sample_id": "43cf6b2ec0b0745ac2b87b4d8780f62e9050d3f5d50a1fcefa42d166191e84c6",
-          "ap": 0.201,
-          "ap50": 0.247,
-          "pq": 0.354,
+          "ap": 0.052,
+          "ap50": 0.11,
+          "pq": 0.144,
           "nGt": 23,
           "nPred": 88
         },
         {
           "sample_id": "449a9c32e53a37c8a86e01c199155c8da3958b631088e10f6fe43c2119defe51",
-          "ap": 0.176,
-          "ap50": 0.242,
-          "pq": 0.327,
+          "ap": 0.09,
+          "ap50": 0.154,
+          "pq": 0.208,
           "nGt": 58,
           "nPred": 137
         },
         {
           "sample_id": "449f41710769584b5e4eca8ecb4c76d5272605f27da2949e6285de0860d2cbc0",
-          "ap": 0.193,
-          "ap50": 0.234,
-          "pq": 0.34,
+          "ap": 0.028,
+          "ap50": 0.085,
+          "pq": 0.101,
           "nGt": 34,
           "nPred": 145
         },
         {
           "sample_id": "45c3bdef1819ba7029990e159f61543ed25781d13fb4dc5d4de52e803debd7d3",
-          "ap": 0.514,
-          "ap50": 0.615,
-          "pq": 0.687,
+          "ap": 0.376,
+          "ap50": 0.5,
+          "pq": 0.578,
           "nGt": 8,
           "nPred": 13
         },
         {
           "sample_id": "4d09672bcf5a2661eea00891bbb8191225a06619a849aece37ad10d9dedbde3e",
-          "ap": 0.174,
-          "ap50": 0.207,
-          "pq": 0.31,
+          "ap": 0.052,
+          "ap50": 0.101,
+          "pq": 0.135,
           "nGt": 36,
           "nPred": 127
         },
         {
           "sample_id": "4dbbb275960ab9e4ec2c66c8d3000f7c70c8dce5112df591b95db84e25efa6e9",
-          "ap": 0.165,
-          "ap50": 0.293,
-          "pq": 0.353,
+          "ap": 0.168,
+          "ap50": 0.331,
+          "pq": 0.375,
           "nGt": 183,
           "nPred": 223
         },
         {
           "sample_id": "4e1c889de3764694d0dea41e5682fedb265eaf2cdbe72ff6c1f518747d709464",
-          "ap": 0.208,
-          "ap50": 0.273,
-          "pq": 0.372,
+          "ap": 0.072,
+          "ap50": 0.152,
+          "pq": 0.191,
           "nGt": 43,
           "nPred": 139
         },
         {
           "sample_id": "4ee5850b63549794eb3ecd3d5f5673164ac16936e36ecc3700da886e3b616149",
-          "ap": 0.142,
-          "ap50": 0.182,
-          "pq": 0.271,
+          "ap": 0.065,
+          "ap50": 0.134,
+          "pq": 0.172,
           "nGt": 48,
           "nPred": 147
         },
         {
           "sample_id": "5bb8508ff8ec8683fc6a8aa6bd470f6feb3af4eccdca07f51a1ebc9dad67cfb8",
-          "ap": 0.236,
-          "ap50": 0.327,
-          "pq": 0.412,
+          "ap": 0.1,
+          "ap50": 0.204,
+          "pq": 0.249,
           "nGt": 32,
           "nPred": 98
         },
         {
           "sample_id": "5f9d29d6388c700f35a3c29fa1b1ce0c1cba6667d05fdb70bd1e89004dcf71ed",
-          "ap": 0.47,
-          "ap50": 0.605,
-          "pq": 0.671,
+          "ap": 0.403,
+          "ap50": 0.589,
+          "pq": 0.633,
           "nGt": 148,
           "nPred": 181
         },
         {
           "sample_id": "6b61ab2e3ff0e2c7a55fd71e290b51e142555cf82bc7574fc27326735e8acbd1",
-          "ap": 0.196,
-          "ap50": 0.307,
-          "pq": 0.381,
+          "ap": 0.214,
+          "ap50": 0.414,
+          "pq": 0.442,
           "nGt": 158,
           "nPred": 204
         },
         {
           "sample_id": "6f8197baf738986a1ec3b6ba92b567863d897a739376b7cec5599ad6cecafdfc",
-          "ap": 0.283,
-          "ap50": 0.364,
-          "pq": 0.469,
+          "ap": 0.104,
+          "ap50": 0.23,
+          "pq": 0.269,
           "nGt": 20,
           "nPred": 55
         },
         {
           "sample_id": "6fe2df6de1d962b90146c822bcefc84d0d3d6926fdfbacd3acdc9de830ee5622",
-          "ap": 0.364,
-          "ap50": 0.521,
-          "pq": 0.586,
+          "ap": 0.335,
+          "ap50": 0.526,
+          "pq": 0.57,
           "nGt": 206,
           "nPred": 258
         },
         {
           "sample_id": "700afb1cd830a808e3c6125749612e5d23fd9f9726049a9e0c2061997514e1a7",
-          "ap": 0.549,
+          "ap": 0.463,
           "ap50": 0.676,
-          "pq": 0.724,
+          "pq": 0.688,
           "nGt": 133,
           "nPred": 177
         },
         {
           "sample_id": "79dfcbc9361edd3a1ffe81a5bdaa22a197ad1341f3fa64b86a646c2607d6b324",
-          "ap": 0.223,
-          "ap50": 0.279,
-          "pq": 0.387,
+          "ap": 0.059,
+          "ap50": 0.146,
+          "pq": 0.153,
           "nGt": 12,
           "nPred": 43
         },
         {
           "sample_id": "7f2b154541166210f468d89bb0a7184f10e51168a181dbb8b686c14654ffa317",
-          "ap": 0.184,
-          "ap50": 0.429,
-          "pq": 0.424,
+          "ap": 0.164,
+          "ap50": 0.401,
+          "pq": 0.399,
           "nGt": 102,
           "nPred": 118
         },
         {
           "sample_id": "8055957570d7b38f0acecdb56f3078a963a1a7307ca03fcca62212e0e95e5845",
-          "ap": 0.259,
-          "ap50": 0.339,
-          "pq": 0.44,
+          "ap": 0.154,
+          "ap50": 0.274,
+          "pq": 0.335,
           "nGt": 23,
           "nPred": 56
         },
         {
           "sample_id": "8c3ef7aa7ed29b62a65b1c394d2b4a24aa3da25aebfdf3d29dbfc8ad1b08e95a",
-          "ap": 0.161,
-          "ap50": 0.245,
-          "pq": 0.323,
+          "ap": 0.071,
+          "ap50": 0.156,
+          "pq": 0.193,
           "nGt": 39,
           "nPred": 139
         },
         {
           "sample_id": "8cdbdda8b3a64c97409c0160bcfb06eb8e876cedc3691aa63ca16dbafae6f948",
-          "ap": 0.206,
-          "ap50": 0.389,
-          "pq": 0.427,
+          "ap": 0.148,
+          "ap50": 0.331,
+          "pq": 0.358,
           "nGt": 92,
           "nPred": 133
         },
         {
           "sample_id": "8d29c5a03e0560c8f9338e8eb7bccf47930149c8173f9ba4b9279fb87d86cf6d",
-          "ap": 0.233,
-          "ap50": 0.296,
-          "pq": 0.403,
+          "ap": 0.085,
+          "ap50": 0.197,
+          "pq": 0.223,
           "nGt": 38,
           "nPred": 102
         },
         {
           "sample_id": "8efed2e62c919e6d70a2ab548b1a33014877fe8a23f177ef25a9dee25ffe8842",
-          "ap": 0.156,
-          "ap50": 0.259,
-          "pq": 0.325,
+          "ap": 0.158,
+          "ap50": 0.332,
+          "pq": 0.366,
           "nGt": 260,
           "nPred": 318
         },
         {
           "sample_id": "9620c33d8ef2772dbc5bd152429f507bd7fafb27e12109003292b671e556b089",
           "ap": 0.187,
-          "ap50": 0.374,
-          "pq": 0.406,
+          "ap50": 0.444,
+          "pq": 0.437,
           "nGt": 168,
           "nPred": 196
         },
         {
           "sample_id": "a65bbfc5673e8053b6ce49f39c79cf3a846fe5cc46dd93105f74fb07cf44606d",
-          "ap": 0.453,
-          "ap50": 0.582,
-          "pq": 0.656,
+          "ap": 0.382,
+          "ap50": 0.543,
+          "pq": 0.602,
           "nGt": 134,
           "nPred": 173
         },
         {
           "sample_id": "a891bbc89143bca7a717386144eb061ec2d599cba24681389bcb3a2fedb8ff8c",
-          "ap": 0.438,
-          "ap50": 0.543,
-          "pq": 0.634,
+          "ap": 0.464,
+          "ap50": 0.646,
+          "pq": 0.683,
           "nGt": 155,
           "nPred": 189
         },
         {
           "sample_id": "a90cad45551d62c5cfa89517df8eb5e8f2f87f1a6e6678e606907afcbad91731",
-          "ap": 0.225,
-          "ap50": 0.394,
-          "pq": 0.439,
+          "ap": 0.237,
+          "ap50": 0.486,
+          "pq": 0.485,
           "nGt": 140,
           "nPred": 175
         },
         {
           "sample_id": "afa272dc01825d4b929b3bfc79a10f68dd3c163c450d858b964d1ce0bc93e131",
-          "ap": 0.142,
-          "ap50": 0.169,
-          "pq": 0.258,
+          "ap": 0.038,
+          "ap50": 0.078,
+          "pq": 0.106,
           "nGt": 10,
           "nPred": 59
         },
         {
           "sample_id": "b24ea5c268469a95ed155eeaf809e36030b78a2eb530a0cb2380cdc1ccdb7dd1",
-          "ap": 0.198,
-          "ap50": 0.237,
-          "pq": 0.346,
+          "ap": 0.075,
+          "ap50": 0.138,
+          "pq": 0.184,
           "nGt": 50,
           "nPred": 148
         },
         {
           "sample_id": "b61d3fb0d0ebbee018346e0adeff9e9178f33aa95262779b3c196f93b4ace895",
-          "ap": 0.167,
-          "ap50": 0.295,
-          "pq": 0.351,
+          "ap": 0.208,
+          "ap50": 0.419,
+          "pq": 0.441,
           "nGt": 170,
           "nPred": 216
         },
         {
           "sample_id": "c15c652c08153fb781a5349123ab8f80bb2a8680a41eb8e89e547ae01b7a5441",
-          "ap": 0.404,
-          "ap50": 0.444,
-          "pq": 0.57,
+          "ap": 0.158,
+          "ap50": 0.3,
+          "pq": 0.348,
           "nGt": 4,
           "nPred": 9
         },
         {
           "sample_id": "da31f2aa8601afec5c45180a2c448cb9c4a8ec7b35e75190d6ba3588f69058c8",
-          "ap": 0.147,
-          "ap50": 0.211,
-          "pq": 0.291,
+          "ap": 0.062,
+          "ap50": 0.139,
+          "pq": 0.173,
           "nGt": 62,
           "nPred": 168
         },
         {
           "sample_id": "da5f98f2b8a64eee735a398de48ed42cd31bf17a6063db46a9e0783ac13cd844",
-          "ap": 0.268,
-          "ap50": 0.427,
-          "pq": 0.487,
+          "ap": 0.279,
+          "ap50": 0.476,
+          "pq": 0.512,
           "nGt": 140,
           "nPred": 164
         },
         {
           "sample_id": "e23e11414ee645b51081fb202d38b793f0c8ef2940f8228ded384899d21b02c2",
-          "ap": 0.143,
-          "ap50": 0.268,
-          "pq": 0.321,
+          "ap": 0.121,
+          "ap50": 0.282,
+          "pq": 0.31,
           "nGt": 199,
           "nPred": 260
         },
         {
           "sample_id": "f01a9742c43a69f087700a43893f713878e537bae8e44f76b957f09519601ad6",
-          "ap": 0.23,
-          "ap50": 0.273,
-          "pq": 0.387,
+          "ap": 0.09,
+          "ap50": 0.2,
+          "pq": 0.237,
           "nGt": 28,
           "nPred": 98
         },
         {
           "sample_id": "f4faa3a409014db1865074c5f66a0255f71ae3faba03265da0b3b91f68e8a8f0",
-          "ap": 0.553,
-          "ap50": 0.609,
-          "pq": 0.711,
+          "ap": 0.332,
+          "ap50": 0.423,
+          "pq": 0.531,
           "nGt": 14,
           "nPred": 23
         }
@@ -1598,7 +1598,7 @@
       "mean_ap": 0.256234375,
       "mean_ap50": 0.41045312500000003,
       "mean_pq": 0.42054687500000004,
-      "seconds": 11.6,
+      "seconds": 25.8,
       "samples": [
         {
           "sample_id": "2dd3356f2dcf470aec4003800744dfec6490e75d88011e1d835f4f3d60f88e7a",
@@ -2124,7 +2124,7 @@
       "mean_ap": 0.26365625,
       "mean_ap50": 0.39734375,
       "mean_pq": 0.41415625,
-      "seconds": 16.2,
+      "seconds": 36.1,
       "samples": [
         {
           "sample_id": "2dd3356f2dcf470aec4003800744dfec6490e75d88011e1d835f4f3d60f88e7a",
@@ -2650,7 +2650,7 @@
       "mean_ap": 0.08403125,
       "mean_ap50": 0.1609375,
       "mean_pq": 0.18571875,
-      "seconds": 146.2,
+      "seconds": 272.2,
       "samples": [
         {
           "sample_id": "2dd3356f2dcf470aec4003800744dfec6490e75d88011e1d835f4f3d60f88e7a",
@@ -3169,14 +3169,14 @@
     {
       "id": "C7",
       "slug": "valley_edge",
-      "name": "Lamella-valley dark-seam detector",
+      "name": "Lamella-valley constrained watershed",
       "tier": "classical",
       "n_scored": 64,
       "n_failed": 0,
-      "mean_ap": 0.193,
-      "mean_ap50": 0.38109375,
-      "mean_pq": 0.34925,
-      "seconds": 9.9,
+      "mean_ap": 0.3013125,
+      "mean_ap50": 0.41060937500000005,
+      "mean_pq": 0.4293125,
+      "seconds": 25.2,
       "samples": [
         {
           "sample_id": "2dd3356f2dcf470aec4003800744dfec6490e75d88011e1d835f4f3d60f88e7a",
@@ -3268,9 +3268,9 @@
         },
         {
           "sample_id": "8f27ebc74164eddfe989a98a754dcf5a9c85ef599a1321de24bcf097df1814ca",
-          "ap": 0.0,
-          "ap50": 0.0,
-          "pq": 0.0,
+          "ap": 0.01,
+          "ap50": 0.025,
+          "pq": 0.032,
           "nGt": 13,
           "nPred": 28
         },
@@ -3332,361 +3332,361 @@
         },
         {
           "sample_id": "12aeefb1b522b283819b12e4cfaf6b13c1264c0aadac3412b4edd2ace304cb40",
-          "ap": 0.194,
-          "ap50": 0.341,
-          "pq": 0.394,
+          "ap": 0.217,
+          "ap50": 0.35,
+          "pq": 0.417,
           "nGt": 124,
           "nPred": 96
         },
         {
           "sample_id": "150b0ffa318c87b31d78af0e87d60390dbcd84b5f228a8c1fb3225cbe5df3e3f",
-          "ap": 0.15,
+          "ap": 0.153,
           "ap50": 0.223,
-          "pq": 0.299,
+          "pq": 0.303,
           "nGt": 198,
           "nPred": 98
         },
         {
           "sample_id": "193ffaa5272d5c421ae02130a64d98ad120ec70e4ed97a72cdcd4801ce93b066",
-          "ap": 0.072,
-          "ap50": 0.197,
-          "pq": 0.22,
+          "ap": 0.094,
+          "ap50": 0.22,
+          "pq": 0.253,
           "nGt": 157,
           "nPred": 98
         },
         {
           "sample_id": "212b858a66f0d23768b8e3e1357704fc2f4cf4bbe7eed8cd59b5d01031d553e6",
-          "ap": 0.112,
-          "ap50": 0.443,
-          "pq": 0.379,
+          "ap": 0.347,
+          "ap50": 0.68,
+          "pq": 0.619,
           "nGt": 100,
           "nPred": 115
         },
         {
           "sample_id": "2c83c86dd4e5dacc024b55629375567fb8e320a82ef86f541cfe54764040fc25",
-          "ap": 0.239,
+          "ap": 0.461,
           "ap50": 1.0,
-          "pq": 0.628,
+          "pq": 0.739,
           "nGt": 24,
           "nPred": 24
         },
         {
           "sample_id": "2d53d7ec0c579fffd6710c956288537d46c719a93c6a04ac0d6550f75a6a6493",
-          "ap": 0.008,
-          "ap50": 0.058,
-          "pq": 0.058,
+          "ap": 0.059,
+          "ap50": 0.122,
+          "pq": 0.158,
           "nGt": 7,
           "nPred": 48
         },
         {
           "sample_id": "2dec81a678ddcac2b110acffe82427d857695180bd841e3f9736a554acf832af",
-          "ap": 0.327,
+          "ap": 0.56,
           "ap50": 0.686,
-          "pq": 0.604,
+          "pq": 0.747,
           "nGt": 25,
           "nPred": 34
         },
         {
           "sample_id": "3477024fd843e46097840360f9cdee24b76bf5c593ed27a9aee7a5728a06aa51",
-          "ap": 0.4,
+          "ap": 0.696,
           "ap50": 0.793,
-          "pq": 0.662,
+          "pq": 0.822,
           "nGt": 23,
           "nPred": 29
         },
         {
           "sample_id": "351771edfc5db5665ded8aa4940257276b6526663c76e3b60b92a52584d8943c",
-          "ap": 0.2,
-          "ap50": 0.562,
-          "pq": 0.486,
+          "ap": 0.315,
+          "ap50": 0.626,
+          "pq": 0.585,
           "nGt": 106,
           "nPred": 94
         },
         {
           "sample_id": "3ebd2ab34ba86e515feb79ffdeb7fc303a074a98ba39949b905dbde3ff4b7ec0",
-          "ap": 0.621,
-          "ap50": 0.863,
-          "pq": 0.796,
+          "ap": 0.722,
+          "ap50": 0.876,
+          "pq": 0.848,
           "nGt": 138,
           "nPred": 134
         },
         {
           "sample_id": "3f9fc8e63f87e8a56d3eaef7db26f1b6db874d19f12abd5a752821b78d47661e",
-          "ap": 0.53,
-          "ap50": 0.839,
-          "pq": 0.747,
+          "ap": 0.711,
+          "ap50": 0.86,
+          "pq": 0.846,
           "nGt": 156,
           "nPred": 164
         },
         {
           "sample_id": "43cf6b2ec0b0745ac2b87b4d8780f62e9050d3f5d50a1fcefa42d166191e84c6",
-          "ap": 0.295,
-          "ap50": 0.667,
-          "pq": 0.57,
+          "ap": 0.649,
+          "ap50": 0.719,
+          "pq": 0.781,
           "nGt": 23,
           "nPred": 32
         },
         {
           "sample_id": "449a9c32e53a37c8a86e01c199155c8da3958b631088e10f6fe43c2119defe51",
-          "ap": 0.282,
-          "ap50": 0.5,
-          "pq": 0.518,
+          "ap": 0.421,
+          "ap50": 0.521,
+          "pq": 0.618,
           "nGt": 58,
           "nPred": 53
         },
         {
           "sample_id": "449f41710769584b5e4eca8ecb4c76d5272605f27da2949e6285de0860d2cbc0",
-          "ap": 0.374,
-          "ap50": 0.732,
-          "pq": 0.633,
+          "ap": 0.638,
+          "ap50": 0.775,
+          "pq": 0.798,
           "nGt": 34,
           "nPred": 37
         },
         {
           "sample_id": "45c3bdef1819ba7029990e159f61543ed25781d13fb4dc5d4de52e803debd7d3",
-          "ap": 0.01,
-          "ap50": 0.02,
-          "pq": 0.029,
+          "ap": 0.065,
+          "ap50": 0.156,
+          "pq": 0.187,
           "nGt": 8,
           "nPred": 44
         },
         {
           "sample_id": "4d09672bcf5a2661eea00891bbb8191225a06619a849aece37ad10d9dedbde3e",
-          "ap": 0.38,
-          "ap50": 0.638,
-          "pq": 0.617,
+          "ap": 0.559,
+          "ap50": 0.674,
+          "pq": 0.734,
           "nGt": 36,
           "nPred": 41
         },
         {
           "sample_id": "4dbbb275960ab9e4ec2c66c8d3000f7c70c8dce5112df591b95db84e25efa6e9",
-          "ap": 0.197,
-          "ap50": 0.324,
-          "pq": 0.393,
+          "ap": 0.214,
+          "ap50": 0.33,
+          "pq": 0.408,
           "nGt": 183,
           "nPred": 107
         },
         {
           "sample_id": "4e1c889de3764694d0dea41e5682fedb265eaf2cdbe72ff6c1f518747d709464",
-          "ap": 0.236,
-          "ap50": 0.523,
-          "pq": 0.493,
+          "ap": 0.431,
+          "ap50": 0.571,
+          "pq": 0.638,
           "nGt": 43,
           "nPred": 56
         },
         {
           "sample_id": "4ee5850b63549794eb3ecd3d5f5673164ac16936e36ecc3700da886e3b616149",
-          "ap": 0.251,
-          "ap50": 0.477,
-          "pq": 0.485,
+          "ap": 0.418,
+          "ap50": 0.5,
+          "pq": 0.608,
           "nGt": 48,
           "nPred": 48
         },
         {
           "sample_id": "5bb8508ff8ec8683fc6a8aa6bd470f6feb3af4eccdca07f51a1ebc9dad67cfb8",
-          "ap": 0.417,
+          "ap": 0.631,
           "ap50": 0.789,
-          "pq": 0.67,
+          "pq": 0.793,
           "nGt": 32,
           "nPred": 36
         },
         {
           "sample_id": "5f9d29d6388c700f35a3c29fa1b1ce0c1cba6667d05fdb70bd1e89004dcf71ed",
-          "ap": 0.418,
-          "ap50": 0.751,
-          "pq": 0.67,
+          "ap": 0.645,
+          "ap50": 0.816,
+          "pq": 0.81,
           "nGt": 148,
           "nPred": 148
         },
         {
           "sample_id": "6b61ab2e3ff0e2c7a55fd71e290b51e142555cf82bc7574fc27326735e8acbd1",
-          "ap": 0.222,
+          "ap": 0.245,
           "ap50": 0.366,
-          "pq": 0.427,
+          "pq": 0.446,
           "nGt": 158,
           "nPred": 96
         },
         {
           "sample_id": "6f8197baf738986a1ec3b6ba92b567863d897a739376b7cec5599ad6cecafdfc",
-          "ap": 0.479,
+          "ap": 0.664,
           "ap50": 0.818,
-          "pq": 0.717,
+          "pq": 0.816,
           "nGt": 20,
           "nPred": 20
         },
         {
           "sample_id": "6fe2df6de1d962b90146c822bcefc84d0d3d6926fdfbacd3acdc9de830ee5622",
-          "ap": 0.489,
-          "ap50": 0.775,
-          "pq": 0.712,
+          "ap": 0.633,
+          "ap50": 0.798,
+          "pq": 0.795,
           "nGt": 206,
           "nPred": 213
         },
         {
           "sample_id": "700afb1cd830a808e3c6125749612e5d23fd9f9726049a9e0c2061997514e1a7",
-          "ap": 0.543,
-          "ap50": 0.9,
-          "pq": 0.753,
+          "ap": 0.773,
+          "ap50": 0.914,
+          "pq": 0.873,
           "nGt": 133,
           "nPred": 133
         },
         {
           "sample_id": "79dfcbc9361edd3a1ffe81a5bdaa22a197ad1341f3fa64b86a646c2607d6b324",
-          "ap": 0.336,
+          "ap": 0.634,
           "ap50": 0.8,
-          "pq": 0.63,
+          "pq": 0.8,
           "nGt": 12,
           "nPred": 15
         },
         {
           "sample_id": "7f2b154541166210f468d89bb0a7184f10e51168a181dbb8b686c14654ffa317",
-          "ap": 0.058,
-          "ap50": 0.331,
-          "pq": 0.281,
+          "ap": 0.202,
+          "ap50": 0.49,
+          "pq": 0.458,
           "nGt": 102,
           "nPred": 111
         },
         {
           "sample_id": "8055957570d7b38f0acecdb56f3078a963a1a7307ca03fcca62212e0e95e5845",
-          "ap": 0.33,
+          "ap": 0.505,
           "ap50": 0.667,
-          "pq": 0.6,
+          "pq": 0.699,
           "nGt": 23,
           "nPred": 22
         },
         {
           "sample_id": "8c3ef7aa7ed29b62a65b1c394d2b4a24aa3da25aebfdf3d29dbfc8ad1b08e95a",
-          "ap": 0.272,
-          "ap50": 0.552,
-          "pq": 0.53,
+          "ap": 0.427,
+          "ap50": 0.636,
+          "pq": 0.66,
           "nGt": 39,
           "nPred": 51
         },
         {
           "sample_id": "8cdbdda8b3a64c97409c0160bcfb06eb8e876cedc3691aa63ca16dbafae6f948",
-          "ap": 0.221,
-          "ap50": 0.589,
-          "pq": 0.506,
+          "ap": 0.361,
+          "ap50": 0.633,
+          "pq": 0.614,
           "nGt": 92,
           "nPred": 86
         },
         {
           "sample_id": "8d29c5a03e0560c8f9338e8eb7bccf47930149c8173f9ba4b9279fb87d86cf6d",
-          "ap": 0.376,
+          "ap": 0.624,
           "ap50": 0.773,
-          "pq": 0.65,
+          "pq": 0.786,
           "nGt": 38,
           "nPred": 40
         },
         {
           "sample_id": "8efed2e62c919e6d70a2ab548b1a33014877fe8a23f177ef25a9dee25ffe8842",
-          "ap": 0.195,
-          "ap50": 0.361,
-          "pq": 0.401,
+          "ap": 0.235,
+          "ap50": 0.373,
+          "pq": 0.439,
           "nGt": 260,
           "nPred": 174
         },
         {
           "sample_id": "9620c33d8ef2772dbc5bd152429f507bd7fafb27e12109003292b671e556b089",
-          "ap": 0.146,
-          "ap50": 0.322,
-          "pq": 0.349,
+          "ap": 0.198,
+          "ap50": 0.341,
+          "pq": 0.399,
           "nGt": 168,
           "nPred": 115
         },
         {
           "sample_id": "a65bbfc5673e8053b6ce49f39c79cf3a846fe5cc46dd93105f74fb07cf44606d",
-          "ap": 0.404,
-          "ap50": 0.685,
-          "pq": 0.643,
+          "ap": 0.598,
+          "ap50": 0.759,
+          "pq": 0.777,
           "nGt": 134,
           "nPred": 144
         },
         {
           "sample_id": "a891bbc89143bca7a717386144eb061ec2d599cba24681389bcb3a2fedb8ff8c",
-          "ap": 0.448,
-          "ap50": 0.744,
-          "pq": 0.683,
+          "ap": 0.642,
+          "ap50": 0.785,
+          "pq": 0.801,
           "nGt": 155,
           "nPred": 152
         },
         {
           "sample_id": "a90cad45551d62c5cfa89517df8eb5e8f2f87f1a6e6678e606907afcbad91731",
-          "ap": 0.143,
-          "ap50": 0.521,
-          "pq": 0.431,
+          "ap": 0.335,
+          "ap50": 0.579,
+          "pq": 0.579,
           "nGt": 140,
           "nPred": 149
         },
         {
           "sample_id": "afa272dc01825d4b929b3bfc79a10f68dd3c163c450d858b964d1ce0bc93e131",
-          "ap": 0.39,
+          "ap": 0.567,
           "ap50": 0.625,
-          "pq": 0.626,
+          "pq": 0.724,
           "nGt": 10,
           "nPred": 16
         },
         {
           "sample_id": "b24ea5c268469a95ed155eeaf809e36030b78a2eb530a0cb2380cdc1ccdb7dd1",
-          "ap": 0.235,
-          "ap50": 0.429,
-          "pq": 0.454,
+          "ap": 0.389,
+          "ap50": 0.486,
+          "pq": 0.586,
           "nGt": 50,
           "nPred": 60
         },
         {
           "sample_id": "b61d3fb0d0ebbee018346e0adeff9e9178f33aa95262779b3c196f93b4ace895",
-          "ap": 0.172,
-          "ap50": 0.295,
-          "pq": 0.357,
+          "ap": 0.192,
+          "ap50": 0.307,
+          "pq": 0.379,
           "nGt": 170,
           "nPred": 98
         },
         {
           "sample_id": "c15c652c08153fb781a5349123ab8f80bb2a8680a41eb8e89e547ae01b7a5441",
-          "ap": 0.011,
-          "ap50": 0.056,
-          "pq": 0.062,
+          "ap": 0.181,
+          "ap50": 0.267,
+          "pq": 0.346,
           "nGt": 4,
           "nPred": 15
         },
         {
           "sample_id": "da31f2aa8601afec5c45180a2c448cb9c4a8ec7b35e75190d6ba3588f69058c8",
-          "ap": 0.249,
-          "ap50": 0.547,
-          "pq": 0.51,
+          "ap": 0.442,
+          "ap50": 0.589,
+          "pq": 0.652,
           "nGt": 62,
           "nPred": 54
         },
         {
           "sample_id": "da5f98f2b8a64eee735a398de48ed42cd31bf17a6063db46a9e0783ac13cd844",
-          "ap": 0.247,
+          "ap": 0.308,
           "ap50": 0.421,
-          "pq": 0.466,
+          "pq": 0.508,
           "nGt": 140,
           "nPred": 93
         },
         {
           "sample_id": "e23e11414ee645b51081fb202d38b793f0c8ef2940f8228ded384899d21b02c2",
-          "ap": 0.158,
-          "ap50": 0.456,
-          "pq": 0.418,
+          "ap": 0.269,
+          "ap50": 0.49,
+          "pq": 0.512,
           "nGt": 199,
           "nPred": 184
         },
         {
           "sample_id": "f01a9742c43a69f087700a43893f713878e537bae8e44f76b957f09519601ad6",
-          "ap": 0.506,
+          "ap": 0.758,
           "ap50": 0.875,
-          "pq": 0.735,
+          "pq": 0.864,
           "nGt": 28,
           "nPred": 32
         },
         {
           "sample_id": "f4faa3a409014db1865074c5f66a0255f71ae3faba03265da0b3b91f68e8a8f0",
-          "ap": 0.009,
-          "ap50": 0.056,
-          "pq": 0.06,
+          "ap": 0.086,
+          "ap50": 0.175,
+          "pq": 0.219,
           "nGt": 14,
           "nPred": 80
         }
@@ -3702,7 +3702,7 @@
       "mean_ap": 0.09375,
       "mean_ap50": 0.20909375000000002,
       "mean_pq": 0.198765625,
-      "seconds": 16.9,
+      "seconds": 40.9,
       "samples": [
         {
           "sample_id": "2dd3356f2dcf470aec4003800744dfec6490e75d88011e1d835f4f3d60f88e7a",
@@ -4228,7 +4228,7 @@
       "mean_ap": 0.041765625,
       "mean_ap50": 0.101140625,
       "mean_pq": 0.11678125,
-      "seconds": 12.0,
+      "seconds": 29.6,
       "samples": [
         {
           "sample_id": "2dd3356f2dcf470aec4003800744dfec6490e75d88011e1d835f4f3d60f88e7a",
@@ -4754,7 +4754,7 @@
       "mean_ap": 0.1104375,
       "mean_ap50": 0.22399999999999998,
       "mean_pq": 0.23771875,
-      "seconds": 12.3,
+      "seconds": 29.9,
       "samples": [
         {
           "sample_id": "2dd3356f2dcf470aec4003800744dfec6490e75d88011e1d835f4f3d60f88e7a",
@@ -5280,7 +5280,7 @@
       "mean_ap": 0.01171875,
       "mean_ap50": 0.047609375,
       "mean_pq": 0.049171875,
-      "seconds": 565.2,
+      "seconds": 580.2,
       "samples": [
         {
           "sample_id": "2dd3356f2dcf470aec4003800744dfec6490e75d88011e1d835f4f3d60f88e7a",
@@ -5806,7 +5806,7 @@
       "mean_ap": 0.7087656250000001,
       "mean_ap50": 0.9063593750000001,
       "mean_pq": 0.843375,
-      "seconds": 107.5,
+      "seconds": 162.5,
       "samples": [
         {
           "sample_id": "2dd3356f2dcf470aec4003800744dfec6490e75d88011e1d835f4f3d60f88e7a",
@@ -6332,7 +6332,7 @@
       "mean_ap": 0.144125,
       "mean_ap50": 0.40015625,
       "mean_pq": 0.31740625,
-      "seconds": 14.8,
+      "seconds": 31.8,
       "samples": [
         {
           "sample_id": "2dd3356f2dcf470aec4003800744dfec6490e75d88011e1d835f4f3d60f88e7a",
@@ -6858,7 +6858,7 @@
       "mean_ap": 0.12485937500000001,
       "mean_ap50": 0.31975,
       "mean_pq": 0.29384375,
-      "seconds": 15.1,
+      "seconds": 31.9,
       "samples": [
         {
           "sample_id": "2dd3356f2dcf470aec4003800744dfec6490e75d88011e1d835f4f3d60f88e7a",
@@ -7387,6 +7387,11 @@
       "mean_pq": 0.455328125
     },
     {
+      "id": "C7",
+      "mean_ap": 0.3013125,
+      "mean_pq": 0.4293125
+    },
+    {
       "id": "C5",
       "mean_ap": 0.26365625,
       "mean_pq": 0.41415625
@@ -7397,19 +7402,14 @@
       "mean_pq": 0.42054687500000004
     },
     {
-      "id": "C7",
-      "mean_ap": 0.193,
-      "mean_pq": 0.34925
-    },
-    {
-      "id": "C3",
-      "mean_ap": 0.18200000000000002,
-      "mean_pq": 0.308140625
-    },
-    {
       "id": "L6",
       "mean_ap": 0.144125,
       "mean_pq": 0.31740625
+    },
+    {
+      "id": "C3",
+      "mean_ap": 0.12782812500000001,
+      "mean_pq": 0.25021875000000005
     },
     {
       "id": "N1",

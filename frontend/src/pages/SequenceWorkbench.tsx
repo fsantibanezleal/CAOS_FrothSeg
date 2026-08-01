@@ -911,7 +911,7 @@ const TEMPORAL_METHOD_LABELS: Record<string, string> = {
   C4: 'Distance-transform watershed',
   C5: 'H-minima watershed',
   C6: 'SLIC + RAG merge',
-  C7: 'Lamella-valley detector',
+  C7: 'Lamella-valley constrained watershed',
   L1: 'Boundary/distance U-Net',
   L2: 'Deep-marker watershed',
   L3: 'GC-FSegNet',

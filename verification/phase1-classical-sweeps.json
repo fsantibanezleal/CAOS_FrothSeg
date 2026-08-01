@@ -1,6 +1,6 @@
 {
   "schema": "frothseg.phase1-classical-sweeps/v1",
-  "generated_utc": "2026-08-01T08:51:51+00:00",
+  "generated_utc": "2026-08-01T15:39:26+00:00",
   "phase": "Phase 1, classical lane measured",
   "plan": "CAOS_MANAGE/plans/frothseg/research-2026-07-31/PLAN-PROPOSAL.md section 3",
   "surface": {
@@ -10,7 +10,28 @@
     "learned_lane_test_evaluations_spent": 0,
     "note": "Phase 1 contains no model-selection experiment and trains nothing. It spends none of the learned-lane test-evaluation budget."
   },
-  "published_defaults_changed": [],
+  "published_defaults_changed": [
+    {
+      "constant": "C3_FLOODING_SURFACE",
+      "engine": "data-pipeline/fslab/science/segment.py watershed_hmax",
+      "from": "neg_edt",
+      "to": "neg_gray",
+      "adopted": "2026-08-01",
+      "basis": "primary source, Sadr-Kazemi and Cilliers 1997, 10.1016/S0892-6875(97)00094-0",
+      "confirmed_on": "verification/phase1-adoption.json",
+      "live_twin_updated": "frontend/src/classical/methods.ts watershedHmax"
+    },
+    {
+      "constant": "C7_MODE",
+      "engine": "data-pipeline/fslab/science/segment.py valley_edge",
+      "from": "subtract",
+      "to": "watershed",
+      "adopted": "2026-08-01",
+      "basis": "primary source, Meyer 1994, 10.1016/0165-1684(94)90060-4",
+      "confirmed_on": "verification/phase1-adoption.json",
+      "live_twin_updated": "frontend/src/classical/methods.ts valleyEdge"
+    }
+  ],
   "baseline_reproduction": {
     "artifact": "data/derived/phase1/baseline-reproduction.json",
     "all_seven_engines_identical_to_committed_artifact": true,
@@ -40,12 +61,12 @@
     },
     "C3": {
       "method": "watershed_hmax",
-      "mean_ap": 0.103109375,
-      "mean_pq": 0.24903124999999998,
-      "mean_boundary_fscore": 0.832290625,
-      "mean_bsd_wasserstein": 6.032187499999999,
+      "mean_ap": 0.21957812499999999,
+      "mean_pq": 0.440921875,
+      "mean_boundary_fscore": 0.881734375,
+      "mean_bsd_wasserstein": 3.62646875,
       "mean_count_absolute_error": 178.875,
-      "mean_d32_relative_error": 0.4310671875,
+      "mean_d32_relative_error": 0.19074375,
       "source": "data/derived/classical-heldout.json"
     },
     "C4": {
@@ -80,12 +101,12 @@
     },
     "C7": {
       "method": "valley_edge",
-      "mean_ap": 0.1673125,
-      "mean_pq": 0.36321875,
-      "mean_boundary_fscore": 0.86284375,
-      "mean_bsd_wasserstein": 3.564171875,
+      "mean_ap": 0.2325625,
+      "mean_pq": 0.43823437499999995,
+      "mean_boundary_fscore": 0.8837046875,
+      "mean_bsd_wasserstein": 3.5419375000000004,
       "mean_count_absolute_error": 114.234375,
-      "mean_d32_relative_error": 1.2583640624999999,
+      "mean_d32_relative_error": 1.4370609374999999,
       "source": "data/derived/classical-heldout.json"
     }
   },
@@ -351,13 +372,18 @@
   },
   "hypothesis_checks": {
     "c7_d32_bias_direction": {
-      "source": "data/derived/classical-heldout.json, valley_edge cases",
+      "source": "data/derived/classical-heldout.json, valley_edge cases (adopted watershed mode)",
       "n_cases": 64,
-      "mean_predicted_d32_px": 36.74153125,
+      "mean_predicted_d32_px": 39.8950625,
       "mean_truth_d32_px": 16.853559375,
-      "ratio_predicted_over_truth": 2.1800457952224113,
+      "ratio_predicted_over_truth": 2.367159459453947,
       "proposal_hypothesis": "seam subtraction biases the diameter downward",
-      "verdict": "REFUTED. C7 over-estimates d32 by a factor above 2 on the committed artifact, so the seam-subtraction bias is not the source of its d32 relative error, and growing the caps back cannot fix it by that mechanism."
+      "sweep_d32_relative_error_at_seam_radius_3": {
+        "subtract": 1.2583640624999999,
+        "watershed": 1.4370609374999999,
+        "source": "data/derived/phase1/c7-constrained-watershed.json"
+      },
+      "verdict": "REFUTED, and the refutation was paid for. C7 over-estimates d32 by a factor above 2, so the seam-subtraction bias was never the source of its d32 relative error and growing the caps back could not fix it by that mechanism. The mode was adopted anyway, on Meyer 1994 and on mask quality, and d32 relative error duly got WORSE. That cost is stated in the constant ledger, in the engine docstring and in verification/phase1-adoption.json."
     },
     "c7_best_watershed_condition_regressions": {
       "baseline_config": {
@@ -400,8 +426,14 @@
     }
   },
   "adoption_status": {
-    "defaults_changed": "none",
-    "why": "Two independent reasons, both recorded before any adoption is proposed. First, every sweep above was measured on the 64-image test split, so adopting the argmax measured there is selection on that surface and the gain would not be quotable; a confirmation on a surface not used to pick the value is required. Second, the classical tier has a JavaScript twin in the live lane under an AP-delta parity gate, so a default change is a two-lane change plus a full re-bake of every committed classical artifact.",
+    "defaults_changed": "two, C3_FLOODING_SURFACE and C7_MODE",
+    "date": "2026-08-01",
+    "evidence": "verification/phase1-adoption.json",
+    "what_qualified_them": "Neither was adopted for winning its sweep. Each was adopted because the engine was not implementing the source the registry already cites for that method: C3 floods the negated grayscale per Sadr-Kazemi and Cilliers 1997, and C7 is a constrained watershed per Meyer 1994. A sweep score alone was explicitly not sufficient, which is why C7's seam_radius, C7's watershed_line, C4's compactness and the 0.75 Otsu factor did not move: their only argument would have been the score on the surface the score was read on.",
+    "how_the_two_blockers_were_cleared": {
+      "observed_surface": "Every sweep above was measured on the 64-image test split, so a sweep number is not quotable as the effect of the change. One untouched reserve slice from verification/phase2-data-preregistration.json was spent to measure BEFORE and AFTER on data the sweeps never saw, and the spend is recorded in verification/reserve-slice-ledger.json. The reserve numbers are the published effect; the sweep numbers are the motivation.",
+      "two_lane_change": "The JavaScript twins in frontend/src/classical/methods.ts were moved to the same surface and the same mode in the same change, and every committed classical artifact was re-baked from the new defaults."
+    },
     "decision_owner": "Felipe"
   }
 }

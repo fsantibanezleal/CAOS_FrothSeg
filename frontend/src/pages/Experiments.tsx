@@ -388,12 +388,15 @@ function Cases({ es, benchmark }: { es: boolean; benchmark: SamBenchmarkDoc | nu
       </table>
 
       {/* Source: docs/cases/01_coverage.md "Reading the result by bucket" and the per-case detail table
-          (glare-storm floor AP 0.081 vs 0.407; defocus 37 masks and motion-fast 25 masks against
-          170 and 197 GT instances; mono-clean AP50 0.974 with 113 predicted against 114 GT). */}
+          (defocus 37 masks and motion-fast 25 masks against 170 and 197 GT instances; mono-clean AP50
+          0.974 with 113 predicted against 114 GT). The glare-storm floor is data/derived/sam_benchmark.json
+          cases[glare-storm]: it moved from watershed_dt 0.081 to valley_edge 0.182 when the per-case
+          bakes were re-run after the 2026-08-01 C3 and C7 adoption, because the floor of that study is
+          the BEST classical method on each case and C7 took that place on 8 of the 12 scored cases. */}
       <p className="measure">
         {es
-          ? 'Los estresores no son ruido decorativo: cada uno corresponde a un modo de falla documentado de una cámara de espuma. El brillo saturado crea interiores falsos y borra la evidencia de lamela, y es el caso donde la separación se decide: sobre él el piso clásico por transformada de distancia cae a un AP de 0.081 mientras la segmentación promptable sin ajuste se mantiene en 0.407, cinco veces más. Los dos casos de borrosidad van en la dirección contraria y se reportan así. El desenfoque gaussiano y el barrido de movimiento eliminan la estructura promptable, de modo que el conteo de máscaras confiables se derrumba a treinta y siete y veinticinco frente a ciento setenta y ciento noventa y siete instancias verdaderas, y el piso clásico queda por delante. Ese resultado no se esconde: la borrosidad se documenta como territorio del piso clásico, que es la razón por la que la aplicación ofrece los dos motores en vez de uno.'
-          : 'The stressors are not decorative noise: each corresponds to a documented failure mode of a froth camera. Saturated glare creates false interiors and erases lamella evidence, and it is the case where the separation is decided: on it the classical distance-transform floor falls to an AP of 0.081 while untuned promptable segmentation holds 0.407, a fivefold gap. The two blur cases run the other way, and they are reported that way. Gaussian defocus and motion smear remove the promptable structure, so the confident-mask count collapses to thirty-seven and twenty-five against one hundred and seventy and one hundred and ninety-seven true instances, and the classical floor comes out ahead. That result is not hidden: blur is documented as the classical floor’s territory, which is why the application ships both engines rather than one.'}
+          ? 'Los estresores no son ruido decorativo: cada uno corresponde a un modo de falla documentado de una cámara de espuma. El brillo saturado crea interiores falsos y borra la evidencia de lamela, y es el caso donde la separación se decide: sobre él el mejor clásico del caso cae a un AP de 0.182 mientras la segmentación promptable sin ajuste se mantiene en 0.407, algo más del doble. Esa brecha era de cinco veces hasta el 2026-08-01: el piso del caso era entonces el watershed por transformada de distancia con 0.081, y la watershed restringida de C7 lo reemplazó con 0.182 tras la adopción. Los dos casos de borrosidad van en la dirección contraria y se reportan así. El desenfoque gaussiano y el barrido de movimiento eliminan la estructura promptable, de modo que el conteo de máscaras confiables se derrumba a treinta y siete y veinticinco frente a ciento setenta y ciento noventa y siete instancias verdaderas, y el piso clásico queda por delante. Ese resultado no se esconde: la borrosidad se documenta como territorio del piso clásico, que es la razón por la que la aplicación ofrece los dos motores en vez de uno.'
+          : 'The stressors are not decorative noise: each corresponds to a documented failure mode of a froth camera. Saturated glare creates false interiors and erases lamella evidence, and it is the case where the separation is decided: on it the best classical method of the case falls to an AP of 0.182 while untuned promptable segmentation holds 0.407, a little over twice. That gap was fivefold until 2026-08-01: the case floor was then the distance-transform watershed at 0.081, and the C7 constrained watershed replaced it at 0.182 after the adoption. The two blur cases run the other way, and they are reported that way. Gaussian defocus and motion smear remove the promptable structure, so the confident-mask count collapses to thirty-seven and twenty-five against one hundred and seventy and one hundred and ninety-seven true instances, and the classical floor comes out ahead. That result is not hidden: blur is documented as the classical floor’s territory, which is why the application ships both engines rather than one.'}
         {' '}<Cite id="kirillov2023" paren /> <Cite id="chen2023slimsam" paren />
       </p>
 
@@ -410,8 +413,8 @@ function Cases({ es, benchmark }: { es: boolean; benchmark: SamBenchmarkDoc | nu
       {/* Source: data/derived/sam_benchmark.json (model, grid, provenance, summary) loaded live below. */}
       <p className="measure">
         {es
-          ? 'La evidencia puntuada más antigua sobre estos trece casos es un estudio de sensibilidad: preguntar si una grilla regular de puntos recupera instancias sin ningún ajuste específico a la tarea. Se conserva porque responde una pregunta que la matriz retenida no hace, y se conserva separada porque su protocolo no es el de la comparación principal. Las barras muestran el AP por caso contra la referencia clásica del mismo caso; el verde indica que la grilla de prompts iguala o supera esa referencia.'
-          : 'The oldest scored evidence over these thirteen cases is a sensitivity study: asking whether a regular point grid recovers instances with no task-specific tuning at all. It is retained because it answers a question the held-out matrix does not ask, and it is kept separate because its protocol is not that of the primary comparison. The bars show per-case AP against the same case’s classical reference; green marks where the prompt grid matches or exceeds that reference.'}
+          ? 'La evidencia puntuada más antigua sobre estos trece casos es un estudio de sensibilidad: preguntar si una grilla regular de puntos recupera instancias sin ningún ajuste específico a la tarea. Se conserva porque responde una pregunta que la matriz retenida no hace, y se conserva separada porque su protocolo no es el de la comparación principal. Las barras muestran el AP por caso contra la referencia clásica del mismo caso; el verde indica que la grilla de prompts iguala o supera esa referencia. Esa referencia es el mejor método clásico de cada caso, así que la adopción del 2026-08-01 la movió sin tocar una sola predicción de la grilla: el AP medio de la referencia subió de 0.262 a 0.351, la ventaja media de la grilla se redujo de 0.103 a 0.014 y los casos ganados pasaron de 10 a 5 sobre 12. El estudio se conserva con su nueva lectura en vez de con la anterior.'
+          : 'The oldest scored evidence over these thirteen cases is a sensitivity study: asking whether a regular point grid recovers instances with no task-specific tuning at all. It is retained because it answers a question the held-out matrix does not ask, and it is kept separate because its protocol is not that of the primary comparison. The bars show per-case AP against the same case’s classical reference; green marks where the prompt grid matches or exceeds that reference. That reference is the best classical method on each case, so the 2026-08-01 adoption moved it without touching a single grid prediction: the mean reference AP rose from 0.262 to 0.351, the grid’s mean advantage shrank from 0.103 to 0.014, and cases won went from 10 to 5 out of 12. The study is kept with its new reading rather than its old one.'}
       </p>
 
       <Equation
@@ -443,8 +446,9 @@ function Cases({ es, benchmark }: { es: boolean; benchmark: SamBenchmarkDoc | nu
                 <td className="num">{benchmark.summary.mean_floor_ap?.toFixed(3) ?? 'n/a'}</td>
                 <th>{es ? 'Casos ganados' : 'Cases won'}</th>
                 {/* Denominator is the number of cases that carry an AP at all: data/derived/sam_benchmark.json
-                    holds 13 cases and 12 non-null sam_ap values, and the artifact's sam_wins (10) is counted
-                    over those 12, so 13 would understate the win rate against its own definition. */}
+                    holds 13 cases and 12 non-null sam_ap values, and the artifact's sam_wins (5 after the
+                    2026-08-01 re-bake, 10 before it) is counted over those 12, so 13 would understate the
+                    win rate against its own definition. */}
                 <td className="num">{benchmark.summary.sam_wins} / {benchmark.summary.n_cases - undefinedApCases}</td>
               </tr>
             </tbody>
@@ -1060,11 +1064,16 @@ type Tier = 'classical' | 'trained' | 'foundation';
 const TRANSFER_ROWS: Array<{ id: string; name: string; tier: Tier; real: number; froth: number }> = [
   { id: 'L5', name: 'Cellpose-SAM', tier: 'foundation', real: 0.709, froth: 0.510 },
   { id: 'C1', name: 'Otsu + connected components', tier: 'classical', real: 0.339, froth: 0.065 },
+  // C7 and C3 carry their post-adoption values: both engines changed on 2026-08-01 and this lane
+  // was re-baked from them. C7 rose on both surfaces; C3 rose on froth (0.103 to 0.220) and FELL
+  // here (0.182 to 0.128), because the adopted negated-intensity flooding surface is a froth
+  // mechanism and cell nuclei carry neither a specular highlight nor a Plateau border.
+  // Sources: data/derived/real-adjacent-benchmark.json and data/derived/method-benchmark.json.
+  { id: 'C7', name: 'Lamella-valley constrained watershed', tier: 'classical', real: 0.301, froth: 0.233 },
   { id: 'C5', name: 'H-minima watershed', tier: 'classical', real: 0.264, froth: 0.133 },
   { id: 'C4', name: 'Distance-transform watershed', tier: 'classical', real: 0.256, froth: 0.198 },
-  { id: 'C7', name: 'Lamella-valley detector', tier: 'classical', real: 0.193, froth: 0.167 },
-  { id: 'C3', name: 'Marker-controlled watershed', tier: 'classical', real: 0.182, froth: 0.103 },
   { id: 'L6', name: 'YOLO froth segmentation', tier: 'trained', real: 0.144, froth: 0.293 },
+  { id: 'C3', name: 'Marker-controlled watershed', tier: 'classical', real: 0.128, froth: 0.220 },
   // Every row here is measured on the SAME burned 64-image split, so the values stay
   // comparable to each other. N1 was later re-measured alone on a fresh pre-registered
   // 72-sample split at AP 0.045 (verification/p2-domain-randomization.json); that number
@@ -1144,12 +1153,16 @@ function Transfer({ es }: { es: boolean }) {
         </tbody>
       </table>
 
-      {/* Source: docs/benchmark/02_real-domain-transfer.md, the per-tier table
-          (classical 7 methods +0.088, in-repo trained 6 methods -0.243, foundation never trained here +0.199). */}
+      {/* Source: docs/benchmark/02_real-domain-transfer.md, the per-tier table re-baked on 2026-08-01
+          (classical 7 methods +0.070 with 5 of 7 improving, in-repo trained 6 methods -0.243,
+          foundation never trained here +0.199). The classical tier mean moved from +0.088 to +0.070
+          and the improving count from 6 to 5 because C3 changed direction with its adopted
+          flooding surface: data/derived/real-adjacent-benchmark.json against
+          data/derived/method-benchmark.json methods[].test.mean_ap. */}
       <p className="measure">
         {es
-          ? 'Agrupado por nivel el patrón no admite matices: los siete métodos clásicos mejoran en promedio 0.088, los seis modelos entrenados dentro del repositorio caen en promedio 0.243, y el único método aprendido que nunca se entrenó aquí mejora 0.199 y pasa a liderar con holgura. El ranking sintético no transfiere. El método que lidera el banco de espuma cae del primer lugar al octavo sobre imágenes reales, y los métodos clásicos, que no tienen un prior aprendido que sobreajustar, suben. Ese es el resultado, y es la razón por la que existe esta pestaña.'
-          : 'Grouped by tier the pattern admits no nuance: the seven classical methods improve by 0.088 on average, the six models trained inside the repository fall by 0.243 on average, and the single learned method never trained here improves by 0.199 and becomes the clear leader. The synthetic ranking does not transfer. The method leading the froth benchmark falls from first to eighth on real images, and the classical methods, which have no learned prior to overfit, rise. That is the result, and it is why this tab exists.'}
+          ? 'Agrupado por nivel el patrón es claro, con dos excepciones nombradas: el nivel clásico mejora en promedio 0.070, con cinco de sus siete métodos al alza, los seis modelos entrenados dentro del repositorio caen en promedio 0.243 sin excepción, y el único método aprendido que nunca se entrenó aquí mejora 0.199 y pasa a liderar con holgura. Las dos excepciones clásicas son C2, que ya estaba en 0.017 sobre espuma y entrega 0.000 aquí, y C3, que cae de 0.220 a 0.128 desde que el 2026-08-01 adoptó la inundación de la intensidad negada, un mecanismo de espuma que un núcleo celular no ofrece. El ranking sintético no transfiere. El método que lidera el banco de espuma cae del primer lugar al octavo sobre imágenes reales, y el nivel clásico, que no tiene un prior aprendido que sobreajustar, sube como nivel. Ese es el resultado, y es la razón por la que existe esta pestaña.'
+          : 'Grouped by tier the pattern is clear, with two named exceptions: the classical tier improves by 0.070 on average, five of its seven methods rising, the six models trained inside the repository fall by 0.243 on average without exception, and the single learned method never trained here improves by 0.199 and becomes the clear leader. The two classical exceptions are C2, already at 0.017 on froth and returning 0.000 here, and C3, which falls from 0.220 to 0.128 since it adopted negated-intensity flooding on 2026-08-01, a froth mechanism a cell nucleus does not offer. The synthetic ranking does not transfer. The method leading the froth benchmark falls from first to eighth on real images, and the classical tier, which has no learned prior to overfit, rises as a tier. That is the result, and it is why this tab exists.'}
       </p>
 
       {/* Source: docs/benchmark/02_real-domain-transfer.md "What this does and does not say about N1"

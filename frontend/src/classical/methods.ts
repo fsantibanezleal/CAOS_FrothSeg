@@ -19,16 +19,31 @@
 // Fixing any of the three moves live outputs and the parity artifact, so they are recorded here rather than
 // silently patched; the claim is corrected to what the code does.
 //
+// A FOURTH divergence was found and FIXED on 2026-08-01, while moving C3 to the negated-grayscale surface
+// and C7 to the constrained watershed (verification/phase1-adoption.json). The twin's `watershed` seeded its
+// output with every marker pixel, including markers outside the froth foreground, and never cleared them, so
+// it invented one instance per out-of-mask marker; skimage's masked watershed returns 0 outside the mask.
+// C3's h-maxima markers sit on any bright speck anywhere in the frame, so C3 carried the whole error: the
+// browser predicted 1.2420x the offline instance count in every parity run since the artifact was first
+// committed, and the AP-delta gate hid it at 0.0193 because flooding the negated EDT merged the surplus
+// markers into shared basins. Flooding the negated grayscale gave each surplus marker its own basin, the
+// delta jumped to 0.0333 past the gate, and the bug surfaced. After the fix, C3 parity is the best it has
+// ever been: AP delta 0.0020, browser-vs-offline mask IoU 0.9343, instance-count ratio 1.0011. The lesson is
+// recorded, not just the fix: the gate did not catch a 24 percent instance-count error for as long as the
+// two lanes were wrong in ways that cancelled.
+//
 // Provenance per method:
 //   C1 otsu_cc              Otsu 1979 + connected components, the under-segmentation baseline.
 //   C2 watershed_immersion  immersion watershed on the morphological gradient (Vincent-Soille 1991),
 //                           the over-segmentation exhibit (a basin per highlight/dip).
-//   C3 watershed_hmax       highlight-seeded h-maxima markers (Sadr-Kazemi & Cilliers 1997) feeding
-//                           marker-controlled flooding (Meyer 1994); both provenances are real.
+//   C3 watershed_hmax       highlight-seeded h-maxima markers flooding the NEGATED IMAGE (Sadr-Kazemi &
+//                           Cilliers 1997, markers and surface both) through marker-controlled flooding
+//                           (Meyer 1994); both provenances are real.
 //   C4 watershed_dt         distance-transform markers + marker-controlled watershed (Meyer 1994).
 //   C5 watershed_hmin       H-minima suppression before flooding (Soille 2004).
 //   C6 slic_merge           SLIC superpixels (Achanta 2012) + mean-intensity ordering, the non-watershed lane.
-//   C7 valley_edge          dark-seam / valley detector (Wang 2003; Wang & Chen 2015), the froth-specific method.
+//   C7 valley_edge          lamella-valley constrained watershed (Wang 2003; Wang & Chen 2015 for the seam cue,
+//                           Meyer 1994 for the flooding), the froth-specific method.
 
 import {
   blackTophat, edt, fillSmallHoles, grayMorph, hMaxima, labelCC, morphGradient, otsuThreshold, peakLocalMax,
@@ -48,11 +63,14 @@ export const CLASSICAL_METHODS: Array<{
 }> = [
   { id: 'otsu_cc', label: 'C1 Otsu + CC', note: 'under-segments touching bubbles (baseline)', lane: 'validated-live' },
   { id: 'watershed_immersion', label: 'C2 Immersion watershed', note: 'over-segments on highlights (exhibit)', lane: 'offline-replay' },
-  { id: 'watershed_hmax', label: 'C3 Highlight-seeded watershed', note: 'the classic industrial froth trick', lane: 'validated-live' },
-  { id: 'watershed_dt', label: 'C4 Distance-transform watershed', note: 'the generic classical floor, leads the tier on AP', lane: 'validated-live' },
+  { id: 'watershed_hmax', label: 'C3 Highlight-seeded watershed', note: 'the classic industrial froth trick, best d32 of the tier', lane: 'validated-live' },
+  { id: 'watershed_dt', label: 'C4 Distance-transform watershed', note: 'the generic classical floor, best BSD Wasserstein-1 of the tier', lane: 'validated-live' },
   { id: 'watershed_hmin', label: 'C5 H-minima watershed', note: 'suppresses shallow spurious basins', lane: 'offline-replay' },
   { id: 'slic_merge', label: 'C6 SLIC superpixels', note: 'non-watershed over-segmentation primitive', lane: 'offline-replay' },
-  { id: 'valley_edge', label: 'C7 Valley-edge (Wang)', note: 'dark-seam froth method, best boundary F and count error', lane: 'offline-replay' },
+  // Notes carry tier positions read from data/derived/method-benchmark.json methods[].test on 2026-08-01:
+  // C7 mean_ap 0.2326, C3 0.2196, C4 0.1977; C3 d32 0.1907 is the tier best, C4 BSD W1 2.590 is the tier best,
+  // C7 holds boundary F 0.8837 and count error 114.2. C4 led the tier on AP until the adoption.
+  { id: 'valley_edge', label: 'C7 Lamella-valley constrained watershed', note: 'domain froth method, leads the tier on AP, boundary F and count error', lane: 'offline-replay' },
 ];
 
 export const LIVE_CLASSICAL_METHODS = CLASSICAL_METHODS.filter(
@@ -100,14 +118,19 @@ function watershedImmersion(gray: Float32Array, w: number, h: number): Int32Arra
   return watershed(grad, markers, fg, w, h);
 }
 
+// C3 floods the NEGATED IMAGE, not the negated distance transform. Adopted 2026-08-01 together with the
+// offline default `C3_FLOODING_SURFACE = "neg_gray"`, because flooding the negated grayscale from h-maxima
+// markers is the method Sadr-Kazemi & Cilliers 1997 (10.1016/S0892-6875(97)00094-0) publish, and that is
+// the source the C3 registry entry already cites. Flooding -EDT made C3 differ from C4 only in its markers.
+// Evidence: verification/phase1-adoption.json. This twin must stay on the same surface as the Python
+// engine or verification/classical-live-parity.json goes stale.
 function watershedHmax(gray: Float32Array, w: number, h: number): Int32Array {
   const fg = foreground(gray, w, h);
   const domes = hMaxima(gray, w, h, 0.06);
   const { labels: markers, n } = labelCC(domes, w, h);
   if (n === 0) return watershedDt(gray, w, h);
-  const dist = edt(fg, w, h);
-  const surface = new Float32Array(dist.length);
-  for (let i = 0; i < dist.length; i++) surface[i] = -dist[i];
+  const surface = new Float32Array(gray.length);
+  for (let i = 0; i < gray.length; i++) surface[i] = -gray[i];
   return watershed(surface, markers, fg, w, h);
 }
 
@@ -181,6 +204,13 @@ function slicMerge(gray: Float32Array, w: number, h: number): Int32Array {
   return out;
 }
 
+// C7 grows the cleaned caps BACK to the seam ridge with a constrained watershed instead of returning the
+// caps themselves. Adopted 2026-08-01 together with the offline default `C7_MODE = "watershed"`, because
+// the C7 registry entry already calls C7 a constrained watershed and names Meyer 1994
+// (10.1016/0165-1684(94)90060-4); subtracting the seam made every mask stop short of the seam centreline
+// by construction. Evidence: verification/phase1-adoption.json. The honest cost, measured on both the
+// test split and the reserve slice: d32 relative error gets WORSE, because larger caps move the Sauter
+// mean diameter. Seam radius stays 3 and the watershed line stays off.
 function valleyEdge(gray: Float32Array, w: number, h: number): Int32Array {
   const seams = blackTophat(gray, w, h, 3);
   let smax = 0;
@@ -189,7 +219,9 @@ function valleyEdge(gray: Float32Array, w: number, h: number): Int32Array {
   const caps = new Uint8Array(w * h);
   const thr = smax > 0 ? otsuThreshold(seams) : Infinity;
   for (let i = 0; i < caps.length; i++) caps[i] = fg[i] && seams[i] <= thr ? 1 : 0;
-  return labelCC(removeSmall(caps, w, h, 8), w, h).labels;
+  const { labels: markers, n } = labelCC(removeSmall(caps, w, h, 8), w, h);
+  if (n === 0) return markers;                       // no cap survives, nothing to flood from
+  return watershed(seams, markers, fg, w, h);
 }
 
 const IMPL: Record<ClassicalMethod, (g: Float32Array, w: number, h: number) => Int32Array> = {

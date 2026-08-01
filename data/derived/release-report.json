@@ -1,9 +1,10 @@
 {
   "schema": "frothseg.release/v2",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "complete": false,
   "errors": [
-    "no accepted licensed real FROTH held-out source with imported samples and calibration"
+    "no accepted licensed real FROTH held-out source with imported samples and calibration",
+    "version/tag mismatch: expected v0.05.000, latest is v0.04.000"
   ],
   "branch_policy": "existing develop branch; no worktree",
   "dataset": {
@@ -17,7 +18,7 @@
   },
   "method_benchmark": {
     "path": "data/derived/method-benchmark.json",
-    "sha256": "7df6ad4d2a9ca51ff8d3f1c983cf40d9928de4c823bcd7fe20203edf3ecd24e3",
+    "sha256": "e48ced404356c6c06564f302f502cce5f7a8a04a5316701fe49fbfd6a5a1c092",
     "method_count": 15,
     "implemented_count": 15,
     "leader": {
@@ -63,8 +64,8 @@
       "compute": {
         "hardware_lane": "cpu",
         "device": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
-        "mean_inference_ms": 3.4386875000000003,
-        "p95_inference_ms": 4.731949999999998,
+        "mean_inference_ms": 6.183156250000001,
+        "p95_inference_ms": 7.145699999999999,
         "peak_memory_mib": 1.201,
         "peak_memory_metric": "python-tracemalloc",
         "model_artifact_bytes": 0,
@@ -102,9 +103,9 @@
       "compute": {
         "hardware_lane": "cpu",
         "device": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
-        "mean_inference_ms": 80.79739062499999,
-        "p95_inference_ms": 183.83454999999972,
-        "peak_memory_mib": 3.566,
+        "mean_inference_ms": 103.49528125,
+        "p95_inference_ms": 252.12759999999952,
+        "peak_memory_mib": 3.567,
         "peak_memory_metric": "python-tracemalloc",
         "model_artifact_bytes": 0,
         "model_artifact_sha256": null,
@@ -121,28 +122,28 @@
       "tier": "classical",
       "implementation_state": "implemented",
       "quality_status": "below-current-bar",
-      "test_mean_ap": 0.103109375,
-      "test_mean_boundary_fscore": 0.832290625,
-      "test_mean_bsd_wasserstein": 6.032187499999999,
+      "test_mean_ap": 0.21957812499999999,
+      "test_mean_boundary_fscore": 0.881734375,
+      "test_mean_bsd_wasserstein": 3.62646875,
       "test_cell_count": 64,
       "test_micro": {
         "association_iou": 0.5,
         "nGt": 17846,
         "nPred": 29248,
-        "tp": 6848,
-        "fp": 22400,
-        "fn": 10998,
-        "merges": 3009,
-        "splits": 2666,
-        "instance_precision": 0.23413566739606126,
-        "instance_recall": 0.38372744592625796,
-        "instance_f1": 0.290822610098951
+        "tp": 12883,
+        "fp": 16365,
+        "fn": 4963,
+        "merges": 1142,
+        "splits": 2003,
+        "instance_precision": 0.4404745623632385,
+        "instance_recall": 0.7218984646419365,
+        "instance_f1": 0.5471185288996475
       },
       "compute": {
         "hardware_lane": "cpu",
         "device": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
-        "mean_inference_ms": 27.8529375,
-        "p95_inference_ms": 33.321,
+        "mean_inference_ms": 39.712656249999995,
+        "p95_inference_ms": 46.004599999999996,
         "peak_memory_mib": 2.907,
         "peak_memory_metric": "python-tracemalloc",
         "model_artifact_bytes": 0,
@@ -150,7 +151,7 @@
         "model_artifact_committed": true,
         "training_duration_seconds": 0.0
       },
-      "canonical_mean_ap": 0.10275000000000001,
+      "canonical_mean_ap": 0.21191666666666667,
       "run": null,
       "docs_path": "docs/methods/classical.md"
     },
@@ -180,9 +181,9 @@
       "compute": {
         "hardware_lane": "cpu",
         "device": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
-        "mean_inference_ms": 22.0941875,
-        "p95_inference_ms": 29.286349999999995,
-        "peak_memory_mib": 1.368,
+        "mean_inference_ms": 36.721421875,
+        "p95_inference_ms": 47.84739999999999,
+        "peak_memory_mib": 1.367,
         "peak_memory_metric": "python-tracemalloc",
         "model_artifact_bytes": 0,
         "model_artifact_sha256": null,
@@ -219,9 +220,9 @@
       "compute": {
         "hardware_lane": "cpu",
         "device": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
-        "mean_inference_ms": 27.47828125,
-        "p95_inference_ms": 32.51555,
-        "peak_memory_mib": 4.946,
+        "mean_inference_ms": 40.24546875,
+        "p95_inference_ms": 47.10325,
+        "peak_memory_mib": 4.947,
         "peak_memory_metric": "python-tracemalloc",
         "model_artifact_bytes": 0,
         "model_artifact_sha256": null,
@@ -258,9 +259,9 @@
       "compute": {
         "hardware_lane": "cpu",
         "device": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
-        "mean_inference_ms": 536.006234375,
-        "p95_inference_ms": 672.2091499999999,
-        "peak_memory_mib": 14.582,
+        "mean_inference_ms": 673.819921875,
+        "p95_inference_ms": 745.15775,
+        "peak_memory_mib": 14.583,
         "peak_memory_metric": "python-tracemalloc",
         "model_artifact_bytes": 0,
         "model_artifact_sha256": null,
@@ -277,36 +278,36 @@
       "tier": "classical",
       "implementation_state": "implemented",
       "quality_status": "below-current-bar",
-      "test_mean_ap": 0.1673125,
-      "test_mean_boundary_fscore": 0.86284375,
-      "test_mean_bsd_wasserstein": 3.564171875,
+      "test_mean_ap": 0.2325625,
+      "test_mean_boundary_fscore": 0.8837046875,
+      "test_mean_bsd_wasserstein": 3.5419375000000004,
       "test_cell_count": 64,
       "test_micro": {
         "association_iou": 0.5,
         "nGt": 17846,
         "nPred": 10809,
-        "tp": 7105,
-        "fp": 3704,
-        "fn": 10741,
-        "merges": 2059,
-        "splits": 51,
-        "instance_precision": 0.6573226015357573,
-        "instance_recall": 0.3981284321416564,
-        "instance_f1": 0.4958994939801082
+        "tp": 8266,
+        "fp": 2543,
+        "fn": 9580,
+        "merges": 2689,
+        "splits": 389,
+        "instance_precision": 0.7647330927930428,
+        "instance_recall": 0.46318502745713325,
+        "instance_f1": 0.5769324725178852
       },
       "compute": {
         "hardware_lane": "cpu",
         "device": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
-        "mean_inference_ms": 9.601015624999999,
-        "p95_inference_ms": 11.316399999999998,
-        "peak_memory_mib": 1.379,
+        "mean_inference_ms": 26.321234375000003,
+        "p95_inference_ms": 31.336099999999995,
+        "peak_memory_mib": 1.512,
         "peak_memory_metric": "python-tracemalloc",
         "model_artifact_bytes": 0,
         "model_artifact_sha256": null,
         "model_artifact_committed": true,
         "training_duration_seconds": 0.0
       },
-      "canonical_mean_ap": 0.21783333333333332,
+      "canonical_mean_ap": 0.2876666666666667,
       "run": null,
       "docs_path": "docs/methods/classical.md"
     },
@@ -696,21 +697,21 @@
     },
     {
       "path": "data/derived/temporal/watershed_hmax.json",
-      "sha256": "fe9c5c56f1ad4eb889d3416193ecc7b525768b10ff9f89e305079cda43210249",
+      "sha256": "71a5d96d98ac7e445e60c8545ff4ec67c26ebd58c04a37046761ebdf10fd20d2",
       "schema": "frothseg.temporal-benchmark/v1",
       "method_id": "C3",
       "prediction_kind": "framewise_segmentation_with_iou_identity_association",
       "prediction_sequence_count": 5,
       "prediction_frame_count": 40,
-      "mean_hota": 0.43467541601557247,
-      "mean_idf1": 0.3732236209067536,
+      "mean_hota": 0.6531884531490253,
+      "mean_idf1": 0.6068038522948467,
       "metrics": {
-        "event_precision": 0.0008718395815170009,
+        "event_precision": 0.0015408320493066256,
         "event_recall": 1.0,
-        "flow_epe_px": 1.4179231485133488,
-        "hota": 0.5610600627049316,
-        "idf1": 0.5080321285140562,
-        "track_fragmentations": 84
+        "flow_epe_px": 1.0619048730382157,
+        "hota": 0.7377661726105993,
+        "idf1": 0.7008032128514057,
+        "track_fragmentations": 6
       }
     },
     {
@@ -772,20 +773,20 @@
     },
     {
       "path": "data/derived/temporal/valley_edge.json",
-      "sha256": "8a6ab70f8f709169a4a83e353128ea0de4af9457de56bc211be9721cad910f14",
+      "sha256": "b41fdd2f1dbde653e92ead5319c1053ad4df93cc58889f66cc478817f35f091a",
       "schema": "frothseg.temporal-benchmark/v1",
       "method_id": "C7",
       "prediction_kind": "framewise_segmentation_with_iou_identity_association",
       "prediction_sequence_count": 5,
       "prediction_frame_count": 40,
-      "mean_hota": 0.5965830728100999,
-      "mean_idf1": 0.5723509731893389,
+      "mean_hota": 0.6014292992146075,
+      "mean_idf1": 0.5788641483195823,
       "metrics": {
-        "event_precision": 0.007722007722007722,
+        "event_precision": 0.008438818565400843,
         "event_recall": 1.0,
-        "flow_epe_px": 0.9513951552787006,
-        "hota": 0.8263749241356174,
-        "idf1": 0.8106469002695418,
+        "flow_epe_px": 0.9086781321155366,
+        "hota": 0.828912026904847,
+        "idf1": 0.8146900269541779,
         "track_fragmentations": 86
       }
     },
@@ -944,7 +945,7 @@
   ],
   "classical_live_parity": {
     "path": "verification/classical-live-parity.json",
-    "sha256": "541576c5763bc20507aa0b8c9573689f44abb246d3227bd77dff60caf9d71c78",
+    "sha256": "196a0a8270617b8ff51735868a37c96eb9458b5858d8ce9f22d533d522d101d3",
     "accepted_methods": [
       "otsu_cc",
       "watershed_dt",
@@ -1004,7 +1005,7 @@
       "temporal",
       "use-cases"
     ],
-    "expected_tag": "v0.04.000",
+    "expected_tag": "v0.05.000",
     "latest_tag": "v0.04.000"
   }
 }
