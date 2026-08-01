@@ -72,5 +72,5 @@
       "note": "One non-iterated pass per configuration. Both configurations were fixed before the slice was read: 0.06 is the shipped value and 0.12 was selected on the validation split, which no classical constant sweep had used. The slice is now burned for C3 flooding depth."
     }
   ],
-  "slices_spent": 3
+  "slices_spent": 4
 }

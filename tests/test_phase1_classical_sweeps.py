@@ -31,6 +31,9 @@ RESERVE_LEDGER = ROOT / "verification" / "reserve-slice-ledger.json"
 # The two defaults the 2026-08-01 adoption moved, and what they moved from. Anything that changes a
 # value here must also change verification/phase1-adoption.json, because the artifact is what says the
 # change was confirmed on a surface no sweep observed.
+# Exactly the two this artifact moved. C3_H_MAXIMA moved on the same day but under R-2, whose
+# evidence is verification/r2-c3-flooding-depth.json, so it does not belong in this set: adding it
+# here would assert that phase1-adoption.json claims a change it never made.
 ADOPTED_DEFAULTS = {
     "C3_FLOODING_SURFACE": {"from": "neg_edt", "to": "neg_gray"},
     "C7_MODE": {"from": "subtract", "to": "watershed"},
@@ -45,7 +48,7 @@ PUBLISHED_DEFAULTS = {
     "C4_MIN_DISTANCE": 4,
     "C4_COMPACTNESS": 0.0,
     "C4_WATERSHED_LINE": False,
-    "C3_H_MAXIMA": 0.06,
+    "C3_H_MAXIMA": 0.12,                 # ADOPTED 2026-08-01 (R-2), was 0.06
     "C3_FLOODING_SURFACE": "neg_gray",   # ADOPTED 2026-08-01, was "neg_edt"
     "C5_H_MINIMA": 0.08,
     "C7_SEAM_RADIUS": 3,
