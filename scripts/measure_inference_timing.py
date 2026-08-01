@@ -86,6 +86,7 @@ def main() -> None:
 
     split = select_split(load_cache(args.cache), args.split)
     images = [image.astype(np.float32) / 255.0 for image in split["images"]]
+    sample_ids = [str(value) for value in split["sample_ids"]]
     print(f"timing on {len(images)} {args.split} images, {args.repeats} repeats each", flush=True)
 
     selected = [
@@ -120,7 +121,10 @@ def main() -> None:
             print(f"{method.id:>3} {method.slug:<26} UNAVAILABLE: {error}", flush=True)
             continue
         report = timing.time_over_items(predict, images, repeats=args.repeats)
-        report.pop("per_image_ms")
+        # Keep the per-image vector. build_method_benchmark writes it into the per-case rows so the
+        # published per-case inference_ms and the published headline are the SAME measurement;
+        # otherwise a reader averaging the per-case column would not reproduce the headline,
+        # because the two would come from different runs on a differently-loaded machine.
         rows.append({
             "id": method.id,
             "slug": method.slug,
@@ -149,6 +153,8 @@ def main() -> None:
             "path": "fslab.temporal_bake.frame_predictor, the same path infer_file and the App use",
             "split": args.split,
             "images": len(images),
+            "sample_ids": sample_ids,
+            "per_image_ms_is_indexed_by": "sample_ids, in this order",
             "repeats": args.repeats,
             "warmup_passes": 1,
             "statistic": "mean over images of the per-image median across repeats",

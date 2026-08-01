@@ -349,6 +349,13 @@ def build() -> dict:
     measured_timings = {
         row["id"]: row for row in (timing_document or {}).get("methods", [])
     }
+    # sample_id -> ms, per method, so the per-case column and the headline are one measurement.
+    timing_sample_ids = ((timing_document or {}).get("protocol") or {}).get("sample_ids") or []
+    per_case_timings = {}
+    for row in (timing_document or {}).get("methods", []):
+        values = row.get("per_image_ms")
+        if row.get("measured") and values and len(values) == len(timing_sample_ids):
+            per_case_timings[row["id"]] = dict(zip(timing_sample_ids, values))
     rows = []
     coverage_errors = []
     observed_cells = 0
@@ -368,6 +375,14 @@ def build() -> dict:
         compute = None
         if evaluation:
             cases = _compact_cases(evaluation)
+            # Replace the per-case timing with the one the headline is computed from. Left alone,
+            # the column would still hold whatever single-pass number that method's own bake
+            # recorded, and averaging the published column would not reproduce the published mean.
+            case_timings = per_case_timings.get(method.id)
+            if case_timings:
+                for row in cases:
+                    if row["sample_id"] in case_timings:
+                        row["inference_ms"] = round(case_timings[row["sample_id"]], 4)
             observed_cells += len(cases)
             case_ids = [row["sample_id"] for row in cases]
             if case_ids != expected_sample_ids:
