@@ -228,8 +228,29 @@ def _runtime(
     raise ValueError("no inference timing evidence")
 
 
-def _compute(method_slug: str, evaluation: dict, run: dict | None, canonical: dict | None) -> dict:
-    mean_ms, p95_ms, timing_source = _runtime(evaluation, run, canonical)
+def _compute(
+    method_slug: str,
+    evaluation: dict,
+    run: dict | None,
+    canonical: dict | None,
+    measured_timing: dict | None = None,
+) -> dict:
+    # data/derived/inference-timing.json is authoritative when it covers this method: it is the
+    # only source where every method is timed under ONE protocol, in one process, against one
+    # canary, with repeats and with model loading outside the timed region. Anything else is a
+    # per-bake leftover, and mixing them is what made the compute axis incomparable row to row.
+    if measured_timing and measured_timing.get("measured"):
+        mean_ms = float(measured_timing["mean_inference_ms"])
+        p95_ms = measured_timing.get("p95_inference_ms")
+        timing_source = "repeated-per-image"
+        evaluation = {
+            **evaluation,
+            "repeats": measured_timing.get("repeats"),
+            "stable": measured_timing.get("stable"),
+            "inter_repeat_cv": measured_timing.get("inter_repeat_cv"),
+        }
+    else:
+        mean_ms, p95_ms, timing_source = _runtime(evaluation, run, canonical)
     measured, description = TIMING_SOURCES[timing_source]
     timing = {
         "timing_source": timing_source,
@@ -302,6 +323,10 @@ def build() -> dict:
     classical_heldout = {
         row["method"]: row for row in (classical_document or {}).get("methods", [])
     }
+    timing_document = _load(ROOT / "data/derived/inference-timing.json")
+    measured_timings = {
+        row["id"]: row for row in (timing_document or {}).get("methods", [])
+    }
     rows = []
     coverage_errors = []
     observed_cells = 0
@@ -325,7 +350,9 @@ def build() -> dict:
             case_ids = [row["sample_id"] for row in cases]
             if case_ids != expected_sample_ids:
                 coverage_errors.append(f"{method.id}: held-out sample matrix mismatch")
-            compute = _compute(method.slug, evaluation, run, canonical)
+            compute = _compute(
+                method.slug, evaluation, run, canonical, measured_timings.get(method.id),
+            )
             test = {
                 key: evaluation.get(key)
                 for key in SUMMARY_KEYS
