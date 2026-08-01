@@ -22,13 +22,32 @@ passes, not the mean, so a single transient spike on one pass cannot move it. Th
 meaning as the old field (average cost of one image) while no longer being a sample of size one.
 
 *A load canary.* A fixed, deterministic reference workload is timed before and after the repeats.
-It measures the machine, not the method. Two bakes are only comparable when their canaries agree,
-and `canary_drift_ratio` says whether they do. This is what makes a timing from one day answerable
-against a timing from another, and it is recorded in the artifact rather than assumed.
+It measures the machine, not the method, and its ABSOLUTE value is what makes two bakes answerable
+against each other: compare `canary_before_ms` across artifacts. `canary_drift_ratio` is a
+different and weaker thing, an intra-run before/after ratio that only catches load ARRIVING or
+LEAVING during the run.
 
 *A stability verdict.* `inter_repeat_cv` is the coefficient of variation of the per-pass totals. A
 run above `CV_UNSTABLE` is reported as `stable: false` and is not fit to be published as a compute
-axis; the caller decides whether to fail or to re-run, but it cannot be unaware.
+axis.
+
+WHAT NEITHER OF THOSE CATCHES, stated plainly because it is the likeliest real case. A machine that
+is STEADILY busy makes every repeat equally slow. The coefficient of variation is then LOW, the
+canary does not drift during the run, and the result is reported `stable: true` while every
+absolute number is inflated. Stability means "the machine did not move during the run", never "the
+machine was idle".
+
+The consequence for how these numbers may be used:
+
+  * WITHIN one artifact, comparisons between methods are sound whatever the load, because every
+    method was timed in the same process under the same conditions against the same canary. The
+    Pareto frontier is a within-artifact comparison and is therefore valid.
+  * ACROSS artifacts, an absolute ms/image is only comparable when the canary values agree. Two
+    bakes with canaries 2.5 ms and 6.0 ms are not measuring the same machine, and their timings
+    must not be differenced or trended without saying so.
+
+`environment()` records the canary with every artifact so this is checkable after the fact rather
+than a matter of trusting that the machine was quiet.
 """
 
 from __future__ import annotations
@@ -54,6 +73,13 @@ MIN_VERDICT_REPEATS = 3
 # The canary must be big enough to be immune to timer granularity and small enough to be
 # negligible next to the run. A fixed-size float64 matmul is deterministic, uses the same BLAS
 # every method here ultimately leans on, and has no I/O.
+#
+# It is a CPU canary, and that is a real limit rather than an oversight: it does not sense GPU
+# contention. For the CUDA methods it therefore controls the host side of the measurement (the
+# resize, the decode, the transfers) and NOT the device side. A second process holding the GPU
+# would inflate those timings with no canary signal at all. Timing them against a co-resident GPU
+# job is not a valid measurement and no field in this module will tell you so; the operator has to
+# know the machine was free of other CUDA work.
 _CANARY_N = 320
 _CANARY_REPEATS = 7
 
