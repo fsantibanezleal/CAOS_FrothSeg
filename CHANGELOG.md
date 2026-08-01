@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.05.000] · UNRELEASED (work 2026-07-28 to 2026-07-29)
+## [0.05.000] · 2026-08-01 (work 2026-07-28 to 2026-08-01)
 
 On `develop`. The release gate still reports `complete: false`: BBBC038 satisfies the
 real-data lane for the adjacent domain only, and the blocker is specifically a licensed
