@@ -39,6 +39,8 @@ from fslab.science.segment import (  # noqa: E402
 
 from confirm_phase1_adoption import (  # noqa: E402
     LEDGER,
+    PREREGISTRATION,
+    RESERVE_CACHE,
     _environment,
     _file_hash,
     _id_hash,
@@ -131,7 +133,34 @@ def main() -> None:
         print("S3: validation selects the shipped value. Nothing is adopted.", flush=True)
 
     # ---- S4: confirmation on reserve slice p4, before and after, one pass each ---------------
+    # The same three guards confirm_phase1_adoption.main applies before it reads a slice. Importing
+    # load_reserve_slice without them would let this study read an archive that had drifted from
+    # the pre-registration, or read a slice another study had already burned, and the artifact
+    # would record hashes it never checked anything against.
+    prereg = json.loads(PREREGISTRATION.read_text(encoding="utf-8"))
+    reserve_matrix = prereg["synthetic"]["reserve_matrix"]
+    expected_slice = reserve_matrix["per_study"][RESERVE_STUDY]
+    if _file_hash(RESERVE_CACHE) != reserve_matrix["cache_sha256"]:
+        raise SystemExit(
+            "reserve archive does not match the pre-registration hash; refusing to read it"
+        )
     reserve = load_reserve_slice(RESERVE_STUDY)
+    if (
+        _id_hash(reserve["group_ids"]) != expected_slice["group_ids_sha256"]
+        or _id_hash(reserve["sample_ids"]) != expected_slice["sample_ids_sha256"]
+    ):
+        raise SystemExit(
+            "reserve slice ids do not match the pre-registration; refusing to read it"
+        )
+    ledger = json.loads(LEDGER.read_text(encoding="utf-8"))
+    spender = next(
+        (entry for entry in ledger["entries"] if entry["reserve_study"] == RESERVE_STUDY), None,
+    )
+    if spender is not None and spender["spent_by"] != "r2-c3-flooding-depth":
+        raise SystemExit(
+            f"reserve slice {RESERVE_STUDY!r} was already spent by {spender['spent_by']!r}; "
+            "a second study reading it would void its guarantee"
+        )
     print(
         f"\nreserve slice {RESERVE_STUDY}: {len(reserve['images'])} images, "
         "one non-iterated pass before and after",

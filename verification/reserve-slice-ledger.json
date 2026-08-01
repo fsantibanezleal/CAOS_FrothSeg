@@ -69,7 +69,8 @@
         "C3_H_MAXIMA=0.06 (before)",
         "C3_H_MAXIMA=0.12 (after)"
       ],
-      "note": "One non-iterated pass per configuration. Both configurations were fixed before the slice was read: 0.06 is the shipped value and 0.12 was selected on the validation split, which no classical constant sweep had used. The slice is now burned for C3 flooding depth."
+      "note": "One non-iterated pass per configuration. Both configurations were fixed before the slice was read: 0.06 is the shipped value and 0.12 was selected on the validation split, which no classical constant sweep had used. The slice is now burned for C3 flooding depth.",
+      "group_ids_sha256": "97bd0a09c13a7ae9845cdba342cb4d02e05e1edb68187e5cd31590f942b4fe83"
     }
   ],
   "slices_spent": 4

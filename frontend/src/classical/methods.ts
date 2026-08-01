@@ -128,7 +128,9 @@ function watershedImmersion(gray: Float32Array, w: number, h: number): Int32Arra
 // verification/r2-c3-flooding-depth.json). It had been left behind when the surface changed earlier
 // the same day: a depth carries the units of the surface it is measured on, and 0.06 still described
 // the distance transform this method no longer floods. Both sides of the twin carried the stale
-// value, so the parity gate stayed green while both engines over-segmented together.
+// value, so the parity gate stayed green while both engines over-segmented together. The adoption
+// gained +0.0785 mean AP on the reserve slice at a stated cost of boundary recall, 0.9638 to
+// 0.9524, worse on 60 of 64 images and better on none.
 function watershedHmax(gray: Float32Array, w: number, h: number): Int32Array {
   const fg = foreground(gray, w, h);
   const domes = hMaxima(gray, w, h, 0.12);

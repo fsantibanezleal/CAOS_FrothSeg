@@ -340,11 +340,19 @@ def train(
     if resume and checkpoint_path.exists():
         checkpoint = torch.load(checkpoint_path, map_location="cpu", weights_only=False)
         checkpoint_config = dict(checkpoint["config"])
-        checkpoint_config.pop("evaluation_split", None)
-        checkpoint_config.pop("epochs", None)
+        # Strip exactly the fields _training_config strips, or a checkpoint written by this same
+        # trainer can never match the config that produced it: the stored asdict(config) carries
+        # `selection` and `early_stop_patience`, so leaving them here made every NEW checkpoint
+        # unresumable while old ones (written before those fields existed) still worked.
+        for field in ("evaluation_split", "epochs", "selection", "early_stop_patience"):
+            checkpoint_config.pop(field, None)
         checkpoint_config.setdefault("augmentation", "none")
         if checkpoint_config != _training_config(config):
-            raise RuntimeError("checkpoint configuration mismatch")
+            raise RuntimeError(
+                "checkpoint configuration mismatch: "
+                f"stored {sorted(checkpoint_config.items())} vs "
+                f"requested {sorted(_training_config(config).items())}"
+            )
         model.load_state_dict(checkpoint["model"])
         optimizer.load_state_dict(checkpoint["optimizer"])
         for state in optimizer.state.values():
@@ -420,7 +428,13 @@ def train(
             "validation_loss": float(np.mean(validation_losses)),
         }
         history.append(row)
-        epoch_state = {key: value.detach().cpu() for key, value in model.state_dict().items()}
+        # .clone() is load-bearing, not defensive. `.detach().cpu()` returns the SAME tensor when
+        # the model is already on CPU, so without it best_state would alias the live parameters and
+        # AdamW would keep mutating them in place: "best" would silently export the final epoch on
+        # any CPU run, while the manifest reported the best epoch's number.
+        epoch_state = {
+            key: value.detach().cpu().clone() for key, value in model.state_dict().items()
+        }
         torch.save({
             "schema": "frothseg.checkpoint/multitask-v1",
             "method": config.method,
@@ -469,13 +483,27 @@ def train(
     # Everything below this line reads `model`: the exported weights, the decode
     # calibration and the evaluation. Put the SELECTED epoch in it, or all three
     # would keep describing the last one.
-    if config.selection == "best" and best_state is not None:
+    # A resumed leg can reach here with best_state None: `best` is recomputed from the loaded
+    # history, but the weights for it only exist if best.pt survived AND matches that epoch. Asking
+    # for "best" and silently getting the last epoch, while the manifest still says policy "best"
+    # and final_vs_selected_pct 0.0, would be indistinguishable from a run where the last epoch
+    # genuinely was the best. Refuse instead: the weights being asked for are not on disk.
+    if config.selection == "best" and best_state is None and history:
+        raise RuntimeError(
+            f"selection='best' but no weights exist for the minimum-validation epoch "
+            f"{best['epoch'] + 1}. best.pt is missing or holds a different epoch, which happens "
+            f"when resuming a run trained before best-epoch tracking existed. Re-run with "
+            f"--no-resume to regenerate the trajectory, or pass --selection last to export the "
+            f"final epoch deliberately."
+        )
+    applied_best = config.selection == "best" and best_state is not None
+    if applied_best:
         model.load_state_dict(best_state)
         model.to(device)
-    selected_epoch = best["epoch"] if config.selection == "best" and best_state is not None \
-        else (history[-1]["epoch"] if history else -1)
+    selected_epoch = best["epoch"] if applied_best else (history[-1]["epoch"] if history else -1)
     selected = {
         "policy": config.selection,
+        "policy_applied": "best" if applied_best else "last",
         "epoch": selected_epoch,
         "epochs_ran": len(history),
         "epochs_requested": config.epochs,

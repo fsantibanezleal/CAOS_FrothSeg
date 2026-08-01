@@ -166,7 +166,13 @@ def train(config: TrainConfig, output: Path, *, resume: bool = True) -> dict:
             "validation_loss": float(np.mean(validation_losses)),
         }
         history.append(row)
-        epoch_state = {key: value.detach().cpu() for key, value in model.state_dict().items()}
+        # .clone() is load-bearing: `.detach().cpu()` returns the SAME tensor when the model is
+        # already on CPU, so best_state would alias the live parameters and AdamW would keep
+        # mutating them in place. "best" would then export the final epoch on any CPU run while
+        # the manifest reported the best epoch's loss.
+        epoch_state = {
+            key: value.detach().cpu().clone() for key, value in model.state_dict().items()
+        }
         torch.save({
             "schema": "frothseg.checkpoint/unet-watershed-v2",
             "method": "unet_watershed",
@@ -200,16 +206,23 @@ def train(config: TrainConfig, output: Path, *, resume: bool = True) -> dict:
             flush=True,
         )
 
-    if config.selection == "best" and best_state is not None:
+    # See train_multitask: a resumed leg can reach here with the minimum known from history but no
+    # weights for it on disk. Exporting the last epoch while reporting policy "best" would be
+    # indistinguishable from a run where the last epoch really was the best.
+    if config.selection == "best" and best_state is None and history:
+        raise RuntimeError(
+            f"selection='best' but no weights exist for the minimum-validation epoch "
+            f"{best['epoch'] + 1}. Re-run with --no-resume, or pass --selection last."
+        )
+    applied_best = config.selection == "best" and best_state is not None
+    if applied_best:
         model.load_state_dict(best_state)
         model.to(device)
     model.eval()
-    selected_epoch = (
-        best["epoch"] if config.selection == "best" and best_state is not None
-        else (history[-1]["epoch"] if history else -1)
-    )
+    selected_epoch = best["epoch"] if applied_best else (history[-1]["epoch"] if history else -1)
     selected = {
         "policy": config.selection,
+        "policy_applied": "best" if applied_best else "last",
         "epoch": selected_epoch,
         "epochs_ran": len(history),
         "validation_loss": next(

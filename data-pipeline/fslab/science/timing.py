@@ -46,6 +46,11 @@ import numpy as np
 # observed between historical bakes was 26 to 174 percent, an order of magnitude clear of it.
 CV_UNSTABLE = 0.10
 
+# Fewer repeats than this cannot support a stability verdict at all. n=1 has zero variance by
+# construction; n=2 gives a coefficient of variation that is mostly noise. Runs below this report
+# stable=None, and the consumer is expected to treat None as "not established", never as "fine".
+MIN_VERDICT_REPEATS = 3
+
 # The canary must be big enough to be immune to timer granularity and small enough to be
 # negligible next to the run. A fixed-size float64 matmul is deterministic, uses the same BLAS
 # every method here ultimately leans on, and has no I/O.
@@ -80,6 +85,11 @@ def time_over_items(
     aggregate fields and the honesty fields: the canary readings, the inter-repeat spread, and
     `stable`. The caller is expected to record all of them, not just the mean.
     """
+    # A stability verdict needs a spread, and a spread needs more than one sample. With repeats=1
+    # the per-pass total has zero variance by construction, so inter_repeat_cv is exactly 0.0 and
+    # `stable` would come out True unconditionally: bit-for-bit the single-pass measurement this
+    # module exists to replace, but wearing the fields that assert it was validated. Below
+    # MIN_VERDICT_REPEATS the verdict is None rather than a flattering number.
     if repeats < 1:
         raise ValueError("repeats must be at least 1")
     if not len(items):
@@ -105,7 +115,11 @@ def time_over_items(
     per_image = np.median(matrix, axis=0)                  # robust to a spike on one pass
     pass_totals = matrix.sum(axis=1)
     mean_total = float(pass_totals.mean())
-    inter_repeat_cv = float(pass_totals.std(ddof=0) / mean_total) if mean_total > 0 else 0.0
+    verdict_possible = repeats >= MIN_VERDICT_REPEATS
+    inter_repeat_cv = (
+        float(pass_totals.std(ddof=1) / mean_total)
+        if verdict_possible and mean_total > 0 else None
+    )
     canary_drift = (
         float(max(canary_before, canary_after) / min(canary_before, canary_after))
         if min(canary_before, canary_after) > 0
@@ -125,13 +139,15 @@ def time_over_items(
         "warmup_passes": 1 if warmup else 0,
         "items": int(len(items)),
         "per_pass_total_ms": [round(value, 3) for value in pass_totals.tolist()],
-        "inter_repeat_cv": round(inter_repeat_cv, 5),
+        "inter_repeat_cv": round(inter_repeat_cv, 5) if inter_repeat_cv is not None else None,
         "canary_before_ms": round(canary_before, 4),
         "canary_after_ms": round(canary_after, 4),
         "canary_drift_ratio": round(canary_drift, 4),
         "canary_workload": f"float64 {_CANARY_N}x{_CANARY_N} matmul, median of {_CANARY_REPEATS}",
-        "stable": bool(inter_repeat_cv <= CV_UNSTABLE),
+        # None means "not established", and a consumer must not read it as fine.
+        "stable": bool(inter_repeat_cv <= CV_UNSTABLE) if inter_repeat_cv is not None else None,
         "stability_threshold_cv": CV_UNSTABLE,
+        "min_verdict_repeats": MIN_VERDICT_REPEATS,
     }
 
 

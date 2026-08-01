@@ -176,6 +176,11 @@ TIMING_SOURCES = {
     "per-image-single-pass": (True, "one timed call per image, single pass"),
     "run-duration-divided": (False, "whole-run wall-clock divided by image count"),
     "test-duration-divided": (False, "test-pass wall-clock divided by image count"),
+    "no-single-image-lane": (
+        False,
+        "the method has no unprompted single-image lane to time; the figure shown is a whole-run "
+        "wall-clock divided by image count and includes checkpoint loading",
+    ),
 }
 
 
@@ -239,7 +244,16 @@ def _compute(
     # only source where every method is timed under ONE protocol, in one process, against one
     # canary, with repeats and with model loading outside the timed region. Anything else is a
     # per-bake leftover, and mixing them is what made the compute axis incomparable row to row.
+    timing_note = None
     if measured_timing and measured_timing.get("measured"):
+        if measured_timing.get("stable") is not True:
+            # The measuring script refuses to write an unstable artifact, so reaching here means
+            # one was hand-edited or produced by an older version. Refuse rather than publish an
+            # unstable number under the strongest provenance label the schema has.
+            raise ValueError(
+                f"{method_slug}: inference-timing row is measured but stable is "
+                f"{measured_timing.get('stable')!r}; refusing to publish it on a Pareto axis"
+            )
         mean_ms = float(measured_timing["mean_inference_ms"])
         p95_ms = measured_timing.get("p95_inference_ms")
         timing_source = "repeated-per-image"
@@ -251,11 +265,19 @@ def _compute(
         }
     else:
         mean_ms, p95_ms, timing_source = _runtime(evaluation, run, canonical)
+        if measured_timing and measured_timing.get("reason"):
+            # The timing pass looked at this method and deliberately did not time it (L7 has no
+            # unprompted single-image lane). Without this branch the row silently kept the
+            # run-duration-divided figure while the timing script's docstring claimed the
+            # benchmark carried a video-protocol number, which it never did.
+            timing_source = "no-single-image-lane"
+            timing_note = measured_timing["reason"]
     measured, description = TIMING_SOURCES[timing_source]
     timing = {
         "timing_source": timing_source,
         "timing_is_measured_inference": measured,
         "timing_description": description,
+        "timing_note": timing_note,
         "timing_repeats": evaluation.get("repeats"),
         "timing_stable": evaluation.get("stable"),
         "timing_inter_repeat_cv": evaluation.get("inter_repeat_cv"),

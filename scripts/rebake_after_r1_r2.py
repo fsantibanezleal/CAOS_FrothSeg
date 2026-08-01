@@ -62,18 +62,38 @@ def main() -> None:
     args = parser.parse_args()
 
     measurements = [
+        # The canonical per-case bakes come FIRST. build_method_benchmark globs
+        # data/derived/synth/<case>/benchmark.json into every row's `canonical` block, so leaving
+        # them stale would put an h=0.12 `test` block and an h=0.06 `canonical` block in the same
+        # C3 row of the same artifact.
+        (
+            "canonical per-case bakes (feed every row's canonical block)",
+            [PYTHON, "-m", "fslab.pipeline", "all"],
+        ),
         (
             "classical held-out (C3 depth changed)",
-            [PYTHON, "scripts/benchmark_classical_heldout.py", "--repeats", "1"],
+            [PYTHON, "scripts/benchmark_classical_heldout.py", "--repeats", "5"],
         ),
         (
             "post-adoption constant recheck (engine changed under it)",
             [PYTHON, "scripts/phase1b_postadoption_sweeps.py"],
         ),
         (
+            "classical constant ledger (publishes watershed_hmax.h)",
+            [PYTHON, "scripts/phase1_constant_ledger.py"],
+        ),
+        (
             "classical live parity (browser twin changed)",
             [PYTHON, "scripts/validate_classical_live_parity.py"],
         ),
+        # Both sides of the domain-transfer subtraction must move together. Re-running only the
+        # synthetic side turns C3's measured -0.092 transfer delta into a fabricated -0.170.
+        (
+            "real-adjacent benchmark (the other side of the transfer delta)",
+            [PYTHON, "scripts/benchmark_real_adjacent.py"],
+        ),
+        # Its floor column is the best classical method per case, and C3 can now BE that floor.
+        ("SAM benchmark (classical floor column)", [PYTHON, "scripts/bake_sam_benchmark.py"]),
         (
             "temporal reports",
             [PYTHON, "scripts/bake_temporal_all.py", "--output-root", "data/derived/temporal"],
@@ -107,7 +127,21 @@ def main() -> None:
     else:
         plan = measurements + timing + rebuilds + checks
 
-    results = [step(name, command) for name, command in plan]
+    # Fail fast. Every step after a failed one reads what the failed one was supposed to produce,
+    # so continuing past a failure builds a benchmark from a mix of engines and reports "1 step
+    # failed" at the end as if the rest were fine. The timing step in particular exits non-zero
+    # precisely when its measurement must not be consumed.
+    results = []
+    for name, command in plan:
+        row = step(name, command)
+        results.append(row)
+        if row["returncode"] != 0:
+            print(
+                f"\nSTOPPING: '{name}' failed. Every later step reads what it produces, so "
+                "continuing would build the benchmark from a mix of engines.",
+                flush=True,
+            )
+            break
     failed = [row for row in results if row["returncode"] != 0]
 
     print("\n" + "=" * 78)

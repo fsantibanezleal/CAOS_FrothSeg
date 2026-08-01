@@ -78,8 +78,8 @@ C4_WATERSHED_LINE = False            # SWEPT, Phase 1 item 1.1.
 # Re-derived on the validation split, which no classical constant sweep had touched, and confirmed
 # on untouched reserve slice p4: mean AP 0.2191 -> 0.2976, paired +0.0785 with 95% CI
 # [+0.0604, +0.0984] and 59 of 64 images improved. Stated cost: boundary RECALL falls 0.9638 to
-# 0.9524 on all 64 images, because coarser markers find fewer boundaries; precision rises enough
-# that boundary F still improves by +0.0459.
+# 0.9524, worse on 60 of the 64 images and better on none of them, because coarser markers find
+# fewer boundaries; precision rises enough that boundary F still improves by +0.0459.
 C3_H_MAXIMA = 0.12                   # highlight seed depth, in units of the [0, 1] intensity image.
 C3_FLOODING_SURFACE = "neg_gray"     # ADOPTED 2026-08-01, was "neg_edt". See verification/phase1-adoption.json.
 
