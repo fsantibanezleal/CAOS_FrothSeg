@@ -811,7 +811,7 @@
 .app-shell > .page { flex: 1 1 auto; min-height: 0; display: flex; overflow-y: auto; }
 .app-shell > .page:has(> .page-body.fs-layout) { overflow: hidden; }
 .page-body.fs-layout { max-width: none; width: 100%; flex: 1 1 auto; min-height: 0;
-  padding: 1rem 1.25rem; align-items: stretch; }
+  padding: 0.35rem 0.45rem; align-items: stretch; }
 .app-shell .site-footer { margin-top: 0; }
 html, body { overflow-x: hidden; }
 
@@ -825,7 +825,7 @@ html, body { overflow-x: hidden; }
 .tablist { flex-wrap: nowrap !important; overflow-x: auto; scrollbar-width: thin; }
 .tablist .tab, .tablist button { flex: 0 0 auto; white-space: nowrap; }
 
-.fs-layout { display: grid; grid-template-columns: 320px minmax(0, 1fr); gap: 1.25rem; align-items: stretch; }
+.fs-layout { display: grid; grid-template-columns: 290px minmax(0, 1fr); gap: 0.6rem; align-items: stretch; }
 @media (max-width: 900px) { .fs-layout { grid-template-columns: 1fr; } }
 .fs-side { display: flex; flex-direction: column; gap: 0.75rem; min-height: 0; overflow-y: auto; }
 .fs-main { min-width: 0; min-height: 0; display: flex; flex-direction: column; }
@@ -1010,3 +1010,65 @@ html, body { overflow-x: hidden; }
 .fs-state-view > .fs-panel { display: flex; flex-direction: column; gap: 0.5rem; min-height: 0; }
 .fs-state-head { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
 .fs-state-title { font-weight: 700; font-size: 1.02rem; }
+
+/* ============================================================================
+   The instrument window (ADR-0071 section 8, decision delegated 2026-07-31).
+   A square frame cannot reach 50% of a 1280x800 viewport (needs 715px of height; ~555 exist
+   under the chrome), so the instrument is the INTERACTIVE pan/zoom window: it fills the whole
+   tab panel, the frame fits inside, and the letterbox bands carry the readouts, the same
+   pattern focus mode uses. At rest (zoom 1) nothing intersects the frame; the instrument gate
+   asserts that as zero rectangle overlap.
+   ============================================================================ */
+.fs-instrument {
+  position: relative; height: 100%; min-height: 0; overflow: hidden;
+  border-radius: 14px; background: #051016;
+  border: 1px solid color-mix(in oklab, var(--color-accent) 30%, var(--color-border));
+}
+.fs-instrument-band {
+  position: absolute; left: 0.6rem; top: 0.6rem; bottom: 0.6rem; width: 185px;
+  display: flex; flex-direction: column; gap: 0.5rem; z-index: 2;
+  overflow-y: auto; color: #eafffc; pointer-events: auto;
+}
+.fs-instrument-band .fs-kpi {
+  padding: 0.35rem 0.55rem; border-radius: 9px; border: none;
+  background: color-mix(in oklab, #04121a 82%, transparent); backdrop-filter: blur(6px);
+}
+.fs-instrument-band .fs-kpi-v { color: #eafffc; font-size: 1.05rem; }
+.fs-instrument-band .fs-kpi-l { color: #9fd9d3; }
+.fs-instrument-band .fs-table { font-size: 0.7rem; }
+.fs-instrument-band .fs-table th, .fs-instrument-band .fs-table td {
+  color: #eafffc; border-color: color-mix(in oklab, #eafffc 14%, transparent); padding: 0.22rem 0.4rem; }
+.fs-instrument-band .fs-band-card {
+  padding: 0.45rem 0.55rem; border-radius: 9px;
+  background: color-mix(in oklab, #04121a 82%, transparent); backdrop-filter: blur(6px);
+}
+.fs-instrument-band .fs-band-card > span {
+  display: block; font: 700 0.6rem var(--font-mono); letter-spacing: 0.06em;
+  text-transform: uppercase; color: #9fd9d3; margin-bottom: 0.25rem;
+}
+.fs-instrument-band .fs-hint { color: #bfe8e2; }
+.fs-instrument-band .fs-sequence-timeline {
+  position: static; margin-top: auto; border-color: transparent;
+  background: color-mix(in oklab, #04121a 82%, transparent);
+  grid-template-columns: auto auto auto minmax(0, 1fr);
+}
+
+/* The overlay chain fills the window completely. */
+.fs-instrument .fs-overlay { height: 100%; grid-template-rows: auto minmax(0, 1fr); }
+.fs-instrument .fs-overlay-view { height: 100%; min-height: 0; border: none; background: none; }
+.fs-instrument .fs-overlay > div:first-child { padding: 0.45rem 0.6rem 0; justify-content: flex-end; }
+
+/* The replay window: full-bleed inside the instrument, frame letterboxed by object-fit. */
+.fs-instrument .fs-sequence-stage {
+  position: absolute; inset: 0; margin: auto; height: 100%; width: auto;
+  aspect-ratio: 1 / 1; max-width: 100%; max-height: 100%;
+  border: none; border-radius: 0; box-shadow: none; background: none;
+}
+.fs-instrument .fs-sequence-stage img, .fs-instrument .fs-sequence-stage canvas {
+  width: 100%; height: 100%; object-fit: contain;
+}
+
+
+/* The last centimetres of the 50% floor: one compact tab row, no dead margins under it. */
+.fs-main > .tabs > .tablist { margin-bottom: 0.35rem; padding-bottom: 0.3rem; }
+.fs-replay { grid-template-rows: minmax(0, 1fr); gap: 0; }

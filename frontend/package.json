@@ -11,7 +11,7 @@
     "postbuild": "node create-spa-routes.mjs",
     "preview": "vite preview",
     "test": "vitest run",
-    "gates": "node scripts/gates/frothseg-all-routes.mjs && node scripts/gates/frothseg-content-depth.mjs && node scripts/gates/frothseg-instrument-fit.mjs && node scripts/gates/frothseg-focus-flow.mjs"
+    "gates": "node scripts/gates/frothseg-all-routes.mjs && node scripts/gates/frothseg-content-depth.mjs && node scripts/gates/frothseg-instrument-fit.mjs && node scripts/gates/frothseg-focus-flow.mjs && node scripts/gates/frothseg-instrument-50.mjs"
   },
   "dependencies": {
     "@fasl-work/caos-app-shell": "^0.3.0",

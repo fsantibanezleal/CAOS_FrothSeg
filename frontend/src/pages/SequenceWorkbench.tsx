@@ -256,39 +256,62 @@ export function SequenceStage({ lane, es }: { lane: SequenceLane; es: boolean })
   const panels: Record<SequenceTab, ReactNode> = {
     replay: (
           <div className="fs-replay">
-            <div className="fs-sequence-toolbar">
-              <div className="fs-view-picker" role="group" aria-label={es ? 'Vista del cuadro' : 'Frame view'}>
-                {views.map((item) => (
-                  <button
-                    key={item}
-                    type="button"
-                    className={view === item ? 'on' : ''}
-                    aria-pressed={view === item}
-                    onClick={() => setView(item)}
-                  >
-                    {sequenceViewLabel(item, displayFrame ?? frame, es, prediction?.method_id)}
-                  </button>
-                ))}
-              </div>
-              {!views.includes('prediction') && (
-                <span className="fs-evidence-status">
-                  {es ? 'Vista de predicción no publicada para este artefacto' : 'Prediction view not published for this artifact'}
-                </span>
-              )}
-            </div>
-
-            <div className="fs-replay-stage">
+            
+            {/* ADR-0071 section 8 (decision delegated 2026-07-31): the instrument is the
+                interactive window and it fills the whole panel. The frame letterboxes inside;
+                the readouts and the transport live in the band over the letterbox, never over
+                the frame at rest. */}
+            <div className="fs-instrument">
             <div className="fs-sequence-stage">
               <SequenceFrame frame={displayFrame ?? frame} view={view} es={es} label={displayLabel} />
-              <div className="fs-sequence-stamp">
+            </div>
+            <aside className="fs-instrument-band">
+              <div className="fs-band-card">
                 <span>{displayLabel}</span>
-                <strong>{frameLabel}</strong>
+                <div className="fs-kpi-v" style={{ fontSize: '0.95rem' }}>{frameLabel}</div>
               </div>
-
-              {/* The transport and the summary ride ON the frame rather than under it. As stacked
-                  rows they consumed 117px of an 508px stage and shrank the square instrument to
-                  7.5% of the viewport; overlaid, the frame keeps the whole free height and the
-                  controls stay where the eye already is. Same HUD pattern as focus mode. */}
+              <div className="fs-band-card">
+                <span>{es ? 'Vista' : 'View'}</span>
+                <select
+                  className="fs-sel"
+                  value={view}
+                  onChange={(event) => setView(event.target.value as SequenceView)}
+                  aria-label={es ? 'Vista del cuadro' : 'Frame view'}
+                >
+                  {views.map((item) => (
+                    <option key={item} value={item}>{sequenceViewLabel(item, displayFrame ?? frame, es, prediction?.method_id)}</option>
+                  ))}
+                </select>
+                {!views.includes('prediction') && (
+                  <p className="fs-hint small" style={{ margin: '0.3rem 0 0' }}>{es
+                    ? 'Vista de predicción no publicada para este artefacto'
+                    : 'Prediction view not published for this artifact'}</p>
+                )}
+              </div>
+              <div className="fs-band-card">
+                <span>{es ? 'Este cuadro' : 'This frame'}</span>
+                <table className="fs-table">
+                  <tbody>
+                    <tr><th>{es ? 'método' : 'method'}</th><td>{prediction?.method_id ?? '--'}</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              {metrics && (
+                <div className="fs-band-card">
+                  <span>{es ? 'Secuencia' : 'Sequence'}</span>
+                  <table className="fs-table">
+                    <tbody>
+                      <tr><th>{es ? 'cobertura' : 'coverage'}</th><td className="num">{(metrics.mean_frame_coverage * 100).toFixed(1)}%</td></tr>
+                      <tr><th>IDF1</th><td className="num">{metrics.idf1.toFixed(3)}</td></tr>
+                      <tr><th>HOTA</th><td className="num">{metrics.hota.toFixed(3)}</td></tr>
+                      <tr><th>{es ? 'cambios ID' : 'ID switches'}</th><td className="num">{metrics.id_switches ?? '--'}</td></tr>
+                    </tbody>
+                  </table>
+                  <p className="fs-hint small" style={{ margin: '0.3rem 0 0' }}>{isNativeVideoMode(prediction?.mode)
+                    ? (es ? 'Propagación nativa: no comparable con el protocolo por cuadro.' : 'Native propagation: not comparable with the framewise protocol.')
+                    : (es ? 'Protocolo por cuadro, asociación por IoU.' : 'Framewise protocol, IoU association.')}</p>
+                </div>
+              )}
               <div className="fs-sequence-timeline">
               <button
                 type="button"
@@ -331,43 +354,6 @@ export function SequenceStage({ lane, es }: { lane: SequenceLane; es: boolean })
                 </select>
               </label>
               </div>
-            </div>
-
-            {/* The frame is square; on a wide stage the remainder used to be empty background.
-                It carries the per-frame evidence now, so the replay reads as an instrument and
-                not as a picture with margins (ADR-0071 8). */}
-            <aside className="fs-companion">
-              <div className="fs-companion-plot">
-                <div className="fs-panel-t">{es ? 'Este cuadro' : 'This frame'}</div>
-                <table className="fs-table">
-                  <tbody>
-                    <tr><th>{es ? 'cuadro' : 'frame'}</th><td className="num">{frameIndex + 1} / {frames.length}</td></tr>
-                    <tr><th>{es ? 'vista' : 'view'}</th><td>{sequenceViewLabel(view, displayFrame ?? frame, es, prediction?.method_id)}</td></tr>
-                    <tr><th>{es ? 'método' : 'method'}</th><td>{prediction ? `${prediction.method_id} · ${temporalMethodLabel(prediction.method_id, prediction.method_slug)}` : '--'}</td></tr>
-                    <tr><th>{es ? 'artefacto' : 'artifact'}</th><td className="mono">{(displayFrame?.prediction_sha256 ?? displayFrame?.truth_sha256 ?? '').slice(0, 10) || '--'}</td></tr>
-                  </tbody>
-                </table>
-              </div>
-              {metrics && (
-                <div className="fs-companion-plot">
-                  <div className="fs-panel-t">{es ? 'Sobre la secuencia' : 'Across the sequence'}</div>
-                  <table className="fs-table">
-                    <tbody>
-                      <tr><th>{es ? 'cobertura media' : 'mean coverage'}</th><td className="num">{(metrics.mean_frame_coverage * 100).toFixed(1)}%</td></tr>
-                      <tr><th>IDF1</th><td className="num">{metrics.idf1.toFixed(3)}</td></tr>
-                      <tr><th>HOTA</th><td className="num">{metrics.hota.toFixed(3)}</td></tr>
-                      <tr><th>{es ? 'cambios de ID' : 'ID switches'}</th><td className="num">{(metrics.id_switch_rate * 100).toFixed(2)}%</td></tr>
-                    </tbody>
-                  </table>
-                  {/* isNativeVideoMode compares against the MODE string, never the method id.
-                      Passing method_id here made the hint claim the framewise protocol for L7,
-                      the one method whose numbers that separation exists to flag (adversarial
-                      review 2026-07-31, D2). */}
-                  <p className="fs-hint small">{isNativeVideoMode(prediction?.mode)
-                    ? (es ? 'Protocolo de propagación nativa: no se ordena junto al protocolo por cuadro.' : 'Native propagation protocol: not ranked against the framewise protocol.')
-                    : (es ? 'Protocolo por cuadro con asociación por IoU.' : 'Framewise protocol with IoU association.')}</p>
-                </div>
-              )}
             </aside>
             </div>
           </div>

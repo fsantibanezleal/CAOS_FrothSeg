@@ -390,31 +390,30 @@ export default function Tool() {
                   1220px stage cannot reach that on its own, since its ceiling is the stage HEIGHT
                   squared, so the horizontal remainder carries the readouts and the size
                   distribution instead of sitting empty. Measured before: 31% and two dead bands. */}
-              <div className="fs-segment-view">
-                <div className="fs-overlay-slot">
-                  <MaskOverlay baseUrl={frameUrl} labels={result.labels} width={result.width} height={result.height} pxPerMm={scale}
-                    caption={source === 'sample'
-                      ? (es ? 'Máscara de instancias precalculada para el caso canónico seleccionado. Pase el cursor para inspeccionar cada burbuja.' : 'Precomputed instance mask for the selected canonical case. Hover to inspect each bubble.')
-                      : method === 'sam'
-                        ? (es ? 'Burbujas segmentadas en la imagen cargada por SlimSAM. Pase el cursor para inspeccionar cada burbuja.' : 'Bubbles segmented in the uploaded image by SlimSAM. Hover to inspect each bubble.')
-                        : (es ? 'Burbujas segmentadas en la imagen cargada por el método clásico seleccionado.' : 'Bubbles segmented in the uploaded image by the selected classical method.')} />
-                </div>
-                <aside className="fs-companion">
-                  <div className="fs-kpis fs-kpis-stack">
-                    <div className="fs-kpi"><div className="fs-kpi-v">{result.nInstances}</div><div className="fs-kpi-l">{es ? 'burbujas' : 'bubbles'}</div></div>
-                    <div className="fs-kpi"><div className="fs-kpi-v">{result.bsd.d32 ?? '-'}</div><div className="fs-kpi-l">d32 (px)</div></div>
-                    <div className="fs-kpi"><div className="fs-kpi-v">{ap?.ap != null ? ap.ap.toFixed(3) : '--'}</div><div className="fs-kpi-l">{es ? 'AP vs verdad' : 'AP vs truth'}</div></div>
-                    <div className="fs-kpi"><div className="fs-kpi-v">{result.totalMs}<span style={{ fontSize: '0.7rem' }}>ms</span></div><div className="fs-kpi-l">{es ? 'tiempo' : 'time'}</div></div>
-                  </div>
-                  <div className="fs-companion-plot">
-                    <div className="fs-panel-t">{es ? 'Distribución de tamaño' : 'Size distribution'}</div>
-                    <BsdHistogram ariaLabel="bubble-size distribution" unit="px"
-                      series={gtDiams.length
-                        ? [{ label: source === 'sample' ? showcaseMethodId : result.model, diameters: diams }, { label: es ? 'verdad' : 'truth', diameters: gtDiams }]
-                        : [{ label: result.model, diameters: diams }]} />
-                  </div>
-                  {ap?.ap != null && <p className="fs-hint small">{source === 'sample' ? (es ? 'AP del artefacto precalculado respecto de la anotación sintética.' : 'Precomputed artifact AP against the synthetic annotation.') : (es ? 'AP de la máscara interactiva respecto de la anotación sintética.' : 'Interactive mask AP against the synthetic annotation.')} AP50 {ap.ap50} · {ap.nPred} {es ? 'predichas' : 'pred'} / {ap.nGt} GT</p>}
+              <div className="fs-instrument">
+                <aside className="fs-instrument-band">
+                  <div className="fs-kpi"><div className="fs-kpi-v">{result.nInstances}</div><div className="fs-kpi-l">{es ? 'burbujas' : 'bubbles'}</div></div>
+                  <div className="fs-kpi"><div className="fs-kpi-v">{result.bsd.d32 ?? '-'}</div><div className="fs-kpi-l">d32 (px)</div></div>
+                  <div className="fs-kpi"><div className="fs-kpi-v">{ap?.ap != null ? ap.ap.toFixed(3) : '--'}</div><div className="fs-kpi-l">{es ? 'AP vs verdad' : 'AP vs truth'}</div></div>
+                  <div className="fs-kpi"><div className="fs-kpi-v">{result.totalMs}<span style={{ fontSize: '0.7rem' }}>ms</span></div><div className="fs-kpi-l">{es ? 'tiempo' : 'time'}</div></div>
+                  {ap?.ap != null && (
+                    <div className="fs-band-card">
+                      <span>AP50 · AP75</span>
+                      <div className="fs-kpi-v" style={{ fontSize: '0.92rem' }}>{ap.ap50?.toFixed(3) ?? '--'} · {ap.ap75?.toFixed(3) ?? '--'}</div>
+                      <p className="fs-hint small" style={{ margin: '0.3rem 0 0' }}>{source === 'sample'
+                        ? (es ? 'Artefacto precalculado contra la anotación sintética.' : 'Precomputed artifact against the synthetic annotation.')
+                        : (es ? 'Máscara interactiva contra la anotación sintética.' : 'Interactive mask against the synthetic annotation.')} {ap.nPred} {es ? 'predichas' : 'pred'} / {ap.nGt} GT</p>
+                    </div>
+                  )}
+                  {/* The BSD histogram left this view on purpose: it duplicated the Size tab
+                      exactly, and the duplication cost the instrument its ADR-0071 floor. */}
                 </aside>
+                <MaskOverlay baseUrl={frameUrl} labels={result.labels} width={result.width} height={result.height} pxPerMm={scale}
+                  caption={source === 'sample'
+                    ? (es ? 'Máscara de instancias precalculada para el caso canónico seleccionado. Pase el cursor para inspeccionar cada burbuja.' : 'Precomputed instance mask for the selected canonical case. Hover to inspect each bubble.')
+                    : method === 'sam'
+                      ? (es ? 'Burbujas segmentadas en la imagen cargada por SlimSAM. Pase el cursor para inspeccionar cada burbuja.' : 'Bubbles segmented in the uploaded image by SlimSAM. Hover to inspect each bubble.')
+                      : (es ? 'Burbujas segmentadas en la imagen cargada por el método clásico seleccionado.' : 'Bubbles segmented in the uploaded image by the selected classical method.')} />
               </div>
             </PanelBoundary>)}
         {!result && pending(true)}
