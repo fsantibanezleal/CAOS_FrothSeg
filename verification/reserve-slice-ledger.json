@@ -56,6 +56,20 @@
         "valley_edge seam_radius=3 mode=watershed (after)"
       ],
       "note": "One non-iterated pass per arm, four in total, no grid and no re-optimisation. Nothing was trained and no learned-lane test evaluation was spent: all four arms are classical engines. The slice is now burned and no later study may quote it."
+    },
+    {
+      "reserve_study": "p4",
+      "spent_by": "r2-c3-flooding-depth",
+      "date": "2026-08-01",
+      "evidence": "verification/r2-c3-flooding-depth.json",
+      "sample_count": 64,
+      "sample_ids_sha256": "db5f42b6f8d008c5ad14564b9ce63e7cef7942f727d6beab7009de043f88931d",
+      "test_evaluations_spent": 0,
+      "configurations_scored": [
+        "C3_H_MAXIMA=0.06 (before)",
+        "C3_H_MAXIMA=0.12 (after)"
+      ],
+      "note": "One non-iterated pass per configuration. Both configurations were fixed before the slice was read: 0.06 is the shipped value and 0.12 was selected on the validation split, which no classical constant sweep had used. The slice is now burned for C3 flooding depth."
     }
   ],
   "slices_spent": 3

@@ -68,7 +68,19 @@ C4_MIN_DISTANCE = 4                  # peak_local_max separation for the EDT mar
 C4_COMPACTNESS = 0.0                 # SWEPT, Phase 1 item 1.1. 0.0 == plain watershed, the published behaviour.
 C4_WATERSHED_LINE = False            # SWEPT, Phase 1 item 1.1.
 
-C3_H_MAXIMA = 0.06                   # highlight seed depth, in units of the [0, 1] intensity image.
+# ADOPTED 2026-08-01, was 0.06. See verification/r2-c3-flooding-depth.json.
+# A depth carries the units of the surface it is measured on. When C3's flooding surface moved from
+# neg_edt (pixels of distance) to neg_gray (normalized intensity) the same afternoon, this constant
+# was carried across unchanged, so C3 seeded markers with a threshold in the wrong units: it
+# predicted 29248 instances against 17846 true ones on the test split, a 64 percent
+# over-segmentation. The comment on this line had already been corrected to say "intensity" while
+# the number still described the distance transform.
+# Re-derived on the validation split, which no classical constant sweep had touched, and confirmed
+# on untouched reserve slice p4: mean AP 0.2191 -> 0.2976, paired +0.0785 with 95% CI
+# [+0.0604, +0.0984] and 59 of 64 images improved. Stated cost: boundary RECALL falls 0.9638 to
+# 0.9524 on all 64 images, because coarser markers find fewer boundaries; precision rises enough
+# that boundary F still improves by +0.0459.
+C3_H_MAXIMA = 0.12                   # highlight seed depth, in units of the [0, 1] intensity image.
 C3_FLOODING_SURFACE = "neg_gray"     # ADOPTED 2026-08-01, was "neg_edt". See verification/phase1-adoption.json.
 
 C5_H_MINIMA = 0.08                   # fraction of the per-image EDT maximum, see watershed_hmin docstring.
