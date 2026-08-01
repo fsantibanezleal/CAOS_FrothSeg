@@ -164,34 +164,81 @@ def _micro(cases: list[dict]) -> dict:
     }
 
 
-def _runtime(evaluation: dict, run: dict | None, canonical: dict | None) -> tuple[float, float | None]:
+# How a published ms/image was arrived at. This used to be invisible: a number derived by
+# dividing a whole run's wall-clock by the image count was written into the same
+# `mean_inference_ms` field as a per-image measurement, and nothing downstream could tell them
+# apart. That is how L6 came to publish 300.91 ms/image from a 19.258 s run that INCLUDED ITS
+# TRAINING, and L7 972.42 ms from a 62.235 s run that included loading the SAM2.1 checkpoint.
+# Both were labelled inference. Every route now names itself and says whether it is a real
+# per-image measurement, so a derived figure can never again pass as a measured one.
+TIMING_SOURCES = {
+    "repeated-per-image": (True, "median over repeated passes per image"),
+    "per-image-single-pass": (True, "one timed call per image, single pass"),
+    "run-duration-divided": (False, "whole-run wall-clock divided by image count"),
+    "test-duration-divided": (False, "test-pass wall-clock divided by image count"),
+}
+
+
+def _runtime(
+    evaluation: dict, run: dict | None, canonical: dict | None
+) -> tuple[float, float | None, str]:
     if evaluation.get("mean_inference_ms") is not None:
-        return float(evaluation["mean_inference_ms"]), evaluation.get("p95_inference_ms")
+        source = (
+            "repeated-per-image"
+            if evaluation.get("repeats") or evaluation.get("timing_method")
+            else "per-image-single-pass"
+        )
+        return float(evaluation["mean_inference_ms"]), evaluation.get("p95_inference_ms"), source
     timed_cases = [
         float(row["inference_ms"])
         for row in evaluation.get("cases", [])
         if row.get("inference_ms") is not None
     ]
     if timed_cases:
-        return float(np.mean(timed_cases)), float(np.percentile(timed_cases, 95))
-    if run and run.get("test_duration_seconds") is not None and evaluation.get("n"):
-        return 1000.0 * float(run["test_duration_seconds"]) / int(evaluation["n"]), None
+        return (
+            float(np.mean(timed_cases)),
+            float(np.percentile(timed_cases, 95)),
+            "per-image-single-pass",
+        )
     canonical_times = [
         float(row["inference_ms"])
         for row in (canonical or {}).get("cases", [])
         if row.get("inference_ms") is not None
     ]
     if canonical_times:
-        return float(np.mean(canonical_times)), float(np.percentile(canonical_times, 95))
+        return (
+            float(np.mean(canonical_times)),
+            float(np.percentile(canonical_times, 95)),
+            "per-image-single-pass",
+        )
+    if run and run.get("test_duration_seconds") is not None and evaluation.get("n"):
+        return (
+            1000.0 * float(run["test_duration_seconds"]) / int(evaluation["n"]),
+            None,
+            "test-duration-divided",
+        )
     if run and run.get("duration_seconds") is not None:
         evaluated = int(evaluation.get("n", 0)) + int((canonical or {}).get("n_cases", 0))
         if evaluated:
-            return 1000.0 * float(run["duration_seconds"]) / evaluated, None
+            return (
+                1000.0 * float(run["duration_seconds"]) / evaluated,
+                None,
+                "run-duration-divided",
+            )
     raise ValueError("no inference timing evidence")
 
 
 def _compute(method_slug: str, evaluation: dict, run: dict | None, canonical: dict | None) -> dict:
-    mean_ms, p95_ms = _runtime(evaluation, run, canonical)
+    mean_ms, p95_ms, timing_source = _runtime(evaluation, run, canonical)
+    measured, description = TIMING_SOURCES[timing_source]
+    timing = {
+        "timing_source": timing_source,
+        "timing_is_measured_inference": measured,
+        "timing_description": description,
+        "timing_repeats": evaluation.get("repeats"),
+        "timing_stable": evaluation.get("stable"),
+        "timing_inter_repeat_cv": evaluation.get("inter_repeat_cv"),
+    }
     if run is None:
         peak = evaluation.get("peak_traced_memory_mib")
         return {
@@ -199,6 +246,7 @@ def _compute(method_slug: str, evaluation: dict, run: dict | None, canonical: di
             "device": evaluation.get("device", "CPU"),
             "mean_inference_ms": mean_ms,
             "p95_inference_ms": p95_ms,
+            **timing,
             "peak_memory_mib": peak,
             "peak_memory_metric": evaluation.get("peak_memory_metric"),
             "model_artifact_bytes": 0,
@@ -231,6 +279,7 @@ def _compute(method_slug: str, evaluation: dict, run: dict | None, canonical: di
         "device": device,
         "mean_inference_ms": mean_ms,
         "p95_inference_ms": p95_ms,
+        **timing,
         "peak_memory_mib": peak,
         "peak_memory_metric": peak_metric,
         "model_artifact_bytes": artifact.get("bytes"),

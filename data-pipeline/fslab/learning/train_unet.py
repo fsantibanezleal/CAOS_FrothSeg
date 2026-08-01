@@ -44,6 +44,10 @@ class TrainConfig:
     batch_size: int = 8
     appearance_variants: int = 2
     device: str = "cuda"
+    # Which epoch's weights leave this function: the validation minimum, or the final epoch.
+    # Not part of the optimizer trajectory, so it is excluded from the resume compatibility
+    # check below and a checkpoint stays loadable across both settings.
+    selection: str = "best"
 
 
 def _seed_everything(seed: int) -> None:
@@ -100,7 +104,9 @@ def train(config: TrainConfig, output: Path, *, resume: bool = True) -> dict:
     history: list[dict] = []
     if resume and checkpoint_path.exists():
         checkpoint = torch.load(checkpoint_path, map_location="cpu", weights_only=False)
-        if checkpoint.get("config") != asdict(config):
+        trajectory = {k: v for k, v in asdict(config).items() if k != "selection"}
+        stored = {k: v for k, v in dict(checkpoint.get("config") or {}).items() if k != "selection"}
+        if stored != trajectory:
             raise RuntimeError("checkpoint configuration differs from requested training configuration")
         model.load_state_dict(checkpoint["model"])
         optimizer.load_state_dict(checkpoint["optimizer"])
@@ -110,6 +116,17 @@ def train(config: TrainConfig, output: Path, *, resume: bool = True) -> dict:
                     state[key] = value.to(device)
         start_epoch = int(checkpoint["epoch"]) + 1
         history = list(checkpoint.get("history", []))
+
+    best_path = output / "best.pt"
+    best = {"epoch": -1, "validation_loss": float("inf")}
+    best_state = None
+    for row in history:
+        if row["validation_loss"] < best["validation_loss"]:
+            best = {"epoch": row["epoch"], "validation_loss": row["validation_loss"]}
+    if history and best_path.exists():
+        restored = torch.load(best_path, map_location="cpu", weights_only=False)
+        if restored.get("epoch") == best["epoch"]:
+            best_state = restored["model"]
 
     matrix = learned_dataset_matrix(
         image_size=config.image_size,
@@ -149,21 +166,57 @@ def train(config: TrainConfig, output: Path, *, resume: bool = True) -> dict:
             "validation_loss": float(np.mean(validation_losses)),
         }
         history.append(row)
+        epoch_state = {key: value.detach().cpu() for key, value in model.state_dict().items()}
         torch.save({
             "schema": "frothseg.checkpoint/unet-watershed-v2",
             "method": "unet_watershed",
             "epoch": epoch,
-            "model": {key: value.detach().cpu() for key, value in model.state_dict().items()},
+            "model": epoch_state,
             "optimizer": optimizer.state_dict(),
             "config": asdict(config),
             "history": history,
         }, checkpoint_path)
+        # Same defect as train_multitask carried here: the checkpoint is rewritten every epoch, so
+        # the exported weights were always the last one and the validation curve this loop computes
+        # was never consulted. On the committed v2 run that shipped epoch 24 when epoch 22 was the
+        # minimum. Keep the best point as it passes, since it cannot be recovered later.
+        improved = row["validation_loss"] < best["validation_loss"]
+        if improved:
+            best = {"epoch": epoch, "validation_loss": row["validation_loss"]}
+            best_state = epoch_state
+            torch.save({
+                "schema": "frothseg.checkpoint/unet-watershed-best-v1",
+                "method": "unet_watershed",
+                "epoch": epoch,
+                "model": best_state,
+                "config": asdict(config),
+                "validation_loss": row["validation_loss"],
+            }, best_path)
         print(
             f"epoch={epoch + 1}/{config.epochs} "
             f"train_loss={row['train_loss']:.5f} "
-            f"validation_loss={row['validation_loss']:.5f}",
+            f"validation_loss={row['validation_loss']:.5f}"
+            f"{' *best' if improved else ''}",
             flush=True,
         )
+
+    if config.selection == "best" and best_state is not None:
+        model.load_state_dict(best_state)
+        model.to(device)
+    model.eval()
+    selected_epoch = (
+        best["epoch"] if config.selection == "best" and best_state is not None
+        else (history[-1]["epoch"] if history else -1)
+    )
+    selected = {
+        "policy": config.selection,
+        "epoch": selected_epoch,
+        "epochs_ran": len(history),
+        "validation_loss": next(
+            (row["validation_loss"] for row in history if row["epoch"] == selected_epoch), None,
+        ),
+        "final_epoch_validation_loss": history[-1]["validation_loss"] if history else None,
+    }
 
     weights_path = output / "weights.npz"
     np.savez_compressed(
@@ -203,6 +256,7 @@ def train(config: TrainConfig, output: Path, *, resume: bool = True) -> dict:
         },
         "n_train": len(train_samples),
         "history": history,
+        "selected_checkpoint": selected,
         "calibration": calibration,
         "evaluation": evaluation,
     }
@@ -291,6 +345,12 @@ def main() -> None:
     parser.add_argument("--batch-size", type=int, default=8)
     parser.add_argument("--device", default="cuda")
     parser.add_argument("--no-resume", action="store_true")
+    parser.add_argument(
+        "--selection",
+        choices=("best", "last"),
+        default="best",
+        help="which epoch's weights to export: the validation minimum, or the final epoch",
+    )
     args = parser.parse_args()
     config = TrainConfig(
         epochs=args.epochs,
@@ -298,6 +358,7 @@ def main() -> None:
         base_channels=args.base_channels,
         batch_size=args.batch_size,
         device=args.device,
+        selection=args.selection,
     )
     manifest = train(config, args.output, resume=not args.no_resume)
     print(json.dumps(manifest["evaluation"], indent=2))

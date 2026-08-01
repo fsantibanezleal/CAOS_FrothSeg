@@ -70,6 +70,14 @@ class Config:
     device: str = "cuda"
     evaluation_split: str = "validation"
     augmentation: str = "none"
+    # Which epoch's weights leave this function. "best" takes the lowest validation
+    # loss on the curve this loop already computes; "last" takes the final epoch and
+    # reproduces the pre-2026-08-01 behaviour, kept so an old run can be re-derived.
+    selection: str = "best"
+    # Stop after this many epochs with no validation improvement. 0 disables it, which
+    # is the default: the full schedule still runs and "best" simply picks off its curve,
+    # so enabling selection never shortens a pre-registered schedule on its own.
+    early_stop_patience: int = 0
 
 
 def _training_config(config: Config) -> dict:
@@ -79,6 +87,10 @@ def _training_config(config: Config) -> dict:
     # Epochs is a stopping point, not part of the optimizer trajectory. A run
     # may therefore continue a compatible checkpoint to a later stopping point.
     values.pop("epochs")
+    # Neither of these touches the trajectory either: they choose which point ON the
+    # trajectory is exported, so a checkpoint stays compatible across both settings.
+    values.pop("selection")
+    values.pop("early_stop_patience")
     return values
 
 
@@ -342,6 +354,23 @@ def train(
         history = checkpoint["history"]
         start_epoch = checkpoint["epoch"] + 1
 
+    best_path = output / "best.pt"
+    best = {"epoch": -1, "validation_loss": float("inf"), "train_loss": float("nan")}
+    best_state = None
+    # A resumed run inherits the minimum already on the curve, so continuing a schedule
+    # cannot silently promote a worse epoch than one an earlier leg had already reached.
+    for row in history:
+        if row["validation_loss"] < best["validation_loss"]:
+            best = {
+                "epoch": row["epoch"],
+                "validation_loss": row["validation_loss"],
+                "train_loss": row["train_loss"],
+            }
+    if history and best_path.exists():
+        restored = torch.load(best_path, map_location="cpu", weights_only=False)
+        if restored.get("epoch") == best["epoch"]:
+            best_state = restored["model"]
+
     started = time.perf_counter()
     for epoch in range(start_epoch, config.epochs):
         model.train()
@@ -391,21 +420,78 @@ def train(
             "validation_loss": float(np.mean(validation_losses)),
         }
         history.append(row)
+        epoch_state = {key: value.detach().cpu() for key, value in model.state_dict().items()}
         torch.save({
             "schema": "frothseg.checkpoint/multitask-v1",
             "method": config.method,
             "epoch": epoch,
-            "model": {key: value.detach().cpu() for key, value in model.state_dict().items()},
+            "model": epoch_state,
             "optimizer": optimizer.state_dict(),
             "config": asdict(config),
             "history": history,
         }, checkpoint_path)
+        # The loop has always computed this validation loss and always thrown it away:
+        # checkpoint.pt is rewritten every epoch, so the file ends holding the LAST epoch
+        # whatever the curve did. On the published lamellastar members that discarded the
+        # epoch-51..57 minimum and shipped weights 25-31% worse in validation loss. Keep
+        # the best point as it goes past, because it cannot be recovered afterwards.
+        improved = row["validation_loss"] < best["validation_loss"]
+        if improved:
+            best = {
+                "epoch": epoch,
+                "validation_loss": row["validation_loss"],
+                "train_loss": row["train_loss"],
+            }
+            best_state = epoch_state
+            torch.save({
+                "schema": "frothseg.checkpoint/multitask-best-v1",
+                "method": config.method,
+                "epoch": epoch,
+                "model": best_state,
+                "config": asdict(config),
+                "validation_loss": row["validation_loss"],
+            }, best_path)
         print(
             f"method={config.method} epoch={epoch + 1}/{config.epochs} "
             f"train_loss={row['train_loss']:.5f} "
-            f"validation_loss={row['validation_loss']:.5f}",
+            f"validation_loss={row['validation_loss']:.5f}"
+            f"{' *best' if improved else ''}",
             flush=True,
         )
+        if config.early_stop_patience > 0 and epoch - best["epoch"] >= config.early_stop_patience:
+            print(
+                f"early stop: {config.early_stop_patience} epochs without improvement "
+                f"since epoch {best['epoch'] + 1}",
+                flush=True,
+            )
+            break
+
+    # Everything below this line reads `model`: the exported weights, the decode
+    # calibration and the evaluation. Put the SELECTED epoch in it, or all three
+    # would keep describing the last one.
+    if config.selection == "best" and best_state is not None:
+        model.load_state_dict(best_state)
+        model.to(device)
+    selected_epoch = best["epoch"] if config.selection == "best" and best_state is not None \
+        else (history[-1]["epoch"] if history else -1)
+    selected = {
+        "policy": config.selection,
+        "epoch": selected_epoch,
+        "epochs_ran": len(history),
+        "epochs_requested": config.epochs,
+        "validation_loss": next(
+            (row["validation_loss"] for row in history if row["epoch"] == selected_epoch), None,
+        ),
+        "final_epoch_validation_loss": history[-1]["validation_loss"] if history else None,
+        "early_stopped": bool(
+            config.early_stop_patience > 0 and len(history) < config.epochs
+        ),
+    }
+    if selected["validation_loss"] and selected["final_epoch_validation_loss"]:
+        selected["final_vs_selected_pct"] = round(
+            (selected["final_epoch_validation_loss"] / selected["validation_loss"] - 1) * 100, 2,
+        )
+    model.eval()
 
     weights_path = output / "weights.npz"
     np.savez_compressed(
@@ -458,6 +544,7 @@ def train(
             "sha256": hashlib.sha256(weights_path.read_bytes()).hexdigest(),
         },
         "history": history,
+        "selected_checkpoint": selected,
         "calibration": calibration,
         "evaluation": evaluation,
     }
@@ -501,6 +588,18 @@ def main() -> None:
         default="none",
     )
     parser.add_argument(
+        "--selection",
+        choices=("best", "last"),
+        default="best",
+        help="which epoch's weights to export: the validation minimum, or the final epoch",
+    )
+    parser.add_argument(
+        "--early-stop-patience",
+        type=int,
+        default=0,
+        help="stop after N epochs with no validation improvement (0 disables)",
+    )
+    parser.add_argument(
         "--variant-bank",
         type=Path,
         default=None,
@@ -521,6 +620,8 @@ def main() -> None:
         device=args.device,
         evaluation_split=args.evaluation_split,
         augmentation=args.augmentation,
+        selection=args.selection,
+        early_stop_patience=args.early_stop_patience,
     )
     manifest = train(
         config,
