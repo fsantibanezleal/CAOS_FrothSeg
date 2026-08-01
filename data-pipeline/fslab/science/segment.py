@@ -6,12 +6,15 @@ OpenCV), never hand-rolled. Each is tagged with its froth-vision provenance.
 
 The classical ladder (C1..C7, plan section 1.1), each with its froth-vision provenance:
   * C1 `otsu_cc`             Otsu threshold + connected components. Under-segments (touching bubbles merge).
-  * C2 `watershed_immersion` marker-less immersion watershed. Over-segments (a basin per highlight/dip). Exhibit.
+  * C2 `watershed_immersion` immersion watershed seeded at gradient minima. Over-segments (a basin per
+                             highlight/dip). Exhibit.
   * C3 `watershed_hmax`      highlight-seeded h-maxima markers, the classic industrial froth trick. Fails on glare.
   * C4 `watershed_dt`        distance-transform markers + marker-controlled watershed (Meyer). The generic floor.
   * C5 `watershed_hmin`      H-minima (extended-minima) suppression before flooding; the single knob h.
   * C6 `slic_merge`          SLIC superpixels + region-adjacency mean-intensity merge, texture-aware.
-  * C7 `valley_edge`         dark-seam / valley detector (Wang), the domain-specific froth method; the strongest classical.
+  * C7 `valley_edge`         dark-seam / valley detector (Wang), the domain-specific froth method. On the 64-image
+                             held-out split C4 leads the tier on AP (0.1977 against C7's 0.1673) while C7 leads on
+                             boundary F (0.8628) and count error (114.2) at 9.6 ms, less than half C4's 22.1 ms.
 
 Morphometry uses skimage.regionprops (equivalent diameter, eccentricity, solidity). Scoring: greedy IoU matching
 -> per-image mask AP@[.5:.95], Panoptic Quality (PQ = SQ x RQ) with its merge/split decomposition, and the BSD
@@ -82,9 +85,14 @@ def otsu_cc(gray: np.ndarray) -> np.ndarray:
 
 
 def watershed_immersion(gray: np.ndarray) -> np.ndarray:
-    """C2, morphological-gradient immersion watershed with NO markers (Vincent-Soille 1991). Floods from EVERY
-    regional minimum of the gradient, so each specular highlight and every texture dip becomes its own basin:
-    the canonical OVER-segmentation exhibit on froth (one bubble fragments into many basins)."""
+    """C2, morphological-gradient immersion watershed (Vincent-Soille 1991) seeded at the minima of the gradient
+    itself rather than at chosen object markers. The seeds are the local maxima of the negated gradient with a
+    minimum separation of 2 px, taken inside the froth foreground only, so this is an approximation to the
+    marker-less flooding of the reference algorithm and not a flood from every regional minimum: minima closer
+    than 2 px to a stronger one, and every minimum outside the foreground mask, are dropped. It still seeds a
+    basin at each specular highlight and texture dip that survives that filter, which is what makes it the
+    canonical OVER-segmentation exhibit on froth (one bubble fragments into many basins: 71,918 predicted
+    instances against 17,846 true ones over the 64-image held-out split)."""
     fg = _foreground(gray)
     grad = filters.rank.gradient(_as_ubyte(gray), morphology.disk(1)) if hasattr(filters, "rank") else \
         ndi.morphological_gradient(gray, size=3)
@@ -102,14 +110,22 @@ def watershed_immersion(gray: np.ndarray) -> np.ndarray:
 
 
 def watershed_hmin(gray: np.ndarray, h: float = 0.08) -> np.ndarray:
-    """C5, H-minima (extended-minima) marker-controlled watershed (Soille 2004). Suppress all minima of the
-    negated distance map shallower than depth h before flooding, so shallow highlight/noise dips collapse and
-    only genuine bubble-valley basins remain; h is the single knob and effectively sets the smallest resolvable
-    bubble. Directly cuts the C2 over-segmentation."""
+    """C5, H-minima (extended-minima) marker-controlled watershed (Soille 2004). Suppress the shallow minima of
+    the flooding surface before flooding, so shallow highlight/noise dips collapse and only genuine bubble-valley
+    basins remain. Directly cuts the C2 over-segmentation.
+
+    `h` IS NOT A DEPTH IN PIXELS. The surface flooded here is the distance map negated AND divided by its own
+    maximum, so it lives in [-1, 0] and h is a FRACTION of the deepest EDT value in that image: at the default
+    h = 0.08 and a frame whose largest bubble carries an EDT maximum of 20 px, the suppressed depth is 1.6 px,
+    and the same h suppresses a different physical depth on the next frame. That per-image normalization is what
+    the constant means today and it is deliberate here only in the sense that it is what was measured; the
+    unnormalized alternative, in which h would be an EDT depth in pixels, is a different engine and would move
+    every C5 number, so it is a Phase 1 sweep and not a docstring fix."""
     fg = _foreground(gray)
     dist = ndi.distance_transform_edt(fg)
     if dist.max() <= 0:
         return np.zeros_like(fg, dtype=np.int32)
+    # Per-image normalization: h is therefore a fraction of this frame's maximum EDT depth, not a pixel depth.
     surface = -(dist / dist.max())                       # valleys of -dist are the bubble centres
     markers = ndi.label(morphology.h_minima(surface, h))[0]
     if markers.max() == 0:

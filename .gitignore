@@ -75,6 +75,7 @@ Thumbs.db
 !/verification/workbench-contract.json
 !/verification/classical-live-parity.json
 !/verification/n1-preregistered-ablation.json
+!/verification/p1-ensemble-spread.json
 !/verification/sam3-feasibility.json
 !/verification/visual-qa/
 /verification/visual-qa/*

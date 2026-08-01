@@ -65,7 +65,7 @@ Ordered by HOTA on `poly-normal`, which balances detection against association:
 | L3 | GC-FSegNet | 0.901 | 0.892 | 92.9% | 24 | 22 |
 | L2 | Deep-marker watershed | 0.880 | 0.871 | 93.3% | 30 | 20 |
 | L6 | YOLO froth segmentation | 0.852 | 0.847 | 87.2% | 2 | 52 |
-| C7 | Lamella-valley watershed | 0.826 | 0.811 | 87.3% | 25 | 86 |
+| C7 | Lamella-valley detector | 0.826 | 0.811 | 87.3% | 25 | 86 |
 | C4 | Distance-transform watershed | 0.801 | 0.786 | 81.3% | 22 | 47 |
 | L4 | StarDist 2D | 0.767 | 0.752 | 79.3% | 30 | 48 |
 | C5 | H-minima watershed | 0.670 | 0.639 | 63.7% | 43 | 69 |

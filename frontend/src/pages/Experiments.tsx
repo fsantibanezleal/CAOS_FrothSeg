@@ -1062,7 +1062,7 @@ const TRANSFER_ROWS: Array<{ id: string; name: string; tier: Tier; real: number;
   { id: 'C1', name: 'Otsu + connected components', tier: 'classical', real: 0.339, froth: 0.065 },
   { id: 'C5', name: 'H-minima watershed', tier: 'classical', real: 0.264, froth: 0.133 },
   { id: 'C4', name: 'Distance-transform watershed', tier: 'classical', real: 0.256, froth: 0.198 },
-  { id: 'C7', name: 'Lamella-valley watershed', tier: 'classical', real: 0.193, froth: 0.167 },
+  { id: 'C7', name: 'Lamella-valley detector', tier: 'classical', real: 0.193, froth: 0.167 },
   { id: 'C3', name: 'Marker-controlled watershed', tier: 'classical', real: 0.182, froth: 0.103 },
   { id: 'L6', name: 'YOLO froth segmentation', tier: 'trained', real: 0.144, froth: 0.293 },
   { id: 'N1', name: 'LamellaStar', tier: 'trained', real: 0.125, froth: 0.519 },

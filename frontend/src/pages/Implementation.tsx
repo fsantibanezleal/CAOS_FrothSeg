@@ -752,8 +752,9 @@ function Evidence({ es, refsLabel }: { es: boolean; refsLabel: string }) {
             (data/derived/method-benchmark.json, methods[1].test) to mean_ap 0.0
             (data/derived/real-adjacent-benchmark.json, methods[1]), a delta of -0.0173, while the
             other six classical rows are positive; the +0.088 tier mean is exact over all seven.
-            current_bar.leader_note in method-benchmark.json states the universal, and it is wrong
-            on that row. */}
+            current_bar.leader_note in method-benchmark.json used to state the universal; it was
+            corrected at its generator (scripts/build_method_benchmark.py) and regenerated on
+            2026-07-31 with no metric change, so all four surfaces now say six of seven. */}
       </Callout>
       <Refs ids={['stringer2021cellpose', 'fan2024parallel', 'luiten2021hota', 'kuhn1955hungarian', 'brier1950']} label={refsLabel} />
     </div>

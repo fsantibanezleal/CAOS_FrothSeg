@@ -363,7 +363,9 @@ def build() -> dict:
                 "shows this ranking is substantially generator-specific: on real photographs "
                 "of dense touching instances N1 falls from 0.519 to 0.125 while Cellpose-SAM "
                 "rises from 0.510 to 0.709. Every in-repo trained model degrades (mean -0.243) "
-                "and every classical method improves (mean +0.088). That test is adjacent-domain "
+                "and six of the seven classical methods improve, at a tier mean of +0.088; the "
+                "seventh, C2 gradient immersion watershed, was already at 0.017 on froth and "
+                "scores exactly 0.000 on all 64 real samples. That test is adjacent-domain "
                 "and favours Cellpose-SAM's pretraining domain, so it does not show Cellpose-SAM "
                 "is better on froth; it shows N1's froth lead does not survive domain shift."
             ),

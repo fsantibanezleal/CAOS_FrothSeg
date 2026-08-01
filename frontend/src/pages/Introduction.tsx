@@ -337,10 +337,11 @@ export default function Introduction() {
             The C2 counterexample is those same two artifacts read row by row: real-adjacent
             mean_ap 0.0 for C2 gradient immersion watershed against method-benchmark
             test.mean_ap 0.017265625, a delta of -0.017, the one classical row that does not improve.
-            NOTE for whoever edits this next: the universal "every classical method improves" is still
-            present in method-benchmark.json current_bar.leader_note, in the string that writes it at
-            scripts/build_method_benchmark.py:366, and in README.md:59. It is false for C2 in all
-            three places and needs the same correction there; this page no longer repeats it. */}
+            NOTE for whoever edits this next: the universal "every classical method improves" was false
+            for C2 and has been corrected everywhere it was published (2026-07-31, Phase 0 item 7):
+            scripts/build_method_benchmark.py now writes "six of the seven classical methods improve"
+            into current_bar.leader_note, data/derived/method-benchmark.json was regenerated from it with
+            no metric change, and README.md carries the same wording. Do not reintroduce the universal. */}
 
         <p className="measure">{es
           ? 'Y hay un conjunto de cosas que este producto simplemente no afirma. No es un sistema de control de planta ni un estimador de recuperación metalúrgica, y ningún número publicado aquí es exactitud de planta: son evidencia algorítmica controlada, que sostiene afirmaciones sobre cómo se comparan los métodos bajo condiciones conocidas y reproducibles, y ninguna afirmación sobre exactitud en una celda de flotación real. Los tamaños quedan en píxeles sin calibración física. Las lecturas de estado de espuma son proxies basados en literatura, no setpoints calibrados de planta. La aceptación del producto permanece bloqueada hasta que un lane real de espuma, con licencia y calibrado, cumpla umbrales predeclarados, y un inventario de artefactos en verde no puede anular esa compuerta científica.'

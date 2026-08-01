@@ -21,7 +21,7 @@ Version 0.04.000 implements all 15 registered methods:
 
 | Tier | IDs | Implementations |
 |---|---|---|
-| Classical | C1-C7 | Otsu+CC, immersion watershed, marker watershed, distance watershed, H-minima watershed, SLIC+RAG, lamella-valley watershed |
+| Classical | C1-C7 | Otsu+CC, immersion watershed, marker watershed, distance watershed, H-minima watershed, SLIC+RAG, lamella-valley dark-seam detector |
 | Domain learned | L1-L4, L6 | boundary U-Net, deep-marker watershed, GC-FSegNet, official StarDist 2D, official Ultralytics YOLO segmentation |
 | Foundation | L5, L7 | official Cellpose-SAM `cpsam_v2`, official SAM 2.1 image and video |
 | Research | N1 | LamellaStar four-head research model, published as a three-seed logit-mean ensemble |
@@ -44,9 +44,11 @@ evaluation on the untouched test split (`verification/n1-preregistered-ablation.
 **This is a leaderboard result, not a state-of-the-art claim, and the repository does
 not make one.** Four reasons, all recorded with the evidence rather than omitted:
 
-1. The margin over Cellpose-SAM (+0.0087) is smaller than the single-model seed spread
-   measured in the same study (0.0374), and only one ensemble draw was evaluated, so
-   ensemble-to-ensemble stability is unmeasured.
+1. The margin over Cellpose-SAM (+0.0087) is smaller than the measured
+   ensemble-to-ensemble spread: pre-registered P-1 trained three further seeds and
+   evaluated a second disjoint three-seed ensemble on validation only, measuring a
+   spread of 0.0118 mean AP (verification/p1-ensemble-spread.json). The N1 and
+   Cellpose-SAM results are not distinguishable at that spread.
 2. Every case is synthetic.
 3. Cellpose-SAM is a generic pretrained checkpoint given two fine-tuning passes. Beating
    a lightly tuned baseline is not beating the method.
@@ -56,7 +58,10 @@ not make one.** Four reasons, all recorded with the evidence rather than omitted
 **A real-domain transfer test on 2026-07-28 qualifies this table further.** Run unchanged
 over 64 real photographs of dense touching instances (BBBC038, CC0), N1 falls from 0.519
 to 0.125 while Cellpose-SAM rises from 0.510 to 0.709. Every in-repo trained model
-degrades (mean -0.243); every classical method improves (mean +0.088). The froth ranking
+degrades (mean -0.243); six of the seven classical methods improve, at a tier mean of
++0.088. The seventh, C2 gradient immersion watershed, was already at 0.017 on froth and
+scores exactly 0.000 on all 64 real samples, so the tier gains while its weakest member
+has nothing to gain. The froth ranking
 is therefore substantially a property of the generator. That test is adjacent-domain and
 plays to Cellpose-SAM's pretraining, so it does not show Cellpose-SAM is better on froth,
 only that N1's lead does not survive a change of domain. See

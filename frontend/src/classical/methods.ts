@@ -1,12 +1,30 @@
 // The classical tier C1..C7. C1/C3/C4 have validated in-browser twins; C2/C5/C6/C7 are canonical
 // offline implementations whose committed replay is presented by the web.
-// (data-pipeline/fslab/science/segment.py). Same method semantics, same provenance, running client-side in pure
+// (data-pipeline/fslab/science/segment.py). Same provenance, running client-side in pure
 // TypeScript so the App is a genuine multi-model workbench: pick a method, run it live on the selected frame, and
-// compare against the pre-validated offline references. Provenance per method:
+// compare against the pre-validated offline references.
+//
+// NOT "same method semantics". Three divergences from the offline lane are known and measured, and the
+// AP-delta <= 0.03 parity gate in verification/classical-live-parity.json passes through all three, so it
+// does not certify what this header used to claim:
+//   1. slicMerge performs NO merging. It runs SLIC and relabels the superpixels ordered by mean intensity;
+//      the offline slic_merge cuts a RAG by mean-colour distance, masks to the foreground and splits
+//      disconnected components. C6 is offline-replay in the App, so nothing user-facing runs this path.
+//   2. watershedImmersion is a DIFFERENT algorithm from the offline C2: here every regional minimum of the
+//      gradient inside the foreground is a seed; offline the seeds are peak_local_max on the negated
+//      gradient with a 2 px minimum separation, which drops the closely spaced minima this keeps.
+//   3. removeSmall is off by one against Python. skimage 0.26 removes objects with area <= max_size;
+//      removeSmall keeps area >= minArea, so an object of exactly the threshold area survives here and is
+//      removed offline.
+// Fixing any of the three moves live outputs and the parity artifact, so they are recorded here rather than
+// silently patched; the claim is corrected to what the code does.
+//
+// Provenance per method:
 //   C1 otsu_cc              Otsu 1979 + connected components, the under-segmentation baseline.
-//   C2 watershed_immersion  marker-less immersion watershed on the morphological gradient (Vincent-Soille 1991),
+//   C2 watershed_immersion  immersion watershed on the morphological gradient (Vincent-Soille 1991),
 //                           the over-segmentation exhibit (a basin per highlight/dip).
-//   C3 watershed_hmax       highlight-seeded h-maxima markers (Sadr-Kazemi & Cilliers 1997).
+//   C3 watershed_hmax       highlight-seeded h-maxima markers (Sadr-Kazemi & Cilliers 1997) feeding
+//                           marker-controlled flooding (Meyer 1994); both provenances are real.
 //   C4 watershed_dt         distance-transform markers + marker-controlled watershed (Meyer 1994).
 //   C5 watershed_hmin       H-minima suppression before flooding (Soille 2004).
 //   C6 slic_merge           SLIC superpixels (Achanta 2012) + mean-intensity ordering, the non-watershed lane.
@@ -31,10 +49,10 @@ export const CLASSICAL_METHODS: Array<{
   { id: 'otsu_cc', label: 'C1 Otsu + CC', note: 'under-segments touching bubbles (baseline)', lane: 'validated-live' },
   { id: 'watershed_immersion', label: 'C2 Immersion watershed', note: 'over-segments on highlights (exhibit)', lane: 'offline-replay' },
   { id: 'watershed_hmax', label: 'C3 Highlight-seeded watershed', note: 'the classic industrial froth trick', lane: 'validated-live' },
-  { id: 'watershed_dt', label: 'C4 Distance-transform watershed', note: 'the generic classical floor', lane: 'validated-live' },
+  { id: 'watershed_dt', label: 'C4 Distance-transform watershed', note: 'the generic classical floor, leads the tier on AP', lane: 'validated-live' },
   { id: 'watershed_hmin', label: 'C5 H-minima watershed', note: 'suppresses shallow spurious basins', lane: 'offline-replay' },
   { id: 'slic_merge', label: 'C6 SLIC superpixels', note: 'non-watershed over-segmentation primitive', lane: 'offline-replay' },
-  { id: 'valley_edge', label: 'C7 Valley-edge (Wang)', note: 'dark-seam froth method, strongest classical', lane: 'offline-replay' },
+  { id: 'valley_edge', label: 'C7 Valley-edge (Wang)', note: 'dark-seam froth method, best boundary F and count error', lane: 'offline-replay' },
 ];
 
 export const LIVE_CLASSICAL_METHODS = CLASSICAL_METHODS.filter(

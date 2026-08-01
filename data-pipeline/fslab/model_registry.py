@@ -38,7 +38,10 @@ METHODS: tuple[MethodSpec, ...] = (
                "scikit-image", "Vincent and Soille 1991, DOI 10.1109/34.87344", "BSD-3-Clause",
                False, False, "accepted", "docs/methods/classical.md"),
     MethodSpec("C3", "watershed_hmax", "Marker-controlled watershed", "classical", "offline+live",
-               "scikit-image", "Meyer 1994, DOI 10.1016/0165-1684(94)90060-4", "BSD-3-Clause",
+               "scikit-image",
+               "markers: Sadr-Kazemi and Cilliers 1997, DOI 10.1016/S0892-6875(97)00094-0; "
+               "marker-controlled flooding: Meyer 1994, DOI 10.1016/0165-1684(94)90060-4",
+               "BSD-3-Clause",
                False, False, "accepted", "docs/methods/classical.md"),
     MethodSpec("C4", "watershed_dt", "Distance-transform watershed", "classical", "offline+live",
                "SciPy/scikit-image", "Meyer 1994; exact EDT via SciPy", "BSD-3-Clause",
@@ -49,8 +52,10 @@ METHODS: tuple[MethodSpec, ...] = (
     MethodSpec("C6", "slic_merge", "SLIC + RAG merge", "classical", "offline",
                "scikit-image", "Achanta et al. 2012, DOI 10.1109/TPAMI.2012.120", "BSD-3-Clause",
                False, False, "accepted", "docs/methods/classical.md"),
-    MethodSpec("C7", "valley_edge", "Lamella-valley constrained watershed", "classical", "offline",
-               "OpenCV/scikit-image", "domain valley/ridge baseline; exact citation gated", "BSD-3-Clause",
+    # No watershed and no OpenCV: the engine is a black-top-hat seam detector whose enclosed caps are
+    # labelled by scipy.ndimage.label (data-pipeline/fslab/science/segment.py valley_edge).
+    MethodSpec("C7", "valley_edge", "Lamella-valley dark-seam detector", "classical", "offline",
+               "scikit-image/SciPy", "domain valley/ridge baseline; exact citation gated", "BSD-3-Clause",
                False, False, "accepted", "docs/methods/classical.md"),
     MethodSpec("L1", "unet_watershed", "Boundary/distance U-Net + watershed", "domain-sota",
                "offline+live-candidate", "PyTorch/ONNX Runtime",
@@ -58,10 +63,10 @@ METHODS: tuple[MethodSpec, ...] = (
                True, True, "accepted", "docs/frameworks/07_unet-watershed/README.md"),
     MethodSpec("L2", "deep_marker_watershed", "Deep-marker watershed", "domain-sota", "offline",
                "PyTorch", "Chemical Engineering Research and Design 2024, DOI 10.1016/j.cherd.2024.07.041",
-               "clean-room in-repo implementation: Apache-2.0", True, True, "accepted",
+               "clean-room in-repo implementation: MIT", True, True, "accepted",
                "docs/frameworks/08_deep-marker-watershed/README.md"),
     MethodSpec("L3", "gc_fsegnet", "GC-FSegNet", "domain-sota", "offline", "PyTorch",
-               "Minerals 2025, DOI 10.3390/min15121301", "clean-room in-repo implementation: Apache-2.0",
+               "Minerals 2025, DOI 10.3390/min15121301", "clean-room in-repo implementation: MIT",
                True, True, "accepted", "docs/frameworks/09_gc-fsegnet/README.md"),
     MethodSpec("L4", "stardist_2d", "StarDist 2D", "domain-sota", "offline+live-candidate",
                "official stardist", "Schmidt et al. 2018, DOI 10.1007/978-3-030-00934-2_30", "BSD-3-Clause",
@@ -78,7 +83,7 @@ METHODS: tuple[MethodSpec, ...] = (
                "official facebookresearch/sam2", "Ravi et al. 2024, arXiv:2408.00714", "Apache-2.0",
                True, True, "accepted", "docs/frameworks/13_sam2/README.md"),
     MethodSpec("N1", "lamellastar", "LamellaStar", "frontier", "offline+live-candidate",
-               "in-repo PyTorch", "FrothSeg research model; claim requires ablation", "Apache-2.0",
+               "in-repo PyTorch", "FrothSeg research model; claim requires ablation", "MIT",
                True, True, "accepted", "docs/frameworks/14_lamellastar/README.md"),
 )
 

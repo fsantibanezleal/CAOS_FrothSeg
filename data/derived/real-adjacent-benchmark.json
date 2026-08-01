@@ -3169,7 +3169,7 @@
     {
       "id": "C7",
       "slug": "valley_edge",
-      "name": "Lamella-valley constrained watershed",
+      "name": "Lamella-valley dark-seam detector",
       "tier": "classical",
       "n_scored": 64,
       "n_failed": 0,

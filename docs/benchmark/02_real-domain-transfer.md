@@ -83,7 +83,7 @@ No method failed to run.
 | C1 | Otsu + connected components | 0.339 | 0.065 | +0.274 |
 | C5 | H-minima watershed | 0.264 | 0.133 | +0.131 |
 | C4 | Distance-transform watershed | 0.256 | 0.198 | +0.059 |
-| C7 | Lamella-valley watershed | 0.193 | 0.167 | +0.026 |
+| C7 | Lamella-valley detector | 0.193 | 0.167 | +0.026 |
 | C3 | Marker-controlled watershed | 0.182 | 0.103 | +0.079 |
 | L6 | YOLO froth segmentation | 0.144 | 0.293 | -0.149 |
 | **N1** | **LamellaStar** | **0.125** | **0.519** | **-0.394** |
