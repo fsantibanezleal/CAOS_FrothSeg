@@ -1,5 +1,46 @@
 # Changelog
 
+## [0.06.001] · 2026-08-02
+
+Patch. No engine, weight or artifact value changed. This corrects prose that was still
+asserting pre-correction numbers after 0.06.000, and adds the check that would have caught
+it before the release rather than after.
+
+A cross-check of every published metric against the artifact that owns it found 23
+suspicious claims. The artifacts all agreed with each other; the prose had lagged.
+
+**Six places still told the reader the SlimSAM prompt grid BEATS the classical floor.**
+It loses to it: 0.365 against 0.402, winning 4 of 12 scored cases. That included the
+per-case table in `docs/guides/03_verify-sam.md`, now regenerated from the artifact, plus
+`docs/guides.md`, the transformers-js and pycocotools framework docs and the Experiments
+page in both languages.
+
+Also corrected: C3's AP, PQ, boundary F, BSD W1 and d32 across the Methodology page in
+both languages, including a Wasserstein ordering that listed C3 at 3.626 between two
+methods it now leads at 2.037, and a sentence still saying C7 leads the classical tier;
+L5 at 324.5 ms and N1 at 98.8 ms on the Implementation page, where L7's 972.4 ms is kept
+and now carries the reason it is not an inference measurement; and C3's transfer delta in
+the Introduction provenance comment.
+
+**One false positive, acted on before it was checked.**
+`docs/frameworks/07_unet-watershed` cited 0.351 as the best classical CANONICAL DIAGNOSTIC
+mean AP, not the SAM floor, and it was briefly rewritten to say L1 no longer exceeds the
+floor. L1 does exceed it, 0.4565 against C3's 0.3506 on that 13-case diagnostic. The
+sentence now says so, and says the margin narrowed because C3 improved rather than because
+L1 moved.
+
+The flooding-surface sweep table in `docs/methods/classical.md` keeps its h=0.06 numbers,
+because holding the depth fixed is what makes the four surfaces comparable, and now carries
+an explicit note that none of them is C3's current score.
+
+`tests/test_published_numbers_agree.py` adds six assertions on relationships that hold by
+construction rather than pinned literals, so a failure is a real inconsistency and never a
+stale expectation: classical-heldout agreeing with the benchmark rows copied from it; the
+compute axis being the measured timing; no derived wall-clock division labelled as a
+measurement, and any that ships carrying its reason; no unstable timing reaching the
+compute axis; the SAM summary matching its own scored cases; and both sides of the
+domain-transfer subtraction coming from one engine. Verified non-vacuous by mutation.
+
 ## [0.06.000] · 2026-08-02 (work 2026-08-01 to 2026-08-02)
 
 On `develop`. The release gate still reports `complete: false` with the single settled
