@@ -4,11 +4,11 @@ C1, C3 and C4 exist twice: once in `fslab.science.segment` and once in
 `frontend/src/classical/methods.ts`, which runs the same method in the browser with no model
 download. Nothing enforced that the two copies agreed on their numbers.
 
-On 2026-08-01 that cost a real defect. C3's flooding surface was adopted from the negated distance
-transform to the negated image, and both copies were updated. The h-maxima DEPTH that seeds C3's
-markers was left at 0.06 in both. A depth carries the units of the surface it is measured on, so
-both engines were seeding markers with a threshold in the wrong units and over-segmenting by 64
-percent. `verification/classical-live-parity.json` stayed green throughout, because parity compares
+On 2026-08-01 that cost a real defect. C3's flooding surface was adopted in both copies while the
+h-maxima DEPTH that seeds C3's markers stayed at 0.06 in both; when that depth was later re-selected
+to 0.12, only the Python side moved at first. (The original write-up called the stale depth a unit
+error. It was not one, and that claim is withdrawn: see CAOS_MANAGE plans/frothseg/
+research-2026-07-31/r2-correction-2026-08-02.md. What this test exists for is unaffected.) `verification/classical-live-parity.json` stayed green throughout, because parity compares
 the twins to EACH OTHER and they were wrong together. A cross-language agreement check cannot catch
 a value that is stale on both sides; only a check against the single source of truth can, which is
 what this file is.

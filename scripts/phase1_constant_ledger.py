@@ -19,7 +19,16 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+# The ledger exists to say what the engine SHIPS. Restating those values as literals here
+# meant it could disagree with the engine, and on 2026-08-02 it did: it published
+# watershed_hmax.h = 0.06 while segment.py shipped 0.12, in a file regenerated AFTER the
+# change. Every published_value below is now read from the engine.
+
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "data-pipeline"))
+
+from fslab.science import segment  # noqa: E402
+
 PHASE1 = ROOT / "data" / "derived" / "phase1"
 HELDOUT = ROOT / "data" / "derived" / "classical-heldout.json"
 VERIFICATION = ROOT / "verification" / "phase1-classical-sweeps.json"
@@ -289,15 +298,25 @@ def build_ledger() -> dict:
     best = _best(candidates)
     rows.append({
         "constant": "watershed_hmax.h",
-        "published_value": 0.06,
+        "published_value": segment.C3_H_MAXIMA,
         "consumed_by": ["C3"],
-        "status": "swept",
+        "status": "adopted",
         "sweep_artifact": "data/derived/phase1/residual-constants-sweep.json",
         "grid": [point["config"]["h"] for point in candidates],
         "argmax_mean_ap": _row(best),
-        "published_is_argmax_on_mean_ap": best["config"]["h"] == 0.06,
+        "published_is_argmax_on_mean_ap": best["config"]["h"] == segment.C3_H_MAXIMA,
         "source": None,
-        "verdict": "Swept and recorded.",
+        "decision": "adopted 2026-08-01, 0.06 -> 0.12",
+        "decision_evidence": "verification/r2-c3-flooding-depth.json",
+        "decision_basis": (
+            "SELECTION ON A SCORE: the argmax of validation mean AP over the pre-registered grid, "
+            "on a split no classical sweep had observed, confirmed on untouched reserve slice p4. "
+            "It was first published as a unit correction; that justification was false and is "
+            "withdrawn (CAOS_MANAGE plans/frothseg/research-2026-07-31/"
+            "r2-correction-2026-08-02.md). This is the only classical residual constant that has "
+            "been re-selected, so the tier is not uniformly tuned."
+        ),
+        "verdict": "Swept, then adopted on its validation score and reserve-confirmed.",
     })
 
     # ---- C5 h -------------------------------------------------------------------------------------
@@ -495,8 +514,8 @@ def build_ledger() -> dict:
             ),
         })
 
-    swept = [row for row in rows if row["status"] == "swept"]
-    unswept = [row for row in rows if row["status"] != "swept"]
+    swept = [row for row in rows if row["status"] in {"swept", "adopted"}]
+    unswept = [row for row in rows if row["status"] not in {"swept", "adopted"}]
     return {
         "schema": "frothseg.classical-constant-ledger/v1",
         "generated_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
@@ -509,8 +528,12 @@ def build_ledger() -> dict:
         "swept_count": len(swept),
         "not_swept_count": len(unswept),
         "not_swept": [row["constant"] for row in unswept],
+        # "adopted" means swept AND then changed on recorded evidence, so it satisfies the
+        # acceptance the same way "swept" does. Before watershed_hmax.h became the first adopted
+        # residual constant this branch only knew "swept", and the flag flipped to False on a
+        # constant that had MORE evidence behind it, not less.
         "acceptance_met_for_scored_methods_c1_c3_c4_c5_c7": all(
-            row["status"] == "swept"
+            row["status"] in {"swept", "adopted"}
             for row in rows
             if set(row["consumed_by"]) & {"C1", "C3", "C4", "C5", "C7"}
         ),

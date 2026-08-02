@@ -156,3 +156,49 @@ def test_the_transfer_delta_is_computed_across_one_engine(benchmark):
         "C3's real-adjacent AP looks pre-correction while the synthetic side moved, so the "
         "transfer delta would be computed across two different engines"
     )
+
+
+def test_the_baseline_reproduction_certifies_the_artifact_that_ships():
+    """"Identical to the committed artifact" has to name WHICH bytes it reproduced.
+
+    The certificate recorded only a path, so re-baking classical-heldout.json let a reproduction
+    claim made about different bytes carry over silently, and the engine constants it was produced
+    under were not recorded at all.
+    """
+    import hashlib
+
+    reproduction = load("data/derived/phase1/baseline-reproduction.json")
+    assert reproduction["all_identical"] is True
+    reference = ROOT / reproduction["reference_artifact"]
+    assert reference.exists()
+    assert reproduction["reference_artifact_sha256"] == hashlib.sha256(
+        reference.read_bytes()
+    ).hexdigest(), (
+        "the baseline reproduction was certified against a different version of "
+        f"{reproduction['reference_artifact']} than the one that ships"
+    )
+    import sys
+
+    sys.path.insert(0, str(ROOT / "data-pipeline"))
+    from fslab.science import segment
+
+    for name, value in reproduction["engine_constants"].items():
+        assert getattr(segment, name) == value, (
+            f"{name}: reproduction ran with {value!r}, the engine now ships "
+            f"{getattr(segment, name)!r}"
+        )
+
+
+def test_the_release_report_names_the_release_that_ships():
+    """The report is the release inventory. It shipped stamped 0.5.0 while the tag was v0.06.001.
+
+    build_release_report reads the version from pyproject and fslab.__version__, and the rebake
+    driver runs it BEFORE the version bump, so the artifact lagged a release every time.
+    """
+    report = load("data/derived/release-report.json")
+    declared = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
+    semver = ".".join(str(int(part)) for part in declared.split("."))
+    assert report["version"] == semver, (
+        f"release-report.json says version {report['version']!r}, VERSION says {declared!r} "
+        f"({semver!r}). Regenerate the report after the version bump."
+    )

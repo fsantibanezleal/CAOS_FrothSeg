@@ -127,12 +127,14 @@ function watershedImmersion(gray: Float32Array, w: number, h: number): Int32Arra
 // Evidence: verification/phase1-adoption.json. This twin must stay on the same surface as the Python
 // engine or verification/classical-live-parity.json goes stale.
 // The depth moved 0.06 -> 0.12 on 2026-08-01 (offline `C3_H_MAXIMA`, evidence
-// verification/r2-c3-flooding-depth.json). It had been left behind when the surface changed earlier
-// the same day: a depth carries the units of the surface it is measured on, and 0.06 still described
-// the distance transform this method no longer floods. Both sides of the twin carried the stale
-// value, so the parity gate stayed green while both engines over-segmented together. The adoption
-// gained +0.0785 mean AP on the reserve slice at a stated cost of boundary recall, 0.9638 to
-// 0.9524, worse on 60 of 64 images and better on none.
+// verification/r2-c3-flooding-depth.json). It was selected as the argmax of validation mean AP and
+// confirmed on an untouched reserve slice. Both sides of the twin had carried 0.06, so the parity
+// gate stayed green while the two engines agreed with each other on a value neither had re-derived. The adoption gained +0.0785 mean AP on the reserve slice at a stated cost
+// of boundary recall, 0.9638 to 0.9524, worse on 60 of 64 images and better on none.
+// CORRECTION 2026-08-02: this was published as a unit error and it is not one. The depth applies to
+// the intensity image and never to the flooded surface, so the surface change cannot have altered
+// its units; 0.12 is the argmax of validation mean AP, which is tuning. See CAOS_MANAGE
+// plans/frothseg/research-2026-07-31/r2-correction-2026-08-02.md.
 function watershedHmax(gray: Float32Array, w: number, h: number): Int32Array {
   const fg = foreground(gray, w, h);
   const domes = hMaxima(gray, w, h, 0.12);

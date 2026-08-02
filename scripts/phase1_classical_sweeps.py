@@ -31,6 +31,7 @@ study docstrings below is likewise as it was written, in the present tense of th
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import platform
 import sys
@@ -484,6 +485,20 @@ def verify_baseline(cache: dict) -> dict:
         "schema": "frothseg.phase1-baseline-reproduction/v1",
         "generated_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "reference_artifact": HELDOUT.relative_to(ROOT).as_posix(),
+        # Pin WHICH version of the reference was reproduced. Without this the certificate says
+        # "identical to the committed artifact" against whatever that file happens to be later,
+        # so a rebake of classical-heldout.json silently inherits a reproduction claim that was
+        # made about different bytes.
+        "reference_artifact_sha256": hashlib.sha256(HELDOUT.read_bytes()).hexdigest(),
+        "engine_constants": {
+            name: getattr(segment, name)
+            for name in (
+                "FOREGROUND_OTSU_FACTOR", "FOREGROUND_HOLE_MAX_SIZE", "FOREGROUND_OBJECT_MAX_SIZE",
+                "C2_MIN_DISTANCE", "C2_GRADIENT_RADIUS", "C3_H_MAXIMA", "C3_FLOODING_SURFACE",
+                "C4_MIN_DISTANCE", "C4_COMPACTNESS", "C5_H_MINIMA", "C7_SEAM_RADIUS",
+                "C7_MIN_CAP_SIZE", "C7_MODE",
+            )
+        },
         "tolerance": 1e-12,
         "all_identical": all(entry["identical"] for entry in results),
         "methods": results,

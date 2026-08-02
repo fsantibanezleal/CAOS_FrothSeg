@@ -1,7 +1,23 @@
 {
   "schema": "frothseg.phase1-baseline-reproduction/v1",
-  "generated_utc": "2026-08-01T15:08:08+00:00",
+  "generated_utc": "2026-08-02T23:32:46+00:00",
   "reference_artifact": "data/derived/classical-heldout.json",
+  "reference_artifact_sha256": "3c645f69ce5c0a197cf2af84ae357df8bd94c11ca6b727fd9c62752954198503",
+  "engine_constants": {
+    "FOREGROUND_OTSU_FACTOR": 0.75,
+    "FOREGROUND_HOLE_MAX_SIZE": 16,
+    "FOREGROUND_OBJECT_MAX_SIZE": 12,
+    "C2_MIN_DISTANCE": 2,
+    "C2_GRADIENT_RADIUS": 1,
+    "C3_H_MAXIMA": 0.12,
+    "C3_FLOODING_SURFACE": "neg_gray",
+    "C4_MIN_DISTANCE": 4,
+    "C4_COMPACTNESS": 0.0,
+    "C5_H_MINIMA": 0.08,
+    "C7_SEAM_RADIUS": 3,
+    "C7_MIN_CAP_SIZE": 8,
+    "C7_MODE": "watershed"
+  },
   "tolerance": 1e-12,
   "all_identical": true,
   "methods": [
@@ -82,33 +98,33 @@
       "identical": true,
       "metrics": {
         "mean_ap": {
-          "observed": 0.21957812499999999,
-          "committed": 0.21957812499999999,
+          "observed": 0.2975,
+          "committed": 0.2975,
           "delta": 0.0
         },
         "mean_pq": {
-          "observed": 0.440921875,
-          "committed": 0.440921875,
+          "observed": 0.54234375,
+          "committed": 0.54234375,
           "delta": 0.0
         },
         "mean_boundary_fscore": {
-          "observed": 0.881734375,
-          "committed": 0.881734375,
+          "observed": 0.9235796875,
+          "committed": 0.9235796875,
           "delta": 0.0
         },
         "mean_bsd_wasserstein": {
-          "observed": 3.62646875,
-          "committed": 3.62646875,
+          "observed": 2.0373906249999996,
+          "committed": 2.0373906249999996,
           "delta": 0.0
         },
         "mean_count_absolute_error": {
-          "observed": 178.875,
-          "committed": 178.875,
+          "observed": 64.9375,
+          "committed": 64.9375,
           "delta": 0.0
         },
         "mean_d32_relative_error": {
-          "observed": 0.19074375,
-          "committed": 0.19074375,
+          "observed": 0.1097578125,
+          "committed": 0.1097578125,
           "delta": 0.0
         }
       }

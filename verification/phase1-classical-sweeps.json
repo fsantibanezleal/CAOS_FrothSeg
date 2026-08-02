@@ -1,6 +1,6 @@
 {
   "schema": "frothseg.phase1-classical-sweeps/v1",
-  "generated_utc": "2026-08-02T02:14:08+00:00",
+  "generated_utc": "2026-08-02T23:23:33+00:00",
   "phase": "Phase 1, classical lane measured",
   "plan": "CAOS_MANAGE/plans/frothseg/research-2026-07-31/PLAN-PROPOSAL.md section 3",
   "surface": {

@@ -4,11 +4,23 @@ Pre-registered in `CAOS_MANAGE/plans/frothseg/research-2026-07-31/
 r2-c3-flooding-depth-preregistration-2026-08-01.md`. Read it before this file; every bar below was
 fixed there.
 
-The short version. `C3_H_MAXIMA` is a depth, and a depth carries the units of the surface it is
-measured on. When C3's flooding surface was adopted from `neg_edt` (pixels of distance) to
-`neg_gray` (normalized intensity) the depth constant was carried over unchanged, so C3 has been
-seeding markers with a threshold expressed in the wrong units. On the burned test split that shows
-up as a 64 percent over-segmentation: 29248 predicted instances against 17846 true ones.
+This study was originally justified as fixing a UNIT ERROR: `C3_H_MAXIMA` is a depth, and the
+argument ran that a depth carries the units of the surface it is measured on, so the flooding-surface
+adoption had left this one in the wrong units.
+
+THAT JUSTIFICATION IS FALSE and is withdrawn, 2026-08-02: `h` is applied to the
+INTENSITY image by `morphology.h_maxima(gray, h=h)`, and the flooding surface enters separately as
+the first argument of `segmentation.watershed`. No depth is ever applied to the flooding surface, in
+any commit of segment.py, so the neg_edt -> neg_gray change cannot have altered this constant's
+units. The 29248-against-17846 over-count quoted as proof is identical on all four flooding surfaces
+at h=0.06 (data/derived/phase1/c3-flooding-surface.json): it was C3's marker count, not a surface
+effect.
+
+What this script actually does is select the argmax of validation mean AP over a pre-registered
+grid. That is TUNING. It is disciplined tuning, because the selection surface is a split no
+classical sweep had observed and the effect is confirmed on an untouched reserve slice, and the
+measurement stands. The stated reason for it did not. Full account: CAOS_MANAGE
+plans/frothseg/research-2026-07-31/r2-correction-2026-08-02.md.
 
 Selection happens on the `validation` split, which no classical constant sweep has ever touched.
 It is deliberately NOT the test split where the gap was first seen. Confirmation is one
@@ -221,10 +233,26 @@ def main() -> None:
         "generated_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "constant": "C3_H_MAXIMA",
         "justification": (
-            "unit error, not tuning: h is a depth in the units of the flooding surface, and the "
-            "surface was adopted from neg_edt (pixels of distance) to neg_gray (normalized "
-            "intensity) on 2026-08-01 while the depth was carried over unchanged"
+            "SELECTION ON A SCORE: 0.12 is the argmax of validation mean AP over the "
+            "pre-registered 6-point grid, selected on a split no classical sweep had observed "
+            "and confirmed on untouched reserve slice p4"
         ),
+        "withdrawn_justification": {
+            "text": (
+                "unit error, not tuning: h is a depth in the units of the flooding surface, and "
+                "the surface was adopted from neg_edt to neg_gray while the depth was carried over"
+            ),
+            "why_false": (
+                "h is applied to the intensity image by morphology.h_maxima(gray, h=h); the "
+                "flooding surface enters separately and no depth is ever applied to it, in any "
+                "commit of segment.py. The 29248-against-17846 over-count quoted as proof is "
+                "identical on all four flooding surfaces at h=0.06."
+            ),
+            "withdrawn_on": "2026-08-02",
+            "record": (
+                "CAOS_MANAGE plans/frothseg/research-2026-07-31/r2-correction-2026-08-02.md"
+            ),
+        },
         "grid": GRID,
         "decision_metric": DECISION_METRIC,
         "shipped_value": SHIPPED,

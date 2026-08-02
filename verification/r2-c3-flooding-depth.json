@@ -4,7 +4,7 @@
   "preregistration": "CAOS_MANAGE plans/frothseg/research-2026-07-31/r2-c3-flooding-depth-preregistration-2026-08-01.md",
   "generated_utc": "2026-08-01T22:29:42+00:00",
   "constant": "C3_H_MAXIMA",
-  "justification": "unit error, not tuning: h is a depth in the units of the flooding surface, and the surface was adopted from neg_edt (pixels of distance) to neg_gray (normalized intensity) on 2026-08-01 while the depth was carried over unchanged",
+  "justification": "SELECTION ON A SCORE: 0.12 is the argmax of validation mean AP over the pre-registered 6-point grid. Selected on the validation split, which no classical constant sweep had observed, and confirmed on untouched reserve slice p4.",
   "grid": [
     0.02,
     0.04,
@@ -628,5 +628,12 @@
     "scipy": "1.18.0",
     "scikit_image": "0.26.0"
   },
-  "cache_sha256": "55b1ddd92237eca931ac242a662e05e97562a9cf749cf71b8f4b96229ba4340e"
+  "cache_sha256": "55b1ddd92237eca931ac242a662e05e97562a9cf749cf71b8f4b96229ba4340e",
+  "withdrawn_justification": {
+    "text": "unit error, not tuning: h is a depth in the units of the flooding surface, and the surface was adopted from neg_edt (pixels of distance) to neg_gray (normalized intensity) on 2026-08-01 while the depth was carried over unchanged",
+    "why_false": "h is applied to the intensity image by morphology.h_maxima(gray, h=h); the flooding surface enters separately as the first argument of segmentation.watershed and no depth is ever applied to it, in any commit in the history of segment.py. The 29248-against-17846 over-count quoted as proof is identical on all four flooding surfaces at h=0.06 (data/derived/phase1/c3-flooding-surface.json), so it was the marker count and not a surface effect.",
+    "withdrawn_on": "2026-08-02",
+    "record": "CAOS_MANAGE plans/frothseg/research-2026-07-31/r2-correction-2026-08-02.md"
+  },
+  "tier_comparison_caveat": "C3 is the only classical method whose residual constant was re-selected. C2 min_distance 6 scores 0.0998 against the shipped 2 at 0.0173, and C5 h 0.02 scores 0.1819 against the shipped 0.08 at 0.1330 (data/derived/phase1/residual-constants-sweep.json). Any claim that C3 leads the classical tier describes a tier in which one member was tuned and two were not."
 }

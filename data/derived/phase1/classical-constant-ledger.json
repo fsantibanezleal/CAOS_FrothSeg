@@ -1,6 +1,6 @@
 {
   "schema": "frothseg.classical-constant-ledger/v1",
-  "generated_utc": "2026-08-02T02:14:08+00:00",
+  "generated_utc": "2026-08-02T23:23:33+00:00",
   "plan": "CAOS_MANAGE/plans/frothseg/research-2026-07-31/PLAN-PROPOSAL.md section 3",
   "acceptance": "Every constant that survives is swept-and-recorded, or documented as a deliberate choice with its source.",
   "constant_count": 19,
@@ -461,11 +461,11 @@
     },
     {
       "constant": "watershed_hmax.h",
-      "published_value": 0.06,
+      "published_value": 0.12,
       "consumed_by": [
         "C3"
       ],
-      "status": "swept",
+      "status": "adopted",
       "sweep_artifact": "data/derived/phase1/residual-constants-sweep.json",
       "grid": [
         0.02,
@@ -489,7 +489,10 @@
       },
       "published_is_argmax_on_mean_ap": false,
       "source": null,
-      "verdict": "Swept and recorded."
+      "decision": "adopted 2026-08-01, 0.06 -> 0.12",
+      "decision_evidence": "verification/r2-c3-flooding-depth.json",
+      "decision_basis": "SELECTION ON A SCORE: the argmax of validation mean AP over the pre-registered grid, on a split no classical sweep had observed, confirmed on untouched reserve slice p4. It was first published as a unit correction; that justification was false and is withdrawn (CAOS_MANAGE plans/frothseg/research-2026-07-31/r2-correction-2026-08-02.md). This is the only classical residual constant that has been re-selected, so the tier is not uniformly tuned.",
+      "verdict": "Swept, then adopted on its validation score and reserve-confirmed."
     },
     {
       "constant": "watershed_hmin.h",

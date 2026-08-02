@@ -79,12 +79,22 @@ different trainer whose loss never changed. Their published EVALUATIONS reproduc
 under today's code, 0.00e+00 over 64 of 64 cases, so the shipped numbers are sound; only
 the path that would regenerate those weights has drifted.
 
-### C3 was flooding one surface with a depth measured on another
+### C3's flooding depth was re-selected on validation
 
-`C3_H_MAXIMA` stayed at 0.06 when C3's flooding surface moved from `neg_edt` (pixels of
-distance) to `neg_gray` (normalized intensity) earlier the same day. A depth carries the
-units of the surface it is measured on. The comment on that line had even been corrected
-to say "intensity" while the number still described the distance transform.
+> **Corrected 2026-08-02.** This section originally described the change as a UNIT ERROR,
+> the claim being that the depth had been left in distance-transform units after the
+> flooding surface moved. That justification is FALSE and is withdrawn. `h` is applied to
+> the intensity image by `morphology.h_maxima(gray, h=h)`; the flooding surface enters
+> separately and no depth is ever applied to it, in any commit of `segment.py`. The
+> 29248-against-17846 over-count quoted as proof is identical on ALL FOUR flooding surfaces
+> at h=0.06, so it was the marker count and not a surface effect. The change is SELECTION ON
+> A SCORE: 0.12 is the argmax of validation mean AP. That is disciplined tuning and the
+> measurement below stands unchanged; the stated reason for it did not. It also means the
+> classical tier is not uniformly tuned, since C2 and C5 keep defaults with larger unclaimed
+> gains on their own sweeps. Full account: CAOS_MANAGE
+> `plans/frothseg/research-2026-07-31/r2-correction-2026-08-02.md`.
+
+`C3_H_MAXIMA` moved from 0.06 to 0.12.
 
 Selected on the validation split, which no classical constant sweep had ever touched, and
 confirmed on untouched reserve slice p4: mean AP **0.2191 to 0.2976**, paired +0.0785 with
