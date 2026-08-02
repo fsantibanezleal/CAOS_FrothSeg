@@ -9,18 +9,19 @@ The classical ladder (C1..C7, plan section 1.1), each with its froth-vision prov
   * C2 `watershed_immersion` immersion watershed seeded at gradient minima. Over-segments (a basin per
                              highlight/dip). Exhibit.
   * C3 `watershed_hmax`      highlight-seeded h-maxima markers flooding the NEGATED IMAGE, the classic industrial
-                             froth trick as its own source publishes it. Fails on glare. 0.2196 AP on the 64-image
-                             held-out split, and the tier's best d32 relative error at 0.1907.
+                             froth trick as its own source publishes it. Fails on glare. 0.2975 AP on the 64-image
+                             held-out split, the tier's best on every recorded axis, d32 relative error 0.1098.
   * C4 `watershed_dt`        distance-transform markers + marker-controlled watershed (Meyer). The generic floor.
   * C5 `watershed_hmin`      H-minima (extended-minima) suppression before flooding; the single knob h.
   * C6 `slic_merge`          SLIC superpixels + region-adjacency mean-intensity merge, texture-aware.
   * C7 `valley_edge`         dark-seam / valley detector (Wang) grown back to the seam ridge by a constrained
                              watershed (Meyer), the domain-specific froth method. On the 64-image held-out split
-                             C7 leads the tier on AP (0.2326) and on count error (114.2), C3 is second at 0.2196
-                             and C4 third at 0.1977; C4 still leads on BSD Wasserstein-1 (2.590), and C7 has the
-                             WORST d32 relative error of the three leaders (1.4371, against C4's 1.1555 and C3's
-                             tier-best 0.1907), the stated cost of growing the caps back. C5 1.9224 and C1 5.0063
-                             are worse still on d32, but neither is in contention on AP.
+                             C3 leads EVERY recorded axis after its flooding depth was corrected on 2026-08-01
+                             (AP 0.2975, PQ 0.5423, boundary F 0.9236, BSD W1 2.037, count error 64.9, d32
+                             0.1098); C7 is second on AP at 0.2326 and C4 third at 0.1977. C7 still has the
+                             WORST d32 relative error of the three leaders (1.4371, against C4's 1.1555), the
+                             stated cost of growing the caps back. C5 1.9224 and C1 5.0063 are worse still on
+                             d32, but neither is in contention on AP.
 
 Morphometry uses skimage.regionprops (equivalent diameter, eccentricity, solidity). Scoring: greedy IoU matching
 -> per-image mask AP@[.5:.95], Panoptic Quality (PQ = SQ x RQ) with its merge/split decomposition, and the BSD
@@ -44,17 +45,25 @@ from skimage import feature, filters, graph, measure, morphology, segmentation
 # sweeps under data/derived/phase1/; the ledger of which constant is swept, which is sourced and which
 # is still undefended is data/derived/phase1/classical-constant-ledger.json.
 #
-# TWO defaults were moved on 2026-08-01, both of them because the code was not implementing the source
-# the registry already cites for that method, and NEITHER of them because a sweep score was higher.
-# Recorded with their before/after on an unobserved reserve slice in verification/phase1-adoption.json.
+# THREE defaults were moved on 2026-08-01. None of them moved because a sweep score was higher, and each
+# was confirmed on a reserve slice no sweep had observed.
 #
 #   C3_FLOODING_SURFACE  "neg_edt"  -> "neg_gray"  Sadr-Kazemi and Cilliers 1997,
 #                                                  10.1016/S0892-6875(97)00094-0
 #   C7_MODE              "subtract" -> "watershed" Meyer 1994, 10.1016/0165-1684(94)90060-4
+#     Both because the code was not implementing the source the registry already cites for that
+#     method. Evidence: verification/phase1-adoption.json.
+#   C3_H_MAXIMA          0.06       -> 0.12        unit correction, not a source correction.
+#     A depth carries the units of the surface it is measured on, and the surface change above left
+#     this one expressed in pixels of distance transform while C3 had started flooding normalized
+#     intensity. Selected on the validation split, which no classical sweep had touched, and
+#     confirmed on reserve slice p4. Evidence: verification/r2-c3-flooding-depth.json.
 #
 # Nothing else moved. C4_COMPACTNESS stays 0.0 and FOREGROUND_OTSU_FACTOR stays 0.75: both are best or
 # unbeaten on their own sweeps, and C7_SEAM_RADIUS stays 3 because radius 4 or 5 buys about 0.01 AP on
-# the observed test split, which is test-split selection rather than a finding.
+# the observed test split, which is test-split selection rather than a finding. The post-adoption
+# recheck (data/derived/phase1b/postadoption-constant-recheck.json) re-measures the constants whose
+# grids went stale when these three moved, and adopts nothing for that same reason.
 # --------------------------------------------------------------------------------------------------
 
 FOREGROUND_OTSU_FACTOR = 0.75        # SWEPT, Phase 1 item 1.2. Common-mode across C1, C2, C3, C4, C5, C6, C7.
