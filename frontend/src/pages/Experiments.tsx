@@ -1065,15 +1065,16 @@ const TRANSFER_ROWS: Array<{ id: string; name: string; tier: Tier; real: number;
   { id: 'L5', name: 'Cellpose-SAM', tier: 'foundation', real: 0.709, froth: 0.510 },
   { id: 'C1', name: 'Otsu + connected components', tier: 'classical', real: 0.339, froth: 0.065 },
   // C7 and C3 carry their post-adoption values: both engines changed on 2026-08-01 and this lane
-  // was re-baked from them. C7 rose on both surfaces; C3 rose on froth (0.103 to 0.220) and FELL
-  // here (0.182 to 0.128), because the adopted negated-intensity flooding surface is a froth
-  // mechanism and cell nuclei carry neither a specular highlight nor a Plateau border.
+  // was re-baked from them. C7 rose on both surfaces. C3 rose on froth (0.103 to 0.297 across two
+  // corrections, the flooding surface and then its depth) and FELL here (0.182 to 0.216, having
+  // dipped to 0.128 between the two), because the adopted negated-intensity flooding surface is a
+  // froth mechanism and cell nuclei carry neither a specular highlight nor a Plateau border.
   // Sources: data/derived/real-adjacent-benchmark.json and data/derived/method-benchmark.json.
   { id: 'C7', name: 'Lamella-valley constrained watershed', tier: 'classical', real: 0.301, froth: 0.233 },
   { id: 'C5', name: 'H-minima watershed', tier: 'classical', real: 0.264, froth: 0.133 },
   { id: 'C4', name: 'Distance-transform watershed', tier: 'classical', real: 0.256, froth: 0.198 },
+  { id: 'C3', name: 'Marker-controlled watershed', tier: 'classical', real: 0.216, froth: 0.297 },
   { id: 'L6', name: 'YOLO froth segmentation', tier: 'trained', real: 0.144, froth: 0.293 },
-  { id: 'C3', name: 'Marker-controlled watershed', tier: 'classical', real: 0.128, froth: 0.220 },
   // Every row here is measured on the SAME burned 64-image split, so the values stay
   // comparable to each other. N1 was later re-measured alone on a fresh pre-registered
   // 72-sample split at AP 0.045 (verification/p2-domain-randomization.json); that number
@@ -1154,15 +1155,15 @@ function Transfer({ es }: { es: boolean }) {
       </table>
 
       {/* Source: docs/benchmark/02_real-domain-transfer.md, the per-tier table re-baked on 2026-08-01
-          (classical 7 methods +0.070 with 5 of 7 improving, in-repo trained 6 methods -0.243,
-          foundation never trained here +0.199). The classical tier mean moved from +0.088 to +0.070
+          (classical 7 methods +0.071 with 5 of 7 improving, in-repo trained 6 methods -0.243,
+          foundation never trained here +0.199). The classical tier mean moved from +0.088 to +0.070 and then to +0.071
           and the improving count from 6 to 5 because C3 changed direction with its adopted
           flooding surface: data/derived/real-adjacent-benchmark.json against
           data/derived/method-benchmark.json methods[].test.mean_ap. */}
       <p className="measure">
         {es
-          ? 'Agrupado por nivel el patrón es claro, con dos excepciones nombradas: el nivel clásico mejora en promedio 0.070, con cinco de sus siete métodos al alza, los seis modelos entrenados dentro del repositorio caen en promedio 0.243 sin excepción, y el único método aprendido que nunca se entrenó aquí mejora 0.199 y pasa a liderar con holgura. Las dos excepciones clásicas son C2, que ya estaba en 0.017 sobre espuma y entrega 0.000 aquí, y C3, que cae de 0.220 a 0.128 desde que el 2026-08-01 adoptó la inundación de la intensidad negada, un mecanismo de espuma que un núcleo celular no ofrece. El ranking sintético no transfiere. El método que lidera el banco de espuma cae del primer lugar al octavo sobre imágenes reales, y el nivel clásico, que no tiene un prior aprendido que sobreajustar, sube como nivel. Ese es el resultado, y es la razón por la que existe esta pestaña.'
-          : 'Grouped by tier the pattern is clear, with two named exceptions: the classical tier improves by 0.070 on average, five of its seven methods rising, the six models trained inside the repository fall by 0.243 on average without exception, and the single learned method never trained here improves by 0.199 and becomes the clear leader. The two classical exceptions are C2, already at 0.017 on froth and returning 0.000 here, and C3, which falls from 0.220 to 0.128 since it adopted negated-intensity flooding on 2026-08-01, a froth mechanism a cell nucleus does not offer. The synthetic ranking does not transfer. The method leading the froth benchmark falls from first to eighth on real images, and the classical tier, which has no learned prior to overfit, rises as a tier. That is the result, and it is why this tab exists.'}
+          ? 'Agrupado por nivel el patrón es claro, con dos excepciones nombradas: el nivel clásico mejora en promedio 0.071, con cinco de sus siete métodos al alza, los seis modelos entrenados dentro del repositorio caen en promedio 0.243 sin excepción, y el único método aprendido que nunca se entrenó aquí mejora 0.199 y pasa a liderar con holgura. Las dos excepciones clásicas son C2, que ya estaba en 0.017 sobre espuma y entrega 0.000 aquí, y C3, que cae de 0.297 a 0.216 desde que el 2026-08-01 adoptó la inundación de la intensidad negada, un mecanismo de espuma que un núcleo celular no ofrece. El nivel clásico también se reordena: C3 lidera todos los ejes del banco sintético y aquí queda quinto de siete, mientras que C1, penúltimo sobre espuma, lidera el nivel clásico sobre imágenes reales. El ranking sintético no transfiere. El método que lidera el banco de espuma cae del primer lugar al octavo sobre imágenes reales, y el nivel clásico, que no tiene un prior aprendido que sobreajustar, sube como nivel. Ese es el resultado, y es la razón por la que existe esta pestaña.'
+          : 'Grouped by tier the pattern is clear, with two named exceptions: the classical tier improves by 0.071 on average, five of its seven methods rising, the six models trained inside the repository fall by 0.243 on average without exception, and the single learned method never trained here improves by 0.199 and becomes the clear leader. The two classical exceptions are C2, already at 0.017 on froth and returning 0.000 here, and C3, which falls from 0.297 to 0.216 since it adopted negated-intensity flooding on 2026-08-01, a froth mechanism a cell nucleus does not offer. The classical tier reorders as well: C3 leads every axis of the synthetic benchmark and is fifth of seven here, while C1, last but one on froth, leads the classical tier on real images. The synthetic ranking does not transfer. The method leading the froth benchmark falls from first to eighth on real images, and the classical tier, which has no learned prior to overfit, rises as a tier. That is the result, and it is why this tab exists.'}
       </p>
 
       {/* Source: docs/benchmark/02_real-domain-transfer.md "What this does and does not say about N1"

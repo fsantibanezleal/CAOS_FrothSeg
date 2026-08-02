@@ -59,10 +59,10 @@ not make one.** Four reasons, all recorded with the evidence rather than omitted
 re-run on 2026-08-01 after the C3 and C7 engine defaults were adopted.** Run unchanged
 over 64 real photographs of dense touching instances (BBBC038, CC0), N1 falls from 0.519
 to 0.125 while Cellpose-SAM rises from 0.510 to 0.709. Every in-repo trained model
-degrades (mean -0.243, unchanged by the adoption, which moved only classical rows); five
-of the seven classical methods improve, at a tier mean of +0.070. The two that do not are
+degrades (mean -0.243, unchanged by the adoptions, which moved only classical rows); five
+of the seven classical methods improve, at a tier mean of +0.071. The two that do not are
 named rather than averaged away: C2 gradient immersion watershed was already at 0.017 on
-froth and scores exactly 0.000 on all 64 real samples, and C3 falls from 0.220 to 0.128
+froth and scores exactly 0.000 on all 64 real samples, and C3 falls from 0.297 to 0.216
 because its adopted negated-intensity flooding surface assumes a specular highlight per
 bubble and a dark Plateau border between bubbles, and cell nuclei have neither. That is
 recorded, not repaired: the change was adopted on a froth source and confirmed on a froth

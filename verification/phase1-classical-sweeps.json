@@ -1,6 +1,6 @@
 {
   "schema": "frothseg.phase1-classical-sweeps/v1",
-  "generated_utc": "2026-08-01T15:39:26+00:00",
+  "generated_utc": "2026-08-02T02:14:08+00:00",
   "phase": "Phase 1, classical lane measured",
   "plan": "CAOS_MANAGE/plans/frothseg/research-2026-07-31/PLAN-PROPOSAL.md section 3",
   "surface": {
@@ -61,12 +61,12 @@
     },
     "C3": {
       "method": "watershed_hmax",
-      "mean_ap": 0.21957812499999999,
-      "mean_pq": 0.440921875,
-      "mean_boundary_fscore": 0.881734375,
-      "mean_bsd_wasserstein": 3.62646875,
-      "mean_count_absolute_error": 178.875,
-      "mean_d32_relative_error": 0.19074375,
+      "mean_ap": 0.2975,
+      "mean_pq": 0.54234375,
+      "mean_boundary_fscore": 0.9235796875,
+      "mean_bsd_wasserstein": 2.0373906249999996,
+      "mean_count_absolute_error": 64.9375,
+      "mean_d32_relative_error": 0.1097578125,
       "source": "data/derived/classical-heldout.json"
     },
     "C4": {
