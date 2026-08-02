@@ -121,7 +121,7 @@ def main() -> None:
                 f"{BBBC038_ARCHIVE} sha256 {digest.hexdigest()} does not match the manifest "
                 f"{BBBC038_SHA256}; refusing to re-measure against different bytes"
             )
-        print(f"adjacent-domain archive verified against the manifest sha256", flush=True)
+        print("adjacent-domain archive verified against the manifest sha256", flush=True)
 
     measurements = [
         # The canonical per-case bakes come FIRST. build_method_benchmark globs
