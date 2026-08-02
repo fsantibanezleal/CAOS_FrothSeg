@@ -407,9 +407,17 @@ def check_release() -> list[str]:
             errors.append("unified benchmark has missing method implementations")
         if benchmark.get("missing_count") != 0:
             errors.append("unified benchmark reports missing methods")
+    # These are the two protocols the temporal lane has to show: one framewise method with
+    # identities assigned afterwards by IoU association, and the prompted propagation lane.
+    # They are named by METHOD SLUG, which is what bake_temporal_all.py and
+    # benchmark_sam2_video.py write. Until 2026-08-02 this check asked for
+    # "unet-watershed-v2.json" and "sam2-1-hiera-tiny.json", the MODEL-DIRECTORY names the
+    # temporal lane stopped using in ada612c, so the release profile could not pass at all and
+    # every deploy triggered by a push to main failed on it. The development profile does not
+    # run this branch, which is why the failure only ever appeared at release.
     for rel in (
-        "data/derived/temporal/unet-watershed-v2.json",
-        "data/derived/temporal/sam2-1-hiera-tiny.json",
+        "data/derived/temporal/unet_watershed.json",
+        "data/derived/temporal/sam2_1.json",
     ):
         if not (ROOT / rel).exists():
             errors.append(f"missing temporal evidence: {rel}")
