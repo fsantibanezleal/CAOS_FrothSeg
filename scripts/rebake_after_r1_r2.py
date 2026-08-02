@@ -57,14 +57,33 @@ BBBC038_ARCHIVE = Path("E:/_Temp/bbbc038/stage1_train.zip")
 BBBC038_SHA256 = "dcb6edc2690f137406638b2309581a71522c4dff19157d118453b448dcddcb68"
 
 
-def step(name: str, command: list[str], *, cwd: Path = ROOT) -> dict:
+def step(name: str, command: list[str], *, cwd: Path = ROOT, produces: Path | None = None) -> dict:
+    """Run one step. `produces` is the artifact it must leave newer than the step started.
+
+    The mtime check exists because a step can exit 0 without having written anything, and because
+    a step whose process is killed from outside leaves no traceback in the log at all: the first
+    run of this driver died mid-way through the real-adjacent benchmark and the only evidence was
+    that the artifact still carried its old timestamp.
+    """
     print(f"\n{'=' * 78}\n=== {name}\n=== {' '.join(command)}\n{'=' * 78}", flush=True)
     started = time.perf_counter()
+    started_wall = time.time()
     result = subprocess.run(command, cwd=cwd)
     duration = time.perf_counter() - started
-    status = "ok" if result.returncode == 0 else f"FAILED rc={result.returncode}"
+    stale = (
+        produces is not None
+        and result.returncode == 0
+        and (not produces.exists() or produces.stat().st_mtime < started_wall)
+    )
+    if stale:
+        print(
+            f"--- {name}: exited 0 but {produces.relative_to(ROOT).as_posix()} was not rewritten",
+            flush=True,
+        )
+    returncode = 90 if stale else result.returncode
+    status = "ok" if returncode == 0 else f"FAILED rc={returncode}"
     print(f"--- {name}: {status} in {duration:.1f}s", flush=True)
-    return {"name": name, "returncode": result.returncode, "seconds": round(duration, 1)}
+    return {"name": name, "returncode": returncode, "seconds": round(duration, 1)}
 
 
 def main() -> None:
@@ -116,10 +135,12 @@ def main() -> None:
         (
             "classical held-out (C3 depth changed)",
             [PYTHON, "scripts/benchmark_classical_heldout.py", "--repeats", "5"],
+            ROOT / "data/derived/classical-heldout.json",
         ),
         (
             "post-adoption constant recheck (engine changed under it)",
             [PYTHON, "scripts/phase1b_postadoption_sweeps.py"],
+            ROOT / "data/derived/phase1b/postadoption-constant-recheck.json",
         ),
         (
             "classical constant ledger (publishes watershed_hmax.h)",
@@ -128,6 +149,7 @@ def main() -> None:
         (
             "classical live parity (browser twin changed)",
             [PYTHON, "scripts/validate_classical_live_parity.py"],
+            ROOT / "verification/classical-live-parity.json",
         ),
         # Both sides of the domain-transfer subtraction must move together. Re-running only the
         # synthetic side turns C3's measured -0.092 transfer delta into a fabricated -0.170.
@@ -142,9 +164,14 @@ def main() -> None:
                 PYTHON, "scripts/benchmark_real_adjacent.py",
                 "--raw-root", str(BBBC038_RAW), "--device", args.device,
             ],
+            ROOT / "data/derived/real-adjacent-benchmark.json",
         ),
         # Its floor column is the best classical method per case, and C3 can now BE that floor.
-        ("SAM benchmark (classical floor column)", [PYTHON, "scripts/bake_sam_benchmark.py"]),
+        (
+            "SAM benchmark (classical floor column)",
+            [PYTHON, "scripts/bake_sam_benchmark.py"],
+            ROOT / "data/derived/sam_benchmark.json",
+        ),
         (
             "temporal reports",
             [PYTHON, "scripts/bake_temporal_all.py", "--output-root", "data/derived/temporal"],
@@ -157,9 +184,14 @@ def main() -> None:
             PYTHON, "scripts/measure_inference_timing.py",
             "--repeats", str(args.timing_repeats), "--device", args.device,
         ],
+        ROOT / "data/derived/inference-timing.json",
     )]
     rebuilds = [
-        ("method benchmark + Pareto frontier", [PYTHON, "scripts/build_method_benchmark.py"]),
+        (
+            "method benchmark + Pareto frontier",
+            [PYTHON, "scripts/build_method_benchmark.py"],
+            ROOT / "data/derived/method-benchmark.json",
+        ),
         ("release report", [PYTHON, "scripts/build_release_report.py"]),
     ]
     checks = [
@@ -183,8 +215,10 @@ def main() -> None:
     # failed" at the end as if the rest were fine. The timing step in particular exits non-zero
     # precisely when its measurement must not be consumed.
     results = []
-    for name, command in plan:
-        row = step(name, command)
+    for entry in plan:
+        name, command = entry[0], entry[1]
+        produces = entry[2] if len(entry) > 2 else None
+        row = step(name, command, produces=produces)
         results.append(row)
         if row["returncode"] != 0:
             print(
