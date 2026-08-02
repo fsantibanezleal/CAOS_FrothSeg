@@ -164,34 +164,124 @@ def _micro(cases: list[dict]) -> dict:
     }
 
 
-def _runtime(evaluation: dict, run: dict | None, canonical: dict | None) -> tuple[float, float | None]:
+# How a published ms/image was arrived at. This used to be invisible: a number derived by
+# dividing a whole run's wall-clock by the image count was written into the same
+# `mean_inference_ms` field as a per-image measurement, and nothing downstream could tell them
+# apart. That is how L6 came to publish 300.91 ms/image from a 19.258 s run that INCLUDED ITS
+# TRAINING, and L7 972.42 ms from a 62.235 s run that included loading the SAM2.1 checkpoint.
+# Both were labelled inference. Every route now names itself and says whether it is a real
+# per-image measurement, so a derived figure can never again pass as a measured one.
+TIMING_SOURCES = {
+    "repeated-per-image": (True, "median over repeated passes per image"),
+    "per-image-single-pass": (True, "one timed call per image, single pass"),
+    "run-duration-divided": (False, "whole-run wall-clock divided by image count"),
+    "test-duration-divided": (False, "test-pass wall-clock divided by image count"),
+    "no-single-image-lane": (
+        False,
+        "the method has no unprompted single-image lane to time; the figure shown is a whole-run "
+        "wall-clock divided by image count and includes checkpoint loading",
+    ),
+}
+
+
+def _runtime(
+    evaluation: dict, run: dict | None, canonical: dict | None
+) -> tuple[float, float | None, str]:
     if evaluation.get("mean_inference_ms") is not None:
-        return float(evaluation["mean_inference_ms"]), evaluation.get("p95_inference_ms")
+        source = (
+            "repeated-per-image"
+            if evaluation.get("repeats") or evaluation.get("timing_method")
+            else "per-image-single-pass"
+        )
+        return float(evaluation["mean_inference_ms"]), evaluation.get("p95_inference_ms"), source
     timed_cases = [
         float(row["inference_ms"])
         for row in evaluation.get("cases", [])
         if row.get("inference_ms") is not None
     ]
     if timed_cases:
-        return float(np.mean(timed_cases)), float(np.percentile(timed_cases, 95))
-    if run and run.get("test_duration_seconds") is not None and evaluation.get("n"):
-        return 1000.0 * float(run["test_duration_seconds"]) / int(evaluation["n"]), None
+        return (
+            float(np.mean(timed_cases)),
+            float(np.percentile(timed_cases, 95)),
+            "per-image-single-pass",
+        )
     canonical_times = [
         float(row["inference_ms"])
         for row in (canonical or {}).get("cases", [])
         if row.get("inference_ms") is not None
     ]
     if canonical_times:
-        return float(np.mean(canonical_times)), float(np.percentile(canonical_times, 95))
+        return (
+            float(np.mean(canonical_times)),
+            float(np.percentile(canonical_times, 95)),
+            "per-image-single-pass",
+        )
+    if run and run.get("test_duration_seconds") is not None and evaluation.get("n"):
+        return (
+            1000.0 * float(run["test_duration_seconds"]) / int(evaluation["n"]),
+            None,
+            "test-duration-divided",
+        )
     if run and run.get("duration_seconds") is not None:
         evaluated = int(evaluation.get("n", 0)) + int((canonical or {}).get("n_cases", 0))
         if evaluated:
-            return 1000.0 * float(run["duration_seconds"]) / evaluated, None
+            return (
+                1000.0 * float(run["duration_seconds"]) / evaluated,
+                None,
+                "run-duration-divided",
+            )
     raise ValueError("no inference timing evidence")
 
 
-def _compute(method_slug: str, evaluation: dict, run: dict | None, canonical: dict | None) -> dict:
-    mean_ms, p95_ms = _runtime(evaluation, run, canonical)
+def _compute(
+    method_slug: str,
+    evaluation: dict,
+    run: dict | None,
+    canonical: dict | None,
+    measured_timing: dict | None = None,
+) -> dict:
+    # data/derived/inference-timing.json is authoritative when it covers this method: it is the
+    # only source where every method is timed under ONE protocol, in one process, against one
+    # canary, with repeats and with model loading outside the timed region. Anything else is a
+    # per-bake leftover, and mixing them is what made the compute axis incomparable row to row.
+    timing_note = None
+    if measured_timing and measured_timing.get("measured"):
+        if measured_timing.get("stable") is not True:
+            # The measuring script refuses to write an unstable artifact, so reaching here means
+            # one was hand-edited or produced by an older version. Refuse rather than publish an
+            # unstable number under the strongest provenance label the schema has.
+            raise ValueError(
+                f"{method_slug}: inference-timing row is measured but stable is "
+                f"{measured_timing.get('stable')!r}; refusing to publish it on a Pareto axis"
+            )
+        mean_ms = float(measured_timing["mean_inference_ms"])
+        p95_ms = measured_timing.get("p95_inference_ms")
+        timing_source = "repeated-per-image"
+        evaluation = {
+            **evaluation,
+            "repeats": measured_timing.get("repeats"),
+            "stable": measured_timing.get("stable"),
+            "inter_repeat_cv": measured_timing.get("inter_repeat_cv"),
+        }
+    else:
+        mean_ms, p95_ms, timing_source = _runtime(evaluation, run, canonical)
+        if measured_timing and measured_timing.get("reason"):
+            # The timing pass looked at this method and deliberately did not time it (L7 has no
+            # unprompted single-image lane). Without this branch the row silently kept the
+            # run-duration-divided figure while the timing script's docstring claimed the
+            # benchmark carried a video-protocol number, which it never did.
+            timing_source = "no-single-image-lane"
+            timing_note = measured_timing["reason"]
+    measured, description = TIMING_SOURCES[timing_source]
+    timing = {
+        "timing_source": timing_source,
+        "timing_is_measured_inference": measured,
+        "timing_description": description,
+        "timing_note": timing_note,
+        "timing_repeats": evaluation.get("repeats"),
+        "timing_stable": evaluation.get("stable"),
+        "timing_inter_repeat_cv": evaluation.get("inter_repeat_cv"),
+    }
     if run is None:
         peak = evaluation.get("peak_traced_memory_mib")
         return {
@@ -199,6 +289,7 @@ def _compute(method_slug: str, evaluation: dict, run: dict | None, canonical: di
             "device": evaluation.get("device", "CPU"),
             "mean_inference_ms": mean_ms,
             "p95_inference_ms": p95_ms,
+            **timing,
             "peak_memory_mib": peak,
             "peak_memory_metric": evaluation.get("peak_memory_metric"),
             "model_artifact_bytes": 0,
@@ -231,6 +322,7 @@ def _compute(method_slug: str, evaluation: dict, run: dict | None, canonical: di
         "device": device,
         "mean_inference_ms": mean_ms,
         "p95_inference_ms": p95_ms,
+        **timing,
         "peak_memory_mib": peak,
         "peak_memory_metric": peak_metric,
         "model_artifact_bytes": artifact.get("bytes"),
@@ -253,6 +345,17 @@ def build() -> dict:
     classical_heldout = {
         row["method"]: row for row in (classical_document or {}).get("methods", [])
     }
+    timing_document = _load(ROOT / "data/derived/inference-timing.json")
+    measured_timings = {
+        row["id"]: row for row in (timing_document or {}).get("methods", [])
+    }
+    # sample_id -> ms, per method, so the per-case column and the headline are one measurement.
+    timing_sample_ids = ((timing_document or {}).get("protocol") or {}).get("sample_ids") or []
+    per_case_timings = {}
+    for row in (timing_document or {}).get("methods", []):
+        values = row.get("per_image_ms")
+        if row.get("measured") and values and len(values) == len(timing_sample_ids):
+            per_case_timings[row["id"]] = dict(zip(timing_sample_ids, values))
     rows = []
     coverage_errors = []
     observed_cells = 0
@@ -272,11 +375,21 @@ def build() -> dict:
         compute = None
         if evaluation:
             cases = _compact_cases(evaluation)
+            # Replace the per-case timing with the one the headline is computed from. Left alone,
+            # the column would still hold whatever single-pass number that method's own bake
+            # recorded, and averaging the published column would not reproduce the published mean.
+            case_timings = per_case_timings.get(method.id)
+            if case_timings:
+                for row in cases:
+                    if row["sample_id"] in case_timings:
+                        row["inference_ms"] = round(case_timings[row["sample_id"]], 4)
             observed_cells += len(cases)
             case_ids = [row["sample_id"] for row in cases]
             if case_ids != expected_sample_ids:
                 coverage_errors.append(f"{method.id}: held-out sample matrix mismatch")
-            compute = _compute(method.slug, evaluation, run, canonical)
+            compute = _compute(
+                method.slug, evaluation, run, canonical, measured_timings.get(method.id),
+            )
             test = {
                 key: evaluation.get(key)
                 for key in SUMMARY_KEYS
@@ -365,9 +478,9 @@ def build() -> dict:
                 "from 0.519 to 0.125 while Cellpose-SAM rises from 0.510 to 0.709. All six in-repo "
                 "trained models degrade (mean -0.243, unchanged by the adoption, which moved only "
                 "classical rows) and five of the seven classical methods "
-                "improve, at a tier mean of +0.070. Two do not, and both are named rather than "
+                "improve, at a tier mean of +0.071. Two do not, and both are named rather than "
                 "averaged away: C2 gradient immersion watershed was already at 0.017 on froth and "
-                "scores exactly 0.000 on all 64 real samples, and C3 falls from 0.220 to 0.128. "
+                "scores exactly 0.000 on all 64 real samples, and C3 falls from 0.297 to 0.216. "
                 "C3's adopted negated-intensity flooding surface is a FROTH mechanism, since it "
                 "assumes a bright specular highlight per bubble and a dark Plateau border between "
                 "bubbles, and cell nuclei have neither; on this domain the distance transform it "
@@ -375,7 +488,9 @@ def build() -> dict:
                 "adopted on the froth source and confirmed on a froth reserve slice "
                 "(verification/phase1-adoption.json), and this split supports no froth statement. "
                 "C7's constrained watershed transfers in the other direction, 0.233 to 0.301, and "
-                "is now the best classical here after C1. That test is adjacent-domain "
+                "is the best classical here after C1, ahead of C3 despite trailing it on every "
+                "axis of the synthetic benchmark: the classical tier reorders under domain shift "
+                "too. That test is adjacent-domain "
                 "and favours Cellpose-SAM's pretraining domain, so it does not show Cellpose-SAM "
                 "is better on froth; it shows N1's froth lead does not survive domain shift."
             ),

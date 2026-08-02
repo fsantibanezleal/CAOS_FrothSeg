@@ -59,8 +59,11 @@ contrast height $h$, keeping only the salient bright spots as markers:
 $$ \mathrm{HMAX}_h(f) = R_f^{\delta}\!\left(f - h\right) $$
 
 where $R_f^{\delta}$ is morphological reconstruction by dilation under the mask $f$. In `segment.py` this runs with
-$h = 0.06$ on the grayscale image; if no clean highlight survives, the method falls back to the distance-transform
-seeding, an honest guard for glare frames.
+$h = 0.12$ on the grayscale image; if no clean highlight survives, the method falls back to the distance-transform
+seeding, an honest guard for glare frames. That depth was 0.06 until 2026-08-01, carried over unchanged from
+when the method flooded the negated distance transform. A depth is expressed in the units of the surface it is
+measured on, so 0.06 of distance-transform depth and 0.06 of normalized intensity are not the same threshold,
+and the stale value over-segmented by 64 percent (`verification/r2-c3-flooding-depth.json`).
 
 **SLIC distance.** SLIC is a local k-means in a 5-D space (Lab colour plus $x, y$). A pixel is assigned to the
 nearest cluster centre under a distance that trades off colour proximity against spatial compactness:
@@ -142,8 +145,10 @@ These methods are generic instance-segmentation and shape-measurement tools, not
   grains, foam or emulsion micrographs, sediment particles. `watershed_dt` is the default; where each object carries
   a bright specular dot (glossy spheres, wet grains under a ringlight), `watershed_hmax` is the stronger seed.
 - **To port to your images**: the only froth-specific choices are the Otsu factor (`thr * 0.75`), the marker
-  `min_distance` (4 px, the smallest resolvable object radius) and the h-maxima height (0.06, the highlight contrast).
-  Retune those three to your object scale and contrast; everything else is scale-free.
+  `min_distance` (4 px, the smallest resolvable object radius) and the h-maxima height (0.12, the highlight contrast).
+  Retune those three to your object scale and contrast; everything else is scale-free. Retune the h-maxima height
+  against the surface you actually flood, since it is a depth in that surface's units: this repository shipped it
+  for one surface while flooding another and lost 35 percent of C3's AP to the mismatch.
 - **regionprops** is fully domain-agnostic: any int label map in, per-instance area, `equivalent_diameter_area`,
   eccentricity, solidity, orientation, and more out. If you need Feret diameter or perimeter instead of the
   equivalent diameter, they are properties on the same `RegionProperties` object.

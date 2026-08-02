@@ -87,6 +87,9 @@ Thumbs.db
 !/verification/p3-conformal-intervals.json
 !/verification/reserve-slice-ledger.json
 !/verification/phase1-adoption.json
+!/verification/r1-retrain-runs.json
+!/verification/r1-checkpoint-selection.json
+!/verification/r2-c3-flooding-depth.json
 !/verification/visual-qa/
 /verification/visual-qa/*
 !/verification/visual-qa/manifest.json

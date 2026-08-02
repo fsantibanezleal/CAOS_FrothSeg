@@ -86,8 +86,8 @@ and selects nothing.
 | C7 | Lamella-valley constrained watershed | 0.301 | 0.233 | +0.069 |
 | C5 | H-minima watershed | 0.264 | 0.133 | +0.131 |
 | C4 | Distance-transform watershed | 0.256 | 0.198 | +0.059 |
+| C3 | Marker-controlled watershed | 0.216 | 0.297 | **-0.081** |
 | L6 | YOLO froth segmentation | 0.144 | 0.293 | -0.149 |
-| C3 | Marker-controlled watershed | 0.128 | 0.220 | **-0.092** |
 | **N1** | **LamellaStar** | **0.125** | **0.519** | **-0.394** |
 | L3 | GC-FSegNet | 0.110 | 0.319 | -0.209 |
 | L1 | Boundary/distance U-Net | 0.094 | 0.415 | -0.322 |
@@ -100,25 +100,42 @@ Grouped by tier, the pattern is unambiguous:
 
 | tier | mean delta |
 |---|---|
-| classical (7 methods) | **+0.070** |
+| classical (7 methods) | **+0.071** |
 | in-repo trained (6 methods) | **-0.243** |
 | foundation, never trained here (L5) | **+0.199** |
 
 **The synthetic ranking does not transfer.** N1 LamellaStar leads the froth benchmark at 0.519
 and falls to eighth at 0.125 on real images, a drop of 0.394. Every model trained on the 192
 synthetic samples degrades. Five of the seven classical methods, which have no learned prior to
-overfit, improve, for a tier mean of +0.070. The single method that was never trained in this
+overfit, improve, for a tier mean of +0.071. The single method that was never trained in this
 repository is the only learned method that improves, and it becomes the clear leader at 0.709.
+
+**The classical tier reorders too, and C3 is the clearest case.** After its flooding depth was
+corrected on 2026-08-01 C3 leads every axis of the synthetic benchmark at 0.297, and it is only
+fifth of the seven classical methods on real images at 0.216. C1, which is last but one on froth
+at 0.065, leads the classical tier on real at 0.339. So "best on the generator" and "best on real
+dense-instance images" are not the same ordering even inside the tier that does not learn
+anything, and the froth ranking should not be read as a recommendation for real images.
+
+C3's own transfer number improved with the correction, from 0.128 to 0.216, and its drop softened
+from -0.092 to -0.081. That is worth stating because it is the one piece of evidence here that the
+depth correction is not a synthetic artefact: it was selected on a synthetic validation split and
+confirmed on a synthetic reserve slice, and it also helps on real photographs it was never fitted
+to. It remains an adjacent-domain result about microscopy nuclei, not a froth result.
 
 **The two classical exceptions are named, not averaged away.** C2 gradient immersion watershed was
 already at 0.017 on froth and returns 0.000 here, a delta of -0.017, so the tier gains while its
 weakest member does not. C3 marker-controlled watershed is the more interesting one: it falls from
-0.220 to 0.128 after the 2026-08-01 adoption moved its flooding surface to the negated image, where
-before the adoption it rose from 0.103 to 0.182 on the distance transform. That reversal is a real
-result and is stated as one. The adopted surface is a FROTH mechanism, since flooding the negated
-intensity from h-maxima markers assumes one bright specular highlight per object and a dark Plateau
-border between objects, and cell nuclei have neither; on this domain the distance transform it
-replaced is the better surface. The change was adopted on a froth source and confirmed on a froth
+0.297 to 0.216, where before the 2026-08-01 adoptions it ROSE on this domain, from 0.103 on froth
+to 0.182 on real while flooding the distance transform. That reversal is a real result and is
+stated as one. The adopted surface is a FROTH mechanism, since flooding the negated intensity from
+h-maxima markers assumes one bright specular highlight per object and a dark Plateau border between
+objects, and cell nuclei have neither; on this domain the distance transform it replaced is the
+better surface.
+
+The depth correction later the same day moved C3's real figure from 0.128 to 0.216 and softened the
+drop from -0.092 to -0.081, so the direction of the reversal survives while its size does not. Both
+statements have been true of this row on the same day, and only the second is true now. The change was adopted on a froth source and confirmed on a froth
 reserve slice (`verification/phase1-adoption.json`), and this split supports no froth statement, so
 the adoption stands. But nobody should read C3's froth gain as evidence that the surface is
 generally better, and this row is why. C7's constrained watershed moves the other way on this same

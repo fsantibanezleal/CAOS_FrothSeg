@@ -63,14 +63,16 @@ export const CLASSICAL_METHODS: Array<{
 }> = [
   { id: 'otsu_cc', label: 'C1 Otsu + CC', note: 'under-segments touching bubbles (baseline)', lane: 'validated-live' },
   { id: 'watershed_immersion', label: 'C2 Immersion watershed', note: 'over-segments on highlights (exhibit)', lane: 'offline-replay' },
-  { id: 'watershed_hmax', label: 'C3 Highlight-seeded watershed', note: 'the classic industrial froth trick, best d32 of the tier', lane: 'validated-live' },
-  { id: 'watershed_dt', label: 'C4 Distance-transform watershed', note: 'the generic classical floor, best BSD Wasserstein-1 of the tier', lane: 'validated-live' },
+  { id: 'watershed_hmax', label: 'C3 Highlight-seeded watershed', note: 'the classic industrial froth trick, leads the tier on every recorded axis', lane: 'validated-live' },
+  { id: 'watershed_dt', label: 'C4 Distance-transform watershed', note: 'the generic classical floor', lane: 'validated-live' },
   { id: 'watershed_hmin', label: 'C5 H-minima watershed', note: 'suppresses shallow spurious basins', lane: 'offline-replay' },
   { id: 'slic_merge', label: 'C6 SLIC superpixels', note: 'non-watershed over-segmentation primitive', lane: 'offline-replay' },
-  // Notes carry tier positions read from data/derived/method-benchmark.json methods[].test on 2026-08-01:
-  // C7 mean_ap 0.2326, C3 0.2196, C4 0.1977; C3 d32 0.1907 is the tier best, C4 BSD W1 2.590 is the tier best,
-  // C7 holds boundary F 0.8837 and count error 114.2. C4 led the tier on AP until the adoption.
-  { id: 'valley_edge', label: 'C7 Lamella-valley constrained watershed', note: 'domain froth method, leads the tier on AP, boundary F and count error', lane: 'offline-replay' },
+  // Notes carry tier positions read from data/derived/method-benchmark.json methods[].test on 2026-08-01,
+  // after the C3 flooding-depth correction: C3 mean_ap 0.2975, C7 0.2326, C4 0.1977, and C3 also holds PQ
+  // 0.5423, boundary F 0.9236, BSD W1 2.037, count error 64.9 and d32 0.1098. Before that correction the
+  // tier head was split, with C7 on AP/boundary F/count error and C4 on BSD W1; both of those notes were
+  // true then and are false now. Neither C7 nor C4 changed: only C3 moved.
+  { id: 'valley_edge', label: 'C7 Lamella-valley constrained watershed', note: 'domain froth method, second on AP behind C3', lane: 'offline-replay' },
 ];
 
 export const LIVE_CLASSICAL_METHODS = CLASSICAL_METHODS.filter(
@@ -124,9 +126,16 @@ function watershedImmersion(gray: Float32Array, w: number, h: number): Int32Arra
 // the source the C3 registry entry already cites. Flooding -EDT made C3 differ from C4 only in its markers.
 // Evidence: verification/phase1-adoption.json. This twin must stay on the same surface as the Python
 // engine or verification/classical-live-parity.json goes stale.
+// The depth moved 0.06 -> 0.12 on 2026-08-01 (offline `C3_H_MAXIMA`, evidence
+// verification/r2-c3-flooding-depth.json). It had been left behind when the surface changed earlier
+// the same day: a depth carries the units of the surface it is measured on, and 0.06 still described
+// the distance transform this method no longer floods. Both sides of the twin carried the stale
+// value, so the parity gate stayed green while both engines over-segmented together. The adoption
+// gained +0.0785 mean AP on the reserve slice at a stated cost of boundary recall, 0.9638 to
+// 0.9524, worse on 60 of 64 images and better on none.
 function watershedHmax(gray: Float32Array, w: number, h: number): Int32Array {
   const fg = foreground(gray, w, h);
-  const domes = hMaxima(gray, w, h, 0.06);
+  const domes = hMaxima(gray, w, h, 0.12);
   const { labels: markers, n } = labelCC(domes, w, h);
   if (n === 0) return watershedDt(gray, w, h);
   const surface = new Float32Array(gray.length);

@@ -1,5 +1,131 @@
 # Changelog
 
+## [0.06.000] · 2026-08-02 (work 2026-08-01 to 2026-08-02)
+
+On `develop`. The release gate still reports `complete: false` with the single settled
+error: no accepted licensed real **froth** held-out source exists. This cycle changed no
+learned weight and corrected three things that were producing invalid numbers.
+
+### Two trainers were discarding the model they had just measured
+
+`train_multitask.py` and `train_unet.py` computed a validation loss every epoch, appended
+it to `history`, and rewrote `checkpoint.pt` unconditionally. The file therefore always
+ended holding the LAST epoch whatever the curve did, and nothing consulted the curve. The
+three published LamellaStar members were exported 67 epochs past their minimum:
+
+| model | epochs | best | exported | penalty |
+|---|---|---|---|---|
+| lamellastar seed 20260725 | 120 | 53 | 120 | +30.2% validation loss |
+| lamellastar seed 20260726 | 120 | 57 | 120 | +30.8% |
+| lamellastar seed 20260727 | 120 | 51 | 120 | +25.1% |
+| gc-fsegnet-v1 | 16 | 15 | 16 | +15.3% |
+| unet-watershed-v2 | 24 | 22 | 24 | +2.0% |
+
+**R-1 retrained all six to recover what was thrown away, and the answer is a NULL.** The
+corrected ensemble scores validation mean AP 0.521188 against the published 0.524000,
+worse on 37 of 64 images. Per member the effect has no consistent sign: -0.0044, +0.0151,
+-0.0109, averaging 0.5019 against 0.5020. A pixel-wise multitask loss and an
+instance-level AP after a calibrated watershed decode are different objectives, and the
+overfitting visible in the first does not appear in the second. **No published weight
+changed.** The trainers are fixed anyway, because a trainer that ignores its own
+validation curve could land anywhere on it next run.
+
+Four of six trajectories reproduce bit-for-bit. `gc_fsegnet` and `deep_marker_watershed`
+diverge from EPOCH 0, which is code drift rather than randomness: `_loss` gained a
+foreground Dice term at 2026-07-26 10:58 and those two were trained at 22:56 and 22:57 the
+night before. The U-Net was also trained before it and still reproduces, because it runs a
+different trainer whose loss never changed. Their published EVALUATIONS reproduce exactly
+under today's code, 0.00e+00 over 64 of 64 cases, so the shipped numbers are sound; only
+the path that would regenerate those weights has drifted.
+
+### C3 was flooding one surface with a depth measured on another
+
+`C3_H_MAXIMA` stayed at 0.06 when C3's flooding surface moved from `neg_edt` (pixels of
+distance) to `neg_gray` (normalized intensity) earlier the same day. A depth carries the
+units of the surface it is measured on. The comment on that line had even been corrected
+to say "intensity" while the number still described the distance transform.
+
+Selected on the validation split, which no classical constant sweep had ever touched, and
+confirmed on untouched reserve slice p4: mean AP **0.2191 to 0.2976**, paired +0.0785 with
+a 95 percent interval of [+0.0604, +0.0984] and 59 of 64 images improved.
+**Stated cost: boundary RECALL falls 0.9638 to 0.9524, worse on 60 of 64 images and better
+on none.** Precision rises enough that boundary F still gains +0.0459.
+
+Consequences, all re-measured rather than inferred:
+
+- **C3 now leads the classical tier on every recorded axis**: AP 0.2975, PQ 0.5423,
+  boundary F 0.9236, BSD W1 2.037, count error 64.9, d32 0.1098. Neither C7 nor C4 moved.
+  The "head of the tier is split" reading that ran through the docs, the App and both
+  languages of the Methodology page is retired.
+- **Canonical scene**: 300 predictions to **202 against 197 true bubbles**, AP 0.321 to
+  0.521, and C3 now leads AP, AP50, AP75 and BSD W1 together there.
+- **The Pareto frontier gains a member**: C1, C3, C7, L1, L2, N1. C4 leaves, dominated.
+- **The SAM comparison REVERSES.** Mean classical floor 0.351 to 0.402; the untuned
+  SlimSAM prompt grid goes from +0.014 on 5 of 12 cases to **-0.037 on 4 of 12**. Nothing
+  about SAM was re-measured; the thing it is compared against got better.
+- **Temporal**: five-sequence mean HOTA 0.653 to 0.761, because identity association is
+  driven by instance count.
+- **Real adjacent domain**: 0.128 to **0.216**. This is the only evidence here that the
+  correction is not a synthetic artefact, since it was selected and confirmed on synthetic
+  data and still helps on real photographs it was never fitted to.
+
+The post-adoption recheck independently places the new depth at the grid optimum. It also
+flags `FOREGROUND_OTSU_FACTOR`, where 0.60 scores +6.42 percent on C3. **Not adopted**:
+that study runs on the burned test split and, unlike the depth, the Otsu factor has no
+unit-change argument behind it.
+
+### ms/image was never a measurement
+
+One field carried three different quantities: a single un-repeated pass for the classical
+tier, eval-loop per-case timings for the trained rows, and for L5/L6/L7 a wall-clock
+division. Across committed bakes of identical code the same method moved by up to x2.74.
+
+`fslab.science.timing` adds a warmup, repeated passes, a per-image median, a fixed matmul
+canary that measures the machine, and a stability verdict; `measure_inference_timing.py`
+times every method through the same `frame_predictor` the App uses, in one process, with
+model loading outside the timed region. Measured on an idle machine (canary 1.762 ms), all
+stable, CVs 0.005 to 0.047.
+
+**The two rows that were never measured were wrong in opposite directions:**
+
+| | measured | published | |
+|---|---|---|---|
+| L6 `yolo_froth_seg` | **140.43 ms** | 300.91 | overstated **2.14x**; the run included its own TRAINING |
+| L5 `cellpose_sam` | **486.54 ms** | 324.53 | understated **1.50x** |
+
+Every classical row landed within 0.99x to 1.14x of its previous value, so the protocol
+change moved only the rows that were never measured. L7 is recorded as having no
+unprompted single-image lane instead of receiving a divided wall-clock.
+
+The module also documents what its controls CANNOT catch: a steadily busy machine produces
+LOW inter-repeat variance, so `stable: true` means the machine did not move during the
+run, never that it was idle. Within one artifact, method-to-method comparison holds
+regardless, which is what makes the frontier valid; across artifacts, absolute ms are only
+comparable when the canaries agree.
+
+### The browser twin carried the same stale constant
+
+`frontend/src/classical/methods.ts` passed 0.06 to `hMaxima` as well, so both engines
+over-segmented together and `classical-live-parity.json` stayed green throughout: parity
+compares the twins to EACH OTHER. `tests/test_classical_twin_constants.py` now reads the
+literals out of the TypeScript and asserts them against `fslab.science.segment`, against
+the source of truth rather than the other copy. Re-validated after both sides moved: C3
+browser 0.3049 against offline 0.3037, boundary F agreement 0.9977.
+
+### Defects found in this cycle's own new code
+
+A five-dimension adversarial audit with per-finding refutation raised 44 findings and
+confirmed 30. Eleven were defects in the new code and are fixed, including: the resume
+comparison rejecting every checkpoint the fixed trainer wrote; the timing artifact being
+written BEFORE the stability gate raised, so a rejected measurement sat on disk as a valid
+file; `.detach().cpu()` aliasing live parameters on the CPU path so "best" would export
+the last epoch; `repeats=1` yielding `stable: true` from a zero-variance sample of one;
+and a rebake plan that omitted four artifacts carrying C3 numbers, which would have turned
+a measured -0.081 transfer delta into a fabricated -0.170 while every step reported ok.
+
+Three of the audit's own refutations were overturned on a closer read, including the
+steady-load blind spot documented above.
+
 ## [0.05.000] · 2026-08-01 (work 2026-07-28 to 2026-08-01)
 
 On `develop`. The release gate still reports `complete: false`: BBBC038 satisfies the

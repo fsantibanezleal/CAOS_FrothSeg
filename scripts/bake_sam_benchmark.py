@@ -105,7 +105,12 @@ def main() -> int:
         "grid": 32,
         "provenance": "offline verification, onnxruntime-node CPU; scored vs exact synthetic GT with the same mask_ap the classical floor uses",
         "summary": {
+            # n_cases counts every case in the matrix; the means and the win count are over
+            # the SCORED ones only, because the empty control has no ground-truth instances
+            # and therefore no floor. Reporting one number beside means computed over the
+            # other invited "SAM wins 4/13" when the comparison only ran on 12.
             "n_cases": len(cases),
+            "n_scored": int(sum(1 for c in cases if c["floor_ap"] is not None)),
             "mean_sam_ap": round(float(np.mean(sam_aps)), 3) if sam_aps else None,
             "mean_floor_ap": round(float(np.mean(floor_aps)), 3) if floor_aps else None,
             "delta": round(float(np.mean(sam_aps) - np.mean(floor_aps)), 3) if sam_aps and floor_aps else None,
@@ -116,8 +121,9 @@ def main() -> int:
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(doc, indent=1), encoding="utf-8")
     s = doc["summary"]
-    print(f"baked {args.output} : {s['n_cases']} cases, mean SAM AP {s['mean_sam_ap']} vs floor {s['mean_floor_ap']} "
-          f"(delta {s['delta']}), SAM wins {s['sam_wins']}/{s['n_cases']}")
+    print(f"baked {args.output} : {s['n_scored']} scored of {s['n_cases']} cases, "
+          f"mean SAM AP {s['mean_sam_ap']} vs floor {s['mean_floor_ap']} "
+          f"(delta {s['delta']}), SAM wins {s['sam_wins']}/{s['n_scored']}")
     return 0
 
 

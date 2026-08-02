@@ -32,28 +32,35 @@ holds it. The SAM column did not move: not one prompt-grid prediction changed.
 |---|---|---|---|---|---|---|---|
 | `mono-clean` | control: monodisperse | near-single-size bubbles, clean specular highlights; d50 ~ d32 | tight spread `sigma_ln=0.12`, `d32=30px`; positive control | **0.741** | 0.329 | `watershed_dt` | SAM |
 | `coarse-froth` | coarse froth | few large bubbles (collapsing/coalescing froth); low count, large d32 | `d32=44px`, `sigma_ln=0.4` | **0.651** | 0.555 | `valley_edge` | SAM |
-| `poly-normal` | polydisperse (nominal) | wide bubble-size range, dark Plateau borders; the nominal operating case | `d32=26px`, `sigma_ln=0.5` | 0.457 | **0.458** | `valley_edge` | floor |
-| `bursting` | transient: bursting | bubbles bursting: many missing highlights, irregular cells | `highlight_jitter=0.5`, `sigma_ln=0.6` | **0.449** | 0.438 | `valley_edge` | SAM |
-| `high-load` | stress: high load/dark | dense dark froth (high pull); low contrast between bubble and border | `load=0.9` (dark base) | 0.420 | **0.442** | `valley_edge` | floor |
-| `edge-framing` | stress: framing/glare | off-centre framing with a glare band near the edge | `glare=0.3`, `d32=22px` | 0.412 | **0.415** | `valley_edge` | floor |
+| `poly-normal` | polydisperse (nominal) | wide bubble-size range, dark Plateau borders; the nominal operating case | `d32=26px`, `sigma_ln=0.5` | 0.457 | **0.521** | `watershed_hmax` | floor |
+| `bursting` | transient: bursting | bubbles bursting: many missing highlights, irregular cells | `highlight_jitter=0.5`, `sigma_ln=0.6` | 0.449 | **0.464** | `watershed_hmax` | floor |
+| `high-load` | stress: high load/dark | dense dark froth (high pull); low contrast between bubble and border | `load=0.9` (dark base) | 0.420 | **0.506** | `watershed_hmax` | floor |
+| `edge-framing` | stress: framing/glare | off-centre framing with a glare band near the edge | `glare=0.3`, `d32=22px` | 0.412 | **0.464** | `watershed_hmax` | floor |
 | `glare-storm` | stress: glare | a saturated glare lobe; highlight-seeded methods must fail here | `glare=0.8`, `highlight_jitter=0.6`; negative control | **0.407** | 0.182 | `valley_edge` | SAM |
-| `fine-froth` | fine froth | many small bubbles (high recovery regime); high count, small d32 | `d32=15px`, `sigma_ln=0.45` | 0.335 | **0.363** | `valley_edge` | floor |
+| `fine-froth` | fine froth | many small bubbles (high recovery regime); high count, small d32 | `d32=15px`, `sigma_ln=0.45` | 0.335 | **0.428** | `watershed_hmax` | floor |
 | `low-light-noise` | stress: sensor noise | under-lit, noisy sensor; grain competes with true borders | `noise=0.09`, `load=0.7` | **0.302** | 0.267 | `valley_edge` | SAM |
-| `watery` | stress: watery/thin | thin watery froth, weak borders, low load; borders hard to resolve | `watery=0.9`, `load=0.35` | 0.172 | **0.373** | `watershed_hmax` | floor |
-| `defocus` | stress: defocus | out-of-focus frame; soft borders, merged bubbles | Gaussian `defocus=2.4` | 0.016 | **0.225** | `watershed_hmax` | floor |
-| `motion-fast` | stress: motion blur | horizontal motion blur from fast froth travel; smeared borders | motion kernel `motion_blur=11` | 0.016 | **0.165** | `watershed_hmax` | floor |
+| `watery` | stress: watery/thin | thin watery froth, weak borders, low load; borders hard to resolve | `watery=0.9`, `load=0.35` | 0.172 | **0.582** | `watershed_hmax` | floor |
+| `defocus` | stress: defocus | out-of-focus frame; soft borders, merged bubbles | Gaussian `defocus=2.4` | 0.016 | **0.266** | `watershed_hmax` | floor |
+| `motion-fast` | stress: motion blur | horizontal motion blur from fast froth travel; smeared borders | motion kernel `motion_blur=11` | 0.016 | **0.258** | `watershed_hmax` | floor |
 | `empty-control` | control: empty | no froth (launder/empty cell); segmenter must return zero bubbles | `empty=True`; negative control | n/a | n/a | n/a | n/a |
 
 **Summary (over the 12 scored cases; the empty control has no GT to score):** mean SAM AP **0.365** vs mean floor
-AP **0.351**, delta **+0.014**, SAM wins **5 / 12**. Source: the committed artifact
+AP **0.402**, delta **-0.037**, SAM wins **4 / 12**. Source: the committed artifact
 `data/derived/sam_benchmark.json` (offline verification, onnxruntime-node CPU, SlimSAM-77-uniform,
 32x32 = 1024 prompt grid, scored with the same `fslab.science.segment.mask_ap` the classical floor uses).
 
-**This summary was 0.262 / +0.103 / 10 wins until 2026-08-01, and the change is entirely the floor.** C7's
-constrained watershed and C3's corrected flooding surface took the floor on 11 of the 12 scored cases, C7 on
-8 of them and C3 on 3, leaving `watershed_dt` holding only `mono-clean`. A conclusion that read as a clear
-margin for the untuned prompt grid now reads as a near-tie against a stronger classical floor. Nothing about
-SAM was re-measured; see `verification/phase1-adoption.json`.
+**This summary has moved twice on 2026-08-01 and the conclusion has now reversed, and both times the
+change is entirely the floor.** It read 0.262 / +0.103 / 10 wins before the day's first two adoptions,
+then 0.351 / +0.014 / 5 wins after them, and it now reads 0.402 / -0.037 / 4 wins after C3's flooding
+depth was corrected. C3 alone holds the floor on 8 of the 12 scored cases, C7 on 3, and `watershed_dt`
+on only `mono-clean`.
+
+**The untuned prompt grid no longer beats the classical floor; it loses to it.** That is a reversal of
+the reading this section carried this morning, and it is worth being explicit that nothing about SAM was
+re-measured on any of the three occasions: the same prompt grid, the same model and the same scored
+masks moved from a clear margin, to a near-tie, to a loss, purely because the thing it is compared
+against got better. Evidence: `verification/phase1-adoption.json` and
+`verification/r2-c3-flooding-depth.json`.
 
 ### Per-case detail (counts, sizes, distribution distance)
 

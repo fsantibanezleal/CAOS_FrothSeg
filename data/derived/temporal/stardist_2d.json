@@ -2,7 +2,7 @@
   "association_threshold": 0.25,
   "checkpoint_sha256": "9d89a72bf6126e9806e07efac5b162232b1df9c8b43577b4677117935697883e",
   "device": "cuda",
-  "duration_seconds": 37.984,
+  "duration_seconds": 110.876,
   "frames_per_sequence": 8,
   "mean_event_precision": 0.001864786864786865,
   "mean_event_recall": 0.6,

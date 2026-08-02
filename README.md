@@ -17,7 +17,7 @@ offline, where the required runtimes and GPU are available.
 
 ## Release evidence
 
-Version 0.05.000 implements all 15 registered methods:
+Version 0.06.000 implements all 15 registered methods:
 
 | Tier | IDs | Implementations |
 |---|---|---|
@@ -59,10 +59,10 @@ not make one.** Four reasons, all recorded with the evidence rather than omitted
 re-run on 2026-08-01 after the C3 and C7 engine defaults were adopted.** Run unchanged
 over 64 real photographs of dense touching instances (BBBC038, CC0), N1 falls from 0.519
 to 0.125 while Cellpose-SAM rises from 0.510 to 0.709. Every in-repo trained model
-degrades (mean -0.243, unchanged by the adoption, which moved only classical rows); five
-of the seven classical methods improve, at a tier mean of +0.070. The two that do not are
+degrades (mean -0.243, unchanged by the adoptions, which moved only classical rows); five
+of the seven classical methods improve, at a tier mean of +0.071. The two that do not are
 named rather than averaged away: C2 gradient immersion watershed was already at 0.017 on
-froth and scores exactly 0.000 on all 64 real samples, and C3 falls from 0.220 to 0.128
+froth and scores exactly 0.000 on all 64 real samples, and C3 falls from 0.297 to 0.216
 because its adopted negated-intensity flooding surface assumes a specular highlight per
 bubble and a dark Plateau border between bubbles, and cell nuclei have neither. That is
 recorded, not repaired: the change was adopted on a froth source and confirmed on a froth
@@ -95,9 +95,13 @@ other. SAM 2.1 scores IDF1 and HOTA of 1.000 on every sequence because it is han
 twelve identities and asked whether it still has twelve; its honest number is the mean
 identity IoU, 0.898. Framewise leader on nominal transport is Cellpose-SAM at HOTA
 0.965, then LamellaStar 0.961 and boundary U-Net 0.923, down to marker-less immersion
-watershed at 0.153 with 370 identity switches over eight frames. C7 sits at 0.829 and C3
-at 0.738 after the 2026-08-01 adoption; C3's five-sequence mean HOTA rose from 0.435 to
-0.653 and C7's from 0.597 to 0.601 (`data/derived/temporal/`).
+watershed at 0.153 with 370 identity switches over eight frames. C3 now sits at 0.917 on
+that sequence, fourth overall and within 0.006 of the boundary U-Net, and C7 at 0.829.
+Across all five sequences C3's mean HOTA rose from 0.435 to 0.653 with the flooding-surface
+adoption and then to 0.761 with the depth correction, while C7's went from 0.597 to 0.601
+and has not moved since (`data/derived/temporal/`). Identity association is driven by
+instance count, which is why a method that stopped over-segmenting by 64 percent gains
+this much on a tracking metric it was never tuned against.
 
 There is no video anywhere in this repository and no module decodes video. A sequence
 is a stack of PNG frames. See `docs/temporal/02_the-full-method-matrix.md`.

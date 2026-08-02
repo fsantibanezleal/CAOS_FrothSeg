@@ -16,6 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "data-pipeline"))
 
 from fslab.learning.data_cache import load_cache, select_split  # noqa: E402
+from fslab.science import timing  # noqa: E402
 from fslab.science.segment import (  # noqa: E402
     METHODS,
     full_instance_metrics,
@@ -23,36 +24,46 @@ from fslab.science.segment import (  # noqa: E402
 )
 
 
-def run(cache_path: Path, output: Path, selected_methods: list[str] | None = None) -> dict:
+def run(
+    cache_path: Path,
+    output: Path,
+    selected_methods: list[str] | None = None,
+    repeats: int = 5,
+) -> dict:
     cache = select_split(load_cache(cache_path), "test")
     method_names = selected_methods or list(METHODS)
     unknown = sorted(set(method_names) - set(METHODS))
     if unknown:
         raise ValueError(f"unknown classical methods: {unknown}")
     method_reports = []
+    prepared = [image.astype(np.float32) / 255.0 for image in cache["images"]]
     for method_name in method_names:
         engine = METHODS[method_name]
         rows = []
         started_method = time.perf_counter()
-        for index, image in enumerate(cache["images"]):
-            started = time.perf_counter()
-            labels = engine(image.astype(np.float32) / 255.0)
-            inference_ms = (time.perf_counter() - started) * 1000
+        for index, image in enumerate(prepared):
+            labels = engine(image)
             rows.append({
                 "sample_id": str(cache["sample_ids"][index]),
                 "condition_id": str(cache["conditions"][index]),
                 "group_id": str(cache["group_ids"][index]),
                 **full_instance_metrics(labels, cache["labels"][index]),
-                "inference_ms": round(inference_ms, 3),
             })
         duration_seconds = time.perf_counter() - started_method
+        # Timing is its own pass. Folding it into the metric loop above made every published
+        # ms/image a single un-repeated sample: whatever the machine was doing during that one
+        # pass went into the number, and comparing bakes of identical code showed C7 swinging
+        # x2.74. Repeats plus a load canary make it a measurement. See fslab.science.timing.
+        timing_report = timing.time_over_items(engine, prepared, repeats=repeats)
+        for index, row in enumerate(rows):
+            row["inference_ms"] = round(timing_report["per_image_ms"][index], 3)
         # Profiling allocations changes timings substantially, especially for
         # SLIC. Run a separate pass so runtime and peak memory remain two honest
         # measurements instead of one profiler-distorted number.
         tracemalloc.start()
         tracemalloc.reset_peak()
-        for image in cache["images"]:
-            engine(image.astype(np.float32) / 255.0)
+        for image in prepared:
+            engine(image)
         report = summarize_metric_rows(rows, split="test")
         _, peak_traced_bytes = tracemalloc.get_traced_memory()
         tracemalloc.stop()
@@ -61,21 +72,38 @@ def run(cache_path: Path, output: Path, selected_methods: list[str] | None = Non
             "engine": "scikit-image/SciPy",
             "device": platform.processor() or platform.machine(),
             "duration_seconds": round(duration_seconds, 3),
-            "mean_inference_ms": float(np.mean([row["inference_ms"] for row in rows])),
-            "p95_inference_ms": float(np.quantile([row["inference_ms"] for row in rows], 0.95)),
             "peak_traced_memory_mib": round(peak_traced_bytes / 1024**2, 3),
             "peak_memory_metric": "python-tracemalloc",
+        })
+        report.update({
+            key: value for key, value in timing_report.items() if key != "per_image_ms"
         })
         method_reports.append(report)
         print(
             f"{method_name}: AP={report['mean_ap']:.4f} "
-            f"boundary-F={report['mean_boundary_fscore']:.4f}",
+            f"boundary-F={report['mean_boundary_fscore']:.4f} "
+            f"{report['mean_inference_ms']:.2f}ms "
+            f"cv={report['inter_repeat_cv']:.4f}"
+            f"{'' if report['stable'] else '  UNSTABLE'}",
             flush=True,
         )
     document = {
         "schema": "frothseg.classical-heldout/v1",
         "dataset_schema": "frothseg.learned-dataset/v2",
         "method_count": len(method_reports),
+        "timing_protocol": {
+            "repeats": repeats,
+            "statistic": "mean over images of the per-image median across repeats",
+            "warmup_passes": 1,
+            "note": (
+                "Timing runs as its own pass, after the metric pass, so the metric loop's own "
+                "work cannot enter it. Every method in one document is timed in the same "
+                "process against the same canary, so the methods are comparable to each other "
+                "even if the machine differs from another bake's."
+            ),
+            "environment": timing.environment(),
+        },
+        "timing_stable": all(report["stable"] for report in method_reports),
         "methods": method_reports,
     }
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -92,8 +120,14 @@ def main() -> None:
         default=ROOT / "data/derived/classical-heldout.json",
     )
     parser.add_argument("--method", action="append", dest="methods")
+    parser.add_argument(
+        "--repeats",
+        type=int,
+        default=5,
+        help="timed passes over the split; the per-image statistic is their median",
+    )
     args = parser.parse_args()
-    run(args.cache, args.output, args.methods)
+    run(args.cache, args.output, args.methods, repeats=args.repeats)
 
 
 if __name__ == "__main__":
