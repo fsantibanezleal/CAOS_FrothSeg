@@ -402,7 +402,7 @@ foreground.
 
 ## C6 slic_merge: rebuild attempted, bar missed, demotion recommended
 
-C6 is the worst value on the tier: **0.0186 AP for 673.8 ms per image**, roughly 109 times C1's 6.2 ms
+C6 is the worst value on the tier: **0.0186 AP for 710.7 ms per image**, roughly 113 times C1's 6.3 ms
 for a lower score. Before recommending anything, the two variants the pinned
 `skimage.segmentation.slic` docstring cites itself were measured: maskSLIC (`mask=`, docstring
 reference [3], Irving 2016, arXiv:1606.09518) and SLICO (`slic_zero=True`, docstring reference [2]).
