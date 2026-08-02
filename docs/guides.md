@@ -14,8 +14,10 @@ export, and bounded browser workflows.
   traceability for the lightweight interaction lane:
   `frontend/scripts/verify_sam.ts` runs the same segmenter module in Node, `scripts/score_sam.py` scores it with
   the floor's `mask_ap` and `bsd_wasserstein`, and `scripts/bake_sam_benchmark.py` bakes
-  `data/derived/sam_benchmark.json` (mean SAM AP 0.365 vs floor 0.351, wins 5 of the 12 scored cases; the floor
-  is the best classical method per case and rose from 0.262 with the 2026-08-01 C3 and C7 adoption).
+  `data/derived/sam_benchmark.json` (mean SAM AP 0.365 vs floor 0.402, so the prompt grid LOSES
+  by 0.037 and wins 4 of the 12 scored cases; the floor is the best classical method per case and
+  rose from 0.262 to 0.351 with the 2026-08-01 surface and mode adoptions, then to 0.402 with the
+  C3 depth correction).
 
 ## Reference and execution lanes
 

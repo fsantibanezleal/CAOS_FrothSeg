@@ -17,7 +17,7 @@ offline, where the required runtimes and GPU are available.
 
 ## Release evidence
 
-Version 0.06.000 implements all 15 registered methods:
+Version 0.06.001 implements all 15 registered methods:
 
 | Tier | IDs | Implementations |
 |---|---|---|
