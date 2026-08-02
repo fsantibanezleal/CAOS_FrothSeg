@@ -36,6 +36,7 @@ Run it on a quiet machine. It refuses to publish a result whose inter-repeat spr
 from __future__ import annotations
 
 import argparse
+import gc
 import json
 import sys
 from pathlib import Path
@@ -84,6 +85,11 @@ def main() -> None:
 
     from fslab.temporal_bake import frame_predictor
 
+    try:
+        import torch
+    except ImportError:  # the classical-only path does not need it
+        torch = None
+
     split = select_split(load_cache(args.cache), args.split)
     images = [image.astype(np.float32) / 255.0 for image in split["images"]]
     sample_ids = [str(value) for value in split["sample_ids"]]
@@ -121,6 +127,15 @@ def main() -> None:
             print(f"{method.id:>3} {method.slug:<26} UNAVAILABLE: {error}", flush=True)
             continue
         report = timing.time_over_items(predict, images, repeats=args.repeats)
+        # Release the predictor before loading the next one. Fifteen methods are timed in ONE
+        # process by design, so that they share a canary and are comparable; the cost of that is
+        # that every model each `frame_predictor` closes over stays alive until its closure is
+        # dropped. Without this the process accumulates all of them and dies partway through with
+        # no traceback.
+        del predict
+        gc.collect()
+        if torch is not None and torch.cuda.is_available():
+            torch.cuda.empty_cache()
         # Keep the per-image vector. build_method_benchmark writes it into the per-case rows so the
         # published per-case inference_ms and the published headline are the SAME measurement;
         # otherwise a reader averaging the per-case column would not reproduce the headline,

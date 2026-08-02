@@ -319,7 +319,7 @@
           "events_path": "showcase/temporal/poly-normal/predictions/C1/events.json",
           "events_sha256": "50584cb17b3b3a0b5297596d2c29c2a2605cec592edb27ca72530a05179b14c3",
           "evidence_path": "temporal/otsu_cc.json",
-          "evidence_sha256": "78283167b7fb291d0f1e36f3b30c2acb8ef6b8c18ccfeba900f16ddee28f5d33",
+          "evidence_sha256": "1e011166e2ac783c973a42db52269595c2b04999172200874c20d4e239746029",
           "frames": [
             {
               "frame_index": 0,
@@ -401,7 +401,7 @@
           "events_path": "showcase/temporal/poly-normal/predictions/C2/events.json",
           "events_sha256": "13cca83667bef8e9d4b6354b7ee3354a2d7b58ec1a67e5ca1e35c16857aa067e",
           "evidence_path": "temporal/watershed_immersion.json",
-          "evidence_sha256": "7466690825657fb36846c21545be56ad55b4a7c1ddd6356909d6d0b8bc89c99c",
+          "evidence_sha256": "56906119409e4602be0ceff3f73fae6ad93dff7b9fc39424a36f8a53acdb24be",
           "frames": [
             {
               "frame_index": 0,
@@ -481,75 +481,75 @@
         },
         {
           "events_path": "showcase/temporal/poly-normal/predictions/C3/events.json",
-          "events_sha256": "bdf560eff4a194d4ec660e5ff63285aaec04a114e4740579f0ab30da456f21c7",
+          "events_sha256": "e00d7f1a849e22868c4e4d2684f7cba48e60edcc07bf3ba25cae53c24d205e4a",
           "evidence_path": "temporal/watershed_hmax.json",
-          "evidence_sha256": "71a5d96d98ac7e445e60c8545ff4ec67c26ebd58c04a37046761ebdf10fd20d2",
+          "evidence_sha256": "7cc39632ff625eee11b3be0756b8d143a5512dd9f6a5573b02611c6790f1a4f0",
           "frames": [
             {
               "frame_index": 0,
               "prediction_path": "showcase/temporal/poly-normal/000/predictions/C3/labels.rle",
-              "prediction_sha256": "55b59dc75c9e8ce81b375c3b99603b439b36879897cee7edf5ce5d74db7057d6"
+              "prediction_sha256": "9105085178d4985013bbf95e82ff4c099051e4405ceb8303fa411f819ff526ab"
             },
             {
               "frame_index": 1,
               "prediction_path": "showcase/temporal/poly-normal/001/predictions/C3/labels.rle",
-              "prediction_sha256": "b5f903129385fa3a18df2480cafe53519e1d5a32ea35bfc72ad8550ccf4d4514"
+              "prediction_sha256": "474b95107815b6ad012e9312c4411e968ce277586d7e75364ef24e987ba3afc0"
             },
             {
               "frame_index": 2,
               "prediction_path": "showcase/temporal/poly-normal/002/predictions/C3/labels.rle",
-              "prediction_sha256": "9bf294fd88a6bb402a363d50fe4be7e7171867dba2c1f643dc4f1a2f12b1f2bc"
+              "prediction_sha256": "ae6a5cc94bcc04e551f2030b2adfae9503879cc67de8759ca6c185c8a31493f8"
             },
             {
               "frame_index": 3,
               "prediction_path": "showcase/temporal/poly-normal/003/predictions/C3/labels.rle",
-              "prediction_sha256": "d18ef46dff957955245aa0d70d6cb3cc97d4546ba684b5005a4b9beac79f22b6"
+              "prediction_sha256": "2f09e771be0a095773f983b1ad9517f0f3ed046da476da6600340bd00c30148d"
             },
             {
               "frame_index": 4,
               "prediction_path": "showcase/temporal/poly-normal/004/predictions/C3/labels.rle",
-              "prediction_sha256": "58a8e08c121e5343a3ebade879e87cb374e9a9de78d7d6d418e67f15c66f85fa"
+              "prediction_sha256": "fc78fcd4d623e80619448ea8d614a4a043f5ae16ae501eced7ac6b2baeb403b6"
             },
             {
               "frame_index": 5,
               "prediction_path": "showcase/temporal/poly-normal/005/predictions/C3/labels.rle",
-              "prediction_sha256": "78154c6cd3c27e5e1eeeace56c901726ca78cde9c0fe7ccdbbfd89cd9e73b0a8"
+              "prediction_sha256": "3da66b8088c6d73f47673f084a46e7507e61ff81c2e067f81739ae84ac83d348"
             },
             {
               "frame_index": 6,
               "prediction_path": "showcase/temporal/poly-normal/006/predictions/C3/labels.rle",
-              "prediction_sha256": "81fe1352e6254cda8c57cabfe7a97fefb3946623c783d79af632fff73a96e226"
+              "prediction_sha256": "533ad2e86bea4d7007382bb8afdb111c825d28ecda135f1857c830d9a2781297"
             },
             {
               "frame_index": 7,
               "prediction_path": "showcase/temporal/poly-normal/007/predictions/C3/labels.rle",
-              "prediction_sha256": "e14c9a26c777c6f6b3f54968c0f680ee10ec3b2bada6d631877e423bbdf4c626"
+              "prediction_sha256": "f441d2e26a2385ad96331ffcfae8804946059a34b7d76d20269f7150db48ee47"
             }
           ],
           "method_id": "C3",
           "method_slug": "watershed_hmax",
           "metrics": {
-            "association_accuracy": 0.8484351265661475,
-            "detection_accuracy": 0.6415327564894932,
-            "event_f1": 0.003076923076923077,
+            "association_accuracy": 0.9413717126535126,
+            "detection_accuracy": 0.8938775510204081,
+            "event_f1": 0.015267175572519083,
             "event_false_negatives": 0,
-            "event_false_positives": 1296,
-            "event_precision": 0.0015408320493066256,
+            "event_false_positives": 258,
+            "event_precision": 0.007692307692307693,
             "event_recall": 1.0,
             "event_true_positives": 2,
-            "false_negative_instances": 18,
-            "false_positive_instances": 852,
-            "flow_epe_px": 1.0619048730382157,
+            "false_negative_instances": 42,
+            "false_positive_instances": 140,
+            "flow_epe_px": 0.6440912140498076,
             "frames": 8,
-            "hota": 0.7377661726105993,
-            "id_precision": 0.5794935657949356,
-            "id_recall": 0.8863492063492063,
-            "id_switch_rate": 0.057161207450224794,
-            "id_switches": 89,
-            "idf1": 0.7008032128514057,
-            "matched_gt_instances": 1557,
-            "mean_frame_coverage": 0.9885754428675023,
-            "track_fragmentations": 6
+            "hota": 0.9173173066647163,
+            "id_precision": 0.881649731022116,
+            "id_recall": 0.9365079365079365,
+            "id_switch_rate": 0.015003261578604044,
+            "id_switches": 23,
+            "idf1": 0.9082512315270936,
+            "matched_gt_instances": 1533,
+            "mean_frame_coverage": 0.9733405418004766,
+            "track_fragmentations": 15
           },
           "mode": "framewise_segmentation_with_iou_identity_association",
           "model_provenance": {
@@ -557,7 +557,7 @@
             "checkpoint_sha256": null,
             "device": "cpu"
           },
-          "predicted_event_count": 1298,
+          "predicted_event_count": 260,
           "protocol": "independent per-frame inference, followed by greedy IoU identity association",
           "truth_event_count": 2
         },
@@ -565,7 +565,7 @@
           "events_path": "showcase/temporal/poly-normal/predictions/C4/events.json",
           "events_sha256": "d1ae32e0c7c57d1476704ae7baf5a3ff26e63a602f97bcd188a5fa4c2b3cb949",
           "evidence_path": "temporal/watershed_dt.json",
-          "evidence_sha256": "4ea9bc533ca906d7657abc07fdf71a08db8f4d56d32719aa3adb90c2659ef589",
+          "evidence_sha256": "84a4f4fa1c052c1a2058898ff72777986a32d2f0e57432ad091adab2e1a6e79c",
           "frames": [
             {
               "frame_index": 0,
@@ -647,7 +647,7 @@
           "events_path": "showcase/temporal/poly-normal/predictions/C5/events.json",
           "events_sha256": "dfb85abf118fb0d3ff930c7ac432004a641b874d8011732fca3477d1115e18e5",
           "evidence_path": "temporal/watershed_hmin.json",
-          "evidence_sha256": "ce82cb3e6c2d7a3ace863e36016e1f76f1acb3c6b2d71b8f3c72917a36806089",
+          "evidence_sha256": "413df688adf5c00dc7f552ba1dfcca08c87f3154072320837eeb792e554e2bf1",
           "frames": [
             {
               "frame_index": 0,
@@ -729,7 +729,7 @@
           "events_path": "showcase/temporal/poly-normal/predictions/C6/events.json",
           "events_sha256": "5381ae5415ae5054cf008a408e4e4690a626c81f2553e43057265a49136268de",
           "evidence_path": "temporal/slic_merge.json",
-          "evidence_sha256": "366ff8d6d7496a6b001af3584960ca8102a31f6418245bc3cd3c27d2eaeb2060",
+          "evidence_sha256": "57a24943b061ba6472ba658801a6f7705b09522442f14f0ac4d1538d17440f70",
           "frames": [
             {
               "frame_index": 0,
@@ -811,7 +811,7 @@
           "events_path": "showcase/temporal/poly-normal/predictions/C7/events.json",
           "events_sha256": "8b6f45b11b0af1520120421440757dd21b1a9d1e5b9876994e7d9c162b4c9c47",
           "evidence_path": "temporal/valley_edge.json",
-          "evidence_sha256": "b41fdd2f1dbde653e92ead5319c1053ad4df93cc58889f66cc478817f35f091a",
+          "evidence_sha256": "7cb46c4448c77f2418ca8316ed133d0bbd7326991825a65e2c9beec27ce5c9ce",
           "frames": [
             {
               "frame_index": 0,
@@ -893,7 +893,7 @@
           "events_path": "showcase/temporal/poly-normal/predictions/L1/events.json",
           "events_sha256": "24b9457670325cffc233c035d9d2e866a12fe5d6cfccde8bd6da1bf801dd25c4",
           "evidence_path": "temporal/unet_watershed.json",
-          "evidence_sha256": "e3b5a6efcc3b90b43a5618f8ee2e32a82c41643735b3ce46b2e328c625e7f40b",
+          "evidence_sha256": "89638b6d08c38b0559b162689c80a5642c5d190ba022d262766caa9d5c6a5044",
           "frames": [
             {
               "frame_index": 0,
@@ -975,7 +975,7 @@
           "events_path": "showcase/temporal/poly-normal/predictions/L2/events.json",
           "events_sha256": "d76d46fb553ffafb898ba268d0e5c1e9990a99f475cbb264b0292345b9bcd414",
           "evidence_path": "temporal/deep_marker_watershed.json",
-          "evidence_sha256": "c54df0b6f9f014131ba5f3aa4a3aa1dc9f421ea2063cccdaec69694b3b17732f",
+          "evidence_sha256": "11d06c4ed6cb6265c152b21208b0e696726d7c88ab36ac8465f6618630719e91",
           "frames": [
             {
               "frame_index": 0,
@@ -1057,7 +1057,7 @@
           "events_path": "showcase/temporal/poly-normal/predictions/L3/events.json",
           "events_sha256": "0ce04908c4b4b8e4eddb552ebaf70544f7ef8158f10cbbd0a39f005470012ff6",
           "evidence_path": "temporal/gc_fsegnet.json",
-          "evidence_sha256": "ff59c96c3ad2e5853b77a336f7cb37b9650703f458ceaab7d1f116f6c1fc16f6",
+          "evidence_sha256": "2172dea67af0cc3a29715c86a19cc6adb2066984f63f3207bc0296584163e9d3",
           "frames": [
             {
               "frame_index": 0,
@@ -1139,7 +1139,7 @@
           "events_path": "showcase/temporal/poly-normal/predictions/L4/events.json",
           "events_sha256": "2115880aa718b091e49cedd49f0d802dc247009c5fd70628de766b02229aa073",
           "evidence_path": "temporal/stardist_2d.json",
-          "evidence_sha256": "ca891d0f444f42fe026da659d2b6deb1c015c4a649b27e22784f609020769bc3",
+          "evidence_sha256": "4b3433fa9282c7f581837ad7c2c1f8d468bd0349bc6b996e4d96e1d51afb2d4d",
           "frames": [
             {
               "frame_index": 0,
@@ -1221,7 +1221,7 @@
           "events_path": "showcase/temporal/poly-normal/predictions/L5/events.json",
           "events_sha256": "66a19a5beb62ce25ab4e0b722e86b52c5eef231dd1ae879db9e33ade8fba3d77",
           "evidence_path": "temporal/cellpose_sam.json",
-          "evidence_sha256": "3d6c144968bb8e49832f809b84f9883ef262fc9b60c2a99cf469ed0ed7aa8d69",
+          "evidence_sha256": "dfe3b150307533670652fa12cc92c7246d32f1b82415baa751d37bd5ea77ac56",
           "frames": [
             {
               "frame_index": 0,
@@ -1303,7 +1303,7 @@
           "events_path": "showcase/temporal/poly-normal/predictions/L6/events.json",
           "events_sha256": "dee1ae8cd7e8e52df215c1dcf9a93682c39c22a746958776c4759a41a97ff816",
           "evidence_path": "temporal/yolo_froth_seg.json",
-          "evidence_sha256": "f64e84bb147cb975c8c111d9498ba93a2c723ba9e0bc441336d5706297b75c57",
+          "evidence_sha256": "95f91ebdef19936526f13fd7ca2558ea72f82e6ab3031e28877cd31e37d12598",
           "frames": [
             {
               "frame_index": 0,
@@ -1469,7 +1469,7 @@
           "events_path": "showcase/temporal/poly-normal/predictions/N1/events.json",
           "events_sha256": "2a9864d888870e7e30ba04dcab7248beec0802f2efb2a50f65a3f0a5fac83e19",
           "evidence_path": "temporal/lamellastar.json",
-          "evidence_sha256": "8497b33d7b4feb1263f777cc2d821cf797d402fb0787433804f4b266c51e99dd",
+          "evidence_sha256": "dbaaa88aa47a2e79a60de1644ef8305edcfc5545f99eb3c8de76b9db67b62922",
           "frames": [
             {
               "frame_index": 0,
@@ -1631,7 +1631,7 @@
           "events_path": "showcase/temporal/fine-froth/predictions/C1/events.json",
           "events_sha256": "bbe042737274723d47fe4625711d1f492cb8130166df7a38c227840305ee980c",
           "evidence_path": "temporal/otsu_cc.json",
-          "evidence_sha256": "78283167b7fb291d0f1e36f3b30c2acb8ef6b8c18ccfeba900f16ddee28f5d33",
+          "evidence_sha256": "1e011166e2ac783c973a42db52269595c2b04999172200874c20d4e239746029",
           "frames": [
             {
               "frame_index": 0,
@@ -1713,7 +1713,7 @@
           "events_path": "showcase/temporal/fine-froth/predictions/C2/events.json",
           "events_sha256": "f15f6c4c1b4dee37b8f9ea91ebf051651e1fae958599e65ca3590a74014b0b6c",
           "evidence_path": "temporal/watershed_immersion.json",
-          "evidence_sha256": "7466690825657fb36846c21545be56ad55b4a7c1ddd6356909d6d0b8bc89c99c",
+          "evidence_sha256": "56906119409e4602be0ceff3f73fae6ad93dff7b9fc39424a36f8a53acdb24be",
           "frames": [
             {
               "frame_index": 0,
@@ -1793,75 +1793,75 @@
         },
         {
           "events_path": "showcase/temporal/fine-froth/predictions/C3/events.json",
-          "events_sha256": "0606d8c93010ec52eac8e03e3f31980f374cd9c522c884db131f2110c864da53",
+          "events_sha256": "53f68b921d1492933e656833dab111aaa216f1a351e9c8ea23ba907fab730d67",
           "evidence_path": "temporal/watershed_hmax.json",
-          "evidence_sha256": "71a5d96d98ac7e445e60c8545ff4ec67c26ebd58c04a37046761ebdf10fd20d2",
+          "evidence_sha256": "7cc39632ff625eee11b3be0756b8d143a5512dd9f6a5573b02611c6790f1a4f0",
           "frames": [
             {
               "frame_index": 0,
               "prediction_path": "showcase/temporal/fine-froth/000/predictions/C3/labels.rle",
-              "prediction_sha256": "6f2351a40525e64a81f15deb10d3f3ae3da5d5b395e510144d5ec2c06543f328"
+              "prediction_sha256": "e877c2548a8877d8e4f2b1d0a6cce82a3c3a224f0805f6a3416ee292dbe0784a"
             },
             {
               "frame_index": 1,
               "prediction_path": "showcase/temporal/fine-froth/001/predictions/C3/labels.rle",
-              "prediction_sha256": "ae9b3637b883980fd6c2a5121e9b82a2b09851ac0c665ec5dfa9cf14de7eea3b"
+              "prediction_sha256": "e3161a546fe29b6f162281f31f5c94eb0115d92b81890a9238bbb23341e62653"
             },
             {
               "frame_index": 2,
               "prediction_path": "showcase/temporal/fine-froth/002/predictions/C3/labels.rle",
-              "prediction_sha256": "aff7b88d5e17fc2b0b3690168d87a283ede4bf44c03b4868ff969375dd31040b"
+              "prediction_sha256": "e2338d142cc917cbfa366df263c0e60b16d2d16cf63debd263f4c0632626f787"
             },
             {
               "frame_index": 3,
               "prediction_path": "showcase/temporal/fine-froth/003/predictions/C3/labels.rle",
-              "prediction_sha256": "5d978726c501d344bc2cc9e1b8663e44051569244698c7734c48e19ed4554a43"
+              "prediction_sha256": "3d7c0c352360b6aaa130eb56a478bd18c1bbff18309827302468d4d56b5c1a99"
             },
             {
               "frame_index": 4,
               "prediction_path": "showcase/temporal/fine-froth/004/predictions/C3/labels.rle",
-              "prediction_sha256": "bf1ca5f4b676d1e9a719c153e387761df31de469fb72e9f17cdffac0ba5a3fa9"
+              "prediction_sha256": "3ff7ec4587740cac53158a81b2fe6b870dd028d45a9ecf0bcd6deb249dc9cb3b"
             },
             {
               "frame_index": 5,
               "prediction_path": "showcase/temporal/fine-froth/005/predictions/C3/labels.rle",
-              "prediction_sha256": "24039a561897ae06a56a8d579c1e7e6d5f51e2ce88b95b88cda1cfe327b2385a"
+              "prediction_sha256": "afac7f6ba21a6a526e23eea0467cbd489767f4bb8d688168b2be6e007af0eef8"
             },
             {
               "frame_index": 6,
               "prediction_path": "showcase/temporal/fine-froth/006/predictions/C3/labels.rle",
-              "prediction_sha256": "93df4e3c571f46b0613999f865bdf55e980d88426e11f8ab4a8713373e37f3c6"
+              "prediction_sha256": "0a9794526f917471a5835483e916e0baa777f7215e24491ea86790acc63d79ad"
             },
             {
               "frame_index": 7,
               "prediction_path": "showcase/temporal/fine-froth/007/predictions/C3/labels.rle",
-              "prediction_sha256": "cc1d07071b01bd0f6fccd4d25e0ebbf84cb6d5576f19f6ec7bf06dc9e732246f"
+              "prediction_sha256": "72a881fff8ba11fad7e6ec29caa661fa27844c3e2489d53c8a502cf116bcf06c"
             }
           ],
           "method_id": "C3",
           "method_slug": "watershed_hmax",
           "metrics": {
-            "association_accuracy": 0.8907515699907709,
-            "detection_accuracy": 0.8872997711670481,
-            "event_f1": 0.0017482517482517483,
+            "association_accuracy": 0.9028296623073232,
+            "detection_accuracy": 0.9550303283831835,
+            "event_f1": 0.004357298474945534,
             "event_false_negatives": 0,
-            "event_false_positives": 1142,
-            "event_precision": 0.0008748906386701663,
+            "event_false_positives": 457,
+            "event_precision": 0.002183406113537118,
             "event_recall": 1.0,
             "event_true_positives": 1,
-            "false_negative_instances": 90,
-            "false_positive_instances": 501,
-            "flow_epe_px": 0.4541279916767241,
+            "false_negative_instances": 177,
+            "false_positive_instances": 38,
+            "flow_epe_px": 0.3851010538839362,
             "frames": 8,
-            "hota": 0.889023995300183,
-            "id_precision": 0.8298409002716337,
-            "id_recall": 0.9017499472907442,
-            "id_switch_rate": 0.03846980442725124,
-            "id_switches": 179,
-            "idf1": 0.8643023138324745,
-            "matched_gt_instances": 4653,
-            "mean_frame_coverage": 0.9810261753110614,
-            "track_fragmentations": 36
+            "hota": 0.9285632497937023,
+            "id_precision": 0.9257167680278019,
+            "id_recall": 0.8985873919460258,
+            "id_switch_rate": 0.025405168637757335,
+            "id_switches": 116,
+            "idf1": 0.9119503584037659,
+            "matched_gt_instances": 4566,
+            "mean_frame_coverage": 0.9626818798140467,
+            "track_fragmentations": 69
           },
           "mode": "framewise_segmentation_with_iou_identity_association",
           "model_provenance": {
@@ -1869,7 +1869,7 @@
             "checkpoint_sha256": null,
             "device": "cpu"
           },
-          "predicted_event_count": 1143,
+          "predicted_event_count": 458,
           "protocol": "independent per-frame inference, followed by greedy IoU identity association",
           "truth_event_count": 1
         },
@@ -1877,7 +1877,7 @@
           "events_path": "showcase/temporal/fine-froth/predictions/C4/events.json",
           "events_sha256": "2b549e3df461021f52641dbab828c1f41549be065a5d050c1755efc2c34c57ec",
           "evidence_path": "temporal/watershed_dt.json",
-          "evidence_sha256": "4ea9bc533ca906d7657abc07fdf71a08db8f4d56d32719aa3adb90c2659ef589",
+          "evidence_sha256": "84a4f4fa1c052c1a2058898ff72777986a32d2f0e57432ad091adab2e1a6e79c",
           "frames": [
             {
               "frame_index": 0,
@@ -1959,7 +1959,7 @@
           "events_path": "showcase/temporal/fine-froth/predictions/C5/events.json",
           "events_sha256": "77106244b3992d7ce4daa15d403b9e9f64e972f43f725173ab1f06e39e06c55e",
           "evidence_path": "temporal/watershed_hmin.json",
-          "evidence_sha256": "ce82cb3e6c2d7a3ace863e36016e1f76f1acb3c6b2d71b8f3c72917a36806089",
+          "evidence_sha256": "413df688adf5c00dc7f552ba1dfcca08c87f3154072320837eeb792e554e2bf1",
           "frames": [
             {
               "frame_index": 0,
@@ -2041,7 +2041,7 @@
           "events_path": "showcase/temporal/fine-froth/predictions/C6/events.json",
           "events_sha256": "21f5530e392fbe0b463261dac492a715a275381c3bd749ea55c4bed8a34ee2b0",
           "evidence_path": "temporal/slic_merge.json",
-          "evidence_sha256": "366ff8d6d7496a6b001af3584960ca8102a31f6418245bc3cd3c27d2eaeb2060",
+          "evidence_sha256": "57a24943b061ba6472ba658801a6f7705b09522442f14f0ac4d1538d17440f70",
           "frames": [
             {
               "frame_index": 0,
@@ -2123,7 +2123,7 @@
           "events_path": "showcase/temporal/fine-froth/predictions/C7/events.json",
           "events_sha256": "8343451c9fec3d6e7024168ab6e2d7df05b50a2e252152b3054b2ae59d5099c8",
           "evidence_path": "temporal/valley_edge.json",
-          "evidence_sha256": "b41fdd2f1dbde653e92ead5319c1053ad4df93cc58889f66cc478817f35f091a",
+          "evidence_sha256": "7cb46c4448c77f2418ca8316ed133d0bbd7326991825a65e2c9beec27ce5c9ce",
           "frames": [
             {
               "frame_index": 0,
@@ -2205,7 +2205,7 @@
           "events_path": "showcase/temporal/fine-froth/predictions/L1/events.json",
           "events_sha256": "21c3cada373b7f57dbbdbd725dba9229ce5418f3bbd1e010deaed2b8a6926eb9",
           "evidence_path": "temporal/unet_watershed.json",
-          "evidence_sha256": "e3b5a6efcc3b90b43a5618f8ee2e32a82c41643735b3ce46b2e328c625e7f40b",
+          "evidence_sha256": "89638b6d08c38b0559b162689c80a5642c5d190ba022d262766caa9d5c6a5044",
           "frames": [
             {
               "frame_index": 0,
@@ -2287,7 +2287,7 @@
           "events_path": "showcase/temporal/fine-froth/predictions/L2/events.json",
           "events_sha256": "75ea786c7a3bf4274cd2cd4bdc73764883b24bc585c25731023c8e3b574dff1c",
           "evidence_path": "temporal/deep_marker_watershed.json",
-          "evidence_sha256": "c54df0b6f9f014131ba5f3aa4a3aa1dc9f421ea2063cccdaec69694b3b17732f",
+          "evidence_sha256": "11d06c4ed6cb6265c152b21208b0e696726d7c88ab36ac8465f6618630719e91",
           "frames": [
             {
               "frame_index": 0,
@@ -2369,7 +2369,7 @@
           "events_path": "showcase/temporal/fine-froth/predictions/L3/events.json",
           "events_sha256": "eb2ad8cc1649e38308f5765f58dd400a271052cfca4448398ea5d6072aeb96cf",
           "evidence_path": "temporal/gc_fsegnet.json",
-          "evidence_sha256": "ff59c96c3ad2e5853b77a336f7cb37b9650703f458ceaab7d1f116f6c1fc16f6",
+          "evidence_sha256": "2172dea67af0cc3a29715c86a19cc6adb2066984f63f3207bc0296584163e9d3",
           "frames": [
             {
               "frame_index": 0,
@@ -2451,7 +2451,7 @@
           "events_path": "showcase/temporal/fine-froth/predictions/L4/events.json",
           "events_sha256": "2ea1559f278822226537d88b4f01cef58421e22700792748b28ba69dae611afa",
           "evidence_path": "temporal/stardist_2d.json",
-          "evidence_sha256": "ca891d0f444f42fe026da659d2b6deb1c015c4a649b27e22784f609020769bc3",
+          "evidence_sha256": "4b3433fa9282c7f581837ad7c2c1f8d468bd0349bc6b996e4d96e1d51afb2d4d",
           "frames": [
             {
               "frame_index": 0,
@@ -2533,7 +2533,7 @@
           "events_path": "showcase/temporal/fine-froth/predictions/L5/events.json",
           "events_sha256": "33ce3718079ac82546b5f60128363dfc074f9222980f2af5fdddaa21d854a9b8",
           "evidence_path": "temporal/cellpose_sam.json",
-          "evidence_sha256": "3d6c144968bb8e49832f809b84f9883ef262fc9b60c2a99cf469ed0ed7aa8d69",
+          "evidence_sha256": "dfe3b150307533670652fa12cc92c7246d32f1b82415baa751d37bd5ea77ac56",
           "frames": [
             {
               "frame_index": 0,
@@ -2615,7 +2615,7 @@
           "events_path": "showcase/temporal/fine-froth/predictions/L6/events.json",
           "events_sha256": "32f974d183a6030426015fbe3b38a1e86635c2e92b1fa4a08c43a7bd4a9a1d27",
           "evidence_path": "temporal/yolo_froth_seg.json",
-          "evidence_sha256": "f64e84bb147cb975c8c111d9498ba93a2c723ba9e0bc441336d5706297b75c57",
+          "evidence_sha256": "95f91ebdef19936526f13fd7ca2558ea72f82e6ab3031e28877cd31e37d12598",
           "frames": [
             {
               "frame_index": 0,
@@ -2781,7 +2781,7 @@
           "events_path": "showcase/temporal/fine-froth/predictions/N1/events.json",
           "events_sha256": "ce0e795ab62dbd19af79c116534b7262a53dcfa8adfd94342b528047dc510c6f",
           "evidence_path": "temporal/lamellastar.json",
-          "evidence_sha256": "8497b33d7b4feb1263f777cc2d821cf797d402fb0787433804f4b266c51e99dd",
+          "evidence_sha256": "dbaaa88aa47a2e79a60de1644ef8305edcfc5545f99eb3c8de76b9db67b62922",
           "frames": [
             {
               "frame_index": 0,
@@ -2943,7 +2943,7 @@
           "events_path": "showcase/temporal/glare-storm/predictions/C1/events.json",
           "events_sha256": "5d3c3d384181cefd16900aab452aecb1c104694b649d604c38962dc1a20ab737",
           "evidence_path": "temporal/otsu_cc.json",
-          "evidence_sha256": "78283167b7fb291d0f1e36f3b30c2acb8ef6b8c18ccfeba900f16ddee28f5d33",
+          "evidence_sha256": "1e011166e2ac783c973a42db52269595c2b04999172200874c20d4e239746029",
           "frames": [
             {
               "frame_index": 0,
@@ -3025,7 +3025,7 @@
           "events_path": "showcase/temporal/glare-storm/predictions/C2/events.json",
           "events_sha256": "87d253e8fedc9ed03c2823676d05ad50cb2f8e5d14832ac05a0f4a9ceb184878",
           "evidence_path": "temporal/watershed_immersion.json",
-          "evidence_sha256": "7466690825657fb36846c21545be56ad55b4a7c1ddd6356909d6d0b8bc89c99c",
+          "evidence_sha256": "56906119409e4602be0ceff3f73fae6ad93dff7b9fc39424a36f8a53acdb24be",
           "frames": [
             {
               "frame_index": 0,
@@ -3105,75 +3105,75 @@
         },
         {
           "events_path": "showcase/temporal/glare-storm/predictions/C3/events.json",
-          "events_sha256": "ca5ec159c8f0262933b6688164b6a2e1d6407aa99e3be74c665b82753e2b307e",
+          "events_sha256": "6462c576320fd0a9a19b040bf544408c3eabfc5c61613f4bc14aeee12d82917f",
           "evidence_path": "temporal/watershed_hmax.json",
-          "evidence_sha256": "71a5d96d98ac7e445e60c8545ff4ec67c26ebd58c04a37046761ebdf10fd20d2",
+          "evidence_sha256": "7cc39632ff625eee11b3be0756b8d143a5512dd9f6a5573b02611c6790f1a4f0",
           "frames": [
             {
               "frame_index": 0,
               "prediction_path": "showcase/temporal/glare-storm/000/predictions/C3/labels.rle",
-              "prediction_sha256": "f1a0dca06cc5695fd2021b4c12b666d4c43bfbd5f4dca302204cad33aeb7e71a"
+              "prediction_sha256": "0d1a63624933219c76cfd8a6fb52f5624f41f7ffcfa1620e609b0142d5d22d39"
             },
             {
               "frame_index": 1,
               "prediction_path": "showcase/temporal/glare-storm/001/predictions/C3/labels.rle",
-              "prediction_sha256": "0015f7c9ff48c5231c0ff384ca187d80b75a22a4d08afe4187b0a9a135eaf4f1"
+              "prediction_sha256": "8d9a58c5e0c182a9307d8b377a7b0d86a494819da856a23b4de9a2b179ea22e6"
             },
             {
               "frame_index": 2,
               "prediction_path": "showcase/temporal/glare-storm/002/predictions/C3/labels.rle",
-              "prediction_sha256": "7156755ec1effde309c50d847391687f76e80446d301215ffd1c755213e601e3"
+              "prediction_sha256": "24a032403e325387c9b5219d935892bfe41bac3b97d7fed8689c4aea83091a14"
             },
             {
               "frame_index": 3,
               "prediction_path": "showcase/temporal/glare-storm/003/predictions/C3/labels.rle",
-              "prediction_sha256": "b6b95e6df85a3bee524c5860a3881d43e4d9b3114297b31b5a835e60c2773bce"
+              "prediction_sha256": "9cbdac4479852cf105d97414c5d6b207d4f16cfa712e48dec27318daba54249d"
             },
             {
               "frame_index": 4,
               "prediction_path": "showcase/temporal/glare-storm/004/predictions/C3/labels.rle",
-              "prediction_sha256": "92e61cd912036043ace8a83207d019a9b39b4e9f10fb942f833b2284e252a4db"
+              "prediction_sha256": "ff2ce99d0283a1e439993ddaba2d2830a839f36ab83f95a00866bd0462d6e8df"
             },
             {
               "frame_index": 5,
               "prediction_path": "showcase/temporal/glare-storm/005/predictions/C3/labels.rle",
-              "prediction_sha256": "b7f62c1ca3d7b1d96fc4ab0ba73fb9d2c4332b7de04da1bd40da0ed2871be619"
+              "prediction_sha256": "266338beb108fd45461659a3b90cd7452a67f013a01eaa587c157e3c00974d2c"
             },
             {
               "frame_index": 6,
               "prediction_path": "showcase/temporal/glare-storm/006/predictions/C3/labels.rle",
-              "prediction_sha256": "19252e4a57e0ccb0ca33f312a4a6318e92265e01f2a4affbe533f11a70869fe2"
+              "prediction_sha256": "f695b4dce03fb50392d319cccb6a9e37c3dda3f19aba096274d103074859b281"
             },
             {
               "frame_index": 7,
               "prediction_path": "showcase/temporal/glare-storm/007/predictions/C3/labels.rle",
-              "prediction_sha256": "ecd44ebda176d40eb2d042314a23c75324855d6603b31f8d792090e9a17648ce"
+              "prediction_sha256": "82f6e13c283f8514954326a4c47aa0032c5f4883b0668167f72c4ec693da0cb1"
             }
           ],
           "method_id": "C3",
           "method_slug": "watershed_hmax",
           "metrics": {
-            "association_accuracy": 0.4801379055936347,
-            "detection_accuracy": 0.2220080940450954,
+            "association_accuracy": 0.46229161784717326,
+            "detection_accuracy": 0.2469879518072289,
             "event_f1": 0.0,
             "event_false_negatives": 0,
-            "event_false_positives": 6208,
+            "event_false_positives": 5308,
             "event_precision": 0.0,
             "event_recall": 0.0,
             "event_true_positives": 0,
-            "false_negative_instances": 424,
-            "false_positive_instances": 3613,
-            "flow_epe_px": 2.1148390879024617,
+            "false_negative_instances": 469,
+            "false_positive_instances": 2906,
+            "flow_epe_px": 2.2235435482711083,
             "frames": 8,
-            "hota": 0.32648813347447525,
-            "id_precision": 0.16411332633788037,
-            "id_recall": 0.49619289340101524,
-            "id_switch_rate": 0.07291666666666667,
-            "id_switches": 84,
-            "idf1": 0.24664879356568364,
-            "matched_gt_instances": 1152,
-            "mean_frame_coverage": 0.7309644670050761,
-            "track_fragmentations": 195
+            "hota": 0.33790599259220533,
+            "id_precision": 0.1858958385247944,
+            "id_recall": 0.4733502538071066,
+            "id_switch_rate": 0.06594399277326106,
+            "id_switches": 73,
+            "idf1": 0.2669529432814457,
+            "matched_gt_instances": 1107,
+            "mean_frame_coverage": 0.7024111675126904,
+            "track_fragmentations": 201
           },
           "mode": "framewise_segmentation_with_iou_identity_association",
           "model_provenance": {
@@ -3181,7 +3181,7 @@
             "checkpoint_sha256": null,
             "device": "cpu"
           },
-          "predicted_event_count": 6208,
+          "predicted_event_count": 5308,
           "protocol": "independent per-frame inference, followed by greedy IoU identity association",
           "truth_event_count": 0
         },
@@ -3189,7 +3189,7 @@
           "events_path": "showcase/temporal/glare-storm/predictions/C4/events.json",
           "events_sha256": "af634f7f77613a9f9a691e49618925ce0363507307091981efd21e47f6570e05",
           "evidence_path": "temporal/watershed_dt.json",
-          "evidence_sha256": "4ea9bc533ca906d7657abc07fdf71a08db8f4d56d32719aa3adb90c2659ef589",
+          "evidence_sha256": "84a4f4fa1c052c1a2058898ff72777986a32d2f0e57432ad091adab2e1a6e79c",
           "frames": [
             {
               "frame_index": 0,
@@ -3271,7 +3271,7 @@
           "events_path": "showcase/temporal/glare-storm/predictions/C5/events.json",
           "events_sha256": "2a7977fe44f17f17b41a95e7479cd49a17cde77bfee0a0342d3efd24f5dfdcc1",
           "evidence_path": "temporal/watershed_hmin.json",
-          "evidence_sha256": "ce82cb3e6c2d7a3ace863e36016e1f76f1acb3c6b2d71b8f3c72917a36806089",
+          "evidence_sha256": "413df688adf5c00dc7f552ba1dfcca08c87f3154072320837eeb792e554e2bf1",
           "frames": [
             {
               "frame_index": 0,
@@ -3353,7 +3353,7 @@
           "events_path": "showcase/temporal/glare-storm/predictions/C6/events.json",
           "events_sha256": "c9d2a554b5dc65e57bd372fc0c599f3470e5981795e6fede8c262ded1d24b9ba",
           "evidence_path": "temporal/slic_merge.json",
-          "evidence_sha256": "366ff8d6d7496a6b001af3584960ca8102a31f6418245bc3cd3c27d2eaeb2060",
+          "evidence_sha256": "57a24943b061ba6472ba658801a6f7705b09522442f14f0ac4d1538d17440f70",
           "frames": [
             {
               "frame_index": 0,
@@ -3435,7 +3435,7 @@
           "events_path": "showcase/temporal/glare-storm/predictions/C7/events.json",
           "events_sha256": "da4a2ed763a7aafce7350ef9d9aaea4ea34b28052c374ef62d2a4f3d00d5f095",
           "evidence_path": "temporal/valley_edge.json",
-          "evidence_sha256": "b41fdd2f1dbde653e92ead5319c1053ad4df93cc58889f66cc478817f35f091a",
+          "evidence_sha256": "7cb46c4448c77f2418ca8316ed133d0bbd7326991825a65e2c9beec27ce5c9ce",
           "frames": [
             {
               "frame_index": 0,
@@ -3517,7 +3517,7 @@
           "events_path": "showcase/temporal/glare-storm/predictions/L1/events.json",
           "events_sha256": "61b2e4d235f5ec11d346dd29e2c182572e99ffb624f2c208d1e7289a4ff2b0f6",
           "evidence_path": "temporal/unet_watershed.json",
-          "evidence_sha256": "e3b5a6efcc3b90b43a5618f8ee2e32a82c41643735b3ce46b2e328c625e7f40b",
+          "evidence_sha256": "89638b6d08c38b0559b162689c80a5642c5d190ba022d262766caa9d5c6a5044",
           "frames": [
             {
               "frame_index": 0,
@@ -3599,7 +3599,7 @@
           "events_path": "showcase/temporal/glare-storm/predictions/L2/events.json",
           "events_sha256": "3b07451dc298560830a3708a44d4baf0b2f4819440dc573e27937de7a0b97f28",
           "evidence_path": "temporal/deep_marker_watershed.json",
-          "evidence_sha256": "c54df0b6f9f014131ba5f3aa4a3aa1dc9f421ea2063cccdaec69694b3b17732f",
+          "evidence_sha256": "11d06c4ed6cb6265c152b21208b0e696726d7c88ab36ac8465f6618630719e91",
           "frames": [
             {
               "frame_index": 0,
@@ -3681,7 +3681,7 @@
           "events_path": "showcase/temporal/glare-storm/predictions/L3/events.json",
           "events_sha256": "c2ec5f970a71dff3ead4f885a39b6c1ebb0d7d1b6678fe307d3202b076d6c543",
           "evidence_path": "temporal/gc_fsegnet.json",
-          "evidence_sha256": "ff59c96c3ad2e5853b77a336f7cb37b9650703f458ceaab7d1f116f6c1fc16f6",
+          "evidence_sha256": "2172dea67af0cc3a29715c86a19cc6adb2066984f63f3207bc0296584163e9d3",
           "frames": [
             {
               "frame_index": 0,
@@ -3763,7 +3763,7 @@
           "events_path": "showcase/temporal/glare-storm/predictions/L4/events.json",
           "events_sha256": "03599d384a196e87226db5ea2d50639f17170ae8445630dc9afe54415d93ee4b",
           "evidence_path": "temporal/stardist_2d.json",
-          "evidence_sha256": "ca891d0f444f42fe026da659d2b6deb1c015c4a649b27e22784f609020769bc3",
+          "evidence_sha256": "4b3433fa9282c7f581837ad7c2c1f8d468bd0349bc6b996e4d96e1d51afb2d4d",
           "frames": [
             {
               "frame_index": 0,
@@ -3845,7 +3845,7 @@
           "events_path": "showcase/temporal/glare-storm/predictions/L5/events.json",
           "events_sha256": "745daa23d59f9b53958bfb986f480f3896ac4921b3abdace58e972840bf9d975",
           "evidence_path": "temporal/cellpose_sam.json",
-          "evidence_sha256": "3d6c144968bb8e49832f809b84f9883ef262fc9b60c2a99cf469ed0ed7aa8d69",
+          "evidence_sha256": "dfe3b150307533670652fa12cc92c7246d32f1b82415baa751d37bd5ea77ac56",
           "frames": [
             {
               "frame_index": 0,
@@ -3927,7 +3927,7 @@
           "events_path": "showcase/temporal/glare-storm/predictions/L6/events.json",
           "events_sha256": "570c0f90ed568a0f3023c4dae8939f7e68e993548d2d91782a30d42a8ba724ee",
           "evidence_path": "temporal/yolo_froth_seg.json",
-          "evidence_sha256": "f64e84bb147cb975c8c111d9498ba93a2c723ba9e0bc441336d5706297b75c57",
+          "evidence_sha256": "95f91ebdef19936526f13fd7ca2558ea72f82e6ab3031e28877cd31e37d12598",
           "frames": [
             {
               "frame_index": 0,
@@ -4093,7 +4093,7 @@
           "events_path": "showcase/temporal/glare-storm/predictions/N1/events.json",
           "events_sha256": "33c6c049384507df6d601d74d9d56ccd607528c7c307ba64075191ccb3121c2b",
           "evidence_path": "temporal/lamellastar.json",
-          "evidence_sha256": "8497b33d7b4feb1263f777cc2d821cf797d402fb0787433804f4b266c51e99dd",
+          "evidence_sha256": "dbaaa88aa47a2e79a60de1644ef8305edcfc5545f99eb3c8de76b9db67b62922",
           "frames": [
             {
               "frame_index": 0,
@@ -4255,7 +4255,7 @@
           "events_path": "showcase/temporal/motion-fast/predictions/C1/events.json",
           "events_sha256": "3903faa3cf2340c5f32e3d46a913191c945c5134880093cd133eac5d8a55d54e",
           "evidence_path": "temporal/otsu_cc.json",
-          "evidence_sha256": "78283167b7fb291d0f1e36f3b30c2acb8ef6b8c18ccfeba900f16ddee28f5d33",
+          "evidence_sha256": "1e011166e2ac783c973a42db52269595c2b04999172200874c20d4e239746029",
           "frames": [
             {
               "frame_index": 0,
@@ -4337,7 +4337,7 @@
           "events_path": "showcase/temporal/motion-fast/predictions/C2/events.json",
           "events_sha256": "3b02ab7613039efa20c3b5fd125eee7f6269c240d5cb09a89fe04da06c916994",
           "evidence_path": "temporal/watershed_immersion.json",
-          "evidence_sha256": "7466690825657fb36846c21545be56ad55b4a7c1ddd6356909d6d0b8bc89c99c",
+          "evidence_sha256": "56906119409e4602be0ceff3f73fae6ad93dff7b9fc39424a36f8a53acdb24be",
           "frames": [
             {
               "frame_index": 0,
@@ -4417,75 +4417,75 @@
         },
         {
           "events_path": "showcase/temporal/motion-fast/predictions/C3/events.json",
-          "events_sha256": "bebda0b91e8c6ed03d06137bac8ebddcb387420a6b52329dc5c245c1109f4690",
+          "events_sha256": "908de07f157dcdf6e5b5a1fc37a056f8bafb2eb9dfe1f018120463620bcc0b8b",
           "evidence_path": "temporal/watershed_hmax.json",
-          "evidence_sha256": "71a5d96d98ac7e445e60c8545ff4ec67c26ebd58c04a37046761ebdf10fd20d2",
+          "evidence_sha256": "7cc39632ff625eee11b3be0756b8d143a5512dd9f6a5573b02611c6790f1a4f0",
           "frames": [
             {
               "frame_index": 0,
               "prediction_path": "showcase/temporal/motion-fast/000/predictions/C3/labels.rle",
-              "prediction_sha256": "8fdc5aca7173cb7fca6159f7372f248b208db28cecd99d920eb8169cd38d8406"
+              "prediction_sha256": "bc3297c3c1e610911f1721908956f68c92844aaae64bcaa90394c61fa900ea36"
             },
             {
               "frame_index": 1,
               "prediction_path": "showcase/temporal/motion-fast/001/predictions/C3/labels.rle",
-              "prediction_sha256": "a6747df6123b6329d0d6cdff5010c8ef769af096be8ec9532cc19a4149d84939"
+              "prediction_sha256": "fcf8956729ac7fd0011ea1cdff1e3efad3c085c37cfc9e6b48025bbe291669e9"
             },
             {
               "frame_index": 2,
               "prediction_path": "showcase/temporal/motion-fast/002/predictions/C3/labels.rle",
-              "prediction_sha256": "abd5a98df1de8b509e680649ff43e16accc46b92c490bfdbd267bf8e67227c93"
+              "prediction_sha256": "ccf6f9c624e750601be01200455965c64ace53136f19893563aa46dbc418eae9"
             },
             {
               "frame_index": 3,
               "prediction_path": "showcase/temporal/motion-fast/003/predictions/C3/labels.rle",
-              "prediction_sha256": "9d6170b7a7e26ace4710fabce2242cc77b4004b5a29fe8eb2a7fcaee946b4eaa"
+              "prediction_sha256": "e62d2c19d10089c84dd364fb015d00ae5d8843b853741344f04046d91ff1b90a"
             },
             {
               "frame_index": 4,
               "prediction_path": "showcase/temporal/motion-fast/004/predictions/C3/labels.rle",
-              "prediction_sha256": "6140e4fbae2be922f7cdefd298b9eb2565e2ae51aa4fcbceae5aeadaa27ceb3c"
+              "prediction_sha256": "fb1c112140a37e76bc49d81fa5539ce152521bfe6a5711df8a0e2fa42f563664"
             },
             {
               "frame_index": 5,
               "prediction_path": "showcase/temporal/motion-fast/005/predictions/C3/labels.rle",
-              "prediction_sha256": "9056ebf5ca0ed49643332cbfa1b7d4a15390b4645bfd0a6274d55a14580d25d9"
+              "prediction_sha256": "821e42e461b0221c8216408875f9b24aecd508ba8f11861336e63d08bf36fcd6"
             },
             {
               "frame_index": 6,
               "prediction_path": "showcase/temporal/motion-fast/006/predictions/C3/labels.rle",
-              "prediction_sha256": "f265ae0f1ed681c8867dcc24d8afeb3c32ffcd24a1ed59374bf0ea2b96ed975a"
+              "prediction_sha256": "d4e75db30fcf08f1562d09f4a02e7bfc54c376f0f088e866bd817d91f63e386d"
             },
             {
               "frame_index": 7,
               "prediction_path": "showcase/temporal/motion-fast/007/predictions/C3/labels.rle",
-              "prediction_sha256": "4d617d0670bc8bb48fec752a425a545993599efbc3e1ed562ff8332fc46255ba"
+              "prediction_sha256": "24dd1b9669521521c7a1ec26b2a373d60e54a50c11209afbfda62c8973a699ac"
             }
           ],
           "method_id": "C3",
           "method_slug": "watershed_hmax",
           "metrics": {
-            "association_accuracy": 0.8137947195110723,
-            "detection_accuracy": 0.5841081994928149,
+            "association_accuracy": 0.8090742888064318,
+            "detection_accuracy": 0.7079646017699115,
             "event_f1": 0.0,
             "event_false_negatives": 0,
-            "event_false_positives": 1364,
+            "event_false_positives": 190,
             "event_precision": 0.0,
             "event_recall": 0.0,
             "event_true_positives": 0,
-            "false_negative_instances": 194,
-            "false_positive_instances": 790,
-            "flow_epe_px": 1.8407189324634525,
+            "false_negative_instances": 456,
+            "false_positive_instances": 6,
+            "flow_epe_px": 1.6240203251648078,
             "frames": 8,
-            "hota": 0.6894520783712039,
-            "id_precision": 0.5667587476979742,
-            "id_recall": 0.7810913705583756,
-            "id_switch_rate": 0.049927641099855286,
-            "id_switches": 69,
-            "idf1": 0.6568836712913554,
-            "matched_gt_instances": 1382,
-            "mean_frame_coverage": 0.8769035532994924,
-            "track_fragmentations": 54
+            "hota": 0.7568328459290862,
+            "id_precision": 0.894316163410302,
+            "id_recall": 0.6389593908629442,
+            "id_switch_rate": 0.013392857142857142,
+            "id_switches": 15,
+            "idf1": 0.7453737971872687,
+            "matched_gt_instances": 1120,
+            "mean_frame_coverage": 0.7106598984771573,
+            "track_fragmentations": 60
           },
           "mode": "framewise_segmentation_with_iou_identity_association",
           "model_provenance": {
@@ -4493,7 +4493,7 @@
             "checkpoint_sha256": null,
             "device": "cpu"
           },
-          "predicted_event_count": 1364,
+          "predicted_event_count": 190,
           "protocol": "independent per-frame inference, followed by greedy IoU identity association",
           "truth_event_count": 0
         },
@@ -4501,7 +4501,7 @@
           "events_path": "showcase/temporal/motion-fast/predictions/C4/events.json",
           "events_sha256": "9521b916e5dcd9fb59cff8b0b0cb0f33940f3c1b15dd38fd548de2ef63d17d16",
           "evidence_path": "temporal/watershed_dt.json",
-          "evidence_sha256": "4ea9bc533ca906d7657abc07fdf71a08db8f4d56d32719aa3adb90c2659ef589",
+          "evidence_sha256": "84a4f4fa1c052c1a2058898ff72777986a32d2f0e57432ad091adab2e1a6e79c",
           "frames": [
             {
               "frame_index": 0,
@@ -4583,7 +4583,7 @@
           "events_path": "showcase/temporal/motion-fast/predictions/C5/events.json",
           "events_sha256": "aa5da526c9c049c5bb238cc0852f655793d28b942dc6c98038253b949a10ff51",
           "evidence_path": "temporal/watershed_hmin.json",
-          "evidence_sha256": "ce82cb3e6c2d7a3ace863e36016e1f76f1acb3c6b2d71b8f3c72917a36806089",
+          "evidence_sha256": "413df688adf5c00dc7f552ba1dfcca08c87f3154072320837eeb792e554e2bf1",
           "frames": [
             {
               "frame_index": 0,
@@ -4665,7 +4665,7 @@
           "events_path": "showcase/temporal/motion-fast/predictions/C6/events.json",
           "events_sha256": "6fcb3b94e4571763168a9991b1e0eeae07916a785e16f2a24bb51593aee92462",
           "evidence_path": "temporal/slic_merge.json",
-          "evidence_sha256": "366ff8d6d7496a6b001af3584960ca8102a31f6418245bc3cd3c27d2eaeb2060",
+          "evidence_sha256": "57a24943b061ba6472ba658801a6f7705b09522442f14f0ac4d1538d17440f70",
           "frames": [
             {
               "frame_index": 0,
@@ -4747,7 +4747,7 @@
           "events_path": "showcase/temporal/motion-fast/predictions/C7/events.json",
           "events_sha256": "278398f8ccf8acefbb4eabf2a9b83357d4438c45c6418c8f926edab0d7279360",
           "evidence_path": "temporal/valley_edge.json",
-          "evidence_sha256": "b41fdd2f1dbde653e92ead5319c1053ad4df93cc58889f66cc478817f35f091a",
+          "evidence_sha256": "7cb46c4448c77f2418ca8316ed133d0bbd7326991825a65e2c9beec27ce5c9ce",
           "frames": [
             {
               "frame_index": 0,
@@ -4829,7 +4829,7 @@
           "events_path": "showcase/temporal/motion-fast/predictions/L1/events.json",
           "events_sha256": "3e7eb71f19128a65e72d03d3aceca31151e00d0f5327aca7f63e7569f12406e7",
           "evidence_path": "temporal/unet_watershed.json",
-          "evidence_sha256": "e3b5a6efcc3b90b43a5618f8ee2e32a82c41643735b3ce46b2e328c625e7f40b",
+          "evidence_sha256": "89638b6d08c38b0559b162689c80a5642c5d190ba022d262766caa9d5c6a5044",
           "frames": [
             {
               "frame_index": 0,
@@ -4911,7 +4911,7 @@
           "events_path": "showcase/temporal/motion-fast/predictions/L2/events.json",
           "events_sha256": "0137f610fa3cda3fe8026c6c5b250adfc598c80ab12a08335454f081be795ff5",
           "evidence_path": "temporal/deep_marker_watershed.json",
-          "evidence_sha256": "c54df0b6f9f014131ba5f3aa4a3aa1dc9f421ea2063cccdaec69694b3b17732f",
+          "evidence_sha256": "11d06c4ed6cb6265c152b21208b0e696726d7c88ab36ac8465f6618630719e91",
           "frames": [
             {
               "frame_index": 0,
@@ -4993,7 +4993,7 @@
           "events_path": "showcase/temporal/motion-fast/predictions/L3/events.json",
           "events_sha256": "e3cac48db31dcca3858eb0ff6dd9de4fd60a8114ab092672cccf250108342c6b",
           "evidence_path": "temporal/gc_fsegnet.json",
-          "evidence_sha256": "ff59c96c3ad2e5853b77a336f7cb37b9650703f458ceaab7d1f116f6c1fc16f6",
+          "evidence_sha256": "2172dea67af0cc3a29715c86a19cc6adb2066984f63f3207bc0296584163e9d3",
           "frames": [
             {
               "frame_index": 0,
@@ -5075,7 +5075,7 @@
           "events_path": "showcase/temporal/motion-fast/predictions/L4/events.json",
           "events_sha256": "964d3cccf332c3e74dff2fbbcb7d31e0e6007d6ef35ed43cbec000907f9698c5",
           "evidence_path": "temporal/stardist_2d.json",
-          "evidence_sha256": "ca891d0f444f42fe026da659d2b6deb1c015c4a649b27e22784f609020769bc3",
+          "evidence_sha256": "4b3433fa9282c7f581837ad7c2c1f8d468bd0349bc6b996e4d96e1d51afb2d4d",
           "frames": [
             {
               "frame_index": 0,
@@ -5157,7 +5157,7 @@
           "events_path": "showcase/temporal/motion-fast/predictions/L5/events.json",
           "events_sha256": "d1ea3ed6e3c8bf5b57999963bd41535b62c82e41187ff6ab4d275d1a9f6cb52a",
           "evidence_path": "temporal/cellpose_sam.json",
-          "evidence_sha256": "3d6c144968bb8e49832f809b84f9883ef262fc9b60c2a99cf469ed0ed7aa8d69",
+          "evidence_sha256": "dfe3b150307533670652fa12cc92c7246d32f1b82415baa751d37bd5ea77ac56",
           "frames": [
             {
               "frame_index": 0,
@@ -5239,7 +5239,7 @@
           "events_path": "showcase/temporal/motion-fast/predictions/L6/events.json",
           "events_sha256": "d115541eb31c015957997d899598d677f1db08be839e238e3b1c4d3e3bea0d05",
           "evidence_path": "temporal/yolo_froth_seg.json",
-          "evidence_sha256": "f64e84bb147cb975c8c111d9498ba93a2c723ba9e0bc441336d5706297b75c57",
+          "evidence_sha256": "95f91ebdef19936526f13fd7ca2558ea72f82e6ab3031e28877cd31e37d12598",
           "frames": [
             {
               "frame_index": 0,
@@ -5405,7 +5405,7 @@
           "events_path": "showcase/temporal/motion-fast/predictions/N1/events.json",
           "events_sha256": "c4ef0cfb5ef000b7a433e1d8b96ce8dc800c0e20e0112174be3b8d11e3817a2e",
           "evidence_path": "temporal/lamellastar.json",
-          "evidence_sha256": "8497b33d7b4feb1263f777cc2d821cf797d402fb0787433804f4b266c51e99dd",
+          "evidence_sha256": "dbaaa88aa47a2e79a60de1644ef8305edcfc5545f99eb3c8de76b9db67b62922",
           "frames": [
             {
               "frame_index": 0,
@@ -5567,7 +5567,7 @@
           "events_path": "showcase/temporal/bursting/predictions/C1/events.json",
           "events_sha256": "0071546dc1da0fc6569cd6fbe5085661fd2f7ed90a086ae735750dab641f1761",
           "evidence_path": "temporal/otsu_cc.json",
-          "evidence_sha256": "78283167b7fb291d0f1e36f3b30c2acb8ef6b8c18ccfeba900f16ddee28f5d33",
+          "evidence_sha256": "1e011166e2ac783c973a42db52269595c2b04999172200874c20d4e239746029",
           "frames": [
             {
               "frame_index": 0,
@@ -5649,7 +5649,7 @@
           "events_path": "showcase/temporal/bursting/predictions/C2/events.json",
           "events_sha256": "d949c5c132e1c815c12d33c871d9567ef411161ecd4293b373a536e33a84bceb",
           "evidence_path": "temporal/watershed_immersion.json",
-          "evidence_sha256": "7466690825657fb36846c21545be56ad55b4a7c1ddd6356909d6d0b8bc89c99c",
+          "evidence_sha256": "56906119409e4602be0ceff3f73fae6ad93dff7b9fc39424a36f8a53acdb24be",
           "frames": [
             {
               "frame_index": 0,
@@ -5729,75 +5729,75 @@
         },
         {
           "events_path": "showcase/temporal/bursting/predictions/C3/events.json",
-          "events_sha256": "995582b7dd74007431ffe8664fd3f47efed0fd930fca852370c751de8380f2f2",
+          "events_sha256": "de248b20759a74c2a9f31ed57b67764211cf3c9194e78106cc87e6dd9cded735",
           "evidence_path": "temporal/watershed_hmax.json",
-          "evidence_sha256": "71a5d96d98ac7e445e60c8545ff4ec67c26ebd58c04a37046761ebdf10fd20d2",
+          "evidence_sha256": "7cc39632ff625eee11b3be0756b8d143a5512dd9f6a5573b02611c6790f1a4f0",
           "frames": [
             {
               "frame_index": 0,
               "prediction_path": "showcase/temporal/bursting/000/predictions/C3/labels.rle",
-              "prediction_sha256": "444e5f11cbc8f9a5beaff9c1a9b7cc105efd3f21428c8129941a9d27f737900e"
+              "prediction_sha256": "ed66592841552f75ae27b1e0dc15e1643daf411ae0ef8f35252b060e303e093f"
             },
             {
               "frame_index": 1,
               "prediction_path": "showcase/temporal/bursting/001/predictions/C3/labels.rle",
-              "prediction_sha256": "5087652e5529236700180bbd6e45fd8f2506ee711348b71bc1c4e9212b1e6912"
+              "prediction_sha256": "bbda255a99dbc285e955fd85c1b373c27979e6d9a9d668239ba4bd60722afdca"
             },
             {
               "frame_index": 2,
               "prediction_path": "showcase/temporal/bursting/002/predictions/C3/labels.rle",
-              "prediction_sha256": "17faa6dee598e19ae902d1ef1bcb5fa42beb0d05e4f980592870456cbc99653c"
+              "prediction_sha256": "b72618b4c3475a42a8a06e238b2be54b1ebf639c1e891e0d46cff9ffe0237c4c"
             },
             {
               "frame_index": 3,
               "prediction_path": "showcase/temporal/bursting/003/predictions/C3/labels.rle",
-              "prediction_sha256": "e8100b57acb76282e4b73afac9c609ba4b8aee7c99e28cc7defe1c8c1b2a0a64"
+              "prediction_sha256": "344955319bffb03b61f19c74e7588d93012084d1c8e7e55401141663c849d803"
             },
             {
               "frame_index": 4,
               "prediction_path": "showcase/temporal/bursting/004/predictions/C3/labels.rle",
-              "prediction_sha256": "1c068e3363f6c0d5b8167844b4048d499f7a6bdb1c2ebd2f08f1c22bb7a9020c"
+              "prediction_sha256": "183f2b3dfa2c43103a62793c013c6328b21612e7aff43d4f6678e8a3945bd504"
             },
             {
               "frame_index": 5,
               "prediction_path": "showcase/temporal/bursting/005/predictions/C3/labels.rle",
-              "prediction_sha256": "f23fc444fd17d55c10f18daa70b9a0d66a68f84795ca9a9e2de5019a511ee84c"
+              "prediction_sha256": "f58f6728af56b6e99c305ff861fa0e20176fb67edcee88fa73346830be5674c4"
             },
             {
               "frame_index": 6,
               "prediction_path": "showcase/temporal/bursting/006/predictions/C3/labels.rle",
-              "prediction_sha256": "5bcd707c03ed8f55491914e6249a7b2448f8e9d50580f99dba193230ab69738a"
+              "prediction_sha256": "bdcbca8bbd107290effb336e6c3320182728110864492a48ce14ca1753e9afa3"
             },
             {
               "frame_index": 7,
               "prediction_path": "showcase/temporal/bursting/007/predictions/C3/labels.rle",
-              "prediction_sha256": "b4de9cdfcc4738fbcad0a722e0f743d5a2cacfcdf62d7440fd23af139d050647"
+              "prediction_sha256": "ec3479be16ea8f0c5d87e4ea03168daa7df04000d2abceddf0d5870379c6679f"
             }
           ],
           "method_id": "C3",
           "method_slug": "watershed_hmax",
           "metrics": {
-            "association_accuracy": 0.7654119805928599,
-            "detection_accuracy": 0.5074300699300699,
-            "event_f1": 0.002531645569620253,
+            "association_accuracy": 0.8617831827042357,
+            "detection_accuracy": 0.8662613981762918,
+            "event_f1": 0.014336917562724014,
             "event_false_negatives": 0,
-            "event_false_positives": 1576,
-            "event_precision": 0.0012674271229404308,
+            "event_false_positives": 275,
+            "event_precision": 0.007220216606498195,
             "event_recall": 1.0,
             "event_true_positives": 2,
-            "false_negative_instances": 18,
-            "false_positive_instances": 1109,
-            "flow_epe_px": 1.4489529660186586,
+            "false_negative_instances": 39,
+            "false_positive_instances": 137,
+            "flow_epe_px": 1.0992706947182114,
             "frames": 8,
-            "hota": 0.6232118859886645,
-            "id_precision": 0.42951541850220265,
-            "id_recall": 0.8269720101781171,
-            "id_switch_rate": 0.08785529715762273,
-            "id_switches": 102,
-            "idf1": 0.5653812699333141,
-            "matched_gt_instances": 1161,
-            "mean_frame_coverage": 0.9847340963412392,
-            "track_fragmentations": 12
+            "hota": 0.8640193891193565,
+            "id_precision": 0.8104933437744715,
+            "id_recall": 0.8778625954198473,
+            "id_switch_rate": 0.02631578947368421,
+            "id_switches": 30,
+            "idf1": 0.8428338762214984,
+            "matched_gt_instances": 1140,
+            "mean_frame_coverage": 0.9669286633572348,
+            "track_fragmentations": 21
           },
           "mode": "framewise_segmentation_with_iou_identity_association",
           "model_provenance": {
@@ -5805,7 +5805,7 @@
             "checkpoint_sha256": null,
             "device": "cpu"
           },
-          "predicted_event_count": 1578,
+          "predicted_event_count": 277,
           "protocol": "independent per-frame inference, followed by greedy IoU identity association",
           "truth_event_count": 2
         },
@@ -5813,7 +5813,7 @@
           "events_path": "showcase/temporal/bursting/predictions/C4/events.json",
           "events_sha256": "682fc8c7e3443b8746509965dc0169056085f028e8f84b8730a203c81579a536",
           "evidence_path": "temporal/watershed_dt.json",
-          "evidence_sha256": "4ea9bc533ca906d7657abc07fdf71a08db8f4d56d32719aa3adb90c2659ef589",
+          "evidence_sha256": "84a4f4fa1c052c1a2058898ff72777986a32d2f0e57432ad091adab2e1a6e79c",
           "frames": [
             {
               "frame_index": 0,
@@ -5895,7 +5895,7 @@
           "events_path": "showcase/temporal/bursting/predictions/C5/events.json",
           "events_sha256": "d78b81ad40a7992c36cb17e26022f34389196679908645ef222907117da07da5",
           "evidence_path": "temporal/watershed_hmin.json",
-          "evidence_sha256": "ce82cb3e6c2d7a3ace863e36016e1f76f1acb3c6b2d71b8f3c72917a36806089",
+          "evidence_sha256": "413df688adf5c00dc7f552ba1dfcca08c87f3154072320837eeb792e554e2bf1",
           "frames": [
             {
               "frame_index": 0,
@@ -5977,7 +5977,7 @@
           "events_path": "showcase/temporal/bursting/predictions/C6/events.json",
           "events_sha256": "0c2d49cc31b677bd27bde7e44a3553374b08f7075c6a66d3441f1ef1c393ee01",
           "evidence_path": "temporal/slic_merge.json",
-          "evidence_sha256": "366ff8d6d7496a6b001af3584960ca8102a31f6418245bc3cd3c27d2eaeb2060",
+          "evidence_sha256": "57a24943b061ba6472ba658801a6f7705b09522442f14f0ac4d1538d17440f70",
           "frames": [
             {
               "frame_index": 0,
@@ -6059,7 +6059,7 @@
           "events_path": "showcase/temporal/bursting/predictions/C7/events.json",
           "events_sha256": "0e69a8dc27d66d2d0182062de2b0d5a62a654973aa4149435eaff590c5784c58",
           "evidence_path": "temporal/valley_edge.json",
-          "evidence_sha256": "b41fdd2f1dbde653e92ead5319c1053ad4df93cc58889f66cc478817f35f091a",
+          "evidence_sha256": "7cb46c4448c77f2418ca8316ed133d0bbd7326991825a65e2c9beec27ce5c9ce",
           "frames": [
             {
               "frame_index": 0,
@@ -6141,7 +6141,7 @@
           "events_path": "showcase/temporal/bursting/predictions/L1/events.json",
           "events_sha256": "8130761f9b729b11ed670244b524945e741c19bbd5932184339b9b5c070d02df",
           "evidence_path": "temporal/unet_watershed.json",
-          "evidence_sha256": "e3b5a6efcc3b90b43a5618f8ee2e32a82c41643735b3ce46b2e328c625e7f40b",
+          "evidence_sha256": "89638b6d08c38b0559b162689c80a5642c5d190ba022d262766caa9d5c6a5044",
           "frames": [
             {
               "frame_index": 0,
@@ -6223,7 +6223,7 @@
           "events_path": "showcase/temporal/bursting/predictions/L2/events.json",
           "events_sha256": "3866b2bb56e7b41e6101987d1bb6bc04dcd3847ad5e57122aad2aee363bef5bc",
           "evidence_path": "temporal/deep_marker_watershed.json",
-          "evidence_sha256": "c54df0b6f9f014131ba5f3aa4a3aa1dc9f421ea2063cccdaec69694b3b17732f",
+          "evidence_sha256": "11d06c4ed6cb6265c152b21208b0e696726d7c88ab36ac8465f6618630719e91",
           "frames": [
             {
               "frame_index": 0,
@@ -6305,7 +6305,7 @@
           "events_path": "showcase/temporal/bursting/predictions/L3/events.json",
           "events_sha256": "dc91819f7d5bfa0d46e1d31ff086ae2d69662e907dc77f24e89155b730cf20df",
           "evidence_path": "temporal/gc_fsegnet.json",
-          "evidence_sha256": "ff59c96c3ad2e5853b77a336f7cb37b9650703f458ceaab7d1f116f6c1fc16f6",
+          "evidence_sha256": "2172dea67af0cc3a29715c86a19cc6adb2066984f63f3207bc0296584163e9d3",
           "frames": [
             {
               "frame_index": 0,
@@ -6387,7 +6387,7 @@
           "events_path": "showcase/temporal/bursting/predictions/L4/events.json",
           "events_sha256": "da94fe29e2005e2d131b43bfc3a8999b057cd221109a9dc9b6d00ae6641f4c0f",
           "evidence_path": "temporal/stardist_2d.json",
-          "evidence_sha256": "ca891d0f444f42fe026da659d2b6deb1c015c4a649b27e22784f609020769bc3",
+          "evidence_sha256": "4b3433fa9282c7f581837ad7c2c1f8d468bd0349bc6b996e4d96e1d51afb2d4d",
           "frames": [
             {
               "frame_index": 0,
@@ -6469,7 +6469,7 @@
           "events_path": "showcase/temporal/bursting/predictions/L5/events.json",
           "events_sha256": "ea49728e1e206292c15e7b7a79126c7b7e0ee127d06850108ad6d40236ea758e",
           "evidence_path": "temporal/cellpose_sam.json",
-          "evidence_sha256": "3d6c144968bb8e49832f809b84f9883ef262fc9b60c2a99cf469ed0ed7aa8d69",
+          "evidence_sha256": "dfe3b150307533670652fa12cc92c7246d32f1b82415baa751d37bd5ea77ac56",
           "frames": [
             {
               "frame_index": 0,
@@ -6551,7 +6551,7 @@
           "events_path": "showcase/temporal/bursting/predictions/L6/events.json",
           "events_sha256": "536d855d89d0e40645aa24fd8a9bb82448df9a710f243ab73d544335bcf29037",
           "evidence_path": "temporal/yolo_froth_seg.json",
-          "evidence_sha256": "f64e84bb147cb975c8c111d9498ba93a2c723ba9e0bc441336d5706297b75c57",
+          "evidence_sha256": "95f91ebdef19936526f13fd7ca2558ea72f82e6ab3031e28877cd31e37d12598",
           "frames": [
             {
               "frame_index": 0,
@@ -6717,7 +6717,7 @@
           "events_path": "showcase/temporal/bursting/predictions/N1/events.json",
           "events_sha256": "6eb47b18f3525df773220ab19987c66f7a52864801a51dde118942ca47d6b425",
           "evidence_path": "temporal/lamellastar.json",
-          "evidence_sha256": "8497b33d7b4feb1263f777cc2d821cf797d402fb0787433804f4b266c51e99dd",
+          "evidence_sha256": "dbaaa88aa47a2e79a60de1644ef8305edcfc5545f99eb3c8de76b9db67b62922",
           "frames": [
             {
               "frame_index": 0,

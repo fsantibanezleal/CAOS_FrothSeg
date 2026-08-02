@@ -2,7 +2,9 @@
 
 > Correction 2026-07-31: earlier revisions of the canonical per-method numbers in this file came from a seed-42 bake that no longer exists. The shipped canonical case is seed 102; every canonical figure here now comes from data/derived/synth/poly-normal/benchmark.json.
 >
-> Adoption 2026-08-01: two engine defaults changed, so every classical number in this file was re-baked from the new defaults. C3 `watershed_hmax` floods the negated grayscale instead of the negated distance transform (Sadr-Kazemi & Cilliers 1997), and C7 `valley_edge` runs the constrained watershed instead of subtracting the seam (Meyer 1994). Each was adopted on its primary source, not on a sweep score, and each was confirmed on an untouched reserve slice in `verification/phase1-adoption.json`. On the canonical scene C7 now leads at AP 0.458 with 166 predictions for 197 bubbles, ahead of C4 at 0.401 with 177 predictions and C3 at 0.321 with 300.
+> Adoption 2026-08-01: THREE engine defaults changed, so every classical number in this file was re-baked from the new defaults. C3 `watershed_hmax` floods the negated grayscale instead of the negated distance transform (Sadr-Kazemi & Cilliers 1997), and C7 `valley_edge` runs the constrained watershed instead of subtracting the seam (Meyer 1994); each was adopted on its primary source, not on a sweep score, and each was confirmed on an untouched reserve slice in `verification/phase1-adoption.json`. Later the same day C3's h-maxima DEPTH moved 0.06 to 0.12, because a depth carries the units of the surface it is measured on and the surface change above had left it expressed in pixels of distance transform; selected on the validation split and confirmed on reserve slice p4 (`verification/r2-c3-flooding-depth.json`).
+>
+> On the canonical scene C3 now leads at AP 0.521 with **202 predictions for 197 bubbles**, ahead of C7 at 0.458 with 166 and C4 at 0.401 with 177. Between the two corrections C3 sat at 0.321 with 300 predictions, so the depth was costing it a 52 percent over-count on this scene. An intermediate revision of this note reported C7 as the canonical leader, which was true of the engine at that hour and is not true now.
 
 The classical ladder is the honest, no-training floor that the learned tier must beat. Every method runs offline
 in `data-pipeline/fslab/science/segment.py` (the pre-validated Benchmark references). C1, C3, and C4 also have
@@ -44,11 +46,11 @@ not reproduced here rather than being restated from a bake that no longer exists
 |---|---|---|---|---|---|
 | otsu_cc (C1) | 76 | 0.137 | 0.252 | 0.133 | 5.839 |
 | watershed_immersion (C2) | 1519 | 0.005 | 0.017 | 0.002 | 10.683 |
-| watershed_hmax (C3) | 300 | 0.321 | 0.568 | 0.332 | 4.108 |
-| watershed_dt (C4) | 177 | 0.401 | 0.685 | 0.433 | **1.205** |
+| **watershed_hmax (C3)** | 202 | **0.521** | **0.839** | **0.596** | **1.071** |
+| watershed_dt (C4) | 177 | 0.401 | 0.685 | 0.433 | 1.205 |
 | watershed_hmin (C5) | 145 | 0.289 | 0.562 | 0.262 | 2.021 |
 | slic_merge (C6) | 945 | 0.035 | 0.101 | 0.017 | 11.803 |
-| **valley_edge (C7)** | 166 | **0.458** | **0.779** | **0.464** | 1.244 |
+| valley_edge (C7) | 166 | 0.458 | 0.779 | 0.464 | 1.244 |
 
 ## What the ladder shows, aggregated (64-image held-out test split)
 
@@ -57,13 +59,13 @@ any tier-level claim has to be made on. One scene is not the tier.
 
 | method | AP | PQ | boundary F | count abs. err. | BSD W1 | ms/image |
 |---|---|---|---|---|---|---|
-| otsu_cc (C1) | 0.0652 | 0.1706 | 0.8113 | 220.1 | 10.164 | **6.2** |
-| watershed_immersion (C2) | 0.0173 | 0.0635 | 0.7424 | 849.3 | 7.393 | 103.5 |
-| **watershed_hmax (C3)** | **0.2975** | **0.5423** | **0.9236** | **64.9** | **2.037** | 39.7 |
-| watershed_dt (C4) | 0.1977 | 0.4022 | 0.8344 | 139.8 | 2.590 | 36.7 |
-| watershed_hmin (C5) | 0.1330 | 0.2845 | 0.7968 | 176.5 | 16.568 | 40.2 |
-| slic_merge (C6) | 0.0186 | 0.0721 | 0.7864 | 451.9 | 8.383 | 673.8 |
-| valley_edge (C7) | 0.2326 | 0.4382 | 0.8837 | 114.2 | 3.542 | 26.3 |
+| otsu_cc (C1) | 0.0652 | 0.1706 | 0.8113 | 220.1 | 10.164 | **6.3** |
+| watershed_immersion (C2) | 0.0173 | 0.0635 | 0.7424 | 849.3 | 7.393 | 117.7 |
+| **watershed_hmax (C3)** | **0.2975** | **0.5423** | **0.9236** | **64.9** | **2.037** | 41.3 |
+| watershed_dt (C4) | 0.1977 | 0.4022 | 0.8344 | 139.8 | 2.590 | 36.3 |
+| watershed_hmin (C5) | 0.1330 | 0.2845 | 0.7968 | 176.5 | 16.568 | 44.4 |
+| slic_merge (C6) | 0.0186 | 0.0721 | 0.7864 | 451.9 | 8.383 | 710.7 |
+| valley_edge (C7) | 0.2326 | 0.4382 | 0.8837 | 114.2 | 3.542 | 27.6 |
 
 The numbers match the froth literature on the two exhibits: the naive Otsu baseline under-segments (76
 predictions for 197 bubbles on the canonical scene) and the gradient immersion watershed grossly over-segments

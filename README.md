@@ -95,9 +95,13 @@ other. SAM 2.1 scores IDF1 and HOTA of 1.000 on every sequence because it is han
 twelve identities and asked whether it still has twelve; its honest number is the mean
 identity IoU, 0.898. Framewise leader on nominal transport is Cellpose-SAM at HOTA
 0.965, then LamellaStar 0.961 and boundary U-Net 0.923, down to marker-less immersion
-watershed at 0.153 with 370 identity switches over eight frames. C7 sits at 0.829 and C3
-at 0.738 after the 2026-08-01 adoption; C3's five-sequence mean HOTA rose from 0.435 to
-0.653 and C7's from 0.597 to 0.601 (`data/derived/temporal/`).
+watershed at 0.153 with 370 identity switches over eight frames. C3 now sits at 0.917 on
+that sequence, fourth overall and within 0.006 of the boundary U-Net, and C7 at 0.829.
+Across all five sequences C3's mean HOTA rose from 0.435 to 0.653 with the flooding-surface
+adoption and then to 0.761 with the depth correction, while C7's went from 0.597 to 0.601
+and has not moved since (`data/derived/temporal/`). Identity association is driven by
+instance count, which is why a method that stopped over-segmenting by 64 percent gains
+this much on a tracking metric it was never tuned against.
 
 There is no video anywhere in this repository and no module decodes video. A sequence
 is a stack of PNG frames. See `docs/temporal/02_the-full-method-matrix.md`.
