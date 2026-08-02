@@ -39,9 +39,10 @@ $env:PYTHONPATH = "data-pipeline"
 - checkpoint: `models/unet-watershed-v2/weights.npz`;
 - browser export: `models/unet-watershed-v2/model.onnx`.
 
-L1 now exceeds the best current classical diagnostic mean AP (0.351 after the
-2026-08-01 C3 and C7 adoption, 0.262 before it), but it
-does not exceed official Cellpose-SAM. It is accepted as the compact deployable
+L1 still exceeds the best current classical diagnostic mean AP: 0.4565 against 0.3506, which is C3
+after the 2026-08-01 corrections (the best classical was 0.262 before them). The margin narrowed
+because C3 improved, not because L1 moved. It does not exceed official Cellpose-SAM, which is 0.6472
+on the same 13-case diagnostic. It is accepted as the compact deployable
 learned model, not advertised as SOTA. Microbubble resolution and coarse-bubble
 over-segmentation remain visible failure modes.
 

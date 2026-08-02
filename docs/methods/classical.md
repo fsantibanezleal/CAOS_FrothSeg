@@ -312,6 +312,12 @@ and swapping the surface (`data/derived/phase1/c3-flooding-surface.json`) shows 
 other change adopted on 2026-08-01**, because flooding the negated image from highlight markers is the
 method Sadr-Kazemi & Cilliers (1997) publish and the source the C3 registry entry already cited:
 
+**Every row of this table was measured at the depth that shipped at the time, `C3_H_MAXIMA = 0.06`.**
+It is the record of the surface comparison and is left at that depth, because holding the depth fixed is
+what makes the four surfaces comparable to each other. None of these numbers is C3's current score: the
+adopted configuration was re-measured after the depth was corrected later the same day and scores AP
+**0.2975**, PQ 0.5423, boundary F 0.9236, BSD W1 2.037 and d32 0.1098.
+
 | flooded surface | AP | PQ | boundary F | BSD W1 | d32 rel. err. | merges | splits |
 |---|---|---|---|---|---|---|---|
 | neg_edt (previous) | 0.1031 | 0.2490 | 0.8323 | 6.032 | 0.4311 | 3009 | 2666 |

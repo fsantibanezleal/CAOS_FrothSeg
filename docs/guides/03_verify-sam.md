@@ -78,21 +78,23 @@ engines were corrected and every per-case bake was re-run. The SAM columns are u
 |---|---|---|---|---|---|---|---|---|---|
 | mono-clean | **0.741** | 0.974 | 0.329 | watershed_dt | 113 | 114 | 27.04 | 28.41 | 1.39 |
 | coarse-froth | **0.651** | 0.861 | 0.555 | valley_edge | 79 | 68 | 37.8 | 39.51 | 2.948 |
-| poly-normal | 0.457 | 0.747 | **0.458** | valley_edge | 212 | 197 | 22.29 | 22.96 | 0.501 |
-| bursting | **0.449** | 0.756 | 0.438 | valley_edge | 147 | 148 | 26.68 | 26.0 | 0.578 |
-| high-load | 0.42 | 0.75 | **0.442** | valley_edge | 245 | 231 | 20.76 | 21.04 | 0.474 |
-| edge-framing | 0.412 | 0.777 | **0.415** | valley_edge | 261 | 274 | 19.16 | 19.27 | 0.318 |
+| poly-normal | 0.457 | 0.747 | **0.521** | watershed_hmax | 212 | 197 | 22.29 | 22.96 | 0.501 |
+| bursting | 0.449 | 0.756 | **0.464** | watershed_hmax | 147 | 148 | 26.68 | 26.0 | 0.578 |
+| high-load | 0.420 | 0.75 | **0.506** | watershed_hmax | 245 | 231 | 20.76 | 21.04 | 0.474 |
+| edge-framing | 0.412 | 0.777 | **0.464** | watershed_hmax | 261 | 274 | 19.16 | 19.27 | 0.318 |
 | glare-storm | **0.407** | 0.717 | 0.182 | valley_edge | 179 | 197 | 23.9 | 21.96 | 0.5 |
-| fine-froth | 0.335 | 0.692 | **0.363** | valley_edge | 446 | 593 | 12.77 | 12.92 | 0.377 |
+| fine-froth | 0.335 | 0.692 | **0.428** | watershed_hmax | 446 | 593 | 12.77 | 12.92 | 0.377 |
 | low-light-noise | **0.302** | 0.633 | 0.267 | valley_edge | 142 | 196 | 21.97 | 22.55 | 0.673 |
-| watery | 0.172 | 0.287 | **0.373** | watershed_hmax | 128 | 231 | 21.92 | 21.25 | 1.686 |
-| defocus | 0.016 | 0.056 | **0.225** | watershed_hmax | 37 | 170 | 17.73 | 28.46 | 5.428 |
-| motion-fast | 0.016 | 0.052 | **0.165** | watershed_hmax | 25 | 197 | 16.37 | 23.95 | 3.622 |
+| watery | 0.172 | 0.287 | **0.582** | watershed_hmax | 128 | 231 | 21.92 | 21.25 | 1.686 |
+| defocus | 0.016 | 0.056 | **0.266** | watershed_hmax | 37 | 170 | 17.73 | 28.46 | 5.428 |
+| motion-fast | 0.016 | 0.052 | **0.258** | watershed_hmax | 25 | 197 | 16.37 | 23.95 | 3.622 |
 | empty-control | n/a | n/a | n/a | n/a | 0 | 0 | n/a | n/a | n/a |
-| **mean** | **0.365** | | **0.351** | | | | | | |
+| **mean** | **0.365** | | **0.402** | | | | | | |
 
-Summary: mean SAM AP **0.365** vs floor **0.351**, delta **+0.014**, SAM wins **5/12** scored cases.
-It read 0.262, +0.103 and 10 wins until 2026-08-01, and every point of that change is the floor.
+Summary: mean SAM AP **0.365** vs floor **0.402**, delta **-0.037**, SAM wins **4/12** scored cases.
+It read 0.262, +0.103 and 10 wins before the 2026-08-01 adoptions, then 0.351, +0.014 and 5 wins
+after the first two, and every point of both moves is the floor. The prompt grid now LOSES to the
+classical floor. Not one SAM prediction was re-collected on any of the three occasions.
 
 The story the numbers tell:
 

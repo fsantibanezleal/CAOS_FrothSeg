@@ -366,8 +366,8 @@ export default function Introduction() {
             which this page reads at runtime for the bar and the flag rather than restating the leader.
             The two counterexamples are those same two artifacts read row by row: real-adjacent
             mean_ap 0.0 for C2 gradient immersion watershed against method-benchmark
-            test.mean_ap 0.017265625, a delta of -0.017; and real-adjacent mean_ap 0.12782813 for C3
-            against method-benchmark test.mean_ap 0.21957813, a delta of -0.092, which appeared when
+            test.mean_ap 0.017265625, a delta of -0.017; and real-adjacent mean_ap 0.21648438 for C3
+            against method-benchmark test.mean_ap 0.2975, a delta of -0.081, which appeared when
             this lane was re-baked on 2026-08-01 after the C3 flooding-surface adoption
             (verification/phase1-adoption.json). C7 moves the other way, 0.23256250 to 0.30131250.
             NOTE for whoever edits this next: the universal "every classical method improves" was false

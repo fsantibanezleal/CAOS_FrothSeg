@@ -52,10 +52,12 @@ $$ \mathrm{AP}(t) = \frac{\mathrm{TP}(t)}{\mathrm{TP}(t) + \mathrm{FP}(t) + \mat
    \mathrm{AP} = \frac{1}{\lvert \mathcal{T} \rvert} \sum_{t \in \mathcal{T}} \mathrm{AP}(t), \quad
    \mathcal{T} = \{0.5, 0.55, \dots, 0.95\} $$
 
-This is the exact protocol behind every number in the benchmark: SAM mean AP 0.365 vs the classical floor 0.351
+This is the exact protocol behind every number in the benchmark: SAM mean AP 0.365 vs the classical floor 0.402
 over the 12 scored cases (the committed `data/derived/sam_benchmark.json`), both computed on the decoded RLE
-ground truth. The floor figure was 0.262 until the 2026-08-01 C3 and C7 adoption moved the best classical method
-on 11 of those 12 cases.
+ground truth. The floor figure was 0.262 until the 2026-08-01 corrections, which moved the best classical method
+on 11 of those 12 cases: first C3's flooding surface and C7's mode, taking it to 0.351, then C3's flooding depth,
+taking it to 0.402. The prompt grid led the floor before all of that and trails it now, without one SAM
+prediction having been re-collected.
 
 ## Install (exact, verified)
 
