@@ -581,8 +581,10 @@
     "scope": "Real dense-instance microscopy, NOT froth. This measures whether the ladder generalises off the in-repo generator. It supports no statement about flotation accuracy.",
     "C3": {
       "before": 0.182,
-      "after": 0.12782812500000001,
-      "direction": "WORSE off-domain"
+      "after_surface_adoption_only": 0.12782812500000001,
+      "after": 0.21646875,
+      "direction": "WORSE off-domain than the pre-adoption 0.182, but the gap narrowed",
+      "engine_state": "C3_FLOODING_SURFACE=neg_gray AND C3_H_MAXIMA=0.12. The 0.1278 figure was measured after the surface adoption alone; the depth was corrected later the same day (R-2, verification/r2-c3-flooding-depth.json) and this row was re-measured to 0.21646875. Recorded 2026-08-02, because the stale value made the surface look worse off-domain than the shipped engine actually is."
     },
     "C7": {
       "before": 0.193,

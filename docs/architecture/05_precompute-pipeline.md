@@ -58,7 +58,7 @@ After every method has produced canonical labels,
 `python -m fslab.pipeline showcase` runs `fslab.showcase`. It converts each
 registered method's labels into a compact run-length label raster and a
 boundary-overlay preview for every canonical case. The manifest records exactly
-15 methods, 13 cases, and 195 method-case artifact pairs, with SHA-256 for each
+15 methods, 12 scored cases, and 180 method-case artifact pairs, with SHA-256 for each
 analysis raster and preview. This stage is the explicit bridge from
 authoritative offline inference to the ten-view companion workbench.
 

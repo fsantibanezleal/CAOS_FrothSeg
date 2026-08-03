@@ -192,7 +192,14 @@ def main() -> None:
             [PYTHON, "scripts/build_method_benchmark.py"],
             ROOT / "data/derived/method-benchmark.json",
         ),
-        ("release report", [PYTHON, "scripts/build_release_report.py"]),
+        # WARNING about ordering. build_release_report stamps the artifact with the version it
+        # reads from pyproject.toml and fslab.__version__. Running it here, before the release
+        # commit bumps those, guarantees the published inventory lags one release: it shipped
+        # stamped 0.5.0 while the deployed tag was v0.06.001. Bump the version FIRST, or re-run
+        # this one step afterwards. tests/test_published_numbers_agree.py now fails if they differ.
+        ("release report (RE-RUN THIS AFTER THE VERSION BUMP)",
+         [PYTHON, "scripts/build_release_report.py"],
+         ROOT / "data/derived/release-report.json"),
     ]
     checks = [
         ("check artifacts", [PYTHON, "scripts/check_artifacts.py"]),

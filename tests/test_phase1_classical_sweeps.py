@@ -207,11 +207,60 @@ def test_the_spent_reserve_slice_is_recorded_exactly_once() -> None:
 
 @pytest.mark.skipif(not PHASE1.exists(), reason="Phase 1 sweeps have not been run here")
 def test_every_scored_classical_constant_is_swept_or_sourced() -> None:
+    """Every constant must be defended, and "not-swept" is not a defence on its own.
+
+    The earlier version of this test accepted `status == "not-swept"` as equivalent to having a
+    source, so any constant could exempt itself by declaring the exemption. It also had no status
+    for a constant that was swept AND THEN adopted, which is what happened to watershed_hmax.h.
+    """
     ledger = json.loads((PHASE1 / "classical-constant-ledger.json").read_text(encoding="utf-8"))
     for row in ledger["constants"]:
-        swept = row["status"] == "swept" and row["sweep_artifact"] is not None
-        sourced = bool(row.get("source")) or row["status"] == "not-swept"
-        assert swept or sourced, row["constant"]
-        if swept:
+        status = row["status"]
+        assert status in {"swept", "adopted", "sourced", "not-swept"}, (
+            f"{row['constant']}: unknown ledger status {status!r}"
+        )
+        if status in {"swept", "adopted"}:
+            assert row["sweep_artifact"] is not None, row["constant"]
             assert (ROOT / row["sweep_artifact"]).exists(), row["constant"]
+        if status == "adopted":
+            # An adopted constant changed the engine, so it owes evidence and a stated basis.
+            assert row.get("decision_evidence"), (
+                f"{row['constant']}: adopted with no decision_evidence"
+            )
+            assert (ROOT / row["decision_evidence"]).exists(), row["constant"]
+            assert row.get("decision_basis"), (
+                f"{row['constant']}: adopted with no stated basis"
+            )
+        if status == "not-swept":
+            # A declared exemption must carry a reason a reader can check, not just the label.
+            assert bool(row.get("source")) or bool(row.get("verdict")), (
+                f"{row['constant']}: declares itself not-swept with neither a source nor a verdict"
+            )
     assert ledger["acceptance_met_for_scored_methods_c1_c3_c4_c5_c7"] is True
+
+
+@pytest.mark.skipif(not PHASE1.exists(), reason="Phase 1 sweeps have not been run here")
+def test_the_ledger_publishes_the_value_the_engine_ships() -> None:
+    """The ledger's whole job is to say what ships. It restated literals and drifted.
+
+    On 2026-08-02 it published watershed_hmax.h = 0.06 while the engine shipped 0.12, in a file
+    that had been regenerated AFTER the change, because the generator hardcoded its published
+    values instead of reading them.
+    """
+    import inspect
+
+    ledger = json.loads((PHASE1 / "classical-constant-ledger.json").read_text(encoding="utf-8"))
+    published = {row["constant"]: row["published_value"] for row in ledger["constants"]}
+    for constant, (method, parameter) in {
+        "watershed_hmax.h": ("watershed_hmax", "h"),
+        "watershed_dt.min_distance": ("watershed_dt", "min_distance"),
+        "watershed_hmin.h": ("watershed_hmin", "h"),
+        "valley_edge.min_cap_size": ("valley_edge", "min_cap_size"),
+        "valley_edge.seam_radius": ("valley_edge", "seam_radius"),
+    }.items():
+        if constant not in published:
+            continue
+        default = inspect.signature(segment.METHODS[method]).parameters[parameter].default
+        assert published[constant] == default, (
+            f"{constant}: ledger says {published[constant]!r}, the engine ships {default!r}"
+        )

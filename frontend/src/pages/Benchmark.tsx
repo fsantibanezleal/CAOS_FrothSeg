@@ -1039,13 +1039,13 @@ function TransferResult({ es, benchmark, real }: { es: boolean; benchmark: Metho
   }, [benchmark, real]);
 
   /** Tier means reproduce the grouped table in the transfer record: classical, trained in this
-   *  repository (task-trained + research), and the model never trained here (foundation).
+   *  repository (task-trained + research), and the model pretrained elsewhere (foundation).
    *  Sources: data/derived/real-adjacent-benchmark.json + data/derived/method-benchmark.json. */
   const tiers = useMemo(() => {
     const groups: Array<{ id: string; en: string; es: string; test: (tier: MethodBenchmarkRow['tier']) => boolean }> = [
       { id: 'classical', en: 'classical, no learned prior', es: 'clásicos, sin prior aprendido', test: (tier) => tier === 'classical' },
       { id: 'trained', en: 'trained in this repository', es: 'entrenados en este repositorio', test: (tier) => tier === 'domain-sota' || tier === 'frontier' },
-      { id: 'pretrained', en: 'never trained here', es: 'nunca entrenados aquí', test: (tier) => tier === 'foundation' },
+      { id: 'pretrained', en: 'pretrained elsewhere, lightly fine-tuned here', es: 'preentrenados fuera, afinados levemente aquí', test: (tier) => tier === 'foundation' },
     ];
     return groups.map((group) => {
       const members = joined.filter((row) => group.test(row.tier));

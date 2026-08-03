@@ -8,7 +8,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "fslab"
 # PEP 440 form of the display version X.XX.XXX (see CHANGELOG.md + fslab.__version__).
-version = "0.6.1"
+version = "0.6.2"
 description = "FrothSeg · offline-first flotation-froth instance segmentation, training, evaluation, export, temporal analysis, and companion web."
 readme = "README.md"
 requires-python = ">=3.11"

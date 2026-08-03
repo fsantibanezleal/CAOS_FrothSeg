@@ -2,11 +2,11 @@
   "association_threshold": 0.25,
   "checkpoint_sha256": "9d89a72bf6126e9806e07efac5b162232b1df9c8b43577b4677117935697883e",
   "device": "cuda",
-  "duration_seconds": 110.876,
+  "duration_seconds": 110.913,
   "frames_per_sequence": 8,
   "mean_event_precision": 0.001864786864786865,
   "mean_event_recall": 0.6,
-  "mean_flow_epe_px": 2.2090971383926243,
+  "mean_flow_epe_px": 2.2090905037905437,
   "mean_frame_coverage": 0.7267779087969043,
   "mean_hota": 0.6676013398293937,
   "mean_id_switch_rate": 0.05132124251859923,
@@ -29,7 +29,7 @@
       "event_true_positives": 2,
       "false_negative_instances": 326,
       "false_positive_instances": 205,
-      "flow_epe_px": 2.047520992831968,
+      "flow_epe_px": 2.0474878198215647,
       "frame_artifacts": [
         {
           "frame_index": 0,
@@ -64,7 +64,7 @@
         {
           "frame_index": 6,
           "prediction_path": "stardist_2d/poly-normal/006/prediction.rle",
-          "prediction_sha256": "2d2cf3e7bb6182147da6425d4052ceee4eebe88874b4701b61efeb846366d898"
+          "prediction_sha256": "a3c5b8a4d03a2acaf66ca157c1c602be66e07971af48e752a735af13c4ea3351"
         },
         {
           "frame_index": 7,

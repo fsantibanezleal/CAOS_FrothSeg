@@ -163,23 +163,34 @@ def build(cache_path: Path) -> dict:
             "accepted": all(checks.values()),
             "cases": rows,
         })
-    entrypoint = ROOT / "frontend/src/classical/methods.ts"
+    # Hash EVERY source the twin transitively depends on, not just its entry point.
+    # methods.ts only wires the methods together: the algorithms themselves (h-maxima, the EDT,
+    # peak_local_max, the watershed flood, the morphology) live in gray.ts and watershed.ts. While
+    # only methods.ts was hashed, the completeness gate declared this report fresh after a change to
+    # the code that actually computes the numbers it certifies.
+    browser_sources = [
+        ROOT / "frontend/src/classical/methods.ts",
+        ROOT / "frontend/src/classical/gray.ts",
+        ROOT / "frontend/src/classical/watershed.ts",
+    ]
     offline_module = ROOT / "data-pipeline/fslab/science/segment.py"
+    implementations = {
+        f"browser:{path.name}": {
+            "path": path.relative_to(ROOT).as_posix(),
+            "sha256": sha256(path),
+        }
+        for path in browser_sources
+    }
+    implementations["offline"] = {
+        "path": offline_module.relative_to(ROOT).as_posix(),
+        "sha256": sha256(offline_module),
+    }
     return {
         "schema": "frothseg.classical-live-parity/v1",
         "dataset": "frothseg.learned-dataset/v2",
         "selection": "first untouched-test sample from each of 16 conditions",
         "acceptance": ACCEPTANCE,
-        "implementations": {
-            "browser": {
-                "path": entrypoint.relative_to(ROOT).as_posix(),
-                "sha256": sha256(entrypoint),
-            },
-            "offline": {
-                "path": offline_module.relative_to(ROOT).as_posix(),
-                "sha256": sha256(offline_module),
-            },
-        },
+        "implementations": implementations,
         "accepted_methods": [
             row["method"] for row in methods if row["accepted"]
         ],

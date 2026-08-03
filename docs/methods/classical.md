@@ -2,7 +2,7 @@
 
 > Correction 2026-07-31: earlier revisions of the canonical per-method numbers in this file came from a seed-42 bake that no longer exists. The shipped canonical case is seed 102; every canonical figure here now comes from data/derived/synth/poly-normal/benchmark.json.
 >
-> Adoption 2026-08-01: THREE engine defaults changed, so every classical number in this file was re-baked from the new defaults. C3 `watershed_hmax` floods the negated grayscale instead of the negated distance transform (Sadr-Kazemi & Cilliers 1997), and C7 `valley_edge` runs the constrained watershed instead of subtracting the seam (Meyer 1994); each was adopted on its primary source, not on a sweep score, and each was confirmed on an untouched reserve slice in `verification/phase1-adoption.json`. Later the same day C3's h-maxima DEPTH moved 0.06 to 0.12, because a depth carries the units of the surface it is measured on and the surface change above had left it expressed in pixels of distance transform; selected on the validation split and confirmed on reserve slice p4 (`verification/r2-c3-flooding-depth.json`).
+> Adoption 2026-08-01: THREE engine defaults changed, so every classical number in this file was re-baked from the new defaults. C3 `watershed_hmax` floods the negated grayscale instead of the negated distance transform (Sadr-Kazemi & Cilliers 1997), and C7 `valley_edge` runs the constrained watershed instead of subtracting the seam (Meyer 1994); each was adopted on its primary source, not on a sweep score, and each was confirmed on an untouched reserve slice in `verification/phase1-adoption.json`. Later the same day C3's h-maxima DEPTH moved 0.06 to 0.12, selected as the argmax of validation mean AP and confirmed on reserve slice p4 (`verification/r2-c3-flooding-depth.json`). That third change was published as a unit correction; the justification was false and is withdrawn (CAOS_MANAGE `plans/frothseg/research-2026-07-31/r2-correction-2026-08-02.md`), and unlike the other two it did turn on a score.
 >
 > On the canonical scene C3 now leads at AP 0.521 with **202 predictions for 197 bubbles**, ahead of C7 at 0.458 with 166 and C4 at 0.401 with 177. Between the two corrections C3 sat at 0.321 with 300 predictions, so the depth was costing it a 52 percent over-count on this scene. An intermediate revision of this note reported C7 as the canonical leader, which was true of the engine at that hour and is not true now.
 
@@ -103,8 +103,8 @@ consumer is the mask or the size distribution. On this split it does not. What c
   Growing every cap back to the ridge enlarges every bubble, and C7 already over-estimated the Sauter mean
   diameter by a factor above 2, so the change makes the mask better and the size distribution worse.
 
-Neither change was adopted for winning a sweep. Both were adopted because the engine was not implementing the
-source the registry cites for that method, and both were confirmed BEFORE and AFTER on an untouched reserve
+Neither of THESE TWO changes, the flooding surface and the C7 mode, was adopted for winning a sweep. Both
+were adopted because the engine was not implementing the source the registry cites for that method, and both were confirmed BEFORE and AFTER on an untouched reserve
 slice that no sweep observed, in `verification/phase1-adoption.json`. Constants that only a sweep score would
 have justified moving, C7's seam radius and watershed line, C4's compactness and the shared 0.75 Otsu factor,
 did not move. The `ms/image` column moves on every re-bake because it times this machine on that day rather
@@ -124,24 +124,35 @@ that a constant can be swept without editing a call, and `verification/phase1-cl
 carries the proof that all seven engines at their current defaults reproduce
 `data/derived/classical-heldout.json` to within 1e-12 on AP, PQ, boundary F, BSD W1, count error and d32.
 
-**Three of these sweeps ended in an adopted default and the rest did not, and the difference is never the
-score.** `watershed_hmax.surface` and `valley_edge.mode` moved because the engine was not implementing
+**Three of these sweeps ended in an adopted default and the rest did not. For two of them the difference
+is not the score; for the third it is, and that was published wrongly and is corrected here.** `watershed_hmax.surface` and `valley_edge.mode` moved because the engine was not implementing
 the froth method its own registry entry documents: C3 cited Sadr-Kazemi & Cilliers for markers while
 flooding a surface that source does not use, and C7 had just been renamed away from "constrained
 watershed" in a Phase 0 honesty pass precisely because it ran no watershed.
 
-`watershed_hmax.h` then moved for a third kind of reason, and it is the one this sweep table could not
-have surfaced on its own. **A depth carries the units of the surface it is measured on.** When C3's
-surface changed from `neg_edt`, whose units are pixels of distance, to `neg_gray`, whose units are
-normalized intensity, the depth constant was carried across unchanged at 0.06. The comment on that line
-had even been corrected to say "intensity" while the number still described the distance transform. C3
-was seeding markers with a threshold in the wrong units and predicting 29248 instances against 17846
-true ones, a 64 percent over-segmentation.
+`watershed_hmax.h` then moved 0.06 to 0.12, and **this one moved because its score was higher.**
 
-That correction was NOT selected from the sweep below, which runs on the observed test split. It was
-selected on the validation split, which no classical constant sweep had ever touched, and confirmed on
-untouched reserve slice p4: mean AP 0.2191 to 0.2976, paired +0.0785 with a 95 percent bootstrap
-interval of [+0.0604, +0.0984] and 59 of 64 images improved.
+It was published on 2026-08-01 as a "unit error", the claim being that the depth had been left in the
+units of the distance transform after the flooding surface changed. **That justification was false and
+is withdrawn.** The depth is the `h` of `morphology.h_maxima(gray, h=h)`, applied to the intensity
+image; the flooding surface enters separately as the first argument of `segmentation.watershed`, and no
+commit in this file's history has ever applied a depth to it. The 29248-against-17846 over-count quoted
+as proof is identical on all four flooding surfaces at h=0.06
+(`data/derived/phase1/c3-flooding-surface.json`): it was C3's marker count, not a surface effect. Full
+account: CAOS_MANAGE `plans/frothseg/research-2026-07-31/r2-correction-2026-08-02.md`.
+
+What R-2 is, correctly described: 0.12 is the argmax of validation mean AP over a pre-registered 6-point
+grid. The selection surface is the validation split, which no classical sweep had observed, and the
+effect was confirmed on untouched reserve slice p4: mean AP 0.2191 to 0.2976, paired +0.0785 with a 95
+percent bootstrap interval of [+0.0604, +0.0984] and 59 of 64 images improved. That is a disciplined way
+to tune a constant. It is tuning.
+
+**So the tier is not uniformly tuned, and the table above has to be read with that in mind.** C3 is the
+only classical method whose residual constant was re-selected. From
+`data/derived/phase1/residual-constants-sweep.json`, C2 `min_distance` 6 scores 0.0998 against the
+shipped 2's 0.0173, and C5 `h` 0.02 scores 0.1819 against the shipped 0.08's 0.1330: both larger
+unclaimed gains than the one C3 took. Making the comparison like-for-like is a separate study that would
+spend the last unspent reserve slice, and it has not been done.
 **Its stated cost: boundary RECALL falls 0.9638 to 0.9524, worse on 60 of the 64 images and better on
 none, because coarser markers find fewer boundaries.** Boundary precision rises enough that boundary F
 still improves by +0.0459. Evidence: `verification/r2-c3-flooding-depth.json`.
@@ -163,8 +174,10 @@ the engine that actually ships:
 | `FOREGROUND_OTSU_FACTOR` | C3 | 0.75 | **0.60 scores +6.42 percent** |
 | `FOREGROUND_OTSU_FACTOR` | C7 | 0.75 | 0.65 scores +2.42 percent |
 
-The first row is an independent check on R-2 rather than a restatement of it: the depth was selected on
-validation and confirmed on a reserve slice, and it also happens to be the argmax of a grid it never saw.
+The first row is a RESTATEMENT, not independent evidence. This is the same test-split grid on which the
+gap was first noticed and which motivated R-2 in the first place, so its agreement is not a second
+opinion. The independent parts of R-2 are the validation split it selected on and the reserve slice it
+was confirmed on.
 
 **None of the flagged rows is adopted, and the Otsu factor is the one to be careful about.** That study
 runs on the already-burned test split, so promoting 0.60 because it is the maximum there is precisely the
@@ -402,7 +415,7 @@ foreground.
 
 ## C6 slic_merge: rebuild attempted, bar missed, demotion recommended
 
-C6 is the worst value on the tier: **0.0186 AP for 673.8 ms per image**, roughly 109 times C1's 6.2 ms
+C6 is the worst value on the tier: **0.0186 AP for 710.7 ms per image**, roughly 113 times C1's 6.3 ms
 for a lower score. Before recommending anything, the two variants the pinned
 `skimage.segmentation.slic` docstring cites itself were measured: maskSLIC (`mask=`, docstring
 reference [3], Irving 2016, arXiv:1606.09518) and SLICO (`slic_zero=True`, docstring reference [2]).

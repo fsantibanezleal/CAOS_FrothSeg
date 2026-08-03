@@ -102,13 +102,19 @@ Grouped by tier, the pattern is unambiguous:
 |---|---|
 | classical (7 methods) | **+0.071** |
 | in-repo trained (6 methods) | **-0.243** |
-| foundation, never trained here (L5) | **+0.199** |
+| foundation, pretrained elsewhere and lightly fine-tuned here (L5) | **+0.199** |
 
 **The synthetic ranking does not transfer.** N1 LamellaStar leads the froth benchmark at 0.519
 and falls to eighth at 0.125 on real images, a drop of 0.394. Every model trained on the 192
 synthetic samples degrades. Five of the seven classical methods, which have no learned prior to
-overfit, improve, for a tier mean of +0.071. The single method that was never trained in this
-repository is the only learned method that improves, and it becomes the clear leader at 0.709.
+overfit, improve, for a tier mean of +0.071. The one learned method that improves is L5, and the distinction is NOT that it was never trained
+here. It was: `models/cellpose-sam-cpsam-v2/run.json` records a completed 2-epoch fine-tune on the
+same 192 training samples, 599 seconds. The difference is the weight of that training against what
+came before it. L5 carries a large external pretraining corpus and received a light adaptation; the
+six that degrade have no prior at all beyond the 192 synthetic samples they were built from. So the
+mechanism is "a strong external prior lightly adapted survives the domain change, a prior learned
+only from this generator does not", not "trained here versus not". It becomes the clear leader at
+0.709.
 
 **The classical tier reorders too, and C3 is the clearest case.** After its flooding depth was
 corrected on 2026-08-01 C3 leads every axis of the synthetic benchmark at 0.297, and it is only
@@ -130,8 +136,11 @@ weakest member does not. C3 marker-controlled watershed is the more interesting 
 to 0.182 on real while flooding the distance transform. That reversal is a real result and is
 stated as one. The adopted surface is a FROTH mechanism, since flooding the negated intensity from
 h-maxima markers assumes one bright specular highlight per object and a dark Plateau border between
-objects, and cell nuclei have neither; on this domain the distance transform it replaced is the
-better surface.
+objects, and cell nuclei have neither. That reading held while the comparison was 0.182 for neg_edt
+against 0.128 for the adopted engine. It no longer does: after the flooding depth was corrected the
+shipped engine scores 0.216 on this domain, ABOVE the 0.182 that neg_edt reached, so the surface it
+replaced is not the better surface here either. What survives is the direction of the transfer, not
+the surface ordering.
 
 The depth correction later the same day moved C3's real figure from 0.128 to 0.216 and softened the
 drop from -0.092 to -0.081, so the direction of the reversal survives while its size does not. Both

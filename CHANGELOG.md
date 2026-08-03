@@ -1,5 +1,125 @@
 # Changelog
 
+## [0.06.002] · 2026-08-02
+
+A six-dimension adversarial validation of the whole product raised 44 findings and
+confirmed 40 after per-finding refutation. This release acts on all of them. The most
+serious was a **false scientific justification that had shipped in a tagged, deployed
+release**, and it was mine.
+
+### The R-2 justification was false and is withdrawn
+
+`C3_H_MAXIMA` was changed 0.06 to 0.12 on 2026-08-01 and published as a **unit error**: a
+depth supposedly left in pixels of distance transform after C3's flooding surface moved
+from `neg_edt` to `neg_gray`. On that basis the change was declared exempt from this
+repository's own rule that classical constants are not re-selected on scores, and the
+deployed Methodology page stated, in both languages, "None of the three changes was
+adopted for winning a sweep."
+
+**That justification is false, three independent ways.**
+
+1. The depth is applied to the INTENSITY image and always has been.
+   `segment.py:184` is `morphology.h_maxima(gray, h=h)`; the flooding surface enters one
+   line later as the first argument of `segmentation.watershed`. No depth is ever applied
+   to the flooding surface, in any commit that has touched that file. The surface change
+   cannot have altered a constant whose units it never set.
+2. The evidence quoted as proof is surface-invariant. "29248 predicted against 17846 true,
+   a 64 percent over-segmentation" is what `data/derived/phase1/c3-flooding-surface.json`
+   records at h=0.06 for ALL FOUR surfaces, identically. That was C3's marker count.
+3. The supporting anecdote was backwards. The claim that the comment "had even been
+   corrected to say intensity while the number still described the distance transform" is
+   contradicted by the last commit before the surface adoption, which already read "in
+   units of the [0, 1] intensity image". The comment was never wrong.
+
+**What R-2 actually is:** `best = max(scores)` over validation mean AP. Selection on a
+score. It is disciplined tuning, because the selection surface is a split no classical
+sweep had observed and the effect was confirmed on an untouched reserve slice, and
+**every measurement stands unchanged**: AP 0.2191 to 0.2976 on reserve p4, paired +0.0785,
+95 percent interval [+0.0604, +0.0984], 59 of 64 images improved, boundary-recall cost
+stated. What does not stand is the stated reason, and the exemption it bought.
+
+**The consequence that matters scientifically: the classical tier is not uniformly tuned.**
+C3 is the only classical method whose residual constant was re-selected. C2
+`min_distance` 6 scores 0.0998 against the shipped 2's 0.0173, and C5 `h` 0.02 scores
+0.1819 against the shipped 0.08's 0.1330, both larger unclaimed gains than the one C3
+took. Every place that claims C3 leads the classical tier now says so. Making the
+comparison like-for-like is a new study that would spend the last reserve slice and has
+not been done. Full account: CAOS_MANAGE
+`plans/frothseg/research-2026-07-31/r2-correction-2026-08-02.md`.
+
+### Artifacts that disagreed with the engine
+
+- The **constant ledger** hardcoded `published_value: 0.06` while the engine shipped 0.12,
+  in a file regenerated AFTER the change. It now reads every value from the engine, carries
+  status `adopted` with `decision_evidence` and `decision_basis`, and a test asserts ledger
+  values equal the engine's bound defaults.
+- The **baseline-reproduction certificate** recorded only a PATH, so re-baking
+  `classical-heldout.json` let a reproduction claim made about different bytes carry over.
+  It now pins the reference sha256 and the 13 engine constants it ran under. Re-verified:
+  all seven engines identical.
+- **`release-report.json` shipped stamped 0.5.0** while the deployed tag was v0.06.001,
+  because the rebake driver runs `build_release_report` BEFORE the version bump it reads.
+  The driver now warns, and a test fails if the report and VERSION disagree.
+- The **adoption record** carried C3's off-domain "after" as 0.1278, superseded since the
+  depth correction, beside a hardcoded "WORSE off-domain" verdict. It now carries both
+  values and the engine state each was measured under.
+
+### A metric that published "perfect" for measuring nothing
+
+L7 published mean event precision, recall and F1 of **1.000**, from
+`event_tp == event_fp == event_fn == 0`: the vacuous branch. It is prompted with the exact
+first-frame masks and predicts no births or disappearances, so "no events at all" rendered
+as flawless event detection in the same column where fourteen other methods publish
+measured values. The metric now returns `None`, means exclude null rows and report how many
+sequences had no events, and L7 reads null with 5 such sequences. Its honest number, mean
+identity IoU 0.8985, is unchanged.
+
+### Gates that could not catch their target
+
+- `frothseg-focus-flow` measured `canvasPct` and left it out of the pass condition, so a
+  focus view with a full-size stage and a canvas that never mounted, a blank stage, passed
+  at every viewport in both themes.
+- `frothseg-content-depth` computed `captioned` and asserted the raw equation count, so a
+  floor documented as ">=3 CAPTIONED equations" was met by bare formulas.
+- The timing invariants **skipped silently** when `inference-timing.json` was absent, so
+  deleting it disabled the compute-axis provenance and stability checks at once. Now a hard
+  failure, with coverage of every published method asserted.
+- The twin-constant gate bound 3 constants and omitted the three common-mode FOREGROUND
+  constants every method consumes, plus C7's seam radius. Now 7, all four new bindings
+  mutation-tested.
+- The parity staleness gate hashed 2 files while the twin's actual algorithms live in
+  `gray.ts` and `watershed.ts`. Now all four sources.
+- `build_method_benchmark` silently kept a per-bake timing when a predictor failed to LOAD.
+  It now raises.
+
+### Claims corrected
+
+- The Methodology page published **h = 0.06** as C3's shipping value in seven rendered
+  places across both languages, including the KaTeX formula, while the engine ships 0.12.
+- Two architecture docs still named **Cellpose-SAM the leader** at 0.5099 with N1 "not
+  exceeding" it. N1 leads at 0.5186, and both now carry the caveat that the +0.0087 margin
+  is smaller than the 0.0118 ensemble spread, so the two are not distinguishable.
+- The benchmark's generated note claimed the replaced `neg_edt` surface "was the better
+  surface" off-domain. It held at 0.182 against 0.128; the shipped engine now reaches 0.216
+  there, above 0.182, so it is false. The transfer DIRECTION survives, the surface ordering
+  does not.
+- **"The single method never trained in this repository"** was the causal explanation of the
+  entire domain-transfer result, and L5 was fine-tuned here for 2 epochs on the same 192
+  samples. The mechanism is a strong external prior lightly adapted, not the absence of
+  training.
+- The temporal matrix carried C3's pre-correction row and rank; the SAM coverage bullets
+  implied wins its own table records as losses; C5's splits are 1.7x fewer than C3's, not
+  2.7x; L7 sits below three classical baselines, not two; C3's false-event count is 258,
+  not 2292; the showcase is 180 pairs, not 195; L1's ID-switch rate is 0.0084, not 0.0093.
+
+### The process failure worth keeping
+
+An exemption from a discipline was granted on the strength of a mechanism that was never
+checked against the code. The measurement that followed was careful: pre-registered,
+selected off-surface, confirmed on a reserve slice, costs published. None of that rigour
+was applied to the one sentence that authorised it. A justification is a claim about the
+code and has to be verified against the code like any other.
+
 ## [0.06.001] · 2026-08-02
 
 Patch. No engine, weight or artifact value changed. This corrects prose that was still
@@ -79,12 +199,22 @@ different trainer whose loss never changed. Their published EVALUATIONS reproduc
 under today's code, 0.00e+00 over 64 of 64 cases, so the shipped numbers are sound; only
 the path that would regenerate those weights has drifted.
 
-### C3 was flooding one surface with a depth measured on another
+### C3's flooding depth was re-selected on validation
 
-`C3_H_MAXIMA` stayed at 0.06 when C3's flooding surface moved from `neg_edt` (pixels of
-distance) to `neg_gray` (normalized intensity) earlier the same day. A depth carries the
-units of the surface it is measured on. The comment on that line had even been corrected
-to say "intensity" while the number still described the distance transform.
+> **Corrected 2026-08-02.** This section originally described the change as a UNIT ERROR,
+> the claim being that the depth had been left in distance-transform units after the
+> flooding surface moved. That justification is FALSE and is withdrawn. `h` is applied to
+> the intensity image by `morphology.h_maxima(gray, h=h)`; the flooding surface enters
+> separately and no depth is ever applied to it, in any commit of `segment.py`. The
+> 29248-against-17846 over-count quoted as proof is identical on ALL FOUR flooding surfaces
+> at h=0.06, so it was the marker count and not a surface effect. The change is SELECTION ON
+> A SCORE: 0.12 is the argmax of validation mean AP. That is disciplined tuning and the
+> measurement below stands unchanged; the stated reason for it did not. It also means the
+> classical tier is not uniformly tuned, since C2 and C5 keep defaults with larger unclaimed
+> gains on their own sweeps. Full account: CAOS_MANAGE
+> `plans/frothseg/research-2026-07-31/r2-correction-2026-08-02.md`.
+
+`C3_H_MAXIMA` moved from 0.06 to 0.12.
 
 Selected on the validation split, which no classical constant sweep had ever touched, and
 confirmed on untouched reserve slice p4: mean AP **0.2191 to 0.2976**, paired +0.0785 with

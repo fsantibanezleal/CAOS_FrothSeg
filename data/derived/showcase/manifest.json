@@ -2029,7 +2029,7 @@
     "complete": true,
     "frames_per_sequence": 8,
     "manifest_path": "showcase/temporal/manifest.json",
-    "manifest_sha256": "7c83e651c0f218316929d703e0ab85475ef32378df0063851372488649ef9f6c",
+    "manifest_sha256": "242f543e4303bbfd01cbcd031da07b4396574545badad4c93d45b808687a841a",
     "prediction_frame_count": 600,
     "prediction_method_count": 15,
     "prediction_sequence_count": 75,

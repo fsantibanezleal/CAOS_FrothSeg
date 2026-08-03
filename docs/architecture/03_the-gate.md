@@ -33,7 +33,7 @@ methods remain authoritative offline implementations.
 
 The web copies `data/derived` during build and reads those artifacts without
 recomputing them. The showcase manifest covers 15 methods by 13 canonical cases,
-or 195 precomputed method-case pairs. The workbench exposes those results,
+or 180 precomputed method-case pairs, 15 methods over the 12 scored cases; the empty control has no instances to show and is not in the showcase. The workbench exposes those results,
 held-out metrics, provenance, and honest negative findings even when no
 accelerator or model hub is available.
 

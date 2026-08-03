@@ -101,7 +101,7 @@ function Design({ es, methods }: { es: boolean; methods: MethodBenchmarkDoc | nu
       <h3>{es ? 'Dos superficies experimentales, nunca promediadas' : 'Two experimental surfaces, never averaged'}</h3>
 
       {/* Sources: docs/architecture/06_model-evaluation.md (primary protocol, diagnostic surface);
-          docs/architecture/03_the-gate.md (195 precomputed method-case pairs);
+          docs/architecture/03_the-gate.md (180 precomputed method-case pairs, 15 methods x 12 scored cases);
           data/derived/method-benchmark.json coverage (960 cells, 64 test samples, 16 conditions);
           data-pipeline/fslab/science/froth_gen.py CASES (13 specs, seeds 101-113, 256 px). */}
       <p className="measure">
@@ -1091,7 +1091,7 @@ const TRANSFER_ROWS: Array<{ id: string; name: string; tier: Tier; real: number;
 function tierLabel(tier: Tier, es: boolean): string {
   if (tier === 'classical') return es ? 'clásico' : 'classical';
   if (tier === 'trained') return es ? 'entrenado aquí' : 'trained here';
-  return es ? 'fundacional, nunca entrenado aquí' : 'foundation, never trained here';
+  return es ? 'fundacional, preentrenado fuera y afinado levemente aquí' : 'foundation, pretrained elsewhere, lightly fine-tuned here';
 }
 
 function Transfer({ es }: { es: boolean }) {
@@ -1156,14 +1156,14 @@ function Transfer({ es }: { es: boolean }) {
 
       {/* Source: docs/benchmark/02_real-domain-transfer.md, the per-tier table re-baked on 2026-08-01
           (classical 7 methods +0.071 with 5 of 7 improving, in-repo trained 6 methods -0.243,
-          foundation never trained here +0.199). The classical tier mean moved from +0.088 to +0.070 and then to +0.071
+          foundation pretrained elsewhere and lightly fine-tuned here +0.199). The classical tier mean moved from +0.088 to +0.070 and then to +0.071
           and the improving count from 6 to 5 because C3 changed direction with its adopted
           flooding surface: data/derived/real-adjacent-benchmark.json against
           data/derived/method-benchmark.json methods[].test.mean_ap. */}
       <p className="measure">
         {es
-          ? 'Agrupado por nivel el patrón es claro, con dos excepciones nombradas: el nivel clásico mejora en promedio 0.071, con cinco de sus siete métodos al alza, los seis modelos entrenados dentro del repositorio caen en promedio 0.243 sin excepción, y el único método aprendido que nunca se entrenó aquí mejora 0.199 y pasa a liderar con holgura. Las dos excepciones clásicas son C2, que ya estaba en 0.017 sobre espuma y entrega 0.000 aquí, y C3, que cae de 0.297 a 0.216 desde que el 2026-08-01 adoptó la inundación de la intensidad negada, un mecanismo de espuma que un núcleo celular no ofrece. El nivel clásico también se reordena: C3 lidera todos los ejes del banco sintético y aquí queda quinto de siete, mientras que C1, penúltimo sobre espuma, lidera el nivel clásico sobre imágenes reales. El ranking sintético no transfiere. El método que lidera el banco de espuma cae del primer lugar al octavo sobre imágenes reales, y el nivel clásico, que no tiene un prior aprendido que sobreajustar, sube como nivel. Ese es el resultado, y es la razón por la que existe esta pestaña.'
-          : 'Grouped by tier the pattern is clear, with two named exceptions: the classical tier improves by 0.071 on average, five of its seven methods rising, the six models trained inside the repository fall by 0.243 on average without exception, and the single learned method never trained here improves by 0.199 and becomes the clear leader. The two classical exceptions are C2, already at 0.017 on froth and returning 0.000 here, and C3, which falls from 0.297 to 0.216 since it adopted negated-intensity flooding on 2026-08-01, a froth mechanism a cell nucleus does not offer. The classical tier reorders as well: C3 leads every axis of the synthetic benchmark and is fifth of seven here, while C1, last but one on froth, leads the classical tier on real images. The synthetic ranking does not transfer. The method leading the froth benchmark falls from first to eighth on real images, and the classical tier, which has no learned prior to overfit, rises as a tier. That is the result, and it is why this tab exists.'}
+          ? 'Agrupado por nivel el patrón es claro, con dos excepciones nombradas: el nivel clásico mejora en promedio 0.071, con cinco de sus siete métodos al alza, los seis modelos entrenados dentro del repositorio caen en promedio 0.243 sin excepción, y el único método aprendido que mejora, 0.199, es el fundacional: no porque no se haya entrenado aquí (sí se afinó, 2 épocas sobre las mismas 192 muestras) sino porque llega con un preentrenamiento externo grande al que esa adaptación apenas lo mueve, mientras los otros seis no tienen más prior que el generador. Pasa a liderar con holgura. Las dos excepciones clásicas son C2, que ya estaba en 0.017 sobre espuma y entrega 0.000 aquí, y C3, que cae de 0.297 a 0.216 desde que el 2026-08-01 adoptó la inundación de la intensidad negada, un mecanismo de espuma que un núcleo celular no ofrece. El nivel clásico también se reordena: C3 lidera todos los ejes del banco sintético y aquí queda quinto de siete, mientras que C1, penúltimo sobre espuma, lidera el nivel clásico sobre imágenes reales. El ranking sintético no transfiere. El método que lidera el banco de espuma cae del primer lugar al octavo sobre imágenes reales, y el nivel clásico, que no tiene un prior aprendido que sobreajustar, sube como nivel. Ese es el resultado, y es la razón por la que existe esta pestaña.'
+          : 'Grouped by tier the pattern is clear, with two named exceptions: the classical tier improves by 0.071 on average, five of its seven methods rising, the six models trained inside the repository fall by 0.243 on average without exception, and the one learned method that improves, by 0.199, is the foundation engine. Not because it was never trained here, since it was fine-tuned for 2 epochs on the same 192 samples, but because it arrives with a large external pretraining that the adaptation barely moves, while the other six have no prior beyond the generator. It becomes the clear leader. The two classical exceptions are C2, already at 0.017 on froth and returning 0.000 here, and C3, which falls from 0.297 to 0.216 since it adopted negated-intensity flooding on 2026-08-01, a froth mechanism a cell nucleus does not offer. The classical tier reorders as well: C3 leads every axis of the synthetic benchmark and is fifth of seven here, while C1, last but one on froth, leads the classical tier on real images. The synthetic ranking does not transfer. The method leading the froth benchmark falls from first to eighth on real images, and the classical tier, which has no learned prior to overfit, rises as a tier. That is the result, and it is why this tab exists.'}
       </p>
 
       {/* Source: docs/benchmark/02_real-domain-transfer.md "What this does and does not say about N1"
@@ -1178,7 +1178,7 @@ function Transfer({ es }: { es: boolean }) {
 
       {/* Sources: data-pipeline/fslab/datasets.py (source_id frothseg-synthetic-v2, license
           "Apache-2.0-generated", 384 samples, 64 test); data/README.md (committed derived artifacts per case,
-          raw never committed); docs/architecture/03_the-gate.md (195 replayed method-case pairs);
+          raw never committed); docs/architecture/03_the-gate.md (180 replayed method-case pairs);
           docs/temporal/02_the-full-method-matrix.md (5 sequences x 8 frames, RLE label rasters published);
           data/derived/real-adjacent-dataset-manifest.json (CC0-1.0, 670 samples, 64 test);
           docs/benchmark/02_real-domain-transfer.md (public froth candidates rejected on licence);
@@ -1208,7 +1208,7 @@ function Transfer({ es }: { es: boolean }) {
             <td>{es ? 'sintética' : 'synthetic'}</td>
             <td>{es ? 'generada, permisiva' : 'generated, permissive'}</td>
             <td>{es ? 'espejo: cuadro, máscaras exactas y morfometría por caso' : 'mirror: frame, exact masks and morphometry per case'}</td>
-            <td className="num">13 (195 {es ? 'pares' : 'pairs'})</td>
+            <td className="num">13 (180 {es ? 'pares' : 'pairs'})</td>
             <td>{es ? 'en vivo, superficie diagnóstica' : 'live, diagnostic surface'}</td>
           </tr>
           <tr>
@@ -1308,7 +1308,7 @@ function Provenance({ es, methods, temporal }: {
 
       {/* Source: docs/architecture/03_the-gate.md (live only within bounded download, memory, runtime and
           dependency constraints; C1/C3/C4 TypeScript twins passed 16-condition browser and offline parity;
-          the web copies derived evidence at build and replays 195 method-case pairs without recomputing). */}
+          the web copies derived evidence at build and replays 180 method-case pairs without recomputing). */}
       <p className="measure">
         {es
           ? 'La puerta de cómputo decide qué corre en el navegador, y existe para proteger la validez científica, no para lucir una demostración. Una carga es de ejecución en vivo solo cuando el navegador puede ejecutar el mismo método dentro de límites acotados de descarga, memoria, tiempo de ejecución y dependencias; si no, corre fuera de línea y la web reproduce evidencia compacta. Tres métodos clásicos tienen gemelos en el lenguaje de la web que pasaron las comprobaciones de paridad entre navegador y ejecución fuera de línea sobre las dieciséis condiciones. Los motores pesados, las comprobaciones de las bibliotecas científicas, el entrenamiento y las evaluaciones de la prueba intocada se quedan fuera de línea, y lo que la web muestra de ellos son los ciento noventa y cinco pares método-caso ya calculados y comprometidos, con sus métricas retenidas y sus hallazgos negativos, incluso cuando no hay acelerador ni acceso a un repositorio de modelos.'
@@ -1428,7 +1428,7 @@ function TwoSurfacesFigure({ es }: { es: boolean }) {
 
         <rect className="dg-box" x="530" y="26" width="216" height="72" rx="9" />
         <text className="dg-box-title" x="638" y="52" textAnchor="middle">{es ? 'superficie diagnóstica' : 'diagnostic surface'}</text>
-        <text className="dg-box-sub" x="638" y="72" textAnchor="middle">195 {es ? 'pares reproducidos' : 'replayed pairs'}</text>
+        <text className="dg-box-sub" x="638" y="72" textAnchor="middle">180 {es ? 'pares reproducidos' : 'replayed pairs'}</text>
         <text className="dg-box-sub" x="638" y="88" textAnchor="middle">{es ? 'AP nulo en el control vacío' : 'null AP on the empty control'}</text>
 
         <rect className="dg-box good" x="530" y="186" width="216" height="72" rx="9" />

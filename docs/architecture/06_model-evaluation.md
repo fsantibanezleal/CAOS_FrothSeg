@@ -27,8 +27,8 @@ scores remain a separate diagnostic and are never mixed into the test ranking.
 
 | ID | Method | AP | AP50 | PQ | Current bar |
 |---|---|---:|---:|---:|---|
+| N1 | LamellaStar (three-seed logit-mean ensemble) | 0.5186 | 0.8279 | 0.7359 | pass |
 | L5 | Cellpose-SAM, fine-tuned from `cpsam_v2` | 0.5099 | 0.8238 | 0.7227 | pass |
-| N1 | LamellaStar | 0.4904 | 0.7891 | 0.7089 | pass |
 | L1 | Boundary U-Net + watershed | 0.4153 | 0.6987 | 0.6559 | pass |
 | L2 | Deep-marker watershed | 0.3247 | 0.5990 | 0.5694 | pass |
 | L3 | GC-FSegNet | 0.3190 | 0.5958 | 0.5582 | pass |
@@ -42,7 +42,7 @@ synthetic-benchmark threshold, not a claim of plant readiness.
 ## Temporal evidence
 
 L1 predictions are associated with Hungarian IoU matching over five exact-ID
-sequences and 40 frames. Mean ID-switch rate is 0.0093 and mean frame coverage
+sequences and 40 frames. Mean ID-switch rate is 0.0084 and mean frame coverage
 is 0.9076.
 
 Official SAM2.1 video propagation is measured separately. Twelve
@@ -55,9 +55,11 @@ automatic object discovery.
 
 Implementation completeness does not imply quality success. All 15 methods are
 implemented, and five learned/research methods clear the present AP bar.
-Cellpose-SAM remains the leader. The preregistered LamellaStar revision improves
-from AP 0.2145 to 0.4904 but does not exceed the leader, so the evidence does
-not support a superiority claim.
+The three-seed LamellaStar ensemble leads the controlled synthetic test at AP
+0.5186 against Cellpose-SAM at 0.5099. That margin, +0.0087, is
+SMALLER than the measured ensemble-to-ensemble spread of 0.0118
+(`verification/p1-ensemble-spread.json`), so the two are not distinguishable at that
+spread and the evidence supports no superiority claim. `beyond_sota_claim` stays false.
 
 Synthetic metrics are not real-plant accuracy. A plant claim requires a
 separately governed, representative, expert-labelled real-froth dataset and a

@@ -105,6 +105,12 @@ for (const [route, floor] of Object.entries(FLOORS)) {
   const short = [];
   if (floor.tabs && m.tabs < floor.tabs) short.push(`tabs ${m.tabs}/${floor.tabs}`);
   if (floor.equations && m.equations < floor.equations) short.push(`equations ${m.equations}/${floor.equations}`);
+  // `captioned` was computed and never asserted, so the floor documented as ">=N CAPTIONED
+  // equations" was really enforced against the raw equation count. A page could meet it with bare
+  // formulas carrying no explanation, which is the thing the floor exists to prevent.
+  if (floor.equations && m.captioned < Math.min(3, floor.equations)) {
+    short.push(`captioned equations ${m.captioned}/${Math.min(3, floor.equations)} (an equation with no explaining text does not count)`);
+  }
   if (floor.svgs && m.svgs < floor.svgs) short.push(`svgs ${m.svgs}/${floor.svgs}`);
   if (floor.honest && m.honest < floor.honest) short.push(`honest callouts ${m.honest}/${floor.honest}`);
   if (floor.refsBlocks && m.refs < floor.refsBlocks) short.push(`Refs blocks ${m.refs}/${floor.refsBlocks}`);

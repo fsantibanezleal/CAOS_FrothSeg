@@ -265,6 +265,19 @@ def _compute(
         }
     else:
         mean_ms, p95_ms, timing_source = _runtime(evaluation, run, canonical)
+        # A method the timing pass could not LOAD is a different case from one that has no
+        # single-image lane. The first is an environment failure and its row silently keeps
+        # whatever its own bake recorded, under whichever label that route carries; the second is
+        # a property of the method. Refuse the first outright rather than publish a number the
+        # timing pass declined to produce.
+        if measured_timing and str(measured_timing.get("reason", "")).startswith(
+            "predictor unavailable"
+        ):
+            raise ValueError(
+                f"{method_slug}: the timing pass could not load this predictor "
+                f"({measured_timing['reason']}), so its compute row would silently fall back to a "
+                "per-bake leftover. Fix the environment and re-run measure_inference_timing."
+            )
         if measured_timing and measured_timing.get("reason"):
             # The timing pass looked at this method and deliberately did not time it (L7 has no
             # unprompted single-image lane). Without this branch the row silently kept the
@@ -350,7 +363,14 @@ def build() -> dict:
         row["id"]: row for row in (timing_document or {}).get("methods", [])
     }
     # sample_id -> ms, per method, so the per-case column and the headline are one measurement.
-    timing_sample_ids = ((timing_document or {}).get("protocol") or {}).get("sample_ids") or []
+    timing_protocol = (timing_document or {}).get("protocol") or {}
+    timing_sample_ids = timing_protocol.get("sample_ids") or []
+    if timing_document is not None and timing_protocol.get("split") not in (None, "test"):
+        raise ValueError(
+            f"inference-timing.json was measured on the {timing_protocol.get('split')!r} split; "
+            "the benchmark publishes the test split, so the per-case timings would be joined "
+            "across two different sets of images"
+        )
     per_case_timings = {}
     for row in (timing_document or {}).get("methods", []):
         values = row.get("per_image_ms")
@@ -483,8 +503,12 @@ def build() -> dict:
                 "scores exactly 0.000 on all 64 real samples, and C3 falls from 0.297 to 0.216. "
                 "C3's adopted negated-intensity flooding surface is a FROTH mechanism, since it "
                 "assumes a bright specular highlight per bubble and a dark Plateau border between "
-                "bubbles, and cell nuclei have neither; on this domain the distance transform it "
-                "replaced was the better surface. That is recorded, not repaired: the change was "
+                "bubbles, and cell nuclei have neither. That reading held while the comparison was "
+                "0.182 for the replaced neg_edt surface against 0.128 for the adopted one; after "
+                "the flooding depth was corrected the shipped engine reaches 0.216 here, above "
+                "0.182, so the surface it replaced is not the better surface on this domain "
+                "either. What survives is the direction of the transfer, not the surface "
+                "ordering. That is recorded, not repaired: the change was "
                 "adopted on the froth source and confirmed on a froth reserve slice "
                 "(verification/phase1-adoption.json), and this split supports no froth statement. "
                 "C7's constrained watershed transfers in the other direction, 0.233 to 0.301, and "

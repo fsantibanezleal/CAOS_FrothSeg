@@ -17,6 +17,12 @@ from fslab.showcase import encode_label_runs, preview, sha256
 from fslab.temporal import identity_events, temporal_metrics, track_by_iou
 
 
+
+def _mean_or_none(values: list) -> float | None:
+    """Mean over the rows that HAVE a value; None when none of them do."""
+    present = [value for value in values if value is not None]
+    return float(np.mean(present)) if present else None
+
 def _write_json(path: Path, payload: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8", newline="\n") as handle:
@@ -124,8 +130,14 @@ def main() -> None:
         "mean_idf1": float(np.mean([row["idf1"] for row in rows])),
         "mean_hota": float(np.mean([row["hota"] for row in rows])),
         "total_track_fragmentations": int(sum(row["track_fragmentations"] for row in rows)),
-        "mean_event_precision": float(np.mean([row["event_precision"] for row in rows])),
-        "mean_event_recall": float(np.mean([row["event_recall"] for row in rows])),
+        # None rows are sequences with no events at all. Averaging them as 1.0 published a
+        # perfect event score for a lane that detected nothing; averaging them as 0.0 would be
+        # equally wrong. They are excluded, and the mean is None when every row is None.
+        "mean_event_precision": _mean_or_none([row["event_precision"] for row in rows]),
+        "mean_event_recall": _mean_or_none([row["event_recall"] for row in rows]),
+        "event_sequences_without_events": sum(
+            1 for row in rows if row["event_precision"] is None
+        ),
         "mean_flow_epe_px": float(np.mean([
             row["flow_epe_px"] for row in rows if row["flow_epe_px"] is not None
         ])),

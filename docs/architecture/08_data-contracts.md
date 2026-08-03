@@ -74,7 +74,8 @@ The cross-method replay layer lives under `data/derived/showcase/`.
 `python -m fslab.pipeline showcase` reads the originating label maps and emits a
 compact `labels.rle` plus `preview.png` for every registered method and canonical
 case. Its `frothseg.showcase/v1` manifest must contain 15 methods, 13 cases, and
-195 pairs; `tests/test_showcase.py` verifies coverage and hashes.
+180 pairs, 15 methods over the 12 scored cases; the empty control has no instances to show and
+is not in the showcase. `tests/test_showcase.py` verifies coverage and hashes.
 
 The web loads only committed artifacts for the benchmark, canonical samples,
 and showcase; it never recomputes them. Live segmentation of an uploaded frame

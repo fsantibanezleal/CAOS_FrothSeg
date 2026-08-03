@@ -81,8 +81,15 @@ for (const theme of THEMES) {
     const chosenAfter = await page.locator('.fs-side select').first().inputValue().catch(() => '');
     const preserved = Boolean(chosenBefore) && chosenBefore === chosenAfter;
 
+    // canvasPct was measured here and left out of the pass condition, so a focus view whose stage
+    // div is full-size but whose CANVAS never mounted (a blank stage) passed at every viewport and
+    // both themes. That is the same underfill class frothseg-instrument-fit exists for on the App
+    // route. The stage has to own the viewport AND actually contain a drawn picture.
+    const canvasFillsStage = stage && stage.stagePct > 0
+      && (stage.canvasPct / stage.stagePct) >= 0.5;
     const ok = focusRendered && backOnApp && preserved
-      && stage && stage.stagePct >= 80 && stage.hud && stage.label && stage.rail
+      && stage && stage.stagePct >= 80 && stage.canvasPct >= 40 && canvasFillsStage
+      && stage.hud && stage.label && stage.rail
       && !stage.docOverflow && errors.length === 0;
     if (!ok) failures++;
     console.log(

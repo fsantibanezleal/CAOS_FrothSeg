@@ -98,8 +98,8 @@ classical floor. Not one SAM prediction was re-collected on any of the three occ
 
 The story the numbers tell:
 
-- SAM no longer beats the classical floor on average by any meaningful margin: +0.014 over 12 scored cases,
-  winning 5 of them. It still wins the clean control, coarse froth, bursting, low-light and the glare case.
+- SAM no longer beats the classical floor on average: it LOSES by 0.037 over the 12 scored cases,
+  winning 4 of them. It still wins the clean control, coarse froth, low-light and the glare case.
 - The win that still matters operationally is `glare-storm`: **0.407 vs 0.182**. Under a saturated glare lobe
   the classical tier reaches only 0.182 even with C7's constrained watershed holding the floor, which is the
   realistic froth-camera failure mode; the zero-shot foundation model degrades gracefully instead. That gap was

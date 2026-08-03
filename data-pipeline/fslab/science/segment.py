@@ -45,19 +45,26 @@ from skimage import feature, filters, graph, measure, morphology, segmentation
 # sweeps under data/derived/phase1/; the ledger of which constant is swept, which is sourced and which
 # is still undefended is data/derived/phase1/classical-constant-ledger.json.
 #
-# THREE defaults were moved on 2026-08-01. None of them moved because a sweep score was higher, and each
-# was confirmed on a reserve slice no sweep had observed.
+# THREE defaults were moved on 2026-08-01, and they did NOT all move for the same kind of reason.
+# Each was confirmed on a reserve slice no sweep had observed.
 #
 #   C3_FLOODING_SURFACE  "neg_edt"  -> "neg_gray"  Sadr-Kazemi and Cilliers 1997,
 #                                                  10.1016/S0892-6875(97)00094-0
 #   C7_MODE              "subtract" -> "watershed" Meyer 1994, 10.1016/0165-1684(94)90060-4
-#     Both because the code was not implementing the source the registry already cites for that
-#     method. Evidence: verification/phase1-adoption.json.
-#   C3_H_MAXIMA          0.06       -> 0.12        unit correction, not a source correction.
-#     A depth carries the units of the surface it is measured on, and the surface change above left
-#     this one expressed in pixels of distance transform while C3 had started flooding normalized
-#     intensity. Selected on the validation split, which no classical sweep had touched, and
-#     confirmed on reserve slice p4. Evidence: verification/r2-c3-flooding-depth.json.
+#     These two moved because the code was not implementing the source the registry already cites
+#     for that method, not because a score was higher. Evidence: verification/phase1-adoption.json.
+#   C3_H_MAXIMA          0.06       -> 0.12        SELECTION ON A SCORE. See the note at the
+#     constant itself. It was published as a "unit correction" and that justification was FALSE;
+#     the correction is recorded in CAOS_MANAGE plans/frothseg/research-2026-07-31/
+#     r2-correction-2026-08-02.md. Selected as the argmax of validation mean AP and confirmed on
+#     reserve slice p4. Evidence: verification/r2-c3-flooding-depth.json.
+#
+# CONSEQUENCE, stated because it changes how the tier table must be read: C3 is the only classical
+# method whose residual constant was re-selected. C2_MIN_DISTANCE and C5_H_MINIMA keep untuned
+# defaults whose own sweeps show larger unclaimed gains (data/derived/phase1/residual-constants-
+# sweep.json: C2 min_distance 6 scores 0.0998 against the shipped 2's 0.0173; C5 h 0.02 scores
+# 0.1819 against the shipped 0.08's 0.1330). Any claim that C3 leads the classical tier is a claim
+# about a tier in which one member was tuned and two were not.
 #
 # Nothing else moved. C4_COMPACTNESS stays 0.0 and FOREGROUND_OTSU_FACTOR stays 0.75: both are best or
 # unbeaten on their own sweeps, and C7_SEAM_RADIUS stays 3 because radius 4 or 5 buys about 0.01 AP on
@@ -78,13 +85,24 @@ C4_COMPACTNESS = 0.0                 # SWEPT, Phase 1 item 1.1. 0.0 == plain wat
 C4_WATERSHED_LINE = False            # SWEPT, Phase 1 item 1.1.
 
 # ADOPTED 2026-08-01, was 0.06. See verification/r2-c3-flooding-depth.json.
-# A depth carries the units of the surface it is measured on. When C3's flooding surface moved from
-# neg_edt (pixels of distance) to neg_gray (normalized intensity) the same afternoon, this constant
-# was carried across unchanged, so C3 seeded markers with a threshold in the wrong units: it
-# predicted 29248 instances against 17846 true ones on the test split, a 64 percent
-# over-segmentation. The comment on this line had already been corrected to say "intensity" while
-# the number still described the distance transform.
-# Re-derived on the validation split, which no classical constant sweep had touched, and confirmed
+#
+# CORRECTION 2026-08-02. This was published as a "unit error": a depth supposedly left in the units
+# of the distance transform after the flooding surface changed. That is FALSE, and the code below
+# is why. `h` is the depth of `morphology.h_maxima(gray, h=h)`, applied to the [0, 1] INTENSITY
+# image; the flooding surface enters separately, as the first argument of `segmentation.watershed`.
+# No depth is ever applied to the flooding surface, in any commit in this file's history, so the
+# neg_edt -> neg_gray change cannot have altered this constant's units. The 29248-against-17846
+# over-count that was quoted as proof is identical on ALL FOUR surfaces at h=0.06
+# (data/derived/phase1/c3-flooding-surface.json): it was the marker count, not a surface effect.
+#
+# What this change actually is: SELECTION ON A SCORE. 0.12 is the argmax of validation mean AP over
+# a pre-registered 6-point grid (0.30284, against 0.29936 at h=0.20 and 0.22216 at h=0.06). That is
+# legitimate and disciplined, because the selection surface is the validation split that no
+# classical sweep had observed and the effect was confirmed on an untouched reserve slice. It is
+# NOT the score-free correction it was published as. Full account: CAOS_MANAGE
+# plans/frothseg/research-2026-07-31/r2-correction-2026-08-02.md.
+#
+# Selected on the validation split, which no classical constant sweep had touched, and confirmed
 # on untouched reserve slice p4: mean AP 0.2191 -> 0.2976, paired +0.0785 with 95% CI
 # [+0.0604, +0.0984] and 59 of 64 images improved. Stated cost: boundary RECALL falls 0.9638 to
 # 0.9524, worse on 60 of the 64 images and better on none of them, because coarser markers find

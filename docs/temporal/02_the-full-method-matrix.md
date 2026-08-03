@@ -65,24 +65,29 @@ Ordered by HOTA on `poly-normal`, which balances detection against association:
 | L3 | GC-FSegNet | 0.901 | 0.892 | 92.9% | 24 | 22 |
 | L2 | Deep-marker watershed | 0.880 | 0.871 | 93.3% | 30 | 20 |
 | L6 | YOLO froth segmentation | 0.852 | 0.847 | 87.2% | 2 | 52 |
+| C3 | Marker-controlled watershed | 0.917 | 0.908 | 97.3% | 23 | 15 |
 | C7 | Lamella-valley constrained watershed | 0.829 | 0.815 | 87.3% | 17 | 86 |
 | C4 | Distance-transform watershed | 0.801 | 0.786 | 81.3% | 22 | 47 |
 | L4 | StarDist 2D | 0.767 | 0.752 | 79.3% | 30 | 48 |
-| C3 | Marker-controlled watershed | 0.738 | 0.701 | 98.9% | 89 | 6 |
 | C5 | H-minima watershed | 0.670 | 0.639 | 63.7% | 43 | 69 |
 | C1 | Otsu + connected components | 0.499 | 0.440 | 36.4% | 8 | 60 |
 | C6 | SLIC + RAG merge | 0.313 | 0.205 | 76.9% | 105 | 113 |
 | C2 | Gradient immersion watershed | 0.153 | 0.074 | 62.9% | 370 | 81 |
 
-Averaged over all five sequences: N1 0.917, L5 0.913, L1 0.879, L2 0.823, L3 0.806, L6 0.769, L4 0.668, C3 0.653, C4 0.631, C7 0.601, C5 0.451, C1 0.341, C6 0.263, C2 0.150.
+Averaged over all five sequences: N1 0.917, L5 0.913, L1 0.879, L2 0.823, L3 0.806, L6 0.769, C3 0.761, L4 0.668, C4 0.631, C7 0.601, C5 0.451, C1 0.341, C6 0.263, C2 0.150.
 
-The C3 and C7 rows moved on 2026-08-01 with the two adopted engine defaults
-(`verification/phase1-adoption.json`), and C3's move is the interesting one. Flooding the negated
-image instead of the negated distance transform took its nominal-transport coverage from 74.2 to
+The C3 and C7 rows moved on 2026-08-01 with the adopted engine defaults, and C3's move is the
+interesting one. It moved TWICE. Flooding the negated image instead of the negated distance
+transform (`verification/phase1-adoption.json`) took its nominal-transport coverage from 74.2 to
 98.9 percent and its fragment count from 84 to 6, because the masks now reach the seam and survive
-IoU association from one frame to the next. It cost identity stability, 36 switches to 89: C3 finds
-far more of each bubble and therefore has far more identity to confuse. Its five-sequence mean HOTA
-rose from 0.435 to 0.653, moving it above C4. C7 barely moved here, 0.597 to 0.601.
+IoU association from one frame to the next, at a cost in identity stability of 36 switches to 89.
+Correcting its flooding depth later the same day (`verification/r2-c3-flooding-depth.json`) then
+recovered most of that cost: coverage 97.3 percent, 23 switches, 15 fragmentations, and HOTA 0.917
+on nominal transport, fourth overall and within 0.006 of the boundary U-Net. Its five-sequence mean
+HOTA went 0.435, then 0.653, then 0.761. C7 barely moved here at all, 0.597 to 0.601.
+
+Identity association is driven by instance count, which is why a method that stopped
+over-segmenting by 64 percent gains this much on a tracking metric it was never tuned against.
 
 The N1 row is also corrected in this pass. It read 0.926 / 0.923 / 92.4% / 11 / 17 while
 `data/derived/temporal/lamellastar.json` carried 0.961 / 0.962 / 96.4% / 6 / 6, and its

@@ -10,13 +10,21 @@
     "max_mean_instance_count_ratio": 1.25
   },
   "implementations": {
-    "browser": {
+    "browser:methods.ts": {
       "path": "frontend/src/classical/methods.ts",
-      "sha256": "59e56f3b2104804bbc91162b9dd6cce26f2cfb544005046fc6a52fe8b97c68ea"
+      "sha256": "009920a6fd9d628c8cd8e352ab6257d91cd2329062a59e58fd483ffcdd6a5d75"
+    },
+    "browser:gray.ts": {
+      "path": "frontend/src/classical/gray.ts",
+      "sha256": "0e29bb624a4da420a20b908561b33c92a1b2e941344d1822c35027e4a5a8bbc1"
+    },
+    "browser:watershed.ts": {
+      "path": "frontend/src/classical/watershed.ts",
+      "sha256": "62445305acde6b41804a3b3f171260eb04c61b4b74de3d52255238d713b6881e"
     },
     "offline": {
       "path": "data-pipeline/fslab/science/segment.py",
-      "sha256": "7fdf408e013911cc2f77ae76bd864fba6b54198da146854fac2c7df87c9fc80f"
+      "sha256": "fd5cccf4d3a82c06f8ba2292ec4a7d1a7af0612a434f0c57be1bf8829a9cf714"
     }
   },
   "accepted_methods": [

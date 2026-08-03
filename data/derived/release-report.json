@@ -1,9 +1,10 @@
 {
   "schema": "frothseg.release/v2",
-  "version": "0.5.0",
+  "version": "0.6.2",
   "complete": false,
   "errors": [
-    "no accepted licensed real FROTH held-out source with imported samples and calibration"
+    "no accepted licensed real FROTH held-out source with imported samples and calibration",
+    "version/tag mismatch: expected v0.06.002, latest is v0.06.001"
   ],
   "branch_policy": "existing develop branch; no worktree",
   "dataset": {
@@ -17,7 +18,7 @@
   },
   "method_benchmark": {
     "path": "data/derived/method-benchmark.json",
-    "sha256": "9ce20494174e930148a2f3017ba9fb606cbdde824f919d5b89e9a511dbaf32b3",
+    "sha256": "156500a69d9b833d87bfa267755729075b8db11a204ac0cd64828166d289da97",
     "method_count": 15,
     "implemented_count": 15,
     "leader": {
@@ -763,7 +764,7 @@
   "temporal_evidence": [
     {
       "path": "data/derived/temporal/otsu_cc.json",
-      "sha256": "1e011166e2ac783c973a42db52269595c2b04999172200874c20d4e239746029",
+      "sha256": "456a81ffcccba155222ee441dbdeef1ccf11b95b28a37fe80d0ed4174fee243d",
       "schema": "frothseg.temporal-benchmark/v1",
       "method_id": "C1",
       "prediction_kind": "framewise_segmentation_with_iou_identity_association",
@@ -782,7 +783,7 @@
     },
     {
       "path": "data/derived/temporal/watershed_immersion.json",
-      "sha256": "56906119409e4602be0ceff3f73fae6ad93dff7b9fc39424a36f8a53acdb24be",
+      "sha256": "632aeaf888066c051842180f78990857476c54c0bb4e08c4561ff3c9b7d3d2aa",
       "schema": "frothseg.temporal-benchmark/v1",
       "method_id": "C2",
       "prediction_kind": "framewise_segmentation_with_iou_identity_association",
@@ -801,7 +802,7 @@
     },
     {
       "path": "data/derived/temporal/watershed_hmax.json",
-      "sha256": "7cc39632ff625eee11b3be0756b8d143a5512dd9f6a5573b02611c6790f1a4f0",
+      "sha256": "4c44654733939263c54272aa681805940107db09d963746b935ba1ce13a5bfb7",
       "schema": "frothseg.temporal-benchmark/v1",
       "method_id": "C3",
       "prediction_kind": "framewise_segmentation_with_iou_identity_association",
@@ -820,7 +821,7 @@
     },
     {
       "path": "data/derived/temporal/watershed_dt.json",
-      "sha256": "84a4f4fa1c052c1a2058898ff72777986a32d2f0e57432ad091adab2e1a6e79c",
+      "sha256": "09fff996da68a862ebd2196778e46d34fc3012b1bf024ad8adaf37a77e82c673",
       "schema": "frothseg.temporal-benchmark/v1",
       "method_id": "C4",
       "prediction_kind": "framewise_segmentation_with_iou_identity_association",
@@ -839,7 +840,7 @@
     },
     {
       "path": "data/derived/temporal/watershed_hmin.json",
-      "sha256": "413df688adf5c00dc7f552ba1dfcca08c87f3154072320837eeb792e554e2bf1",
+      "sha256": "e62d284236b56ffd301f93b7e7a7800d237582ec6049b35d941a588db4b8c566",
       "schema": "frothseg.temporal-benchmark/v1",
       "method_id": "C5",
       "prediction_kind": "framewise_segmentation_with_iou_identity_association",
@@ -858,7 +859,7 @@
     },
     {
       "path": "data/derived/temporal/slic_merge.json",
-      "sha256": "57a24943b061ba6472ba658801a6f7705b09522442f14f0ac4d1538d17440f70",
+      "sha256": "c8d863fa6df8bd2fce5485871497b7abb05e8aa95a500bd17bc687c01365443c",
       "schema": "frothseg.temporal-benchmark/v1",
       "method_id": "C6",
       "prediction_kind": "framewise_segmentation_with_iou_identity_association",
@@ -877,7 +878,7 @@
     },
     {
       "path": "data/derived/temporal/valley_edge.json",
-      "sha256": "7cb46c4448c77f2418ca8316ed133d0bbd7326991825a65e2c9beec27ce5c9ce",
+      "sha256": "7e9858d8d4cdeb0ac630f335bc2f92643cb01992ba02964107f1ff83cc9c9c93",
       "schema": "frothseg.temporal-benchmark/v1",
       "method_id": "C7",
       "prediction_kind": "framewise_segmentation_with_iou_identity_association",
@@ -896,7 +897,7 @@
     },
     {
       "path": "data/derived/temporal/unet_watershed.json",
-      "sha256": "89638b6d08c38b0559b162689c80a5642c5d190ba022d262766caa9d5c6a5044",
+      "sha256": "678ab5c7c306d837c0d16d92bb4ce23da201951e57a383d7285625bca9df1dda",
       "schema": "frothseg.temporal-benchmark/v1",
       "method_id": "L1",
       "prediction_kind": "framewise_segmentation_with_iou_identity_association",
@@ -915,7 +916,7 @@
     },
     {
       "path": "data/derived/temporal/deep_marker_watershed.json",
-      "sha256": "11d06c4ed6cb6265c152b21208b0e696726d7c88ab36ac8465f6618630719e91",
+      "sha256": "3823a83a920b3c9be63a6a421fc477656227dcffc819034a478826395afb0abf",
       "schema": "frothseg.temporal-benchmark/v1",
       "method_id": "L2",
       "prediction_kind": "framewise_segmentation_with_iou_identity_association",
@@ -934,7 +935,7 @@
     },
     {
       "path": "data/derived/temporal/gc_fsegnet.json",
-      "sha256": "2172dea67af0cc3a29715c86a19cc6adb2066984f63f3207bc0296584163e9d3",
+      "sha256": "adb8deb76663493a485c3e938086aad5fd62d0e7cbe0e94f8e61dd38561b13a1",
       "schema": "frothseg.temporal-benchmark/v1",
       "method_id": "L3",
       "prediction_kind": "framewise_segmentation_with_iou_identity_association",
@@ -953,7 +954,7 @@
     },
     {
       "path": "data/derived/temporal/stardist_2d.json",
-      "sha256": "4b3433fa9282c7f581837ad7c2c1f8d468bd0349bc6b996e4d96e1d51afb2d4d",
+      "sha256": "2e70cb45888cf5b514c512767bb0bbdb7089682fca06b59f945a819ca4676649",
       "schema": "frothseg.temporal-benchmark/v1",
       "method_id": "L4",
       "prediction_kind": "framewise_segmentation_with_iou_identity_association",
@@ -964,7 +965,7 @@
       "metrics": {
         "event_precision": 0.005194805194805195,
         "event_recall": 1.0,
-        "flow_epe_px": 2.047520992831968,
+        "flow_epe_px": 2.0474878198215647,
         "hota": 0.7667563657225144,
         "idf1": 0.7520633872565203,
         "track_fragmentations": 48
@@ -972,7 +973,7 @@
     },
     {
       "path": "data/derived/temporal/cellpose_sam.json",
-      "sha256": "dfe3b150307533670652fa12cc92c7246d32f1b82415baa751d37bd5ea77ac56",
+      "sha256": "e72a3569d980b9c865248d95f5bdc68c987b5d215c4fc8c29c3a576690c8adcf",
       "schema": "frothseg.temporal-benchmark/v1",
       "method_id": "L5",
       "prediction_kind": "framewise_segmentation_with_iou_identity_association",
@@ -991,7 +992,7 @@
     },
     {
       "path": "data/derived/temporal/yolo_froth_seg.json",
-      "sha256": "95f91ebdef19936526f13fd7ca2558ea72f82e6ab3031e28877cd31e37d12598",
+      "sha256": "5b0f7dfba0a3356b6530b4d82c92c869d8fa4dfa2a75e3d26fff198ee16f046a",
       "schema": "frothseg.temporal-benchmark/v1",
       "method_id": "L6",
       "prediction_kind": "framewise_segmentation_with_iou_identity_association",
@@ -1010,7 +1011,7 @@
     },
     {
       "path": "data/derived/temporal/sam2_1.json",
-      "sha256": "68ce564ae15ccfe7a2da437b7368f44d528ac77a4a059fcfffe9814bad1a36a4",
+      "sha256": "81feaf87bcaa73b7ed254f8afad794adc1352bb87f25c2169760b8224e69d3de",
       "schema": "frothseg.sam2-video-benchmark/v2",
       "method_id": "L7",
       "prediction_kind": "native_prompted_video_propagation",
@@ -1019,8 +1020,8 @@
       "mean_hota": 1.0,
       "mean_idf1": 1.0,
       "metrics": {
-        "event_precision": 1.0,
-        "event_recall": 1.0,
+        "event_precision": null,
+        "event_recall": null,
         "flow_epe_px": 0.2187265233092636,
         "hota": 1.0,
         "idf1": 1.0,
@@ -1029,7 +1030,7 @@
     },
     {
       "path": "data/derived/temporal/lamellastar.json",
-      "sha256": "dbaaa88aa47a2e79a60de1644ef8305edcfc5545f99eb3c8de76b9db67b62922",
+      "sha256": "2e44f1c511514fdcd7008ab1e34c16344d45435b4fe7812adc473ebab1c645f2",
       "schema": "frothseg.temporal-benchmark/v1",
       "method_id": "N1",
       "prediction_kind": "framewise_segmentation_with_iou_identity_association",
@@ -1049,7 +1050,7 @@
   ],
   "classical_live_parity": {
     "path": "verification/classical-live-parity.json",
-    "sha256": "1fc7daf2e2d5013c45482f02be9ff74726d035cefec001db52be0f861ad81619",
+    "sha256": "45a25d19b38388c913cdf369f90b0c9eae7bb76aca507379a141d506c22741a5",
     "accepted_methods": [
       "otsu_cc",
       "watershed_dt",
@@ -1109,7 +1110,7 @@
       "temporal",
       "use-cases"
     ],
-    "expected_tag": "v0.05.000",
-    "latest_tag": "v0.05.000"
+    "expected_tag": "v0.06.002",
+    "latest_tag": "v0.06.001"
   }
 }
