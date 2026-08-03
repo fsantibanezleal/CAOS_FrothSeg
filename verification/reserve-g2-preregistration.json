@@ -1,23 +1,26 @@
 {
   "schema": "frothseg.reserve-g2-preregistration/v1",
-  "generated_utc": "2026-08-03T13:45:40+00:00",
+  "generated_utc": "2026-08-03T20:34:58+00:00",
   "generation": 2,
   "supersedes_nothing": "Generation 1 (verification/phase2-data-preregistration.json) is untouched. Its archive stays byte-identical, four of its five slices are spent, and p5 remains unspent and usable for any effect at or above 0.035.",
-  "why_generation_2": "Generation 1 sized every slice at 64 to match the burned test split. Sizing by the surface replaced rather than by the effect to be resolved was wrong in both directions: the three adoptions that spent a slice needed n of 6, 13 and 19 and each got 64, while the open FOREGROUND_OTSU_FACTOR question needs n=218 and the last unspent generation-1 slice holds 64.",
+  "why_generation_2": "Generation 1 sized every slice at 64 to match the burned test split. Sizing by the surface replaced rather than by the effect to be resolved was wrong in both directions: the three adoptions that spent a slice needed 6, 13 and 19 independent units and each got 32, while the open FOREGROUND_OTSU_FACTOR question needs 218 and the last unspent generation-1 slice supplies 32. Units are latent geometry groups; a 64-image slice carries 32 of them.",
   "sizing_basis": {
-    "statistic": "paired per-image mean AP delta, before vs after, on the same images",
+    "statistic": "paired mean AP delta, before vs after, averaged WITHIN latent geometry group and then tested across groups",
+    "unit_of_replication": "latent geometry group, not image",
+    "why_not_the_image": "Every group is rendered as two appearance variants, so its two images share their geometry and are not independent. The first version of this file sized on the image count and overstated every tier's resolution by sqrt(2). The samples were never wrong; the claim about what they could resolve was.",
     "sigma_used": 0.1,
-    "sigma_justification": "above the largest per-image SD observed on the three generation-1 confirmations: 0.0426 (C7 mode), 0.0774 (C3 depth), 0.0965 (C3 surface)",
+    "sigma_justification": "above the largest per-image SD observed on the three generation-1 confirmations: 0.0426 (C7 mode), 0.0774 (C3 depth), 0.0965 (C3 surface). Averaging a group's two variants can only reduce that SD, so carrying a per-image sigma into a group-level calculation is conservative in the safe direction.",
     "power": 0.8,
     "alpha": 0.05,
     "two_sided": true
   },
   "the_scarce_resource_is_not_samples": "These scenes are synthetic and seed-addressable and the archive is gitignored and rebuilt from seeds, so supply never constrained anything; the five-slice cap simply tied the budget to a study count guessed in advance. What is limited is how many times a surface may be consulted before a false positive is likely. That is an alpha budget and it lives in the ledger. Minting a fresh slice because the last one disappointed is the failure this mechanism exists to prevent, and no amount of free disk prevents it: the pre-registration does.",
   "tier_meaning": {
-    "S": "n=32, resolves 0.050. Direction and sanity checks, or an effect already measured above 0.10 on another surface.",
-    "M": "n=128, resolves 0.025. The DEFAULT for adopting an engine default.",
-    "L": "n=512, resolves 0.012. Required when the pre-registered expected effect is below 0.025. Needing this tier is itself a finding."
+    "S": "16 groups (32 images), resolves 0.070. Direction and sanity checks, or an effect already measured well above 0.10 on another surface.",
+    "M": "64 groups (128 images), resolves 0.035. The DEFAULT for adopting an engine default.",
+    "L": "256 groups (512 images), resolves 0.0175. Required when the pre-registered expected effect is below 0.035. Needing this tier is itself a finding."
   },
+  "ladder_floor": "0.0175 is the finest effect any slice here resolves. The open FOREGROUND_OTSU_FACTOR question sits at about 0.019, so it clears the floor by a thin margin and nothing smaller has anywhere to go. A future study with a pre-registered expected effect below 0.0175 needs a larger slice minted for it in advance; minting one after a read disappoints remains the failure this mechanism exists to prevent.",
   "rules": [
     "A slice is read at most once, by the study that pre-registered it, and the read is recorded in verification/reserve-slice-ledger.json before any other use.",
     "The tier is chosen from the pre-registered EXPECTED effect, before the read. Choosing n after seeing the effect is selection by another name.",
@@ -40,8 +43,9 @@
       "groups_per_condition": 1,
       "n_samples": 32,
       "n_groups": 16,
+      "images_per_group": 2.0,
       "conditions": 16,
-      "resolvable_paired_delta": 0.0495,
+      "resolvable_paired_delta": 0.07,
       "sample_ids_sha256": "2d01cdc8a2ad6b9acd539d998f0378345a3f95288a3cf928a2623d4fac761405",
       "group_ids_sha256": "4c54bb871105f5e12c3b99019d5dd37e35d53dc36f6c609729541caae8992863"
     },
@@ -50,8 +54,9 @@
       "groups_per_condition": 1,
       "n_samples": 32,
       "n_groups": 16,
+      "images_per_group": 2.0,
       "conditions": 16,
-      "resolvable_paired_delta": 0.0495,
+      "resolvable_paired_delta": 0.07,
       "sample_ids_sha256": "c3128c8e7edf5c8548962f13d37f7572e1a0a3faecd8411d93b30d801e970e71",
       "group_ids_sha256": "f1c865add22aa665d11832f74657bce050e3d7a6f0787adf4629f7c0831afcfc"
     },
@@ -60,8 +65,9 @@
       "groups_per_condition": 1,
       "n_samples": 32,
       "n_groups": 16,
+      "images_per_group": 2.0,
       "conditions": 16,
-      "resolvable_paired_delta": 0.0495,
+      "resolvable_paired_delta": 0.07,
       "sample_ids_sha256": "6e8fc8b4e51d93cbae93548263e23826832146cdd8ce1e6d11853184f0c5b65e",
       "group_ids_sha256": "f1993a7fa39d10d2fffc0edf638fe4b7cd4cac7d5eb4a98d5fe4fb0da1e65343"
     },
@@ -70,8 +76,9 @@
       "groups_per_condition": 1,
       "n_samples": 32,
       "n_groups": 16,
+      "images_per_group": 2.0,
       "conditions": 16,
-      "resolvable_paired_delta": 0.0495,
+      "resolvable_paired_delta": 0.07,
       "sample_ids_sha256": "015e359af58045b5d123d38aace1b9bd135ed1c32f78c24a5d0bf26c9ac77aa1",
       "group_ids_sha256": "3eac9a63ec8b0a03863b8697e2ad78aa1fc12d973a994a76b6f0488c477d10f0"
     },
@@ -80,8 +87,9 @@
       "groups_per_condition": 1,
       "n_samples": 32,
       "n_groups": 16,
+      "images_per_group": 2.0,
       "conditions": 16,
-      "resolvable_paired_delta": 0.0495,
+      "resolvable_paired_delta": 0.07,
       "sample_ids_sha256": "6da0f09fd23d10bcd3aec52fae17d08a333ab2b47bf7b7743f2e39221a8c51f3",
       "group_ids_sha256": "355ae421b5473e97e50d6865d05413b7ec58d3c898d2226d8160bb74e0fa19f2"
     },
@@ -90,8 +98,9 @@
       "groups_per_condition": 1,
       "n_samples": 32,
       "n_groups": 16,
+      "images_per_group": 2.0,
       "conditions": 16,
-      "resolvable_paired_delta": 0.0495,
+      "resolvable_paired_delta": 0.07,
       "sample_ids_sha256": "9c67fcf4e5cc1224e5ef15c4ff6276d4f9d77d5583fde411e93087d1e23ff392",
       "group_ids_sha256": "ea3a52c2a06d16d291825c35a0ce3f49d1b71cd2e5ecd80c4a55e756cd39bad1"
     },
@@ -100,8 +109,9 @@
       "groups_per_condition": 1,
       "n_samples": 32,
       "n_groups": 16,
+      "images_per_group": 2.0,
       "conditions": 16,
-      "resolvable_paired_delta": 0.0495,
+      "resolvable_paired_delta": 0.07,
       "sample_ids_sha256": "b5f9cd529a382a978bc367e8fa18da9dfcf7be27a93e08ebcdff0ebef147832b",
       "group_ids_sha256": "205427ffabe915b99dfe211335c8cefa04be726fbb1277a1d513d3a14055ed26"
     },
@@ -110,8 +120,9 @@
       "groups_per_condition": 1,
       "n_samples": 32,
       "n_groups": 16,
+      "images_per_group": 2.0,
       "conditions": 16,
-      "resolvable_paired_delta": 0.0495,
+      "resolvable_paired_delta": 0.07,
       "sample_ids_sha256": "f9a5d6905276bc9cb089d78fa352d89c4169db9d15123f5c116e33af59e04ece",
       "group_ids_sha256": "fa87fafe9b8a98e170be393a3fade7d352f3ff19e99d65a0a58d6c4b7ab0a4f1"
     },
@@ -120,8 +131,9 @@
       "groups_per_condition": 4,
       "n_samples": 128,
       "n_groups": 64,
+      "images_per_group": 2.0,
       "conditions": 16,
-      "resolvable_paired_delta": 0.0247,
+      "resolvable_paired_delta": 0.035,
       "sample_ids_sha256": "d5a1d6746e487c17ce6ee77da0cd007bdc57abdc2ea0bed6b6cbbeb579b1a11f",
       "group_ids_sha256": "8442ba4b6a9ac33312223331284bcce9e215a31356cf69b582f3602c91a0f49c"
     },
@@ -130,8 +142,9 @@
       "groups_per_condition": 4,
       "n_samples": 128,
       "n_groups": 64,
+      "images_per_group": 2.0,
       "conditions": 16,
-      "resolvable_paired_delta": 0.0247,
+      "resolvable_paired_delta": 0.035,
       "sample_ids_sha256": "0fd69b9e0710396bf85b58f6471271bdb9cb11562f72c12e02a73fe33a66b033",
       "group_ids_sha256": "0c1e3ab0178e37985eb69734a6f96cc144728d4cb46fc5ccce9cbb0ea10d3424"
     },
@@ -140,8 +153,9 @@
       "groups_per_condition": 4,
       "n_samples": 128,
       "n_groups": 64,
+      "images_per_group": 2.0,
       "conditions": 16,
-      "resolvable_paired_delta": 0.0247,
+      "resolvable_paired_delta": 0.035,
       "sample_ids_sha256": "fce98478852f08cab1581352b60824bc2842a5f1a96a13e24e6f11369ae48f0e",
       "group_ids_sha256": "51db650e3b60f3751d5962fbce26721a74e8ac03c36123853a9a0ebfb5855656"
     },
@@ -150,8 +164,9 @@
       "groups_per_condition": 4,
       "n_samples": 128,
       "n_groups": 64,
+      "images_per_group": 2.0,
       "conditions": 16,
-      "resolvable_paired_delta": 0.0247,
+      "resolvable_paired_delta": 0.035,
       "sample_ids_sha256": "97a3d3da200c89c99893ceb9fd7d0cf987c7d0bf604fc29234cefc157282590f",
       "group_ids_sha256": "c5bf5d6d462a97dc80a596b4160293edcd5db59a208bad3b2bc37aacbd5a56cb"
     },
@@ -160,8 +175,9 @@
       "groups_per_condition": 16,
       "n_samples": 512,
       "n_groups": 256,
+      "images_per_group": 2.0,
       "conditions": 16,
-      "resolvable_paired_delta": 0.0124,
+      "resolvable_paired_delta": 0.0175,
       "sample_ids_sha256": "e148c9b77953d66199e103dc122b122e9484b14cba329845c2bd47535c4ad3c4",
       "group_ids_sha256": "1e9ef770c5ad1e6b671c658757e9787edf6b65f1a9a7163d91c8ab7357b27920"
     },
@@ -170,8 +186,9 @@
       "groups_per_condition": 16,
       "n_samples": 512,
       "n_groups": 256,
+      "images_per_group": 2.0,
       "conditions": 16,
-      "resolvable_paired_delta": 0.0124,
+      "resolvable_paired_delta": 0.0175,
       "sample_ids_sha256": "de35c4ae614723d2164759c7c30a6b1e73e4e86ed9f54010cbb3532259171a41",
       "group_ids_sha256": "490325fa990b863bcd7d770b8c44deed84f1fbf7c9bb2b59da6447a718c814b4"
     }
