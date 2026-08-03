@@ -1,0 +1,125 @@
+{
+  "schema": "frothseg.confirmations-group-level-recheck/v1",
+  "generated_utc": "2026-08-03T20:59:23+00:00",
+  "why": "Every confirmation published before 2026-08-03 reported per-image statistics on a 64-image reserve slice. Each latent geometry group is rendered as two appearance variants sharing one geometry, so those slices supply 32 independent observations, not 64, and the published tests claimed 63 degrees of freedom where the design supplies 31.",
+  "this_re_decides_nothing": "Each adoption below is already published and already spent its slice. Recomputing a deterministic statistic over the same two fixed configurations on the same fixed rows is not a second look, because no decision depends on the outcome. What is corrected is the stated precision of a settled number.",
+  "sigma_used": 0.1,
+  "studies": [
+    {
+      "study": "R-2 C3 flooding depth",
+      "artifact": "verification/r2-c3-flooding-depth.json",
+      "reserve_study": "p4",
+      "method": "watershed_hmax",
+      "before": {
+        "h": 0.06,
+        "surface": "neg_gray",
+        "watershed_line": false
+      },
+      "after": {
+        "h": 0.12,
+        "surface": "neg_gray",
+        "watershed_line": false
+      },
+      "as_published_per_image": {
+        "n": 64,
+        "df": 63,
+        "mean_delta": 0.078515625,
+        "sd": 0.07701185070370355,
+        "t": 8.156212248640236,
+        "p": 1.9025213828537247e-11,
+        "resolvable_floor": 0.035
+      },
+      "corrected_by_group": {
+        "n": 32,
+        "df": 31,
+        "mean_delta": 0.078515625,
+        "sd": 0.07670076800462952,
+        "t": 5.790704037096368,
+        "p": 2.22855755731805e-06,
+        "resolvable_floor": 0.0495
+      },
+      "clears_corrected_floor": true,
+      "conclusion_unchanged": true
+    },
+    {
+      "study": "Phase 1 C3 flooding surface",
+      "artifact": "verification/phase1-adoption.json",
+      "reserve_study": "p1",
+      "method": "watershed_hmax",
+      "before": {
+        "h": 0.06,
+        "surface": "neg_edt",
+        "watershed_line": false
+      },
+      "after": {
+        "h": 0.06,
+        "surface": "neg_gray",
+        "watershed_line": false
+      },
+      "as_published_per_image": {
+        "n": 64,
+        "df": 63,
+        "mean_delta": 0.11470312499999999,
+        "sd": 0.09817795305601885,
+        "t": 9.346548501336313,
+        "p": 1.6349586791452183e-13,
+        "resolvable_floor": 0.035
+      },
+      "corrected_by_group": {
+        "n": 32,
+        "df": 31,
+        "mean_delta": 0.11470312499999999,
+        "sd": 0.09844941876128821,
+        "t": 6.590784062012632,
+        "p": 2.3121161518176784e-07,
+        "resolvable_floor": 0.0495
+      },
+      "clears_corrected_floor": true,
+      "conclusion_unchanged": true
+    },
+    {
+      "study": "Phase 1 C7 mode",
+      "artifact": "verification/phase1-adoption.json",
+      "reserve_study": "p1",
+      "method": "valley_edge",
+      "before": {
+        "seam_radius": 3,
+        "mode": "subtract",
+        "watershed_line": false
+      },
+      "after": {
+        "seam_radius": 3,
+        "mode": "watershed",
+        "watershed_line": false
+      },
+      "as_published_per_image": {
+        "n": 64,
+        "df": 63,
+        "mean_delta": 0.064265625,
+        "sd": 0.04315025140631943,
+        "t": 11.914762562071784,
+        "p": 8.688107562549941e-18,
+        "resolvable_floor": 0.035
+      },
+      "corrected_by_group": {
+        "n": 32,
+        "df": 31,
+        "mean_delta": 0.06426562499999999,
+        "sd": 0.04281787845895458,
+        "t": 8.490408375231066,
+        "p": 1.3689187614177101e-09,
+        "resolvable_floor": 0.0495
+      },
+      "clears_corrected_floor": true,
+      "conclusion_unchanged": true
+    }
+  ],
+  "summary": {
+    "all_clear_their_corrected_floor": true,
+    "any_conclusion_changed": false
+  },
+  "engine_defaults_at_recheck": {
+    "C3_H_MAXIMA": 0.12,
+    "FOREGROUND_OTSU_FACTOR": 0.75
+  }
+}

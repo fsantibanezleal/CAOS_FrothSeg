@@ -1,0 +1,422 @@
+{
+  "schema": "frothseg.r3-classical-tier/v1",
+  "study": "R-3 classical tier like-for-like constant selection",
+  "generated_utc": "2026-08-03T21:16:15+00:00",
+  "preregistration": "CAOS_MANAGE plans/frothseg/r3-classical-tier-like-for-like-preregistration-2026-08-03.md",
+  "motivation": "R-2 tuned C3's flooding depth and left six classical methods untuned, so the published classical ranking compared one tuned method against six untuned ones. This study gives every affected constant the same treatment under one protocol. The open FOREGROUND_OTSU_FACTOR question is settled as part of it, not as its purpose.",
+  "selection": {
+    "schema": "frothseg.r3-selection/v1",
+    "generated_utc": "2026-08-03T20:54:45+00:00",
+    "preregistration": "CAOS_MANAGE plans/frothseg/r3-classical-tier-like-for-like-preregistration-2026-08-03.md",
+    "selection_surface": {
+      "split": "calibration",
+      "n": 64,
+      "why": "The pipeline contract designates the calibration split for calibrating post-processing, which is exactly what these three constants are. No classical constant sweep has consulted it. Test is burned and is where the gap was first seen; validation was spent by R-2 selecting C3's depth."
+    },
+    "phase1_dependant_list_was_incomplete": "Phase 1 declared FOREGROUND_DEPENDANTS as five methods and swept the constant on those. All seven respond: on one calibration image, C2 moves 1108 -> 922 instances and C6 250 -> 611 across the grid ends. Stage A here evaluates all seven, so its tier mean is over the full tier the constant actually moves.",
+    "shipped": {
+      "otsu_factor": 0.75,
+      "c2_min_distance": 2,
+      "c5_h_minima": 0.08
+    },
+    "stage_a": {
+      "constant": "FOREGROUND_OTSU_FACTOR",
+      "common_mode": true,
+      "criterion": "classical tier mean AP, unweighted over C1-C7",
+      "grid": [
+        0.5,
+        0.55,
+        0.6,
+        0.65,
+        0.7,
+        0.75,
+        0.8,
+        0.85,
+        0.9,
+        0.95,
+        1.0,
+        1.05,
+        1.1
+      ],
+      "points": [
+        {
+          "otsu_factor": 0.5,
+          "tier_mean_ap": 0.07240401785714286,
+          "per_method_ap": {
+            "C1": 0.0020625,
+            "C2": 0.008578124999999999,
+            "C3": 0.28515625,
+            "C4": 0.023796875000000002,
+            "C5": 0.00603125,
+            "C6": 0.014078125,
+            "C7": 0.16712499999999997
+          }
+        },
+        {
+          "otsu_factor": 0.55,
+          "tier_mean_ap": 0.08950223214285714,
+          "per_method_ap": {
+            "C1": 0.0104375,
+            "C2": 0.010078125,
+            "C3": 0.30890625000000005,
+            "C4": 0.0573125,
+            "C5": 0.021265625,
+            "C6": 0.012984375,
+            "C7": 0.20553125
+          }
+        },
+        {
+          "otsu_factor": 0.6,
+          "tier_mean_ap": 0.10915848214285714,
+          "per_method_ap": {
+            "C1": 0.029406250000000002,
+            "C2": 0.011671875000000002,
+            "C3": 0.32284375,
+            "C4": 0.1028125,
+            "C5": 0.051171875000000006,
+            "C6": 0.013906249999999998,
+            "C7": 0.232296875
+          }
+        },
+        {
+          "otsu_factor": 0.65,
+          "tier_mean_ap": 0.12175446428571429,
+          "per_method_ap": {
+            "C1": 0.041953125,
+            "C2": 0.012859375,
+            "C3": 0.32134375000000004,
+            "C4": 0.140296875,
+            "C5": 0.081890625,
+            "C6": 0.01496875,
+            "C7": 0.23896875
+          }
+        },
+        {
+          "otsu_factor": 0.7,
+          "tier_mean_ap": 0.13172098214285716,
+          "per_method_ap": {
+            "C1": 0.051625000000000004,
+            "C2": 0.013812500000000002,
+            "C3": 0.318921875,
+            "C4": 0.17593750000000002,
+            "C5": 0.10653125,
+            "C6": 0.016078125,
+            "C7": 0.239140625
+          }
+        },
+        {
+          "otsu_factor": 0.75,
+          "tier_mean_ap": 0.13878125,
+          "per_method_ap": {
+            "C1": 0.062890625,
+            "C2": 0.016421875000000002,
+            "C3": 0.306515625,
+            "C4": 0.200515625,
+            "C5": 0.128421875,
+            "C6": 0.017265625,
+            "C7": 0.2394375
+          }
+        },
+        {
+          "otsu_factor": 0.8,
+          "tier_mean_ap": 0.1430223214285714,
+          "per_method_ap": {
+            "C1": 0.079921875,
+            "C2": 0.018015625,
+            "C3": 0.2859375,
+            "C4": 0.21485937500000002,
+            "C5": 0.1505625,
+            "C6": 0.017734375,
+            "C7": 0.234125
+          }
+        },
+        {
+          "otsu_factor": 0.85,
+          "tier_mean_ap": 0.13576785714285713,
+          "per_method_ap": {
+            "C1": 0.08982812500000001,
+            "C2": 0.016203125,
+            "C3": 0.25493750000000004,
+            "C4": 0.21018750000000003,
+            "C5": 0.149984375,
+            "C6": 0.016953125,
+            "C7": 0.21228124999999998
+          }
+        },
+        {
+          "otsu_factor": 0.9,
+          "tier_mean_ap": 0.12120089285714286,
+          "per_method_ap": {
+            "C1": 0.092140625,
+            "C2": 0.012968750000000001,
+            "C3": 0.21582812499999998,
+            "C4": 0.19096875000000002,
+            "C5": 0.14109375000000002,
+            "C6": 0.01565625,
+            "C7": 0.17975000000000002
+          }
+        },
+        {
+          "otsu_factor": 0.95,
+          "tier_mean_ap": 0.10029910714285714,
+          "per_method_ap": {
+            "C1": 0.08896875000000001,
+            "C2": 0.009000000000000001,
+            "C3": 0.170859375,
+            "C4": 0.15859374999999998,
+            "C5": 0.121125,
+            "C6": 0.013625,
+            "C7": 0.139921875
+          }
+        },
+        {
+          "otsu_factor": 1.0,
+          "tier_mean_ap": 0.07757142857142857,
+          "per_method_ap": {
+            "C1": 0.075984375,
+            "C2": 0.005953125,
+            "C3": 0.13065624999999997,
+            "C4": 0.12145312500000001,
+            "C5": 0.09403125000000001,
+            "C6": 0.011375,
+            "C7": 0.10354687500000001
+          }
+        },
+        {
+          "otsu_factor": 1.05,
+          "tier_mean_ap": 0.058515625,
+          "per_method_ap": {
+            "C1": 0.060796875,
+            "C2": 0.003843750000000001,
+            "C3": 0.09984375,
+            "C4": 0.091796875,
+            "C5": 0.069078125,
+            "C6": 0.009390625,
+            "C7": 0.074859375
+          }
+        },
+        {
+          "otsu_factor": 1.1,
+          "tier_mean_ap": 0.04280133928571429,
+          "per_method_ap": {
+            "C1": 0.04478125000000001,
+            "C2": 0.0023750000000000004,
+            "C3": 0.0770625,
+            "C4": 0.06640625,
+            "C5": 0.048921875000000004,
+            "C6": 0.007546875,
+            "C7": 0.052515624999999996
+          }
+        }
+      ],
+      "selected": 0.8,
+      "on_endpoint": false
+    },
+    "stage_b": {
+      "C2_MIN_DISTANCE": {
+        "field": "c2_min_distance",
+        "grid": [
+          1,
+          2,
+          3,
+          4,
+          6
+        ],
+        "points": [
+          {
+            "c2_min_distance": 1,
+            "mean_ap": 0.002265625
+          },
+          {
+            "c2_min_distance": 2,
+            "mean_ap": 0.018015625
+          },
+          {
+            "c2_min_distance": 3,
+            "mean_ap": 0.0421875
+          },
+          {
+            "c2_min_distance": 4,
+            "mean_ap": 0.06687499999999999
+          },
+          {
+            "c2_min_distance": 6,
+            "mean_ap": 0.103109375
+          }
+        ],
+        "selected": 6,
+        "on_endpoint": true
+      },
+      "C5_H_MINIMA": {
+        "field": "c5_h_minima",
+        "grid": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.12,
+          0.2
+        ],
+        "points": [
+          {
+            "c5_h_minima": 0.02,
+            "mean_ap": 0.19709375
+          },
+          {
+            "c5_h_minima": 0.04,
+            "mean_ap": 0.18367187499999998
+          },
+          {
+            "c5_h_minima": 0.06,
+            "mean_ap": 0.1661875
+          },
+          {
+            "c5_h_minima": 0.08,
+            "mean_ap": 0.1505625
+          },
+          {
+            "c5_h_minima": 0.12,
+            "mean_ap": 0.12457812500000001
+          },
+          {
+            "c5_h_minima": 0.2,
+            "mean_ap": 0.08053125
+          }
+        ],
+        "selected": 0.02,
+        "on_endpoint": true
+      }
+    },
+    "proposed": {
+      "otsu_factor": 0.8,
+      "c2_min_distance": 6,
+      "c5_h_minima": 0.02
+    },
+    "joint_effect_on_selection_surface": 0.02304,
+    "confirmation_slice": {
+      "slice": "l1",
+      "n": 512,
+      "chosen_by": "the tier rule fixed in the pre-registration, applied to the joint effect observed on the calibration split, before the reserve was touched"
+    },
+    "environment": {
+      "python": "3.12.10",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "processor": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+      "numpy": "2.4.6",
+      "scipy": "1.18.0",
+      "scikit_image": "0.26.0"
+    }
+  },
+  "confirmation": {
+    "reserve_study": "l1",
+    "generation": 2,
+    "n_images": 512,
+    "n_independent": 256,
+    "unit_of_replication": "latent geometry group. Each group is rendered as two appearance variants sharing one geometry, so the paired delta is averaged within group before it is tested. Testing across images would claim about twice the degrees of freedom the design supplies.",
+    "resolvable_paired_delta": 0.0175,
+    "sample_ids_sha256": "e148c9b77953d66199e103dc122b122e9484b14cba329845c2bd47535c4ad3c4",
+    "primary": {
+      "statistic": "paired per-image delta in classical tier mean AP over C1-C7",
+      "before_mean": 0.1385150669642857,
+      "after_mean": 0.16023549107142854,
+      "paired_delta": 0.021720424107142852,
+      "paired_sd": 0.01699840287990866,
+      "t": 20.44467284188484,
+      "p": 1.1583962621914889e-55,
+      "n_paired": 256
+    },
+    "per_method": {
+      "C1": {
+        "before_mean_ap": 0.0676171875,
+        "after_mean_ap": 0.08374414062499999,
+        "paired_delta": 0.016126953125000003,
+        "paired_sd": 0.022062089213945008,
+        "p_raw": 0.0,
+        "p_holm": 0.0,
+        "significant": true
+      },
+      "C2": {
+        "before_mean_ap": 0.01677734375,
+        "after_mean_ap": 0.10235156249999999,
+        "paired_delta": 0.08557421874999999,
+        "paired_sd": 0.06740733915484481,
+        "p_raw": 0.0,
+        "p_holm": 0.0,
+        "significant": true
+      },
+      "C3": {
+        "before_mean_ap": 0.301537109375,
+        "after_mean_ap": 0.280455078125,
+        "paired_delta": -0.021082031249999997,
+        "paired_sd": 0.01816738915747168,
+        "p_raw": 0.0,
+        "p_holm": 0.0,
+        "significant": true
+      },
+      "C4": {
+        "before_mean_ap": 0.200380859375,
+        "after_mean_ap": 0.215099609375,
+        "paired_delta": 0.014718749999999997,
+        "paired_sd": 0.027064863989037482,
+        "p_raw": 0.0,
+        "p_holm": 0.0,
+        "significant": true
+      },
+      "C5": {
+        "before_mean_ap": 0.12949609374999999,
+        "after_mean_ap": 0.19107421875000002,
+        "paired_delta": 0.061578125,
+        "paired_sd": 0.03632014174089126,
+        "p_raw": 0.0,
+        "p_holm": 0.0,
+        "significant": true
+      },
+      "C6": {
+        "before_mean_ap": 0.017927734375000004,
+        "after_mean_ap": 0.018427734375000004,
+        "paired_delta": 0.0005000000000000001,
+        "paired_sd": 0.0030078329115044624,
+        "p_raw": 0.008316,
+        "p_holm": 0.008316,
+        "significant": true
+      },
+      "C7": {
+        "before_mean_ap": 0.23586914062500003,
+        "after_mean_ap": 0.23049609375000002,
+        "paired_delta": -0.0053730468750000015,
+        "paired_sd": 0.026717668680102964,
+        "p_raw": 0.00146,
+        "p_holm": 0.002919,
+        "significant": true
+      }
+    },
+    "multiplicity": "Holm-Bonferroni across the seven per-method tests, alpha 0.05"
+  },
+  "decision": {
+    "adopted": false,
+    "primary_clause_passed": true,
+    "regression_clause_passed": false,
+    "regressors": {
+      "C3": -0.021082031249999997
+    },
+    "rule": "Adopt all three values or none. Primary paired delta > 0 with p < 0.05, and no individual method regresses by more than the slice's own resolvable delta, which is the strongest no-regression claim this surface supports.",
+    "shipped": {
+      "otsu_factor": 0.75,
+      "c2_min_distance": 2,
+      "c5_h_minima": 0.08
+    },
+    "proposed": {
+      "otsu_factor": 0.8,
+      "c2_min_distance": 6,
+      "c5_h_minima": 0.02
+    }
+  },
+  "environment": {
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "processor": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+    "numpy": "2.4.6",
+    "scipy": "1.18.0",
+    "scikit_image": "0.26.0"
+  }
+}

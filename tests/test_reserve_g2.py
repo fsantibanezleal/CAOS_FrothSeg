@@ -49,11 +49,33 @@ def test_every_slice_states_a_resolvable_effect_that_matches_its_size() -> None:
     """The whole point of the redesign: n is derived from the effect, so it must reproduce."""
     document = _document()
     for slice_id, meta in document["per_slice"].items():
-        expected = (Z_ALPHA + Z_BETA) * SIGMA / np.sqrt(meta["n_samples"])
+        expected = (Z_ALPHA + Z_BETA) * SIGMA / np.sqrt(meta["n_groups"])
         assert meta["resolvable_paired_delta"] == pytest.approx(expected, abs=5e-5), (
-            f"{slice_id}: claims it resolves {meta['resolvable_paired_delta']} at n="
-            f"{meta['n_samples']}, arithmetic says {expected:.4f}"
+            f"{slice_id}: claims it resolves {meta['resolvable_paired_delta']} at "
+            f"{meta['n_groups']} groups, arithmetic says {expected:.4f}"
         )
+
+
+def test_resolution_is_stated_in_groups_and_not_in_images() -> None:
+    """The defect this pins: sizing on images when the two variants of a group share geometry.
+
+    Each group is rendered twice, so an image count overstates the independent sample size by a
+    factor of two and every tier's resolution by sqrt(2). The first version of the generation-2
+    pre-registration did exactly that. This asserts the corrected basis is what is published, and
+    fails loudly if anyone reverts to the image count.
+    """
+    document = _document()
+    for slice_id, meta in document["per_slice"].items():
+        assert meta["n_groups"] < meta["n_samples"], (
+            f"{slice_id}: groups and images are equal, so the clustering assumption changed and "
+            "the sizing basis has to be re-derived rather than inherited"
+        )
+        image_based = (Z_ALPHA + Z_BETA) * SIGMA / np.sqrt(meta["n_samples"])
+        assert meta["resolvable_paired_delta"] > image_based, (
+            f"{slice_id}: the published resolution matches the image count, which is the "
+            "optimistic value this test exists to reject"
+        )
+    assert document["sizing_basis"]["unit_of_replication"] == "latent geometry group, not image"
 
 
 def test_the_tiers_cover_the_effects_this_repository_actually_adopts() -> None:
@@ -69,8 +91,11 @@ def test_the_tiers_cover_the_effects_this_repository_actually_adopts() -> None:
         assert any(delta <= effect for delta in resolvable), (
             f"no slice can resolve an effect of {effect}; smallest resolvable is {resolvable[0]}"
         )
-    assert resolvable[0] <= 0.0125, (
-        "the largest tier must reach the marginal band, or a sub-0.025 claim has nowhere to go"
+    # 0.019 is the finest effect the ladder has to serve and it clears the floor by a thin margin.
+    # Pinning the floor below it keeps that margin honest rather than letting it erode silently.
+    assert resolvable[0] <= 0.0175, (
+        "the largest tier must still resolve the open Otsu-factor question, or the one thing "
+        "generation 2 was built to settle has nowhere to go"
     )
 
 

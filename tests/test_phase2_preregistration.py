@@ -97,19 +97,45 @@ def test_no_budget_was_spent_by_the_data_step(document: dict) -> None:
 
 
 def test_the_running_ledger_never_exceeds_what_was_reserved(document: dict) -> None:
-    """Every recorded spend names a real reserve slice, at most once, with its evidence."""
+    """Every recorded spend names a real reserve slice, at most once, with its evidence.
+
+    The ledger spans BOTH reserve generations, so each entry is checked against the
+    pre-registration of its own generation. Validating everything against generation 1, as this
+    test originally did, raised a KeyError the moment a generation-2 slice was spent, and the
+    generation-1 budget would have been applied to entries it never reserved.
+    """
     ledger_path = ROOT / "verification/reserve-slice-ledger.json"
     if not ledger_path.is_file():
         pytest.skip("reserve ledger not built in this checkout")
     ledger = json.loads(ledger_path.read_text(encoding="utf-8"))
-    reserved = document["synthetic"]["reserve_matrix"]
+
     slices = [entry["reserve_study"] for entry in ledger["entries"]]
     assert len(slices) == len(set(slices)), "a reserve slice was observed twice"
-    assert len(slices) <= document["budget"]["reserve_slices_available"]
     assert ledger["slices_spent"] == len(slices)
+
+    # Generation 1 keeps its per_study block and its own budget.
+    gen1_registered = document["synthetic"]["reserve_matrix"]["per_study"]
+    gen1 = [e for e in ledger["entries"] if e.get("generation", 1) == 1]
+    assert len(gen1) <= document["budget"]["reserve_slices_available"]
+
+    gen2_path = ROOT / "verification/reserve-g2-preregistration.json"
+    gen2_registered = (
+        json.loads(gen2_path.read_text(encoding="utf-8"))["per_slice"]
+        if gen2_path.is_file()
+        else {}
+    )
+
     for entry in ledger["entries"]:
-        registered = reserved["per_study"][entry["reserve_study"]]
+        generation = entry.get("generation", 1)
+        registered = (gen1_registered if generation == 1 else gen2_registered).get(
+            entry["reserve_study"]
+        )
+        assert registered is not None, (
+            f"{entry['reserve_study']} is recorded as spent from generation {generation} but is "
+            "not in that generation's pre-registration"
+        )
         assert entry["sample_ids_sha256"] == registered["sample_ids_sha256"]
         assert entry["group_ids_sha256"] == registered["group_ids_sha256"]
-        assert entry["sample_count"] == registered["sample_count"]
+        expected_count = registered.get("sample_count", registered.get("n_samples"))
+        assert entry["sample_count"] == expected_count
         assert entry["evidence"].startswith("verification/")

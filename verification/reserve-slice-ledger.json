@@ -71,7 +71,26 @@
       ],
       "note": "One non-iterated pass per configuration. Both configurations were fixed before the slice was read: 0.06 is the shipped value and 0.12 was selected on the validation split, which no classical constant sweep had used. The slice is now burned for C3 flooding depth.",
       "group_ids_sha256": "97bd0a09c13a7ae9845cdba342cb4d02e05e1edb68187e5cd31590f942b4fe83"
+    },
+    {
+      "reserve_study": "l1",
+      "generation": 2,
+      "spent_by": "r3-classical-tier-like-for-like",
+      "date": "2026-08-03",
+      "evidence": "verification/r3-classical-tier.json",
+      "sample_count": 512,
+      "independent_units": 256,
+      "unit_of_replication": "latent geometry group",
+      "sample_ids_sha256": "e148c9b77953d66199e103dc122b122e9484b14cba329845c2bd47535c4ad3c4",
+      "group_ids_sha256": "1e9ef770c5ad1e6b671c658757e9787edf6b65f1a9a7163d91c8ab7357b27920",
+      "test_evaluations_spent": 0,
+      "configurations_scored": [
+        "otsu_factor=0.75, c2_min_distance=2, c5_h_minima=0.08 (shipped)",
+        "otsu_factor=0.80, c2_min_distance=6, c5_h_minima=0.02 (proposed)"
+      ],
+      "outcome": "NULL, not adopted. The engine keeps the shipped values.",
+      "note": "One non-iterated pass per configuration. Both were fixed before the slice was read: the shipped values are the engine's, and the proposed ones were selected on the calibration split, which the pipeline contract designates for post-processing calibration and which no classical constant sweep had used. The L tier was chosen by a rule fixed in the pre-registration from the calibration-observed joint effect of +0.0230. The primary clause passed (+0.02172, p=1.2e-55) and the no-detectable-regression clause failed: C3, the tier leader, lost 0.0211 against the slice's resolvable floor of 0.0175. The slice is now burned for this configuration pair and cannot be re-read for the follow-up."
     }
   ],
-  "slices_spent": 4
+  "slices_spent": 5
 }

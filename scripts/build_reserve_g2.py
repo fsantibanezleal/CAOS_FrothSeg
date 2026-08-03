@@ -3,9 +3,15 @@
 Generation 1 gave every study a uniform 64 samples because that is the size of the burned test
 split. Sizing a confirmation surface by the surface it replaces, rather than by the effect it has
 to resolve, got it wrong in both directions: the three adoptions that spent a slice measured
-+0.115, +0.079 and +0.064 and needed n of 6, 13 and 19, so each was over-powered three to ten
-times over, while the one open question (FOREGROUND_OTSU_FACTOR, about +0.019 on C3) needs n=218
-against the 64 the last unspent slice holds. It cannot settle the question it would be spent on.
++0.115, +0.079 and +0.064 and needed 6, 13 and 19 independent units, so each was over-powered
+between 1.6 and 5 times over, while the one open question (FOREGROUND_OTSU_FACTOR, about +0.019 on
+C3) needs 218 against the 32 the last unspent slice holds. It cannot settle the question it would
+be spent on.
+
+The independent unit is the latent GEOMETRY GROUP, not the image. Every group is rendered as two
+appearance variants that share their geometry, so a 64-image slice supplies 32 independent
+observations. The first version of this file sized on images and overstated every tier by sqrt(2);
+the tiers below are stated in groups.
 
 Generation 2 sizes each slice by its resolvable effect. See `fslab.datasets.RESERVE_G2_SLICES`
 for the tiers and the power arithmetic.
@@ -56,9 +62,16 @@ SIGMA = 0.10
 Z_ALPHA, Z_BETA = 1.96, 0.84
 
 
-def resolvable_delta(n: int) -> float:
-    """Smallest paired mean delta this n detects at 80 percent power, alpha 0.05 two-sided."""
-    return (Z_ALPHA + Z_BETA) * SIGMA / np.sqrt(n)
+def resolvable_delta(n_independent: int) -> float:
+    """Smallest paired mean delta this n detects at 80 percent power, alpha 0.05 two-sided.
+
+    `n_independent` is the number of latent GEOMETRY GROUPS, not the number of images. Each group
+    is rendered as two appearance variants, so the two images of a group share their geometry and
+    are not independent observations. Sizing on the image count, as the first version of this file
+    did, overstates every tier's resolution by a factor of sqrt(2). The correct unit of replication
+    is the group, and the confirmation statistic is averaged within group before it is tested.
+    """
+    return (Z_ALPHA + Z_BETA) * SIGMA / np.sqrt(n_independent)
 
 
 def _id_hash(values) -> str:
@@ -108,13 +121,15 @@ def main() -> None:
     for slice_id, groups in RESERVE_G2_SLICES:
         rows = [s for s in matrix if s.reserve_study == slice_id]
         n = len(rows)
+        n_groups = len({s.record.group_id for s in rows})
         per_slice[slice_id] = {
             "tier": slice_id[0].upper(),
             "groups_per_condition": groups,
             "n_samples": n,
-            "n_groups": len({s.record.group_id for s in rows}),
+            "n_groups": n_groups,
+            "images_per_group": round(n / n_groups, 2),
             "conditions": len({s.condition_id for s in rows}),
-            "resolvable_paired_delta": round(float(resolvable_delta(n)), 4),
+            "resolvable_paired_delta": round(float(resolvable_delta(n_groups)), 4),
             "sample_ids_sha256": _id_hash(s.record.sample_id for s in rows),
             "group_ids_sha256": _id_hash(s.record.group_id for s in rows),
         }
@@ -131,16 +146,29 @@ def main() -> None:
         "why_generation_2": (
             "Generation 1 sized every slice at 64 to match the burned test split. Sizing by the "
             "surface replaced rather than by the effect to be resolved was wrong in both "
-            "directions: the three adoptions that spent a slice needed n of 6, 13 and 19 and each "
-            "got 64, while the open FOREGROUND_OTSU_FACTOR question needs n=218 and the last "
-            "unspent generation-1 slice holds 64."
+            "directions: the three adoptions that spent a slice needed 6, 13 and 19 independent "
+            "units and each got 32, while the open FOREGROUND_OTSU_FACTOR question needs 218 and "
+            "the last unspent generation-1 slice supplies 32. Units are latent geometry groups; a "
+            "64-image slice carries 32 of them."
         ),
         "sizing_basis": {
-            "statistic": "paired per-image mean AP delta, before vs after, on the same images",
+            "statistic": (
+                "paired mean AP delta, before vs after, averaged WITHIN latent geometry group and "
+                "then tested across groups"
+            ),
+            "unit_of_replication": "latent geometry group, not image",
+            "why_not_the_image": (
+                "Every group is rendered as two appearance variants, so its two images share their "
+                "geometry and are not independent. The first version of this file sized on the "
+                "image count and overstated every tier's resolution by sqrt(2). The samples were "
+                "never wrong; the claim about what they could resolve was."
+            ),
             "sigma_used": SIGMA,
             "sigma_justification": (
-                "above the largest per-image SD observed on the three generation-1 "
-                "confirmations: 0.0426 (C7 mode), 0.0774 (C3 depth), 0.0965 (C3 surface)"
+                "above the largest per-image SD observed on the three generation-1 confirmations: "
+                "0.0426 (C7 mode), 0.0774 (C3 depth), 0.0965 (C3 surface). Averaging a group's two "
+                "variants can only reduce that SD, so carrying a per-image sigma into a "
+                "group-level calculation is conservative in the safe direction."
             ),
             "power": 0.80,
             "alpha": 0.05,
@@ -156,12 +184,20 @@ def main() -> None:
             "disk prevents it: the pre-registration does."
         ),
         "tier_meaning": {
-            "S": "n=32, resolves 0.050. Direction and sanity checks, or an effect already "
-                 "measured above 0.10 on another surface.",
-            "M": "n=128, resolves 0.025. The DEFAULT for adopting an engine default.",
-            "L": "n=512, resolves 0.012. Required when the pre-registered expected effect is "
-                 "below 0.025. Needing this tier is itself a finding.",
+            "S": "16 groups (32 images), resolves 0.070. Direction and sanity checks, or an "
+                 "effect already measured well above 0.10 on another surface.",
+            "M": "64 groups (128 images), resolves 0.035. The DEFAULT for adopting an engine "
+                 "default.",
+            "L": "256 groups (512 images), resolves 0.0175. Required when the pre-registered "
+                 "expected effect is below 0.035. Needing this tier is itself a finding.",
         },
+        "ladder_floor": (
+            "0.0175 is the finest effect any slice here resolves. The open FOREGROUND_OTSU_FACTOR "
+            "question sits at about 0.019, so it clears the floor by a thin margin and nothing "
+            "smaller has anywhere to go. A future study with a pre-registered expected effect "
+            "below 0.0175 needs a larger slice minted for it in advance; minting one after a read "
+            "disappoints remains the failure this mechanism exists to prevent."
+        ),
         "rules": [
             "A slice is read at most once, by the study that pre-registered it, and the read is "
             "recorded in verification/reserve-slice-ledger.json before any other use.",

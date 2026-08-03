@@ -1,8 +1,101 @@
 # Changelog
 
+## [0.06.004] · 2026-08-03
+
+Evidence and correction. No engine constant, weight, artifact value or published metric changed.
+
+### R-3: the classical tier's residual constants were studied, and the answer is a null
+
+R-2 selected and confirmed C3's flooding depth and left the other six classical methods untuned,
+so the published classical ranking compared one tuned method against six untuned ones. R-3 gave
+every affected constant the same treatment under one protocol: `FOREGROUND_OTSU_FACTOR` (common
+mode, all seven methods), `C2_MIN_DISTANCE` and `C5_H_MINIMA`. Selection ran on the calibration
+split, which the pipeline contract designates for calibrating post-processing and which no
+classical sweep had consulted. Confirmation was one read of generation-2 slice `l1` (512 images,
+256 latent geometry groups).
+
+**Not adopted.** The two clauses fixed before the read split:
+
+| clause | result |
+|---|---|
+| primary: tier mean improves, p < 0.05 | PASS, +0.02172, t=20.4, p=1.2e-55 |
+| no method regresses detectably | FAIL, C3 loses 0.0211 against a floor of 0.0175 |
+
+`FOREGROUND_OTSU_FACTOR` stays 0.75, `C2_MIN_DISTANCE` stays 2, `C5_H_MINIMA` stays 0.08.
+
+The reason is worth more than the adoption would have been. An unweighted tier mean is the wrong
+criterion for a common-mode constant over a heterogeneous tier. C3 leads the tier at 0.30 and peaks
+at an Otsu factor of 0.60; the tier mean peaks at 0.80 only because C5 (0.15) and C2 (0.02) are
+still climbing there. Optimising the average bought gains on methods out of contention by moving
+past the optimum of the method the tier is judged on. C3's configuration was identical in both
+arms, so its regression is attributable to the Otsu move by the design of the comparison rather
+than by any further read.
+
+Three further findings, recorded rather than repaired:
+
+- Phase 1 declared five foreground dependants and swept this common-mode constant on those. **All
+  seven respond**: across the grid ends on one calibration image, C2 moves 1108 to 922 instances
+  and C6 moves 250 to 611.
+- `C2_MIN_DISTANCE` and `C5_H_MINIMA` both select onto a **grid endpoint** with a monotone trend,
+  so the Phase 1 grids do not bracket their optima. Reported as unresolved boundaries, not extended
+  after the fact.
+- The calibration surface independently agrees with the burned test split that C3 prefers 0.60.
+  Resolving its +0.0163 needs **295 independent groups**; the largest reserved slice has 256. No
+  existing surface can settle it, and adopting 0.60 for C3 alone would mean per-method foreground
+  thresholds, an architecture change rather than a constant move.
+
+### Reserve slices are sized by geometry group, not by image (supersedes 0.06.003)
+
+Each latent geometry group is rendered as two appearance variants that share one geometry, so the
+two images of a group are one observation rendered twice. Generation 2 computed each slice's
+advertised resolution from its image count, overstating every tier by sqrt(2), and a per-image
+paired t-test claims about twice the degrees of freedom the design supplies.
+
+| tier | groups | images | resolves | 0.06.003 claimed |
+|---|---|---|---|---|
+| S | 16 | 32 | 0.0700 | 0.0495 |
+| M | 64 | 128 | 0.0350 | 0.0247 |
+| L | 256 | 512 | 0.0175 | 0.0124 |
+
+The samples were never wrong; only the claim about what they could resolve was. No generation-2
+slice had been read, so nothing was voided, and the archive rebuilds byte-identical from the same
+seeds. The ladder still covers every effect on record, but the fine end is now a thin margin rather
+than a comfortable one.
+
+### The settled confirmations were re-checked at group level, and all survive
+
+| study | delta | corrected floor | margin | p |
+|---|---|---|---|---|
+| Phase 1 C3 flooding surface | +0.1147 | 0.0495 | 2.3x | 2.3e-07 |
+| R-2 C3 flooding depth | +0.0785 | 0.0495 | 1.6x | 2.2e-06 |
+| Phase 1 C7 mode | +0.0643 | 0.0495 | 1.3x | 1.4e-09 |
+
+No conclusion changes. The margins are 1.3x to 2.3x rather than the comfortable multiples the
+image-based sizing implied. This re-decides nothing: each adoption is already published and already
+spent its slice, and recomputing a deterministic statistic over the same fixed configurations on
+the same fixed rows is not a second look.
+
+Each reconstruction is asserted against its published mean to 1e-6, and that assertion caught two
+defects that would each have produced a believable wrong number: letting `h` fall through to
+today's 0.12 measured the C3 surface question on an engine the original study never ran (+0.1743
+against a record of +0.1147), and assuming one slice per change read `p2` for C7 when both Phase 1
+changes were confirmed together on `p1`.
+
+### Guards
+
+Six on the R-3 null, all mutation-tested, because a null has no failing number to notice if the
+record drifts. One on the sizing basis, which fails if a published resolution ever matches the
+image count again. Fixes a generation-1 ledger guard that raised a KeyError the moment a
+generation-2 slice was spent, and that would have applied generation 1's budget to entries it never
+reserved.
+
 ## [0.06.003] · 2026-08-03
 
 Infrastructure. No engine, weight, artifact value or published number changed.
+
+> **The resolution figures in this entry are superseded by 0.06.004.** They were computed from
+> image counts; the independent unit is the latent geometry group, of which each slice holds half
+> as many. Every figure below is optimistic by a factor of sqrt(2).
 
 ### Reserve slices are now sized by the effect they must resolve
 
