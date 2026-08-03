@@ -1109,8 +1109,6 @@
       "temporal",
       "use-cases"
     ],
-    "expected_tag": "v0.06.003",
-    "latest_tag": "v0.06.002",
-    "tag_state": "not tagged yet; newest existing tag is v0.06.002"
+    "expected_tag": "v0.06.003"
   }
 }

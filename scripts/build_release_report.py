@@ -466,18 +466,10 @@ def build() -> dict:
     # So the ordering rule is now: a MISSING tag for the declared version is a pre-release state
     # and is recorded, not an error. A tag that exists and DISAGREES is a real problem and stays
     # an error, because that means two different releases claim the same name.
-    tag_state = "matches"
-    if latest_tag == expected_tag:
-        pass
-    elif latest_tag is None:
-        tag_state = "no tag yet (pre-release)"
-    elif _tag_exists(expected_tag):
-        tag_state = f"{expected_tag} exists but is not the newest tag ({latest_tag})"
+    if latest_tag != expected_tag and _tag_exists(expected_tag):
         errors.append(
             f"version/tag conflict: {expected_tag} exists and is not the newest tag ({latest_tag})"
         )
-    else:
-        tag_state = f"not tagged yet; newest existing tag is {latest_tag}"
     for manifest_version, label in (
         (json.loads((ROOT / "frontend/package.json").read_text(encoding="utf-8"))["version"], "frontend/package.json"),
         (_pyproject_version(), "pyproject.toml"),
@@ -535,9 +527,12 @@ def build() -> dict:
             "required_test_metrics": sorted(REQUIRED_TEST_METRICS),
             "required_temporal_metrics": sorted(REQUIRED_TEMPORAL_METRICS),
             "required_doc_themes": sorted(REQUIRED_DOC_THEMES),
+            # Derived from VERSION, so it is true of this artifact forever. The generation-time
+            # observation of which tag was NEWEST is deliberately not recorded: at the commit the
+            # tag ends up pointing at, that observation always reads "not tagged yet", accurate
+            # about when it was written and misleading about what it describes. The conflict
+            # check still runs; it just leaves no stale fact behind.
             "expected_tag": expected_tag,
-            "latest_tag": latest_tag,
-            "tag_state": tag_state,
         },
     }
 
