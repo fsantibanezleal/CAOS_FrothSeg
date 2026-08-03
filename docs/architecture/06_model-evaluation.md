@@ -42,7 +42,7 @@ synthetic-benchmark threshold, not a claim of plant readiness.
 ## Temporal evidence
 
 L1 predictions are associated with Hungarian IoU matching over five exact-ID
-sequences and 40 frames. Mean ID-switch rate is 0.0093 and mean frame coverage
+sequences and 40 frames. Mean ID-switch rate is 0.0084 and mean frame coverage
 is 0.9076.
 
 Official SAM2.1 video propagation is measured separately. Twelve

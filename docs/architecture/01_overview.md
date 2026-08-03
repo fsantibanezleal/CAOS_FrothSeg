@@ -77,7 +77,7 @@ non-leader; FrothSeg makes no superiority claim for it.
 ## Companion workbench
 
 The workbench replays precomputed labels for all 15 methods on all 13 canonical
-cases. `data/derived/showcase/manifest.json` inventories the resulting 195
+cases. `data/derived/showcase/manifest.json` inventories the resulting 180
 method-case pairs. Ten linked views read the selected pair:
 
 1. segmentation;

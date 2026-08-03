@@ -265,6 +265,19 @@ def _compute(
         }
     else:
         mean_ms, p95_ms, timing_source = _runtime(evaluation, run, canonical)
+        # A method the timing pass could not LOAD is a different case from one that has no
+        # single-image lane. The first is an environment failure and its row silently keeps
+        # whatever its own bake recorded, under whichever label that route carries; the second is
+        # a property of the method. Refuse the first outright rather than publish a number the
+        # timing pass declined to produce.
+        if measured_timing and str(measured_timing.get("reason", "")).startswith(
+            "predictor unavailable"
+        ):
+            raise ValueError(
+                f"{method_slug}: the timing pass could not load this predictor "
+                f"({measured_timing['reason']}), so its compute row would silently fall back to a "
+                "per-bake leftover. Fix the environment and re-run measure_inference_timing."
+            )
         if measured_timing and measured_timing.get("reason"):
             # The timing pass looked at this method and deliberately did not time it (L7 has no
             # unprompted single-image lane). Without this branch the row silently kept the
@@ -350,7 +363,14 @@ def build() -> dict:
         row["id"]: row for row in (timing_document or {}).get("methods", [])
     }
     # sample_id -> ms, per method, so the per-case column and the headline are one measurement.
-    timing_sample_ids = ((timing_document or {}).get("protocol") or {}).get("sample_ids") or []
+    timing_protocol = (timing_document or {}).get("protocol") or {}
+    timing_sample_ids = timing_protocol.get("sample_ids") or []
+    if timing_document is not None and timing_protocol.get("split") not in (None, "test"):
+        raise ValueError(
+            f"inference-timing.json was measured on the {timing_protocol.get('split')!r} split; "
+            "the benchmark publishes the test split, so the per-case timings would be joined "
+            "across two different sets of images"
+        )
     per_case_timings = {}
     for row in (timing_document or {}).get("methods", []):
         values = row.get("per_image_ms")

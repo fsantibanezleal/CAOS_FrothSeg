@@ -2,7 +2,7 @@
   "association_threshold": 0.25,
   "checkpoint_sha256": null,
   "device": "cpu",
-  "duration_seconds": 80.617,
+  "duration_seconds": 78.48,
   "frames_per_sequence": 8,
   "mean_event_precision": 0.00320021862642084,
   "mean_event_recall": 0.6,

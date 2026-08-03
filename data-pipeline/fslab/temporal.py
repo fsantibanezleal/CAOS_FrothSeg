@@ -104,9 +104,10 @@ class TemporalMetrics:
     event_true_positives: int
     event_false_positives: int
     event_false_negatives: int
-    event_precision: float
-    event_recall: float
-    event_f1: float
+    # None where the sequence contains no events at all: not applicable, never a perfect score.
+    event_precision: float | None
+    event_recall: float | None
+    event_f1: float | None
     flow_epe_px: float | None
 
 
@@ -289,10 +290,15 @@ def temporal_metrics(predicted: list[np.ndarray], truth: list[np.ndarray]) -> Te
             elif seen:
                 missing_after_seen = True
     event_tp, event_fp, event_fn = _event_counts(predicted, truth)
+    # No events of any kind is NOT a perfect score. Returning 1.0 put "1.000" in the same column
+    # where every other method publishes a measured precision, so L7, which is prompted with the
+    # exact first-frame masks and predicts no births or disappearances, read as flawless event
+    # detection on a sequence where nothing was detected. None means "not applicable" and forces
+    # every consumer to say so rather than average it in.
     no_events = event_tp == 0 and event_fp == 0 and event_fn == 0
-    event_precision = 1.0 if no_events else event_tp / max(event_tp + event_fp, 1)
-    event_recall = 1.0 if no_events else event_tp / max(event_tp + event_fn, 1)
-    event_f1 = 1.0 if no_events else 2 * event_tp / max(
+    event_precision = None if no_events else event_tp / max(event_tp + event_fp, 1)
+    event_recall = None if no_events else event_tp / max(event_tp + event_fn, 1)
+    event_f1 = None if no_events else 2 * event_tp / max(
         2 * event_tp + event_fp + event_fn, 1,
     )
     return TemporalMetrics(
@@ -313,8 +319,8 @@ def temporal_metrics(predicted: list[np.ndarray], truth: list[np.ndarray]) -> Te
         event_true_positives=event_tp,
         event_false_positives=event_fp,
         event_false_negatives=event_fn,
-        event_precision=float(event_precision),
-        event_recall=float(event_recall),
-        event_f1=float(event_f1),
+        event_precision=None if event_precision is None else float(event_precision),
+        event_recall=None if event_recall is None else float(event_recall),
+        event_f1=None if event_f1 is None else float(event_f1),
         flow_epe_px=_flow_epe(predicted, truth, frame_assignments),
     )

@@ -102,13 +102,19 @@ Grouped by tier, the pattern is unambiguous:
 |---|---|
 | classical (7 methods) | **+0.071** |
 | in-repo trained (6 methods) | **-0.243** |
-| foundation, never trained here (L5) | **+0.199** |
+| foundation, pretrained elsewhere and lightly fine-tuned here (L5) | **+0.199** |
 
 **The synthetic ranking does not transfer.** N1 LamellaStar leads the froth benchmark at 0.519
 and falls to eighth at 0.125 on real images, a drop of 0.394. Every model trained on the 192
 synthetic samples degrades. Five of the seven classical methods, which have no learned prior to
-overfit, improve, for a tier mean of +0.071. The single method that was never trained in this
-repository is the only learned method that improves, and it becomes the clear leader at 0.709.
+overfit, improve, for a tier mean of +0.071. The one learned method that improves is L5, and the distinction is NOT that it was never trained
+here. It was: `models/cellpose-sam-cpsam-v2/run.json` records a completed 2-epoch fine-tune on the
+same 192 training samples, 599 seconds. The difference is the weight of that training against what
+came before it. L5 carries a large external pretraining corpus and received a light adaptation; the
+six that degrade have no prior at all beyond the 192 synthetic samples they were built from. So the
+mechanism is "a strong external prior lightly adapted survives the domain change, a prior learned
+only from this generator does not", not "trained here versus not". It becomes the clear leader at
+0.709.
 
 **The classical tier reorders too, and C3 is the clearest case.** After its flooding depth was
 corrected on 2026-08-01 C3 leads every axis of the synthetic benchmark at 0.297, and it is only

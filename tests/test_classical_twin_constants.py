@@ -51,6 +51,30 @@ BINDINGS = [
         r"function\s+watershedDt\b.*?peakLocalMax\(\s*dist\s*,\s*w\s*,\s*h\s*,\s*([0-9.]+)\s*,",
         int,
     ),
+    # The three common-mode foreground constants. EVERY method on both sides consumes these, so a
+    # drift in one moves all seven at once. They were not bound at all until 2026-08-02, which made
+    # this file's own premise only two-thirds true.
+    (
+        "FOREGROUND_OTSU_FACTOR",
+        r"function\s+foreground\b.*?otsuThreshold\(gray\)\s*\*\s*([0-9.]+)",
+        float,
+    ),
+    (
+        "FOREGROUND_HOLE_MAX_SIZE",
+        r"function\s+foreground\b.*?fillSmallHoles\(fg,\s*w,\s*h,\s*([0-9]+)\)",
+        int,
+    ),
+    (
+        "FOREGROUND_OBJECT_MAX_SIZE",
+        r"function\s+foreground\b.*?removeSmall\(fg,\s*w,\s*h,\s*([0-9]+)\)",
+        int,
+    ),
+    # C7 is offline-replay in the App, but the twin exists and can drift like any other copy.
+    (
+        "C7_SEAM_RADIUS",
+        r"function\s+valleyEdge\b.*?blackTophat\(gray,\s*w,\s*h,\s*([0-9]+)\)",
+        int,
+    ),
 ]
 
 

@@ -23,7 +23,7 @@ frozen base was specialised into the froth product, so the mapping is legible; i
    four upload-only methods, C1, C3, C4, and legacy SlimSAM, plus replay of all
    15 offline methods across the 13 canonical cases.
 8. **Showcase.** `python -m fslab.pipeline showcase` converts the 15-by-13
-   canonical result matrix into 195 compact label/preview pairs consumed by all
+   canonical result matrix into 180 compact label/preview pairs consumed by all
    ten workbench views.
 9. **Architecture modal.** `frontend/src/architecture.ts` supplies the modal
    config; five hand-authored themed SVGs under `public/svg/tech/` are passed to

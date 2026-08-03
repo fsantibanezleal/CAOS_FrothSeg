@@ -47,7 +47,18 @@ def benchmark():
 
 @pytest.fixture(scope="module")
 def timing():
-    return load("data/derived/inference-timing.json")
+    """Deliberately NOT load(): a missing timing artifact must fail, never skip.
+
+    load() skips when a file is absent, so deleting data/derived/inference-timing.json turned off
+    both timing invariants at once and the benchmark could revert to per-bake leftovers with a
+    green suite. The artifact is a release input, not an optional extra.
+    """
+    path = ROOT / "data/derived/inference-timing.json"
+    assert path.exists(), (
+        "data/derived/inference-timing.json is missing. It is the only source of the published "
+        "compute axis; without it build_method_benchmark falls back to per-bake timings."
+    )
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
 def test_classical_heldout_agrees_with_the_benchmark(benchmark):
@@ -69,6 +80,14 @@ def test_the_compute_axis_comes_from_the_timing_artifact(benchmark, timing):
     measured = {
         row["id"]: row for row in timing["methods"] if row["measured"]
     }
+    # Coverage has to be asserted, not assumed. Skipping rows absent from the timing artifact meant
+    # a method whose predictor failed to load silently kept whatever its own bake had recorded.
+    unmeasured = {row["id"] for row in timing["methods"] if not row["measured"]}
+    covered = set(measured) | unmeasured
+    published = {row["id"] for row in benchmark["methods"] if row.get("test")}
+    assert published <= covered, (
+        f"methods published with no row in inference-timing.json: {sorted(published - covered)}"
+    )
     for row in benchmark["methods"]:
         compute = row.get("compute") or {}
         if row["id"] not in measured:
