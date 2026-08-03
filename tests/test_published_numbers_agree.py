@@ -190,8 +190,10 @@ def test_the_baseline_reproduction_certifies_the_artifact_that_ships():
     assert reproduction["all_identical"] is True
     reference = ROOT / reproduction["reference_artifact"]
     assert reference.exists()
+    # LF-normalised: this is a text artifact, .gitattributes stores it with LF, and a raw-byte
+    # hash differs between a Windows working tree and a fresh checkout.
     assert reproduction["reference_artifact_sha256"] == hashlib.sha256(
-        reference.read_bytes()
+        reference.read_bytes().replace(b"\r\n", b"\n")
     ).hexdigest(), (
         "the baseline reproduction was certified against a different version of "
         f"{reproduction['reference_artifact']} than the one that ships"

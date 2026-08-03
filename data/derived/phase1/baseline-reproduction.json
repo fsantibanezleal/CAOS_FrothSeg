@@ -1,8 +1,9 @@
 {
   "schema": "frothseg.phase1-baseline-reproduction/v1",
-  "generated_utc": "2026-08-02T23:32:46+00:00",
+  "generated_utc": "2026-08-03T02:34:17+00:00",
   "reference_artifact": "data/derived/classical-heldout.json",
-  "reference_artifact_sha256": "3c645f69ce5c0a197cf2af84ae357df8bd94c11ca6b727fd9c62752954198503",
+  "reference_artifact_sha256": "e838ce4bf6860734dea94e1fcb4d1b40d1ed0aedc641afc649a78e3e5f622c75",
+  "reference_artifact_sha256_normalisation": "line endings normalised to LF",
   "engine_constants": {
     "FOREGROUND_OTSU_FACTOR": 0.75,
     "FOREGROUND_HOLE_MAX_SIZE": 16,

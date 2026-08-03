@@ -489,7 +489,15 @@ def verify_baseline(cache: dict) -> dict:
         # "identical to the committed artifact" against whatever that file happens to be later,
         # so a rebake of classical-heldout.json silently inherits a reproduction claim that was
         # made about different bytes.
-        "reference_artifact_sha256": hashlib.sha256(HELDOUT.read_bytes()).hexdigest(),
+        # LF-normalised, exactly like check_product_completeness._source_sha256. This is a
+        # TEXT artifact and .gitattributes stores it with LF, so a raw-byte hash taken on a
+        # Windows working tree does not match the same file in a fresh CI checkout. That is
+        # how the first version of this pin passed locally and failed in CI, reporting a
+        # reproduction mismatch when nothing about the reproduction had changed.
+        "reference_artifact_sha256": hashlib.sha256(
+            HELDOUT.read_bytes().replace(b"\r\n", b"\n")
+        ).hexdigest(),
+        "reference_artifact_sha256_normalisation": "line endings normalised to LF",
         "engine_constants": {
             name: getattr(segment, name)
             for name in (
