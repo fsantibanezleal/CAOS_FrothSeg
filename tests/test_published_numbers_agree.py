@@ -223,3 +223,23 @@ def test_the_release_report_names_the_release_that_ships():
         f"release-report.json says version {report['version']!r}, VERSION says {declared!r} "
         f"({semver!r}). Regenerate the report after the version bump."
     )
+
+
+def test_the_release_report_carries_only_the_settled_blocker():
+    """The report is regenerated at the END of a release, after the bump AND after the tag.
+
+    It reads both the version files and the newest git tag, and the rebake driver runs it before
+    either exists. That shipped twice: stamped 0.5.0 at tag v0.06.001, then carrying
+    "version/tag mismatch: expected v0.06.002, latest is v0.06.001" because the report was built
+    between the version bump and the tag. Any error other than the settled froth-dataset blocker
+    means it was generated at the wrong point in the sequence.
+    """
+    report = load("data/derived/release-report.json")
+    unexpected = [
+        error for error in report["errors"]
+        if "real FROTH held-out source" not in error
+    ]
+    assert not unexpected, (
+        f"release-report.json carries errors beyond the settled froth-source blocker: "
+        f"{unexpected}. Regenerate it after the version bump and after the tag."
+    )

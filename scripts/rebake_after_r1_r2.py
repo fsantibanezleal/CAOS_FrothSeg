@@ -196,8 +196,11 @@ def main() -> None:
         # reads from pyproject.toml and fslab.__version__. Running it here, before the release
         # commit bumps those, guarantees the published inventory lags one release: it shipped
         # stamped 0.5.0 while the deployed tag was v0.06.001. Bump the version FIRST, or re-run
-        # this one step afterwards. tests/test_published_numbers_agree.py now fails if they differ.
-        ("release report (RE-RUN THIS AFTER THE VERSION BUMP)",
+        # this one step afterwards. It also reads the newest GIT TAG, so running it before the
+        # tag exists stamps "version/tag mismatch" into the published inventory, which is how
+        # v0.06.002 first went live. Regenerate it LAST, after both.
+        # tests/test_published_numbers_agree.py fails on any error but the settled froth one.
+        ("release report (RE-RUN AFTER THE VERSION BUMP *AND* AFTER THE TAG)",
          [PYTHON, "scripts/build_release_report.py"],
          ROOT / "data/derived/release-report.json"),
     ]
