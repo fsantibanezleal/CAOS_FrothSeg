@@ -185,6 +185,35 @@ selection-on-an-observed-surface failure the discipline exists to prevent. Unlik
 has no unit-change argument behind it: 0.75 means the same thing before and after the adoptions, and only
 its score moved. It stays a recorded finding, and moving it would need its own pre-registration, its own
 justification and its own reserve slice.
+
+### R-3 gave it exactly that, and the answer was a null
+
+The study is recorded in `verification/r3-classical-tier.json`. It selected on the calibration split,
+which the pipeline contract designates for calibrating post-processing and which no classical sweep had
+consulted, and confirmed on generation-2 reserve slice `l1` (512 images, 256 latent geometry groups).
+It moved three constants together, because the Otsu factor is common-mode and cannot honestly be
+separated from what it does to the rest of the tier.
+
+**Not adopted.** The tier mean improved by +0.0217 (p=1.2e-55) and the pre-registered
+no-detectable-regression clause failed: C3, the tier leader, lost 0.0211 against the slice's resolvable
+floor of 0.0175. The engine keeps 0.75, 2 and 0.08.
+
+The reason is the useful part. An unweighted tier mean is the wrong criterion for a common-mode constant
+over a tier this heterogeneous. C3 leads at 0.30 and peaks at an Otsu factor of 0.60; the tier mean peaks
+at 0.80 only because C5 (0.15) and C2 (0.02) are still climbing there. Optimising the average bought a
+gain on methods out of contention by moving past the optimum of the one method the tier is judged on.
+
+Three further findings, all recorded rather than repaired:
+
+1. Phase 1 declared five foreground dependants and swept this constant on those. **All seven respond**:
+   across the grid ends on one calibration image, C2 moves 1108 to 922 instances and C6 moves 250 to 611.
+2. `C2_MIN_DISTANCE` and `C5_H_MINIMA` both select onto a **grid endpoint** with a monotone trend, so the
+   Phase 1 grids do not bracket their optima. Reported as unresolved boundaries, not extended after the
+   fact.
+3. The calibration surface independently agrees with the burned test split that C3 prefers 0.60. Settling
+   that would need **295 independent groups** to resolve its +0.0163; the largest reserved slice has 256.
+   No existing surface can decide it, and adopting 0.60 for C3 alone would additionally mean giving each
+   method its own foreground threshold, which is an architecture change rather than a constant move.
 The adoption is recorded, with a BEFORE and AFTER on an untouched reserve slice that no sweep observed,
 in `verification/phase1-adoption.json`; the slice spend is in `verification/reserve-slice-ledger.json`.
 
