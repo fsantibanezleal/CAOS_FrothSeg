@@ -1,5 +1,66 @@
 # Changelog
 
+## [0.06.003] · 2026-08-03
+
+Infrastructure. No engine, weight, artifact value or published number changed.
+
+### Reserve slices are now sized by the effect they must resolve
+
+The five generation-1 slices were 64 samples each because that is the size of the burned
+test split. Sizing a confirmation surface by the surface it REPLACES rather than by the
+effect it must RESOLVE was wrong in both directions.
+
+Per-image SD of the paired AP delta, measured on the three confirmations that actually
+spent a slice: 0.0426, 0.0774, 0.0965. At a conservative sigma of 0.10, 80 percent power,
+alpha 0.05 two-sided:
+
+| n | resolves |
+|---|---|
+| 32 | 0.050 |
+| 64 | 0.035 |
+| 128 | 0.025 |
+| 512 | 0.012 |
+
+Those three adoptions measured +0.115, +0.079 and +0.064, needing n of **6, 13 and 19**.
+Each was given 64, so each was three to ten times over-powered. The one question left open,
+`FOREGROUND_OTSU_FACTOR` at about +0.019 on C3, needs **n=218** while the single unspent
+generation-1 slice holds 64: **it cannot settle the question it would be spent on.**
+Over-powering wastes compute; under-powering is worse, because a slice that cannot resolve
+the effect returns "not confirmed" for a real change and "confirmed" only when noise
+cooperates.
+
+**The scarce resource was never samples.** These scenes are synthetic and seed-addressable
+and the archive is gitignored and rebuilt from seeds, so supply constrained nothing; the
+five-slice cap simply tied the budget to a study count guessed in advance. What is limited
+is how many times a surface may be consulted before a false positive is likely, which is an
+alpha budget and belongs in the ledger. Minting a fresh slice because the last one
+disappointed is exactly the failure this machinery exists to prevent, and free disk does not
+stop it. The pre-registration does.
+
+**Generation 2: 14 slices, 1792 samples, three tiers.**
+
+| tier | count | n | resolves | use |
+|---|---|---|---|---|
+| S | 8 | 32 | 0.050 | direction and sanity checks |
+| M | 4 | 128 | 0.025 | the DEFAULT for adopting an engine default |
+| L | 2 | 512 | 0.012 | required below 0.025; needing it is itself a finding |
+
+Every slice stays stratified over all 16 conditions, so it is read on the same footing as
+the split it stands in for. The tier is chosen from the pre-registered EXPECTED effect,
+before the read; choosing n afterwards is selection by another name. A confirmation on a
+slice whose resolvable delta exceeds the observed effect is reported inconclusive, never as
+a refutation.
+
+Generation 1 is untouched: separate archive, seed base 3,000,000 against its 2,000,000
+block, with zero overlap verified on seeds AND on latent geometry groups against both the
+working matrix and generation 1. p5 remains unspent and usable for anything at or above
+0.035.
+
+`tests/test_reserve_g2.py` recomputes every claimed resolution from n rather than trusting
+it, checks the archive and per-slice id hashes, asserts the tier ladder has no hole between
+the largest effect adopted and the smallest still open, and pins that generation 1 is
+byte-identical. Mutation-tested against four ways of getting it wrong.
+
 ## [0.06.002] · 2026-08-02
 
 A six-dimension adversarial validation of the whole product raised 44 findings and
