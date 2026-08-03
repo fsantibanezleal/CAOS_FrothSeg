@@ -126,6 +126,20 @@ def _load(relative: str) -> dict:
     return json.loads((ROOT / relative).read_text(encoding="utf-8"))
 
 
+def _tag_exists(tag: str) -> bool:
+    """True when this exact tag exists, regardless of which tag is newest."""
+    import subprocess
+
+    try:
+        result = subprocess.run(
+            ["git", "tag", "--list", tag],
+            cwd=ROOT, capture_output=True, text=True, check=False,
+        )
+    except OSError:
+        return False
+    return bool(result.stdout.strip())
+
+
 def _latest_tag() -> str | None:
     result = subprocess.run(
         ["git", "describe", "--tags", "--abbrev=0"],
@@ -443,8 +457,27 @@ def build() -> dict:
     version = _semver(display_version)
     latest_tag = _latest_tag()
     expected_tag = f"v{display_version}"
-    if latest_tag != expected_tag:
-        errors.append(f"version/tag mismatch: expected {expected_tag}, latest is {latest_tag}")
+    # A committed artifact CANNOT know the tag that will later point at the commit it lives in.
+    # Treating "the tag does not exist yet" as an error made this circular: the report had to be
+    # generated after the tag, but the tag has to point at a commit that already contains the
+    # report. That circularity shipped twice, once as a 0.5.0 stamp and once as this very message
+    # baked into the deployed v0.06.002 inventory.
+    #
+    # So the ordering rule is now: a MISSING tag for the declared version is a pre-release state
+    # and is recorded, not an error. A tag that exists and DISAGREES is a real problem and stays
+    # an error, because that means two different releases claim the same name.
+    tag_state = "matches"
+    if latest_tag == expected_tag:
+        pass
+    elif latest_tag is None:
+        tag_state = "no tag yet (pre-release)"
+    elif _tag_exists(expected_tag):
+        tag_state = f"{expected_tag} exists but is not the newest tag ({latest_tag})"
+        errors.append(
+            f"version/tag conflict: {expected_tag} exists and is not the newest tag ({latest_tag})"
+        )
+    else:
+        tag_state = f"not tagged yet; newest existing tag is {latest_tag}"
     for manifest_version, label in (
         (json.loads((ROOT / "frontend/package.json").read_text(encoding="utf-8"))["version"], "frontend/package.json"),
         (_pyproject_version(), "pyproject.toml"),
@@ -504,6 +537,7 @@ def build() -> dict:
             "required_doc_themes": sorted(REQUIRED_DOC_THEMES),
             "expected_tag": expected_tag,
             "latest_tag": latest_tag,
+            "tag_state": tag_state,
         },
     }
 

@@ -1,6 +1,6 @@
 {
   "schema": "frothseg.release/v2",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "complete": false,
   "errors": [
     "no accepted licensed real FROTH held-out source with imported samples and calibration"
@@ -1109,7 +1109,8 @@
       "temporal",
       "use-cases"
     ],
-    "expected_tag": "v0.06.002",
-    "latest_tag": "v0.06.002"
+    "expected_tag": "v0.06.003",
+    "latest_tag": "v0.06.002",
+    "tag_state": "not tagged yet; newest existing tag is v0.06.002"
   }
 }

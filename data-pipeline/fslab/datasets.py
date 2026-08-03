@@ -27,6 +27,56 @@ RESERVE_STUDIES: tuple[str, ...] = ("p1", "p2", "p3", "p4", "p5")
 #: on exactly the same footing as the split it replaces.
 RESERVE_GROUPS_PER_CONDITION: int = 2
 
+#: Generation 2 of the reserve, sized by the effect each slice must resolve rather than by
+#: matching the shape of the test split.
+#:
+#: WHY THIS EXISTS. Generation 1 (``RESERVE_STUDIES``) gave every study a uniform 64 samples,
+#: chosen because that is the size of the burned test split. Sizing by the surface it replaces
+#: rather than by the effect it must detect got it wrong in BOTH directions. Measured on the
+#: three adoptions that actually spent a slice, the per-image paired AP delta has a standard
+#: deviation of 0.043 to 0.097. At a conservative sigma of 0.10, 80 percent power and a
+#: two-sided alpha of 0.05:
+#:
+#:     n=32 resolves 0.050   n=64 resolves 0.035   n=128 resolves 0.025
+#:     n=256 resolves 0.018  n=512 resolves 0.012
+#:
+#: The three adoptions measured +0.115, +0.079 and +0.064, needing n of 6, 13 and 19. Each was
+#: given 64, so each was 3 to 10 times over-powered. Meanwhile the open question,
+#: FOREGROUND_OTSU_FACTOR at about +0.019 on C3, needs n=218 and the one remaining generation-1
+#: slice holds 64. It cannot settle the question it would be spent on. Over-powering wastes
+#: compute; under-powering is worse, because a slice that cannot resolve the effect returns
+#: "not confirmed" for a real change and "confirmed" only when noise cooperates.
+#:
+#: THE SCARCE RESOURCE IS NOT SAMPLES. These scenes are synthetic and seed-addressable, the
+#: archive is gitignored and rebuilt from seeds, so supply was never the constraint; the
+#: five-slice cap simply tied the budget to a study count guessed in advance. What is genuinely
+#: limited is how many times a surface may be consulted before a false positive becomes likely.
+#: That is an ALPHA budget, and it lives in verification/reserve-slice-ledger.json, not here.
+#: Minting a fresh slice because the last one disappointed is the failure this whole mechanism
+#: exists to prevent, and no amount of available disk stops it. The pre-registration does.
+#:
+#: Each slice stays stratified over all 16 conditions, so it is read on the same footing as the
+#: split it stands in for. `groups` is latent geometries per condition; a group renders
+#: ``appearance_variants`` samples, so n = groups * 16 * variants.
+RESERVE_G2_SLICES: tuple[tuple[str, int], ...] = (
+    # tier S, n=32, resolves 0.050. Direction and sanity checks, or an effect already measured
+    # above 0.10 elsewhere. Cheap enough that a screen is never an excuse to skip confirmation.
+    ("s1", 1), ("s2", 1), ("s3", 1), ("s4", 1), ("s5", 1), ("s6", 1), ("s7", 1), ("s8", 1),
+    # tier M, n=128, resolves 0.025. THE DEFAULT for adopting an engine default. Every adoption
+    # made so far clears this with three to five times margin.
+    ("m1", 4), ("m2", 4), ("m3", 4), ("m4", 4),
+    # tier L, n=512, resolves 0.012. Required when the pre-registered expected effect is below
+    # 0.025. Needing this tier is itself a finding: an effect that takes 512 paired images to
+    # see is small enough that "is it worth adopting" deserves an answer before "is it real".
+    ("l1", 16), ("l2", 16),
+)
+
+#: Seed base for generation 2. Generation 1 occupies 2_000_000 + at most 2_150_900, so
+#: 3_000_000 cannot collide. Generation 2 needs 56 groups per condition against a stride
+#: headroom of 99, which fits.
+RESERVE_G2_SEED_BASE: int = 3_000_000
+
+
 #: Seed base for reserve geometries. ``learned_dataset_matrix`` occupies 1_000_000 + at most
 #: 1_150_000 + 1_100, so 2_000_000 cannot collide; ``validate_reserve_matrix`` asserts it.
 RESERVE_SEED_BASE: int = 2_000_000
@@ -296,6 +346,61 @@ def reserve_dataset_matrix(
                     appearance_variants=appearance_variants,
                     source_id="frothseg-synthetic-v2-reserve",
                     reserve_study=study,
+                ))
+                reserve_index += 1
+    return samples
+
+
+def reserve_g2_matrix(
+    *,
+    image_size: int = 192,
+    appearance_variants: int = 2,
+    slices: tuple[tuple[str, int], ...] = RESERVE_G2_SLICES,
+) -> list[SyntheticSample]:
+    """Build generation 2 of the reserve: per-slice sizes, one tier per resolvable effect.
+
+    Differs from :func:`reserve_dataset_matrix` in exactly one way that matters: each slice
+    declares its own ``groups`` count, so a slice is sized by the smallest effect it must be
+    able to resolve rather than by the shape of the split it replaces. See RESERVE_G2_SLICES
+    for the power arithmetic behind each tier.
+
+    Generation 1 is NOT rebuilt or renumbered. Its five slices are pre-registered by hash and
+    four of them are spent, so their archive stays byte-identical and its guards keep passing.
+    This is an additive second archive in a disjoint seed block.
+
+    Generating these is not observing them. Nothing here evaluates a reserve row.
+    """
+    _check_matrix_arguments(image_size, appearance_variants)
+    if not slices:
+        raise ValueError("at least one reserve slice is required")
+    ids = [slice_id for slice_id, _ in slices]
+    if len(set(ids)) != len(ids):
+        raise ValueError("reserve slice ids must be unique")
+    if any(groups < 1 for _, groups in slices):
+        raise ValueError("every slice needs at least one group per condition")
+    total_groups = sum(groups for _, groups in slices)
+    if total_groups > 99:
+        raise ValueError(
+            f"{total_groups} groups per condition exceeds the 99 the seed stride allows; "
+            "widen RESERVE_G2_SEED_BASE spacing before adding more"
+        )
+    samples: list[SyntheticSample] = []
+    for condition_index, condition in enumerate(_condition_specs()):
+        reserve_index = 0
+        for slice_id, groups in slices:
+            for group_index in range(groups):
+                samples.extend(_group_samples(
+                    condition=condition,
+                    group_id=f"syn2r2-{condition.name}-{slice_id}-g{group_index:02d}",
+                    geometry_seed=(
+                        RESERVE_G2_SEED_BASE + condition_index * 10_000 + reserve_index * 100
+                    ),
+                    split="reserve",
+                    latent_index=reserve_index,
+                    image_size=image_size,
+                    appearance_variants=appearance_variants,
+                    source_id="frothseg-synthetic-v2-reserve-g2",
+                    reserve_study=slice_id,
                 ))
                 reserve_index += 1
     return samples
