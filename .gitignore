@@ -90,6 +90,7 @@ Thumbs.db
 !/verification/r1-retrain-runs.json
 !/verification/r1-checkpoint-selection.json
 !/verification/r2-c3-flooding-depth.json
+!/verification/reserve-g2-preregistration.json
 !/verification/visual-qa/
 /verification/visual-qa/*
 !/verification/visual-qa/manifest.json
