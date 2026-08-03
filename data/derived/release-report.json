@@ -3,8 +3,7 @@
   "version": "0.6.2",
   "complete": false,
   "errors": [
-    "no accepted licensed real FROTH held-out source with imported samples and calibration",
-    "version/tag mismatch: expected v0.06.002, latest is v0.06.001"
+    "no accepted licensed real FROTH held-out source with imported samples and calibration"
   ],
   "branch_policy": "existing develop branch; no worktree",
   "dataset": {
@@ -1111,6 +1110,6 @@
       "use-cases"
     ],
     "expected_tag": "v0.06.002",
-    "latest_tag": "v0.06.001"
+    "latest_tag": "v0.06.002"
   }
 }
