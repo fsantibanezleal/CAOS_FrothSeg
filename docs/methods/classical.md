@@ -174,8 +174,10 @@ the engine that actually ships:
 | `FOREGROUND_OTSU_FACTOR` | C3 | 0.75 | **0.60 scores +6.42 percent** |
 | `FOREGROUND_OTSU_FACTOR` | C7 | 0.75 | 0.65 scores +2.42 percent |
 
-The first row is an independent check on R-2 rather than a restatement of it: the depth was selected on
-validation and confirmed on a reserve slice, and it also happens to be the argmax of a grid it never saw.
+The first row is a RESTATEMENT, not independent evidence. This is the same test-split grid on which the
+gap was first noticed and which motivated R-2 in the first place, so its agreement is not a second
+opinion. The independent parts of R-2 are the validation split it selected on and the reserve slice it
+was confirmed on.
 
 **None of the flagged rows is adopted, and the Otsu factor is the one to be careful about.** That study
 runs on the already-burned test split, so promoting 0.60 because it is the maximum there is precisely the

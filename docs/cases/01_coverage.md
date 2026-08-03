@@ -92,7 +92,7 @@ SAM column and none of them moved with the 2026-08-01 adoption; the floor method
   negative control: no froth, and SAM returns **0** instances (as it must); AP is undefined because there is no
   GT, and the pipeline handles the null rather than crashing.
 - **Size regimes.** SAM leads on `coarse-froth` (0.651 against 0.555) and is now behind on `poly-normal`
-  (0.457 against 0.458) and `fine-froth` (0.335 against 0.363), both of which it led before the floor moved.
+  (0.457 against 0.521) and `fine-froth` (0.335 against 0.428), both of which it led before the floor moved.
   On the fine case it undercounts (446 of 593 GT bubbles), merging some small touching bubbles, yet its `d32`
   still matches GT closely (12.77 vs 12.92): size is nearly unbiased even when the count is short, which is what
   the downstream soft-sensor cares about.
@@ -100,8 +100,8 @@ SAM column and none of them moved with the 2026-08-01 adoption; the floor method
   failure mode where the best classical method of the case reaches only AP 0.182, while zero-shot SAM holds at
   0.407, a 2.2x gap. Before the 2026-08-01 adoption that floor was `watershed_dt` at 0.081 and the gap read 5x.
   SAM also leads on `low-light-noise` (0.302 against 0.267), and it no longer leads on `high-load`,
-  `edge-framing` or `watery`: C7 takes the first two and C3 takes `watery` outright at 0.373 against SAM's
-  0.172. The honest exceptions remain heavy blur: `motion-fast` and `defocus` remove the promptable structure,
+  `edge-framing`, `watery` or `bursting`: C3 takes all four, at 0.506, 0.464, 0.582 and 0.464 against
+  SAM's 0.420, 0.412, 0.172 and 0.449. C3 holds the floor on 8 of the 12 scored cases and C7 on 3. The honest exceptions remain heavy blur: `motion-fast` and `defocus` remove the promptable structure,
   so SAM's confident-mask count collapses (25 and 37 masks against ~170-200 GT), and the classical floor is
   complementary there. This is why the App ships both SAM and the floor, and why blur is left as the floor's
   territory rather than hidden.

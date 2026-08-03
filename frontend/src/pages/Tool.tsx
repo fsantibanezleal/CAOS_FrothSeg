@@ -565,8 +565,8 @@ export default function Tool() {
                     ariaLabel={es ? 'AP contra milisegundos por imagen' : 'AP against milliseconds per image'}
                   />
                   <p className="fs-hint small">{es
-                    ? 'Elija un punto para replicarlo en Segmentación. El eje de coste es logarítmico: los métodos van de 3.4 ms a 972 ms.'
-                    : 'Pick a point to replay it in Segmentation. The cost axis is logarithmic: the methods span 3.4 ms to 972 ms.'}</p>
+                    ? 'Elija un punto para replicarlo en Segmentación. El eje de coste es logarítmico: los métodos van de 6.3 ms a 972 ms.'
+                    : 'Pick a point to replay it in Segmentation. The cost axis is logarithmic: the methods span 6.3 ms to 972 ms.'}</p>
                 </div>
 
               <div className="fs-panel fs-methods-table">

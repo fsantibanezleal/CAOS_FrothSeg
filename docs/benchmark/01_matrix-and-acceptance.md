@@ -16,10 +16,12 @@ C1/C3/C4 are validated TypeScript twins across one untouched representative
 from every condition. C2/C5/C6/C7 remain scientific offline implementations
 and are shown on the companion web only as committed canonical replay.
 
-Current synthetic results are diagnostic: the grouped-split, two-epoch
-fine-tuned Cellpose-SAM leads the controlled test at AP 0.5099. The
-preregistered LamellaStar revision reaches AP 0.4904, a substantial internal
-improvement that does not exceed the measured leader.
+Current synthetic results are diagnostic: the three-seed LamellaStar ensemble
+leads the controlled test at AP 0.5186, ahead of the grouped-split,
+two-epoch fine-tuned Cellpose-SAM at 0.5099. The margin is +0.0087, which is
+smaller than the measured ensemble-to-ensemble spread of 0.0118
+(`verification/p1-ensemble-spread.json`), so the two are not distinguishable at that
+spread and no superiority claim is made.
 Product acceptance remains blocked until a licensed, calibrated real held-out
 lane meets predeclared thresholds. A green artifact-inventory check cannot
 override that scientific gate.

@@ -130,8 +130,11 @@ weakest member does not. C3 marker-controlled watershed is the more interesting 
 to 0.182 on real while flooding the distance transform. That reversal is a real result and is
 stated as one. The adopted surface is a FROTH mechanism, since flooding the negated intensity from
 h-maxima markers assumes one bright specular highlight per object and a dark Plateau border between
-objects, and cell nuclei have neither; on this domain the distance transform it replaced is the
-better surface.
+objects, and cell nuclei have neither. That reading held while the comparison was 0.182 for neg_edt
+against 0.128 for the adopted engine. It no longer does: after the flooding depth was corrected the
+shipped engine scores 0.216 on this domain, ABOVE the 0.182 that neg_edt reached, so the surface it
+replaced is not the better surface here either. What survives is the direction of the transfer, not
+the surface ordering.
 
 The depth correction later the same day moved C3's real figure from 0.128 to 0.216 and softened the
 drop from -0.092 to -0.081, so the direction of the reversal survives while its size does not. Both

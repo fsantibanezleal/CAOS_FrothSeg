@@ -17,7 +17,7 @@
   },
   "method_benchmark": {
     "path": "data/derived/method-benchmark.json",
-    "sha256": "9ce20494174e930148a2f3017ba9fb606cbdde824f919d5b89e9a511dbaf32b3",
+    "sha256": "156500a69d9b833d87bfa267755729075b8db11a204ac0cd64828166d289da97",
     "method_count": 15,
     "implemented_count": 15,
     "leader": {
