@@ -1,5 +1,53 @@
 # Changelog
 
+## [0.06.005] · 2026-08-04
+
+Defect fixes found by auditing 0.06.004. No engine constant, weight, artifact value or published
+metric changed.
+
+### The ledger that makes a reserve slice consumable was never armed
+
+`_load_slice` refuses to read a slice that already appears in
+`verification/reserve-slice-ledger.json`. Nothing wrote to that ledger. Every entry from `p1`
+onward, including `l1`, was hand-edited after its study ran, so the refusal could only ever fire if
+someone had remembered to arm it. A study that read a slice and then crashed, or whose author
+simply forgot, left the slice looking unspent and re-readable, and no gate anywhere would have said
+so.
+
+`scripts/r3_classical_tier.py` now writes its own ledger entry, **before** it writes its result
+artifact, so a study that dislikes what it found cannot decline to record that it looked. A guard
+parses the script's AST and fails if the call is missing or moves after the result write.
+String-searching for it was not enough: a commented-out call still contains the text, which is
+exactly the regression the guard exists to catch, and the first version of it passed on that
+mutation.
+
+### A negative selection result crashed instead of concluding
+
+The tier rule mapped a calibration-observed joint effect to a reserve slice by taking the first
+threshold at or below it. A negative effect matched no threshold and raised `StopIteration`. That
+case is not an error: it means the proposal is worse than what ships, so nothing needs confirming
+and no slice should be spent finding out. Selection now returns no slice, and the confirmation
+stage refuses to run rather than burning a surface to establish a direction already known.
+
+### `datasets.py` still carried the superseded image-based sizing
+
+The module that DEFINES the reserve slices still explained them in image counts, with the tier
+figures the previous release corrected. Restated per independent geometry group, including what R-3
+established: the ladder's floor is 0.0175, and C3's own Otsu preference needs 295 groups, which is
+more than the largest slice holds. There are real questions below this ladder's floor.
+
+### Guards
+
+Three on the group-level re-check, all mutation-tested. Its reconstruction asserts against the
+published means, but only when the script runs; if an engine constant it depended on moves and
+nobody re-runs it, the committed artifact silently becomes a record of an engine that no longer
+exists and still reads as current. The constants are now pinned, so the ground shifting is a test
+failure rather than a silent staleness.
+
+Also removes an unreachable `--already-recorded` flag added in the same audit: `_load_slice`
+already refuses any listed slice, so the flag could never be reached and only documented a
+capability that does not exist.
+
 ## [0.06.004] · 2026-08-03
 
 Evidence and correction. No engine constant, weight, artifact value or published metric changed.

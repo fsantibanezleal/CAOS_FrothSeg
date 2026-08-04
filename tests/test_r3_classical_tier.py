@@ -9,6 +9,7 @@ before the slice was read.
 
 from __future__ import annotations
 
+import ast
 import json
 import sys
 from pathlib import Path
@@ -102,6 +103,53 @@ def test_l1_is_recorded_as_spent_exactly_once() -> None:
     assert spent.count("l1") == 1, "l1 must appear exactly once; twice means it was observed twice"
     entry = next(e for e in ledger["entries"] if e["reserve_study"] == "l1")
     assert entry["evidence"] == "verification/r3-classical-tier.json"
+
+
+def test_the_script_that_reads_a_slice_is_the_one_that_records_the_spend() -> None:
+    """The refusal to re-read a spent slice is only armed if something writes the ledger.
+
+    Every entry from p1 onward was hand-edited after the study ran, so `_load_slice`'s check
+    against the ledger could only fire if a human had remembered to arm it. A study that read a
+    slice and then crashed, or whose author simply forgot, left the slice looking unspent and
+    re-readable, and nothing anywhere would have said so. This asserts the write exists in the
+    reading script and happens before the result artifact is produced.
+    """
+    source = (ROOT / "scripts/r3_classical_tier.py").read_text(encoding="utf-8")
+    tree = ast.parse(source)
+
+    assert any(
+        isinstance(node, ast.FunctionDef) and node.name == "record_spend"
+        for node in ast.walk(tree)
+    ), (
+        "the confirmation script does not write a ledger entry, so the one mechanism that makes a "
+        "slice consumable depends on someone remembering to edit JSON by hand"
+    )
+
+    confirm = next(
+        node
+        for node in ast.walk(tree)
+        if isinstance(node, ast.FunctionDef) and node.name == "stage_confirm"
+    )
+    # Parsed rather than string-searched: a commented-out call still contains the text, so a
+    # substring check passes on exactly the regression this guards against.
+    calls = {
+        node.func.id: node.lineno
+        for node in ast.walk(confirm)
+        if isinstance(node, ast.Call) and isinstance(node.func, ast.Name)
+    }
+    writes = [
+        node.lineno
+        for node in ast.walk(confirm)
+        if isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Attribute)
+        and node.func.attr == "write_text"
+    ]
+    assert "record_spend" in calls, "stage_confirm never calls record_spend"
+    assert writes, "stage_confirm never writes its result artifact"
+    assert calls["record_spend"] < min(writes), (
+        "the spend must be recorded before the result is written, so a study that dislikes what it "
+        "found cannot decline to record that it looked"
+    )
 
 
 def test_endpoint_selections_are_reported_rather_than_hidden() -> None:

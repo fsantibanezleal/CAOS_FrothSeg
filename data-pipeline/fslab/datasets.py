@@ -32,20 +32,32 @@ RESERVE_GROUPS_PER_CONDITION: int = 2
 #:
 #: WHY THIS EXISTS. Generation 1 (``RESERVE_STUDIES``) gave every study a uniform 64 samples,
 #: chosen because that is the size of the burned test split. Sizing by the surface it replaces
-#: rather than by the effect it must detect got it wrong in BOTH directions. Measured on the
-#: three adoptions that actually spent a slice, the per-image paired AP delta has a standard
-#: deviation of 0.043 to 0.097. At a conservative sigma of 0.10, 80 percent power and a
-#: two-sided alpha of 0.05:
+#: rather than by the effect it must detect got it wrong in BOTH directions.
 #:
-#:     n=32 resolves 0.050   n=64 resolves 0.035   n=128 resolves 0.025
-#:     n=256 resolves 0.018  n=512 resolves 0.012
+#: THE UNIT OF REPLICATION IS THE GEOMETRY GROUP, NOT THE IMAGE. Every group renders
+#: ``appearance_variants`` samples that share one latent geometry, so the two images of a group
+#: are one observation rendered twice. A 64-image slice supplies 32 independent observations. The
+#: first version of this block sized on images and overstated every tier by sqrt(2); the figures
+#: below are per independent group, and a confirmation averages within group before it tests.
 #:
-#: The three adoptions measured +0.115, +0.079 and +0.064, needing n of 6, 13 and 19. Each was
-#: given 64, so each was 3 to 10 times over-powered. Meanwhile the open question,
-#: FOREGROUND_OTSU_FACTOR at about +0.019 on C3, needs n=218 and the one remaining generation-1
-#: slice holds 64. It cannot settle the question it would be spent on. Over-powering wastes
-#: compute; under-powering is worse, because a slice that cannot resolve the effect returns
-#: "not confirmed" for a real change and "confirmed" only when noise cooperates.
+#: Measured on the three adoptions that actually spent a slice, the per-image paired AP delta has
+#: a standard deviation of 0.043 to 0.097. Averaging a group's variants can only reduce that, so
+#: carrying a per-image sigma into a group-level calculation is conservative in the safe
+#: direction. At a conservative sigma of 0.10, 80 percent power and a two-sided alpha of 0.05:
+#:
+#:     16 groups resolve 0.070    64 groups resolve 0.035    256 groups resolve 0.0175
+#:
+#: The three adoptions measured +0.115, +0.079 and +0.064, needing 6, 13 and 19 groups. Each was
+#: given 32, so each was 1.6 to 5 times over-powered. Meanwhile the open question,
+#: FOREGROUND_OTSU_FACTOR at about +0.019 on C3, needs 218 groups and the one remaining
+#: generation-1 slice supplies 32. It cannot settle the question it would be spent on.
+#: Over-powering wastes compute; under-powering is worse, because a slice that cannot resolve the
+#: effect returns "not confirmed" for a real change and "confirmed" only when noise cooperates.
+#:
+#: WHAT THE LADDER ACTUALLY SETTLED. R-3 spent l1 and returned a null
+#: (verification/r3-classical-tier.json). It also established that C3's own Otsu preference needs
+#: 295 groups to resolve its +0.0163, which is MORE than the largest slice here holds. The floor
+#: of this ladder is 0.0175 and there are real questions below it.
 #:
 #: THE SCARCE RESOURCE IS NOT SAMPLES. These scenes are synthetic and seed-addressable, the
 #: archive is gitignored and rebuilt from seeds, so supply was never the constraint; the
@@ -59,15 +71,17 @@ RESERVE_GROUPS_PER_CONDITION: int = 2
 #: split it stands in for. `groups` is latent geometries per condition; a group renders
 #: ``appearance_variants`` samples, so n = groups * 16 * variants.
 RESERVE_G2_SLICES: tuple[tuple[str, int], ...] = (
-    # tier S, n=32, resolves 0.050. Direction and sanity checks, or an effect already measured
-    # above 0.10 elsewhere. Cheap enough that a screen is never an excuse to skip confirmation.
+    # tier S, 16 groups (32 images), resolves 0.070. Direction and sanity checks, or an effect
+    # already measured well above 0.10 elsewhere. Cheap enough that a screen is never an excuse
+    # to skip confirmation.
     ("s1", 1), ("s2", 1), ("s3", 1), ("s4", 1), ("s5", 1), ("s6", 1), ("s7", 1), ("s8", 1),
-    # tier M, n=128, resolves 0.025. THE DEFAULT for adopting an engine default. Every adoption
-    # made so far clears this with three to five times margin.
+    # tier M, 64 groups (128 images), resolves 0.035. THE DEFAULT for adopting an engine
+    # default. The three adoptions on record clear this by 1.8x to 3.3x.
     ("m1", 4), ("m2", 4), ("m3", 4), ("m4", 4),
-    # tier L, n=512, resolves 0.012. Required when the pre-registered expected effect is below
-    # 0.025. Needing this tier is itself a finding: an effect that takes 512 paired images to
-    # see is small enough that "is it worth adopting" deserves an answer before "is it real".
+    # tier L, 256 groups (512 images), resolves 0.0175. Required when the pre-registered
+    # expected effect is below 0.035. Needing this tier is itself a finding: an effect that takes
+    # 256 paired geometries to see is small enough that "is it worth adopting" deserves an answer
+    # before "is it real". l1 is spent (R-3, a null); l2 remains.
     ("l1", 16), ("l2", 16),
 )
 

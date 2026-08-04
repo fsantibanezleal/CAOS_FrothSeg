@@ -1,6 +1,6 @@
 {
   "schema": "frothseg.release/v2",
-  "version": "0.6.4",
+  "version": "0.6.5",
   "complete": false,
   "errors": [
     "no accepted licensed real FROTH held-out source with imported samples and calibration"
@@ -1109,6 +1109,6 @@
       "temporal",
       "use-cases"
     ],
-    "expected_tag": "v0.06.004"
+    "expected_tag": "v0.06.005"
   }
 }
