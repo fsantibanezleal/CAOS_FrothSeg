@@ -190,7 +190,16 @@ def stage_select(args: argparse.Namespace) -> None:
     proposed_vector = tier_mean_per_image(tier_matrix(cache, proposed))
     joint = float(proposed_vector.mean() - shipped_vector.mean())
 
-    slice_id, slice_n = next((sid, n) for threshold, sid, n in TIER_RULE if joint >= threshold)
+    # A negative joint effect means the proposed configuration is WORSE than shipped on the
+    # selection surface, so there is nothing to confirm and no slice should be spent finding that
+    # out. Falling through the tier rule with a negative effect used to raise StopIteration, which
+    # would have read as a crash rather than as the clean answer it is.
+    if joint <= 0:
+        slice_id, slice_n = None, 0
+    else:
+        slice_id, slice_n = next(
+            (sid, n) for threshold, sid, n in TIER_RULE if joint >= threshold
+        )
 
     document = {
         "schema": "frothseg.r3-selection/v1",
@@ -234,6 +243,7 @@ def stage_select(args: argparse.Namespace) -> None:
                 "the tier rule fixed in the pre-registration, applied to the joint effect observed "
                 "on the calibration split, before the reserve was touched"
             ),
+            "no_confirmation_warranted": slice_id is None,
         },
         "environment": _environment(),
     }
@@ -242,7 +252,11 @@ def stage_select(args: argparse.Namespace) -> None:
 
     print(f"proposed: {proposed}")
     print(f"joint effect on calibration: {joint:+.4f}")
-    print(f"confirmation slice by the fixed rule: {slice_id} (n={slice_n})")
+    if slice_id is None:
+        print("the proposal is not better than shipped on the selection surface; no slice is "
+              "warranted and the confirmation stage will refuse to run")
+    else:
+        print(f"confirmation slice by the fixed rule: {slice_id} (n={slice_n})")
     print(f"\nwrote {SELECTION_OUT.relative_to(ROOT).as_posix()}")
 
 
@@ -276,6 +290,51 @@ def _load_slice(slice_id: str) -> dict:
         "n": len(rows),
         "n_groups": meta["n_groups"],
     }
+
+
+def record_spend(slice_id: str, meta: dict, configurations: list[str]) -> None:
+    """Write the ledger entry for a slice, BEFORE its result artifact is produced.
+
+    The ledger is the only thing that makes a slice consumable rather than reusable: `_load_slice`
+    refuses a slice that already appears here. Until this function existed, every entry from p1
+    onward was hand-edited after the fact, so the refusal could only ever fire if someone had
+    remembered to arm it. A study that read a slice and then crashed, or whose author simply forgot,
+    left the slice looking unspent and re-readable.
+
+    Written before the result, and deliberately not on the same pass that decides anything, so the
+    ordering cannot be argued with: the spend is recorded whether or not the study likes what it
+    found.
+
+    l1's own entry predates this function and was written by hand. There is no flag to skip the
+    write for it, because `_load_slice` already refuses any slice the ledger lists, so the
+    confirmation stage can never reach this code for l1 again. A skip flag would only document a
+    capability that does not exist.
+    """
+    ledger = json.loads(LEDGER.read_text(encoding="utf-8"))
+    if slice_id in {entry["reserve_study"] for entry in ledger["entries"]}:
+        raise SystemExit(f"{slice_id} is already in the ledger; refusing to record a second spend")
+    ledger["entries"].append({
+        "reserve_study": slice_id,
+        "generation": 2,
+        "spent_by": "r3-classical-tier-like-for-like",
+        "date": datetime.now(timezone.utc).date().isoformat(),
+        "evidence": OUT.relative_to(ROOT).as_posix(),
+        "sample_count": meta["n_samples"],
+        "independent_units": meta["n_groups"],
+        "unit_of_replication": "latent geometry group",
+        "sample_ids_sha256": meta["sample_ids_sha256"],
+        "group_ids_sha256": meta["group_ids_sha256"],
+        "test_evaluations_spent": 0,
+        "configurations_scored": configurations,
+        "note": (
+            "Recorded by scripts/r3_classical_tier.py at the moment of the read, before the result "
+            "artifact was written. One non-iterated pass per configuration; both were fixed before "
+            "the slice was opened."
+        ),
+    })
+    ledger["slices_spent"] = len(ledger["entries"])
+    LEDGER.write_text(json.dumps(ledger, indent=2), encoding="utf-8")
+    print(f"  ledger: {slice_id} recorded as spent ({ledger['slices_spent']} total)\n")
 
 
 def cluster(vector: np.ndarray, group_ids: list[str]) -> np.ndarray:
@@ -316,6 +375,11 @@ def _holm(pvalues: dict[str, float], alpha: float = 0.05) -> dict[str, dict]:
 def stage_confirm(args: argparse.Namespace) -> None:
     selection = json.loads(SELECTION_OUT.read_text(encoding="utf-8"))
     expected = selection["confirmation_slice"]["slice"]
+    if expected is None:
+        raise SystemExit(
+            "selection found the proposal no better than shipped, so no slice is warranted. "
+            "Spending one anyway would burn a surface to confirm a direction already known."
+        )
     if args.slice != expected:
         raise SystemExit(
             f"the fixed tier rule selected {expected}; refusing to read {args.slice}. "
@@ -327,6 +391,19 @@ def stage_confirm(args: argparse.Namespace) -> None:
     print(f"confirmation: slice {args.slice}, n={data['n']}, resolves {data['resolvable']}")
     print(f"  shipped:  {base}")
     print(f"  proposed: {proposed}\n")
+
+    # The spend is recorded now, at the read, not after the decision. See record_spend().
+    record_spend(
+        args.slice,
+        json.loads(G2_PREREG.read_text(encoding="utf-8"))["per_slice"][args.slice],
+        [
+            f"otsu_factor={base['otsu_factor']}, c2_min_distance={base['c2_min_distance']}, "
+            f"c5_h_minima={base['c5_h_minima']} (shipped)",
+            f"otsu_factor={proposed['otsu_factor']}, "
+            f"c2_min_distance={proposed['c2_min_distance']}, "
+            f"c5_h_minima={proposed['c5_h_minima']} (proposed)",
+        ],
+    )
 
     before = tier_matrix(data, base)
     after = tier_matrix(data, proposed)
