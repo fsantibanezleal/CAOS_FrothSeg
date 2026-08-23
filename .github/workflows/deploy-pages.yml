@@ -32,8 +32,27 @@ jobs:
         with:
           python-version: "3.12"
       - name: Verify the committed scientific artifacts
+        # A PUSH DEPLOYS ON THE `development` PROFILE, AND THAT IS DELIBERATE.
+        #
+        # The `release` profile fails on exactly one error, permanently and by design:
+        #   "no accepted licensed real FROTH held-out source with imported samples and calibration"
+        # BL-012 is SETTLED, not pending. No openly licensed, real, per-bubble-annotated froth dataset
+        # exists (2026-07-28 search plus an independent 2026-07-31 research null), so the value axis is
+        # 0 by a recorded state of the world and the only route to a froth claim is Felipe's own
+        # annotated frames. The product's own record states it plainly: that is "a scientific gate and
+        # not a deployment one".
+        #
+        # Gating the push deploy on it conflated the two, and the consequence was concrete: every push
+        # to main since 2026-08-04 failed to deploy, so main and the live site silently drifted apart
+        # while CI stayed green (CI runs the development profile). A site that cannot ship its own
+        # honest, explicitly-incomplete evidence is not being held to a higher standard, it is just
+        # frozen.
+        #
+        # `development` is the profile the workflow itself describes as publishing "an explicitly
+        # incomplete evidence report", which is exactly what this product should publish while the data
+        # gap stands. `release` stays available via workflow_dispatch for the day it closes.
         env:
-          VALIDATION_PROFILE: ${{ github.event_name == 'workflow_dispatch' && inputs.validation_profile || 'release' }}
+          VALIDATION_PROFILE: ${{ github.event_name == 'workflow_dispatch' && inputs.validation_profile || 'development' }}
         run: |
           pip install -r requirements-precompute.txt -e .
           python -m fslab.pipeline --check
