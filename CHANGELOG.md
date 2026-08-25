@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.06.006] · 2026-08-25
+
+### Fixed
+
+- Cap the App-route notes and the caption blocks the paragraph rule could not reach
+- Deploy pushes on the honest-evidence profile, not the settled-failing release gate
+- Cap the reading measure on the content routes
+
 ## [0.06.005] · 2026-08-04
 
 Defect fixes found by auditing 0.06.004. No engine constant, weight, artifact value or published
