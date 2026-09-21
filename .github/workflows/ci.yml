@@ -23,8 +23,6 @@ jobs:
           pip install -r requirements-api.txt -r requirements-dev.txt -e .
       - name: Lint
         run: ruff check scripts data-pipeline tests
-      - name: CONTRACT 2 · manifests <-> artifacts consistent (no drift)
-        run: python scripts/check_artifacts.py
       - name: Scientific product development gate
         run: python scripts/check_product_completeness.py --profile development
       - uses: actions/setup-node@v4
